@@ -1,6 +1,5 @@
 !.vscode
-dist
+.vscode-test
 node_modules
 out
 *.log
-test.*

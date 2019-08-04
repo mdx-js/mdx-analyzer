@@ -1,13 +1,13 @@
 {
-  "name": "lsp-sample-client",
-  "description": "VSCode part of a language server",
-  "author": "Microsoft Corporation",
+  "name": "vscode-mdx-client",
+  "description": "Client of MDX extension for Visual Studio Code",
+  "author": "JounQin",
   "license": "MIT",
-  "version": "0.0.1",
-  "publisher": "vscode",
+  "version": "0.1.0",
+  "publisher": "JounQin",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/vscode-extension-samples"
+    "url": "https://github.com/rx-ts/vscode-mdx"
   },
   "engines": {
     "vscode": "^1.23.0"

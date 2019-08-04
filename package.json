@@ -21,11 +21,11 @@
   "engines": {
     "vscode": "^1.23.0"
   },
-  "icon": "https://rx-ts.github.io/assets/mdx.png",
+  "icon": "assets/mdx.png",
   "activationEvents": [
-    "onLanguage:plaintext"
+    "onLanguage:mdx"
   ],
-  "main": "./client/out/extension",
+  "main": "./client/lib/extension",
   "scripts": {
     "vscode:prepublish": "cd client && yarn update-vscode && cd .. && yarn compile",
     "compile": "tsc -b",
@@ -54,15 +54,15 @@
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "Example configuration",
+      "title": "VSCode MDX configuration",
       "properties": {
-        "languageServerExample.maxNumberOfProblems": {
+        "mdx.debug": {
           "scope": "resource",
-          "type": "number",
-          "default": 100,
-          "description": "Controls the maximum number of problems produced by the server."
+          "type": "boolean",
+          "default": false,
+          "description": "Controls whether out debug info."
         },
-        "languageServerExample.trace.server": {
+        "mdx.trace.server": {
           "scope": "window",
           "type": "string",
           "enum": [
@@ -80,8 +80,7 @@
         "id": "mdx",
         "aliases": [
           "Markdown React",
-          "MDX",
-          "mdx"
+          "MDX"
         ],
         "extensions": [
           "mdx"
@@ -95,10 +94,11 @@
         "scopeName": "text.html.markdown.jsx",
         "path": "./syntaxes/mdx.tmLanguage.json",
         "embeddedLanguages": {
+          "source.js": "javascript",
           "source.js.jsx": "javascriptreact",
+          "text.html.markdown": "markdown",
           "meta.tag.js": "jsx-tags",
           "meta.tag.without-attributes.js": "jsx-tags",
-          "text.html.markdown": "markdown",
           "meta.embedded.block.frontmatter": "yaml",
           "meta.embedded.block.css": "css",
           "meta.embedded.block.ini": "ini",
@@ -111,6 +111,7 @@
           "meta.embedded.block.php": "php",
           "meta.embedded.block.sql": "sql",
           "meta.embedded.block.vs_net": "vs_net",
+          "meta.embedded.block.html": "html",
           "meta.embedded.block.xml": "xml",
           "meta.embedded.block.xsl": "xsl",
           "meta.embedded.block.yaml": "yaml",

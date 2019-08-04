@@ -1,15 +1,15 @@
 {
-  "name": "lsp-sample-server",
-  "description": "Example implementation of a language server in node.",
-  "version": "1.0.0",
-  "author": "Microsoft Corporation",
+  "name": "vscode-mdx-server",
+  "description": "Server of MDX extension for Visual Studio Code",
+  "version": "0.1.0",
+  "author": "JounQin",
   "license": "MIT",
   "engines": {
     "node": "*"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/vscode-extension-samples"
+    "url": "https://github.com/rx-ts/vscode-mdx"
   },
   "dependencies": {
     "vscode-languageserver": "^5.2.1"

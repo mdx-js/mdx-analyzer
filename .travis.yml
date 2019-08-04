@@ -14,4 +14,3 @@ script:
   - set -e
   - yarn lint
   - yarn compile
-  - yarn test

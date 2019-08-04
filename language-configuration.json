@@ -1,5 +1,7 @@
 {
-  "comments": {},
+  "comments": {
+    "blockComment": ["<!--", "-->"]
+  },
   // symbols used as brackets
   "brackets": [["{", "}"], ["[", "]"], ["(", ")"]],
   // symbols that are auto closed when typing
@@ -7,8 +9,32 @@
     ["{", "}"],
     ["[", "]"],
     ["(", ")"],
-    ["\"", "\""],
-    ["'", "'"]
+    ["`", "`"],
+    {
+      "open": "\"",
+      "close": "\"",
+      "notIn": ["string"]
+    },
+    {
+      "open": "'",
+      "close": "'",
+      "notIn": ["string"]
+    },
+    {
+      "open": "<",
+      "close": ">",
+      "notIn": ["string"]
+    },
+    {
+      "open": "/**",
+      "close": " */",
+      "notIn": ["string"]
+    },
+    {
+      "open": "<!--",
+      "close": "-->",
+      "notIn": ["string", "comment"]
+    }
   ],
   // symbols that that can be used to surround a selection
   "surroundingPairs": [
@@ -17,8 +43,16 @@
     ["(", ")"],
     ["\"", "\""],
     ["'", "'"],
+    ["<", ">"],
     ["`", "`"],
     ["_", "_"],
     ["*", "*"]
-  ]
+  ],
+  "folding": {
+    "offSide": true,
+    "markers": {
+      "start": "^\\s*<!--\\s*#?region\\b.*-->",
+      "end": "^\\s*<!--\\s*#?endregion\\b.*-->"
+    }
+  }
 }

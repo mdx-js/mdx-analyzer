@@ -1,14 +1,5 @@
 {
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "importHelpers": true,
-    "module": "commonjs",
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "target": "es6"
-  },
-  "exclude": ["node_modules", ".vscode-test"],
+  "extends": "./tsconfig.base.json",
+  "include": [],
   "references": [{ "path": "./client" }, { "path": "./server" }]
 }

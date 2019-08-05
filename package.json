@@ -4,7 +4,7 @@
   "description": "MDX extension for Visual Studio Code",
   "author": "JounQin",
   "license": "MIT",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/rx-ts/vscode-mdx"
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^8.1.0",
-    "@rxts/eslint-plugin-mdx": "^0.9.3",
+    "@rxts/eslint-plugin-mdx": "^0.9.4",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.6.9",
     "@types/react": "^16.8.24",

@@ -306,12 +306,12 @@
     "@nodelib/fs.scandir" "2.1.1"
     fastq "^1.6.0"
 
-"@rxts/eslint-plugin-mdx@^0.9.3":
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/@rxts/eslint-plugin-mdx/-/eslint-plugin-mdx-0.9.3.tgz#659c8167c1b234a0af77e1e308c4c396a4b0a78e"
-  integrity sha512-PVHWSL42w121ksmV7N9LMDGTlGK73IUONo193hLkMuKF1Cy238X4zjn911iXEzwbg8XAXDzJY0/A0dWvlHwthA==
+"@rxts/eslint-plugin-mdx@^0.9.4":
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/@rxts/eslint-plugin-mdx/-/eslint-plugin-mdx-0.9.4.tgz#e8ed68a189e25ab79efb1f6a7e03c76b86575e88"
+  integrity sha512-SvBDxPNZo5HgRLTqzStBo9wv+IIZEPXIGIm2TmhalgkcGL7oqeWCFerIYHJTFL2RYMpuXS8vctH0/TZu8Fm+Ag==
   dependencies:
-    eslint-mdx "^0.9.3"
+    eslint-mdx "^0.9.4"
     remark-mdx "^1.1.5"
     remark-parse "^7.0.0"
     unified "^8.3.2"
@@ -1255,10 +1255,10 @@ eslint-import-resolver-typescript@JounQin/eslint-import-resolver-typescript#feat
     resolve "^1.4.0"
     tsconfig-paths "^3.6.0"
 
-eslint-mdx@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/eslint-mdx/-/eslint-mdx-0.9.3.tgz#341864305f0b0720a774545b589afb729a8ba094"
-  integrity sha512-9A4qFIHtMQGshcTUa1P4wAlskIl0qe1YddxyfyghpLiKMdl1lXsxgKAYjniLaiUX4WCAX5+qQg1q59c/VCs7ZQ==
+eslint-mdx@^0.9.4:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/eslint-mdx/-/eslint-mdx-0.9.4.tgz#091fe1f69285927ca39d678ac296762c0a0fd230"
+  integrity sha512-cVcerH1a34/k1uIpLgo/PfmIz9LBmpYvAzv6Yp2NS0PGao6bXG9JON3f9sSpVzbTZ41MOk3CzJ6z5T4HXyWCdQ==
 
 eslint-module-utils@^2.4.0:
   version "2.4.1"

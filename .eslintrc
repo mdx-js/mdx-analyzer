@@ -1,9 +1,0 @@
-{
-  "extends": ["1stg/react", "plugin:@rxts/mdx/recommended"],
-  "overrides": [
-    {
-      "files": ["*.mdx"],
-      "extends": ["plugin:@rxts/mdx/overrides"]
-    }
-  ]
-}

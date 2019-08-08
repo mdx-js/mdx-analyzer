@@ -58,10 +58,7 @@ connection.onInitialize((params: InitializeParams) => {
 connection.onInitialized(() => {
   if (hasConfigurationCapability) {
     // Register for all configuration changes.
-    connection.client.register(
-      DidChangeConfigurationNotification.type,
-      undefined,
-    )
+    connection.client.register(DidChangeConfigurationNotification.type)
   }
   if (hasWorkspaceFolderCapability) {
     connection.workspace.onDidChangeWorkspaceFolders(_event => {
@@ -100,9 +97,7 @@ export function getDocumentSettings(resource: string): Thenable<MdxSettings> {
   return result
 }
 
-async function validateTextDocument(
-  _textDocument: TextDocument,
-): Promise<void> {
+function validateTextDocument(_textDocument: TextDocument) {
   // In this simple example we get the settings for every validate run.
   if (hasDiagnosticRelatedInformationCapability) {
     //

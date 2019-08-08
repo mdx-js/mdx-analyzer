@@ -3,7 +3,7 @@
     "prettier --write",
     "git add"
   ],
-  "*.{mdx,ts}": [
+  "*.{mdx,ts,tsx}": [
     "eslint",
     "git add"
   ]

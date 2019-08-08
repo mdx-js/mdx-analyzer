@@ -1,15 +1,17 @@
 {
   "name": "vscode-mdx",
-  "displayName": "MDX",
-  "description": "MDX extension for Visual Studio Code",
+  "version": "0.1.1",
+  "displayName": "VSCode MDX",
+  "description": "Visual Studio Code extension for MDX",
+  "repository": "git@github.com:rx-ts/vscode-mdx.git",
   "author": "JounQin",
-  "license": "MIT",
-  "version": "0.1.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rx-ts/vscode-mdx"
-  },
   "publisher": "JounQin",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "categories": [
     "Programming Languages"
   ],
@@ -27,29 +29,32 @@
   ],
   "main": "./client/lib/extension",
   "scripts": {
-    "vscode:prepublish": "cd client && yarn update-vscode && cd .. && yarn compile",
-    "compile": "tsc -b",
+    "vscode:prepublish": "yarn build",
+    "build": "tsc -b",
     "watch": "tsc -b -w",
-    "postinstall": "cd client && yarn && cd ../server && yarn && cd ..",
-    "lint": "eslint . --ext mdx,ts",
-    "test": "sh ./scripts/e2e.sh"
+    "lint": "EFF_NO_LINK_RULES=true  eslint . --ext mdx,ts,tsx -f friendly",
+    "test": "ts-node client/src/test"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^8.1.0",
-    "@rxts/eslint-plugin-mdx": "^0.9.5",
+    "@rxts/eslint-plugin-mdx": "^0.9.7",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.6.9",
-    "@types/react": "^16.8.24",
+    "@types/node": "^12.7.1",
+    "@types/react": "^16.8.25",
+    "@types/vscode": "^1.36.0",
     "commitlint": "^8.1.0",
     "eslint": "^6.1.0",
-    "eslint-config-1stg": "~5.4.1",
+    "eslint-config-1stg": "^5.6.9",
+    "eslint-formatter-friendly": "^7.0.0",
     "husky": "^3.0.2",
     "lint-staged": "^9.2.1",
     "prettier": "^1.18.2",
     "prettier-config-1stg": "^0.1.0",
     "react": "^16.8.6",
     "standard-version": "^7.0.0",
-    "typescript": "^3.5.3"
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3",
+    "vscode-test": "^1.2.0"
   },
   "contributes": {
     "configuration": {

@@ -5,9 +5,9 @@
 
 import * as assert from 'assert'
 
-import * as vscode from 'vscode'
-
 import { getDocUri, activate } from './helper'
+
+import * as vscode from 'vscode'
 
 function toRange(sLine: number, sChar: number, eLine: number, eChar: number) {
   const start = new vscode.Position(sLine, sChar)

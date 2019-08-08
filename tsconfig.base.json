@@ -1,14 +1,7 @@
 {
+  "extends": "eslint-config-1stg",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "importHelpers": true,
     "module": "commonjs",
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
     "target": "es6"
   }
 }

@@ -5,9 +5,9 @@
 
 import * as assert from 'assert'
 
-import * as vscode from 'vscode'
-
 import { getDocUri, activate } from './helper'
+
+import * as vscode from 'vscode'
 
 async function testCompletion(
   docUri: vscode.Uri,

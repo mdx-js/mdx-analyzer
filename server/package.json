@@ -1,18 +1,15 @@
 {
   "name": "vscode-mdx-server",
+  "version": "0.1.1",
   "description": "Server of MDX extension for Visual Studio Code",
-  "version": "0.1.0",
   "author": "JounQin",
+  "publisher": "JounQin",
   "license": "MIT",
+  "repository": "git@github.com:rx-ts/vscode-mdx.git",
   "engines": {
     "node": "*"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rx-ts/vscode-mdx"
-  },
   "dependencies": {
     "vscode-languageserver": "^5.2.1"
-  },
-  "scripts": {}
+  }
 }

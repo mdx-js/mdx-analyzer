@@ -1,38 +1,32 @@
-# LSP Example
+# [Visual Studio Code](https://code.visualstudio.com) extension for [MDX]
 
-Heavily documented sample code for https://code.visualstudio.com/api/language-extensions/language-server-extension-guide
+Adds language support for [MDX].
 
-## Functionality
+## Installation
 
-This Language Server works for plain text file. It has the following language features:
-- Completions
-- Diagnostics regenerated on each file change or configuration change
+You can install this extension from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=JounQin.vscode-mdx).
 
-It also includes an End-to-End test.
+## What about `.md` files?
 
-## Structure
+By default the MDX language is applied only to `.mdx` files. If MDX files in your project end with `.md`, you can tell VS Code that by adding the following to your workspace settings:
 
-```
-.
-├── client // Language Client
-│   ├── src
-│   │   ├── test // End to End tests for Language Client / Server
-│   │   └── extension.ts // Language Client entry point
-├── package.json // The extension manifest.
-└── server // Language Server
-    └── src
-        └── server.ts // Language Server entry point
+```json
+"files.associations": {
+  "*.md": "mdx"
+},
 ```
 
-## Running the Sample
+## Auto-close tags
 
-- Run `npm install` in this folder. This installs all necessary npm modules in both the client and server folder
-- Open VS Code on this folder.
-- Press Ctrl+Shift+B to compile the client and server.
-- Switch to the Debug viewlet.
-- Select `Launch Client` from the drop down.
-- Run the launch config.
-- If you want to debug the server as well use the launch configuration `Attach to Server`
-- In the [Extension Development Host] instance of VSCode, open a document in 'plain text' language mode.
-  - Type `j` or `t` to see `Javascript` and `TypeScript` completion.
-  - Enter text content such as `AAA aaa BBB`. The extension will emit diagnostics for all words in all-uppercase.
+If you want VS Code to automatically close tags while you type, you can install [Auto Close Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag) and configure it to also include the language `mdx`:
+
+```json
+"auto-close-tag.activationOnLanguage": [
+  "xml",
+  "php",
+  "...",
+  "mdx"
+]
+```
+
+[mdx]: https://github.com/mdx-js/mdx

@@ -5,13 +5,14 @@
 
 import * as path from 'path'
 
-import { workspace, ExtensionContext } from 'vscode'
 import {
   LanguageClient,
   LanguageClientOptions,
   ServerOptions,
   TransportKind,
 } from 'vscode-languageclient'
+
+import { workspace, ExtensionContext } from 'vscode'
 
 let client: LanguageClient
 

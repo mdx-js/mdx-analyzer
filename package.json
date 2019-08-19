@@ -39,7 +39,7 @@
     "@commitlint/config-conventional": "^8.1.0",
     "@rxts/eslint-plugin-mdx": "^0.9.7",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.7.1",
+    "@types/node": "^12.7.2",
     "@types/react": "^16.9.1",
     "@types/vscode": "^1.37.0",
     "commitlint": "^8.1.0",

@@ -3,11 +3,11 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import * as assert from 'assert'
+import assert from 'assert'
+
+import vscode from 'vscode'
 
 import { getDocUri, activate } from './helper'
-
-import * as vscode from 'vscode'
 
 async function testCompletion(
   docUri: vscode.Uri,
@@ -37,12 +37,12 @@ async function testCompletion(
 describe('Should do completion', () => {
   const docUri = getDocUri('completion.txt')
 
-  it('Completes JS/TS in txt file', async () => {
-    await testCompletion(docUri, new vscode.Position(0, 0), {
+  // eslint-disable-next-line jest/expect-expect
+  it('Completes JS/TS in txt file', () =>
+    testCompletion(docUri, new vscode.Position(0, 0), {
       items: [
         { label: 'JavaScript', kind: vscode.CompletionItemKind.Text },
         { label: 'TypeScript', kind: vscode.CompletionItemKind.Text },
       ],
-    })
-  })
+    }))
 })

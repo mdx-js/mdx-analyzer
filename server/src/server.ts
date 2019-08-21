@@ -58,6 +58,7 @@ connection.onInitialize((params: InitializeParams) => {
 connection.onInitialized(() => {
   if (hasConfigurationCapability) {
     // Register for all configuration changes.
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     connection.client.register(DidChangeConfigurationNotification.type)
   }
   if (hasWorkspaceFolderCapability) {

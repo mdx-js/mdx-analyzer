@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 /* --------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import * as assert from 'assert'
+import assert from 'assert'
+
+import vscode from 'vscode'
 
 import { getDocUri, activate } from './helper'
-
-import * as vscode from 'vscode'
 
 function toRange(sLine: number, sChar: number, eLine: number, eChar: number) {
   const start = new vscode.Position(sLine, sChar)
@@ -36,8 +37,9 @@ async function testDiagnostics(
 describe('Should get diagnostics', () => {
   const docUri = getDocUri('diagnostics.txt')
 
-  it('Diagnoses uppercase texts', async () => {
-    await testDiagnostics(docUri, [
+  // eslint-disable-next-line jest/expect-expect
+  it('Diagnoses uppercase texts', () =>
+    testDiagnostics(docUri, [
       {
         message: 'ANY is all uppercase.',
         range: toRange(0, 0, 0, 3),
@@ -56,6 +58,5 @@ describe('Should get diagnostics', () => {
         severity: vscode.DiagnosticSeverity.Warning,
         source: 'ex',
       },
-    ])
-  })
+    ]))
 })

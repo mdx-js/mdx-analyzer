@@ -1,3 +1,4 @@
-.vscode-test
+!/.*.js
+/.vscode-test
 lib
 node_modules

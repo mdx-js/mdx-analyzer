@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import * as path from 'path'
+import path from 'path'
 
 import {
   LanguageClient,
@@ -11,10 +11,9 @@ import {
   ServerOptions,
   TransportKind,
 } from 'vscode-languageclient'
-
 import { workspace, ExtensionContext } from 'vscode'
 
-let client: LanguageClient
+let client: LanguageClient | undefined
 
 export function activate(context: ExtensionContext) {
   // The server is implemented in node

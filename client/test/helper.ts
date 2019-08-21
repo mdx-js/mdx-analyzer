@@ -3,9 +3,9 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
 
-import * as path from 'path'
+import path from 'path'
 
-import * as vscode from 'vscode'
+import vscode from 'vscode'
 
 export let doc: vscode.TextDocument
 export let editor: vscode.TextEditor
@@ -26,7 +26,7 @@ export async function activate(docUri: vscode.Uri) {
   try {
     doc = await vscode.workspace.openTextDocument(docUri)
     editor = await vscode.window.showTextDocument(doc)
-    await sleep(2000) // Wait for server activation
+    await sleep(2 * 1000) // Wait for server activation
   } catch (e) {
     console.error(e)
   }

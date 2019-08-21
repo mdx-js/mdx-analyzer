@@ -1,8 +1,11 @@
 {
   "name": "vscode-mdx",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "displayName": "VSCode MDX",
   "description": "Visual Studio Code extension for MDX",
+  "categories": [
+    "Programming Languages"
+  ],
   "repository": "git@github.com:rx-ts/vscode-mdx.git",
   "author": "JounQin",
   "publisher": "JounQin",
@@ -12,50 +15,45 @@
     "client",
     "server"
   ],
-  "categories": [
-    "Programming Languages"
-  ],
+  "engines": {
+    "vscode": ">=1.0.0"
+  },
+  "main": "./client/lib/extension",
   "keywords": [
     "mdx",
     "Markdown",
     "Markdown React"
   ],
-  "engines": {
-    "vscode": "^1.23.0"
+  "scripts": {
+    "build": "tsc -b",
+    "lint": "run-p lint:*",
+    "lint:es": "cross-env PARSER_NO_WATCH=true eslint . --cache --ext js,md.mdx,ts,tsx -f friendly",
+    "lint:tsc": "tsc --noEmit",
+    "test": "ts-node client/test",
+    "vscode:prepublish": "yarn build",
+    "watch": "tsc -b -w"
+  },
+  "devDependencies": {
+    "@1stg/lib-config": "^0.1.14",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.12.8",
+    "@types/react": "^16.9.11",
+    "@types/vscode": "^1.40.0",
+    "core-js": "^3.4.1",
+    "mocha": "^6.2.2",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2",
+    "vscode-test": "^1.2.3"
+  },
+  "resolutions": {
+    "@babel/core": "^7.7.2",
+    "@babel/preset-env": "^7.7.1"
   },
   "icon": "assets/mdx.png",
   "activationEvents": [
     "onLanguage:mdx"
   ],
-  "main": "./client/lib/extension",
-  "scripts": {
-    "vscode:prepublish": "yarn build",
-    "build": "tsc -b",
-    "watch": "tsc -b -w",
-    "lint": "EFF_NO_LINK_RULES=true  eslint . --ext mdx,ts,tsx -f friendly",
-    "test": "ts-node client/src/test"
-  },
-  "devDependencies": {
-    "@commitlint/config-conventional": "^8.1.0",
-    "@rxts/eslint-plugin-mdx": "^0.9.7",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^12.7.1",
-    "@types/react": "^16.8.25",
-    "@types/vscode": "^1.36.0",
-    "commitlint": "^8.1.0",
-    "eslint": "^6.1.0",
-    "eslint-config-1stg": "^5.6.9",
-    "eslint-formatter-friendly": "^7.0.0",
-    "husky": "^3.0.2",
-    "lint-staged": "^9.2.1",
-    "prettier": "^1.18.2",
-    "prettier-config-1stg": "^0.1.0",
-    "react": "^16.8.6",
-    "standard-version": "^7.0.0",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3",
-    "vscode-test": "^1.2.0"
-  },
   "contributes": {
     "configuration": {
       "type": "object",

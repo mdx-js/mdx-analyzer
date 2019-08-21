@@ -2,12 +2,12 @@
   "name": "vscode-mdx-client",
   "version": "0.1.1",
   "description": "Client of MDX extension for Visual Studio Code",
+  "repository": "git@github.com:rx-ts/vscode-mdx.git",
   "author": "JounQin",
   "publisher": "JounQin",
   "license": "MIT",
-  "repository": "git@github.com:rx-ts/vscode-mdx.git",
   "engines": {
-    "vscode": "^1.23.0"
+    "vscode": ">=1.0.0"
   },
   "dependencies": {
     "vscode-languageclient": "^5.2.1"

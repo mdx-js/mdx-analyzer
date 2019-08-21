@@ -10,6 +10,13 @@ before_install:
   - git config --global user.name 'JounQin'
   - git config --global user.email 'admin@1stg.me'
 
-script:
-  - yarn lint
-  - yarn build
+install: yarn --frozen-lockfile
+
+script: yarn lint
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: bash deploy.sh
+  on:
+    branch: master

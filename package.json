@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^8.1.0",
-    "@rxts/eslint-plugin-mdx": "^0.9.7",
+    "@rxts/eslint-plugin-mdx": "^0.9.11",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.7.2",
     "@types/react": "^16.9.2",

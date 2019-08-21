@@ -1,9 +1,17 @@
-const { all } = require('eslint-config-1stg/overrides')
+const { overrides } = require('@1stg/eslint-config/overrides')
 
 module.exports = {
-  extends: '1stg',
+  extends: '@1stg',
   overrides: [
-    ...all,
+    ...overrides,
+    {
+      files: '*.mdx',
+      settings: {
+        'import/resolver': {
+          typescript: true,
+        },
+      },
+    },
     {
       files: '*.ts',
       rules: {

@@ -1,5 +1,5 @@
 {
-  "extends": "eslint-config-1stg",
+  "extends": "@1stg/tsconfig",
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6"

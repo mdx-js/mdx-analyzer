@@ -1653,14 +1653,6 @@ eslint-import-resolver-node@^0.3.2:
     resolve "^1.4.0"
     tsconfig-paths "^3.6.0"
 
-eslint-mdx@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-mdx/-/eslint-mdx-1.1.0.tgz#85c0e8061c55bf73c0ef7e6528c1406edcfc9a73"
-  integrity sha512-yAVfPRpdSx83SaRVEy2k8bGowN7/vmYWD9RYKnb/OL+a8oCzeXpQHt2r6tODZaWcw8FFOx3IZG4Kqj9fUYK7iA==
-  dependencies:
-    remark-mdx "^1.3.1"
-    remark-parse "^7.0.1"
-
 eslint-mdx@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/eslint-mdx/-/eslint-mdx-1.4.0.tgz#bb1e0fb2f4cc8cab3f08f69abaf442a8c513cbb3"
@@ -1715,16 +1707,6 @@ eslint-plugin-jest@^22.15.2:
   integrity sha512-p4NME9TgXIt+KgpxcXyNBvO30ZKxwFAO1dJZBc2OGfDnXVEtPwEyNs95GSr6RIE3xLHdjd8ngDdE2icRRXrbxg==
   dependencies:
     "@typescript-eslint/experimental-utils" "^1.13.0"
-
-eslint-plugin-mdx@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-mdx/-/eslint-plugin-mdx-1.1.1.tgz#a2d7c660cf8cb4f5c9e41869fc3b2287b1568653"
-  integrity sha512-6ddS93yqXTnxTDpP7Q9rpHlL41AckEe5oL1W3BtmqjoliMlYteTsJ7d6tsuP4yXMdqnXT+0HqdjVR+TnQ0RBbQ==
-  dependencies:
-    cosmiconfig "^5.2.1"
-    eslint-mdx "^1.1.0"
-    rebass "^4.0.2"
-    remark-stringify "^7.0.2"
 
 eslint-plugin-mdx@^1.4.0:
   version "1.4.0"
@@ -3620,13 +3602,6 @@ readable-stream@~2.3.6:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-rebass@^4.0.2:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/rebass/-/rebass-4.0.3.tgz#6b0de1706bbfb2a0af3069f16ebb90736a6b6651"
-  integrity sha512-Yg7ZAXWa9oDf8Rqb2IKtkNbxulHeiGMcAt5F/cI6isxO2WOz3jAdpJ4A4fjIDOJ0FVX6pR4wQgvNMKjgNR9nrg==
-  dependencies:
-    reflexbox "^4.0.1"
-
 rebass@^4.0.5:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/rebass/-/rebass-4.0.5.tgz#87bf5b0cc53e530ce0939611637d01aeb989df57"
@@ -3649,18 +3624,6 @@ redent@^2.0.0:
   dependencies:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
-
-reflexbox@^4.0.1:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/reflexbox/-/reflexbox-4.0.2.tgz#66b35021a97f220270cc49abf994313bc696ccad"
-  integrity sha512-j5vbfB/aLgGbyiioNlXdpSTK97nbR5t7HWeX4w4+rlJVCvqNjZs9SfyLhwE9v4u7C6FookW39m5PhlUCgArPeQ==
-  dependencies:
-    "@emotion/core" "^10.0.0"
-    "@emotion/styled" "^10.0.0"
-    "@styled-system/css" "^5.0.0"
-    "@styled-system/should-forward-prop" "^5.0.0"
-    react "^16.8.6"
-    styled-system "^5.0.0"
 
 reflexbox@^4.0.5:
   version "4.0.5"

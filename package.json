@@ -36,7 +36,7 @@
     "test": "ts-node client/src/test"
   },
   "devDependencies": {
-    "@1stg/eslint-config": "^0.5.1",
+    "@1stg/eslint-config": "^0.6.0",
     "@1stg/husky-config": "^0.1.0",
     "@1stg/lint-staged": "^0.3.0",
     "@1stg/prettier-config": "^0.1.1",

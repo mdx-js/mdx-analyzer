@@ -43,7 +43,7 @@
     "@1stg/tsconfig": "^0.1.0",
     "@commitlint/config-conventional": "^8.1.0",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.7.4",
     "@types/react": "^16.9.2",
     "@types/vscode": "^1.37.0",
     "commitlint": "^8.1.0",

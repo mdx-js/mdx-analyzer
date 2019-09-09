@@ -38,10 +38,10 @@
   resolved "https://registry.yarnpkg.com/@1stg/lint-staged/-/lint-staged-0.6.0.tgz#cdb0bca89e3815f1dfe28a9282b882d50b6bb241"
   integrity sha512-NedCH9PEjEVy0R/FH0LoviWJP/aX2a0MDiDFqv+Jv68MqCeXWFFT9suY3NcZTjEf034Ofn9+dJ+9Z80qujFHyA==
 
-"@1stg/prettier-config@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@1stg/prettier-config/-/prettier-config-0.1.1.tgz#15a7ca7e27d9545e8adf006c8157abdaba3cce8e"
-  integrity sha512-JoHDYcwqkx3LlxH3vYWBRAPupYSdX+5hQsWFgNaLeDWVdXVr64urS/MrlcxLpWiQXFXZgtQrSqoSSGkX5kiTkA==
+"@1stg/prettier-config@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@1stg/prettier-config/-/prettier-config-0.2.0.tgz#853c1142834f31d9287cd9e30f2b91d46e4961d6"
+  integrity sha512-wL0qdfsJyHQvOO0vG50StqTSIOX9kauhu6NbLHMgAXE+s3rQ4/N0slwAwYCrqHSwYRVqpeqN8EblYF6UIZiwZQ==
 
 "@1stg/tsconfig@^0.1.0":
   version "0.1.0"

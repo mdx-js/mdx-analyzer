@@ -2,16 +2,13 @@ const { overrides } = require('@1stg/eslint-config/overrides')
 
 module.exports = {
   extends: '@1stg',
+  settings: {
+    node: {
+      allowModules: ['vscode']
+    },
+  },
   overrides: [
     ...overrides,
-    {
-      files: '*.mdx',
-      settings: {
-        'import/resolver': {
-          typescript: true,
-        },
-      },
-    },
     {
       files: '*.ts',
       rules: {

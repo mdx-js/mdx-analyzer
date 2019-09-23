@@ -1713,6 +1713,16 @@ eslint-mdx@^1.4.5:
     remark-parse "^7.0.1"
     unified "^8.3.2"
 
+eslint-mdx@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/eslint-mdx/-/eslint-mdx-1.5.2.tgz#49d546856c6333ea5de6a6c1555d8a9a25b734d9"
+  integrity sha512-0UUELtQ++APKR/4NZkHc02yLOX5Y32bP/mtY5hVHihuT2dR5KviSCjK2p8OpJYHJB/jZCmKcpbLu+2/uSNitNA==
+  dependencies:
+    espree "^6.1.1"
+    remark-mdx "^1.4.4"
+    remark-parse "^7.0.1"
+    unified "^8.3.2"
+
 eslint-module-utils@^2.4.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/eslint-module-utils/-/eslint-module-utils-2.4.1.tgz#7b4675875bf96b0dbf1b21977456e5bb1f5e018c"
@@ -1780,6 +1790,20 @@ eslint-plugin-mdx@^1.4.6:
   dependencies:
     cosmiconfig "^5.2.1"
     eslint-mdx "^1.4.5"
+    rebass "^4.0.5"
+    remark-mdx "^1.4.4"
+    remark-parse "^7.0.1"
+    remark-stringify "^7.0.3"
+    unified "^8.3.2"
+    vfile "^4.0.1"
+
+eslint-plugin-mdx@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-mdx/-/eslint-plugin-mdx-1.5.2.tgz#cc0478ebeea8543c7f8ffa51c746fc7cd746040c"
+  integrity sha512-1M9GNIAi0dQwJK7KUDeCA2aAnVWZxVBPMYBBhck9ofXVBGSAV/Aqzou8JFMH3z+EnyPhZSLd40I9N6a8Cbi10A==
+  dependencies:
+    cosmiconfig "^5.2.1"
+    eslint-mdx "^1.5.2"
     rebass "^4.0.5"
     remark-mdx "^1.4.4"
     remark-parse "^7.0.1"

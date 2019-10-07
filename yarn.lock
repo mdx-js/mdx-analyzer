@@ -39,12 +39,13 @@
   resolved "https://registry.yarnpkg.com/@1stg/husky-config/-/husky-config-0.3.1.tgz#15dce8efcbedb8f7237098c1a55a7f465260476f"
   integrity sha512-yqxc09tA68DclqCQH1ylemIylaDd/PqEREMwnaecLMAUyU6zHxQkhAVOWR0s877HrGT9B434gEPCxgWbRTDjNA==
 
-"@1stg/lint-staged@^0.8.3":
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/@1stg/lint-staged/-/lint-staged-0.8.3.tgz#0c852eb9a9d2acfa25a0e30b4ba06a50ef1326b7"
-  integrity sha512-TFgN5TK0aRAqijW59TY5wVvNjnJa3ZrS/g2lLrCzkbBGgJg39K8bksc5Et8/CMtBvqGCDfg5cwDglTs6+o9ClA==
+"@1stg/lint-staged@^0.8.6":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@1stg/lint-staged/-/lint-staged-0.8.6.tgz#d836667e149af90d803963f13e25cfb8a44909cb"
+  integrity sha512-lpSwLWe7zyvLDNoOu6t5kK3/XiAkHKpnXAYRYqIxaumqGujfStb2hALzJSXBfp+6hjnK7/spVhu/gt7/YX1z+A==
   dependencies:
-    "@prettier/plugin-pug" "^1.0.3"
+    "@prettier/plugin-pug" "^1.0.4"
+    prettier-plugin-sh "^0.2.0"
     prettier-plugin-toml "^0.3.1"
 
 "@1stg/prettier-config@^0.3.3":
@@ -497,6 +498,14 @@
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@prettier/plugin-pug/-/plugin-pug-1.0.3.tgz#9c4d08f39c2443d63d04cee1a6d000fc75cdf1a4"
   integrity sha512-v1tV3mwQCpoImzQuqZsobLylTAHztaJB6iPgr5TZpEkmLeN121Pq9fxiff2bMSW6CPHZDta9ZcbYHzX/NqynCA==
+  dependencies:
+    prettier "~1.18.2"
+    pug-lexer "~4.1.0"
+
+"@prettier/plugin-pug@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@prettier/plugin-pug/-/plugin-pug-1.0.4.tgz#13adc5aab2d99db42b68ac43f678c8803916ee95"
+  integrity sha512-EXy486byBalEdVUM5KynFazQ0Ay0tiRjAqS/4Pg9zU/4/e/dALSq9YUJdwdnHKo96iwqiEJfpgQnPg/Wg4Wm/A==
   dependencies:
     prettier "~1.18.2"
     pug-lexer "~4.1.0"
@@ -3189,6 +3198,11 @@ mute-stream@0.0.7:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
 
+mvdan-sh@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/mvdan-sh/-/mvdan-sh-0.4.0.tgz#e1e5ed870bc866ce0180ee79abab55c3bf1c2293"
+  integrity sha512-pJ8f58eHR5LgJ5VY3yUpIAkvnd6rpLQj9WV4zwxQPInVyRRmE+dzBSEL3gcShLTodeORtcA8UG+HNMOhdMthrA==
+
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
@@ -3601,6 +3615,13 @@ prettier-plugin-pkg@^0.4.4:
   version "0.4.4"
   resolved "https://registry.yarnpkg.com/prettier-plugin-pkg/-/prettier-plugin-pkg-0.4.4.tgz#e7b20cba16995d04fe22b0aa2fe3974d9dc8a757"
   integrity sha512-3rIuIjGLoe8tNdG6I1ybAybNxy3O5SgpZsqypxTzPN4hkBtYbGAhBey1ROclKsFpH6SBYny9Y2djXq9y1b+adQ==
+
+prettier-plugin-sh@^0.2.0:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-sh/-/prettier-plugin-sh-0.2.1.tgz#9729452c216cb43a045d16b40b9881924350c1ac"
+  integrity sha512-wQVIOneOuM1IJmxRHC85t4r5Fvf4XPMrbekJFLWmuWwCFjpvbgzqyoyS2xlP2PzB/obrMc8Vo8TlxBQ+ElgVuA==
+  dependencies:
+    mvdan-sh "^0.4.0"
 
 prettier-plugin-toml@^0.3.1:
   version "0.3.1"

@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@1stg/browserslist-config@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@1stg/browserslist-config/-/browserslist-config-0.2.1.tgz#17f52a729468ba7694d7bbde01ede1e01cd9ad54"
-  integrity sha512-IRLw6rH5oEN06ai46D0QG6/pfgUpM9NGpBPlepX5Y/SWEXbUodqWOoOeTAJDbqNyRQPp3w24H+bWF11T9rMqEA==
+"@1stg/browserslist-config@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@1stg/browserslist-config/-/browserslist-config-0.2.2.tgz#a38c9521bcc3ccbafec6eb8b60c9e6ad2e7f423e"
+  integrity sha512-ZDBWBMVnhgKj090eU2q3wgIAxMRcHHB9yJL59cGI11eboxvdynZqwMpeP1hYjowJnuJscKNYfzFrqMUbOnsgBQ==
 
 "@1stg/eslint-config@^0.10.6":
   version "0.10.6"

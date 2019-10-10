@@ -48,10 +48,10 @@
     prettier-plugin-sh "^0.2.0"
     prettier-plugin-toml "^0.3.1"
 
-"@1stg/prettier-config@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@1stg/prettier-config/-/prettier-config-0.3.3.tgz#51d7c249531536432e7fd50063b10da6e5262dbe"
-  integrity sha512-M8LBGOSvEAAxXjDELB91C5XXL6EQ+JbqR7xiuZJ2HtRM9MOdhaiP2uVKEXWZ+Vxr3iIeo5vEKUky9grxaqmHBA==
+"@1stg/prettier-config@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@1stg/prettier-config/-/prettier-config-0.3.4.tgz#fb3c4d60d10eb590f4bf69330a58c903a0b203cc"
+  integrity sha512-A+yGhubIYC/6XbUxFMlMFjudq5HmbjrLB/1W/7PM2FMpqu91HcPcxTwSiFgaqMi++V5g6crnt8GRsKR0VaOqnQ==
   dependencies:
     "@prettier/plugin-pug" "^1.0.3"
     prettier-plugin-pkg "^0.4.4"

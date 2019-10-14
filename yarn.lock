@@ -48,13 +48,14 @@
     prettier-plugin-sh "^0.2.0"
     prettier-plugin-toml "^0.3.1"
 
-"@1stg/prettier-config@^0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@1stg/prettier-config/-/prettier-config-0.3.4.tgz#fb3c4d60d10eb590f4bf69330a58c903a0b203cc"
-  integrity sha512-A+yGhubIYC/6XbUxFMlMFjudq5HmbjrLB/1W/7PM2FMpqu91HcPcxTwSiFgaqMi++V5g6crnt8GRsKR0VaOqnQ==
+"@1stg/prettier-config@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@1stg/prettier-config/-/prettier-config-0.4.2.tgz#06579c9b936686399f2096b230af0fcdf76c01f0"
+  integrity sha512-S4g+gWD2Wf4f9HCbRbPmwmHh18cM6S/2Bb/WSnLqUWwbEOXG5vVb8VoJFBQ5unRe8hwoHPzTKLKeM9LLw0laDA==
   dependencies:
-    "@prettier/plugin-pug" "^1.0.3"
+    "@prettier/plugin-pug" "^1.0.4"
     prettier-plugin-pkg "^0.4.4"
+    prettier-plugin-sh "^0.2.0"
     prettier-plugin-toml "^0.3.1"
 
 "@1stg/tsconfig@^0.5.1":
@@ -493,14 +494,6 @@
   dependencies:
     "@nodelib/fs.scandir" "2.1.2"
     fastq "^1.6.0"
-
-"@prettier/plugin-pug@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@prettier/plugin-pug/-/plugin-pug-1.0.3.tgz#9c4d08f39c2443d63d04cee1a6d000fc75cdf1a4"
-  integrity sha512-v1tV3mwQCpoImzQuqZsobLylTAHztaJB6iPgr5TZpEkmLeN121Pq9fxiff2bMSW6CPHZDta9ZcbYHzX/NqynCA==
-  dependencies:
-    prettier "~1.18.2"
-    pug-lexer "~4.1.0"
 
 "@prettier/plugin-pug@^1.0.4":
   version "1.0.4"

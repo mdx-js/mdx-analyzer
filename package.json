@@ -46,7 +46,7 @@
     "@commitlint/config-conventional": "^8.2.0",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.7.12",
-    "@types/react": "^16.9.2",
+    "@types/react": "^16.9.5",
     "@types/vscode": "^1.39.0",
     "browserslist": "^4.7.0",
     "eslint": "^6.4.0",

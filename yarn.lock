@@ -48,14 +48,14 @@
     prettier-plugin-sh "^0.2.0"
     prettier-plugin-toml "^0.3.1"
 
-"@1stg/prettier-config@^0.4.2":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@1stg/prettier-config/-/prettier-config-0.4.2.tgz#06579c9b936686399f2096b230af0fcdf76c01f0"
-  integrity sha512-S4g+gWD2Wf4f9HCbRbPmwmHh18cM6S/2Bb/WSnLqUWwbEOXG5vVb8VoJFBQ5unRe8hwoHPzTKLKeM9LLw0laDA==
+"@1stg/prettier-config@^0.4.3":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@1stg/prettier-config/-/prettier-config-0.4.3.tgz#e860db94379488c2ce150de3ba9cc1c65a03a88c"
+  integrity sha512-NBIhCzyCtFmQE4tvpWgzeqYM+oSMTFRQQm1VBZLvXUagaKduAxYvHvQaekSV7mncX7oU5OwDjLE7x3FGtE4PYg==
   dependencies:
     "@prettier/plugin-pug" "^1.0.4"
     prettier-plugin-pkg "^0.4.4"
-    prettier-plugin-sh "^0.2.0"
+    prettier-plugin-sh "^0.2.1"
     prettier-plugin-toml "^0.3.1"
 
 "@1stg/tsconfig@^0.5.1":
@@ -3614,7 +3614,7 @@ prettier-plugin-pkg@^0.4.4:
   resolved "https://registry.yarnpkg.com/prettier-plugin-pkg/-/prettier-plugin-pkg-0.4.4.tgz#e7b20cba16995d04fe22b0aa2fe3974d9dc8a757"
   integrity sha512-3rIuIjGLoe8tNdG6I1ybAybNxy3O5SgpZsqypxTzPN4hkBtYbGAhBey1ROclKsFpH6SBYny9Y2djXq9y1b+adQ==
 
-prettier-plugin-sh@^0.2.0:
+prettier-plugin-sh@^0.2.0, prettier-plugin-sh@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/prettier-plugin-sh/-/prettier-plugin-sh-0.2.1.tgz#9729452c216cb43a045d16b40b9881924350c1ac"
   integrity sha512-wQVIOneOuM1IJmxRHC85t4r5Fvf4XPMrbekJFLWmuWwCFjpvbgzqyoyS2xlP2PzB/obrMc8Vo8TlxBQ+ElgVuA==

@@ -34,10 +34,10 @@
     eslint-plugin-standard "^4.0.1"
     eslint-plugin-vue "^5.2.3"
 
-"@1stg/husky-config@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@1stg/husky-config/-/husky-config-0.3.1.tgz#15dce8efcbedb8f7237098c1a55a7f465260476f"
-  integrity sha512-yqxc09tA68DclqCQH1ylemIylaDd/PqEREMwnaecLMAUyU6zHxQkhAVOWR0s877HrGT9B434gEPCxgWbRTDjNA==
+"@1stg/husky-config@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@1stg/husky-config/-/husky-config-0.3.2.tgz#ac0b38630d049b3088576efdb3f241a4a8006ea4"
+  integrity sha512-akUH6QKQU8DbBSI0/FP3eQDsteW9/P8cPR9b7+yAaVR4o/NTzOdt6RK3hIM+hD5BKHN/O0mQ3uJm7rxOdG+O8Q==
 
 "@1stg/lint-staged@^0.8.6":
   version "0.8.6"

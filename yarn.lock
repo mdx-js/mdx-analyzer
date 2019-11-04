@@ -34,10 +34,13 @@
     eslint-plugin-standard "^4.0.1"
     eslint-plugin-vue "^5.2.3"
 
-"@1stg/husky-config@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@1stg/husky-config/-/husky-config-0.3.2.tgz#ac0b38630d049b3088576efdb3f241a4a8006ea4"
-  integrity sha512-akUH6QKQU8DbBSI0/FP3eQDsteW9/P8cPR9b7+yAaVR4o/NTzOdt6RK3hIM+hD5BKHN/O0mQ3uJm7rxOdG+O8Q==
+"@1stg/husky-config@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@1stg/husky-config/-/husky-config-0.4.0.tgz#e5aa10edd0e5fbe4b643ec9738cadd766df2918b"
+  integrity sha512-sjYvXAyzvvC20Mo5pbxViLytgqBmMHy8HpQIxTuQ/+w8o073DU82ipCC+hr3Yxgs1PyGXrPLLRIJHUXQs6egOQ==
+  dependencies:
+    "@commitlint/cli" "^8.2.0"
+    lint-staged "^9.4.2"
 
 "@1stg/lint-staged@^0.8.11":
   version "0.8.11"
@@ -2841,6 +2844,26 @@ lint-staged@^9.3.0:
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-9.3.0.tgz#522a79f166050ab5777887348f2cbdb03f71acac"
   integrity sha512-OuL3xo6XpBErl16+3W9PdnFmgeGp12lM8I1Ii/B56S8Edy1kyrf4W8VD4IBn9v17QlutRQEWUJ54YF/VVQ7J2A==
+  dependencies:
+    chalk "^2.4.2"
+    commander "^2.20.0"
+    cosmiconfig "^5.2.1"
+    debug "^4.1.1"
+    dedent "^0.7.0"
+    del "^5.0.0"
+    execa "^2.0.3"
+    listr "^0.14.3"
+    log-symbols "^3.0.0"
+    micromatch "^4.0.2"
+    normalize-path "^3.0.0"
+    please-upgrade-node "^3.1.1"
+    string-argv "^0.3.0"
+    stringify-object "^3.3.0"
+
+lint-staged@^9.4.2:
+  version "9.4.2"
+  resolved "https://registry.yarnpkg.com/lint-staged/-/lint-staged-9.4.2.tgz#14cb577a9512f520691f8b5aefce6a8f7ead6c04"
+  integrity sha512-OFyGokJSWTn2M6vngnlLXjaHhi8n83VIZZ5/1Z26SULRUWgR3ITWpAEQC9Pnm3MC/EpCxlwts/mQWDHNji2+zA==
   dependencies:
     chalk "^2.4.2"
     commander "^2.20.0"

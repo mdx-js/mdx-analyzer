@@ -38,7 +38,7 @@
   "devDependencies": {
     "@1stg/browserslist-config": "^0.2.3",
     "@1stg/eslint-config": "^0.10.6",
-    "@1stg/husky-config": "^0.3.2",
+    "@1stg/husky-config": "^0.4.0",
     "@1stg/lint-staged": "^0.8.11",
     "@1stg/prettier-config": "^0.4.3",
     "@1stg/tsconfig": "^0.5.1",

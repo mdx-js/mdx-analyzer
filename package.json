@@ -47,7 +47,7 @@
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.11.7",
     "@types/react": "^16.9.11",
-    "@types/vscode": "^1.39.0",
+    "@types/vscode": "^1.40.0",
     "browserslist": "^4.7.0",
     "eslint": "^6.5.1",
     "eslint-formatter-friendly": "^7.0.0",

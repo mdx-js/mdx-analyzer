@@ -52,12 +52,13 @@
     prettier-plugin-sh "^0.2.1"
     prettier-plugin-toml "^0.3.1"
 
-"@1stg/prettier-config@^0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@1stg/prettier-config/-/prettier-config-0.5.2.tgz#63edd205c2dddb90ef52412bb2008ebbb459e995"
-  integrity sha512-suugkuDY5JbDh7oDHgnTvwQAhXp97a0sjOz4d4oJ9NLiKJ879A32RPgDPlanAVhY71Glf0stFBr0VJePXm8AtA==
+"@1stg/prettier-config@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/@1stg/prettier-config/-/prettier-config-0.6.2.tgz#bb1c38574b9549bc42536517f51dc867ed09901b"
+  integrity sha512-3rgsje1r+Onuz7vMIlaHIdNDVo++V2UkyGidL3zdHANgjmvmvx52YcRKrQQFpInkv2geKVdTY1fODjE6oEWI2w==
   dependencies:
-    "@prettier/plugin-pug" "^1.0.5"
+    "@prettier/plugin-pug" "^1.0.8"
+    "@prettier/plugin-ruby" "^0.15.1"
     prettier-plugin-pkg "^0.4.4"
     prettier-plugin-sh "^0.2.2"
     prettier-plugin-toml "^0.3.1"
@@ -507,13 +508,19 @@
     prettier "~1.18.2"
     pug-lexer "~4.1.0"
 
-"@prettier/plugin-pug@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@prettier/plugin-pug/-/plugin-pug-1.0.5.tgz#106cd11184e70d7b2427fa227fa98c5c82c6f9ea"
-  integrity sha512-P6RcdQE650maZgUvDIREJARCZua+ldLUNzwiul1akPyUNvJEw4IBpApzpoSWfqI5QeRx4rmZOQuUTmgIw2KS8g==
+"@prettier/plugin-pug@^1.0.8":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@prettier/plugin-pug/-/plugin-pug-1.0.9.tgz#58cc3a990c4936de16bf6280752051f707e4bf62"
+  integrity sha512-C81riuFVL4QvD+Mk3YUC/SBz6kQBRaw9wYf/4Qd5SB4rwU9oumW0jlrh+PKzd6skKKSjtcF3zpfsfqqezzXwwg==
   dependencies:
-    prettier "~1.18.2"
     pug-lexer "~4.1.0"
+
+"@prettier/plugin-ruby@^0.15.1":
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/@prettier/plugin-ruby/-/plugin-ruby-0.15.1.tgz#5e747d56f6a50e3428088c57570079b3850093ed"
+  integrity sha512-MmWFEwV9IYbz+hgiOC9my0R2F4M1FZ0OgLY16uNwkATE5hjRUt7GhOetvZLYB7hfOrl33o9PMPDpLwFRGnFtxQ==
+  dependencies:
+    prettier "^1.16.4"
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
@@ -3688,6 +3695,11 @@ prettier@^1.16.0, prettier@^1.18.2, prettier@~1.18.2:
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.18.2.tgz#6823e7c5900017b4bd3acf46fe9ac4b4d7bda9ea"
   integrity sha512-OeHeMc0JhFE9idD4ZdtNibzY0+TPHSpSSb9h8FqtP+YnoZZ1sl8Vc9b1sasjfymH3SonAF4QcA2+mzHPhMvIiw==
+
+prettier@^1.16.4:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
+  integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"

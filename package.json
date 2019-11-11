@@ -51,7 +51,7 @@
     "browserslist": "^4.7.0",
     "eslint": "^6.6.0",
     "eslint-formatter-friendly": "^7.0.0",
-    "eslint-plugin-mdx": "^1.5.2",
+    "eslint-plugin-mdx": "^1.6.3",
     "husky": "^3.0.5",
     "lint-staged": "^9.3.0",
     "prettier": "^1.18.2",

@@ -41,7 +41,7 @@
     "@1stg/husky-config": "^0.4.0",
     "@1stg/lint-staged": "^0.8.11",
     "@1stg/prettier-config": "^0.6.2",
-    "@1stg/tsconfig": "^0.5.1",
+    "@1stg/tsconfig": "^0.5.5",
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "@types/mocha": "^5.2.7",

@@ -63,10 +63,10 @@
     prettier-plugin-sh "^0.2.2"
     prettier-plugin-toml "^0.3.1"
 
-"@1stg/tsconfig@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@1stg/tsconfig/-/tsconfig-0.5.1.tgz#69d609085d48ac622220ab51e99f5f2182b35861"
-  integrity sha512-6nSDziDeMMDNaeSwwPbaHJ22DckKYmOuq7SuO7WqvIqSmYI9endY2IsHgds07aOmMejRA22djBzzF38+3AFf4Q==
+"@1stg/tsconfig@^0.5.5":
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/@1stg/tsconfig/-/tsconfig-0.5.5.tgz#8d4fbb84774bcbfdcc2a540d04aece6e9d86f718"
+  integrity sha512-6oKp9xs93OpJlC092/fnFlqCK2SqNf0HubZSyfwy33pF4b0oxnOl1ATSwonJF098EoQzFLE6epOWuhw5zY2G3g==
 
 "@babel/code-frame@7.0.0":
   version "7.0.0"

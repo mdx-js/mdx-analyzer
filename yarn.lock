@@ -42,12 +42,13 @@
     "@commitlint/cli" "^8.2.0"
     lint-staged "^9.4.2"
 
-"@1stg/lint-staged@^0.8.11":
-  version "0.8.11"
-  resolved "https://registry.yarnpkg.com/@1stg/lint-staged/-/lint-staged-0.8.11.tgz#770f8047c51d6076c9d83cac5aa764aa05a004ab"
-  integrity sha512-C0rJ8eRAAl6T3KP84F8mKour+Gf2ebUi8/RwHPu3NatqW++IbxwhThSfvWulmFD7yJqZT78+2ZAZx9X0rsKr2Q==
+"@1stg/lint-staged@^0.8.12":
+  version "0.8.12"
+  resolved "https://registry.yarnpkg.com/@1stg/lint-staged/-/lint-staged-0.8.12.tgz#e455a835830729eec0cdf5ce1ae2eeb5dac5d8b6"
+  integrity sha512-pybdQmVoBgB/xS+wVUk4SS//4mE3eEykJ8eTELvrBlskKa51AcPaOi8FRRzqPr0Ab5iML2O30yRTsagxIg8ISw==
   dependencies:
-    "@prettier/plugin-pug" "^1.0.4"
+    "@pkgr/utils" "^0.1.2"
+    "@prettier/plugin-pug" "^1.0.5"
     cross-env "^6.0.3"
     prettier-plugin-sh "^0.2.1"
     prettier-plugin-toml "^0.3.1"
@@ -620,12 +621,21 @@
     "@nodelib/fs.scandir" "2.1.2"
     fastq "^1.6.0"
 
-"@prettier/plugin-pug@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@prettier/plugin-pug/-/plugin-pug-1.0.4.tgz#13adc5aab2d99db42b68ac43f678c8803916ee95"
-  integrity sha512-EXy486byBalEdVUM5KynFazQ0Ay0tiRjAqS/4Pg9zU/4/e/dALSq9YUJdwdnHKo96iwqiEJfpgQnPg/Wg4Wm/A==
+"@pkgr/utils@^0.1.2":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@pkgr/utils/-/utils-0.1.4.tgz#6391f367a2811d842d98a175d9b77fbc27445ca0"
+  integrity sha512-VGjovf2JHPpv6NY+zZmLRnLxfqFChZ5StuidjWWRott6+9sNu2aId9/kiiL0nqcd1G9XZVIKLAdNHvNXC5vWrg==
   dependencies:
-    prettier "~1.18.2"
+    chalk "^2.4.2"
+    cross-spawn "^7.0.1"
+    open "^7.0.0"
+    tslib "^1.10.0"
+
+"@prettier/plugin-pug@^1.0.5":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@prettier/plugin-pug/-/plugin-pug-1.0.10.tgz#3ae2b8cf5f9ca423fbfbad989dc2528e141f37d8"
+  integrity sha512-1syMMM/Mz1J8hHxaH7Q9cRHHihQDm0gMYe+hlOcXnlrLepi3n5hs0MtvfG6K5Hnwj33Zi1r62r/Abq6HALH/Ng==
+  dependencies:
     pug-lexer "~4.1.0"
 
 "@prettier/plugin-pug@^1.0.8":
@@ -1652,7 +1662,7 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-cross-spawn@^7.0.0:
+cross-spawn@^7.0.0, cross-spawn@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.1.tgz#0ab56286e0f7c24e153d04cc2aa027e43a9a5d14"
   integrity sha512-u7v4o84SwFpD32Z8IIcPZ6z1/ie24O6RU3RbtL5Y316l3KuHVPx9ItBgWQ6VlfAFnRnTtMUrsQ9MUUTuEZjogg==
@@ -2991,6 +3001,11 @@ is-word-character@^1.0.0:
   resolved "https://registry.yarnpkg.com/is-word-character/-/is-word-character-1.0.3.tgz#264d15541cbad0ba833d3992c34e6b40873b08aa"
   integrity sha512-0wfcrFgOOOBdgRNT9H33xe6Zi6yhX/uoc4U8NBZGeQQB0ctU1dnlNTyL9JM2646bHDTpsDm1Brb3VPoCIMrd/A==
 
+is-wsl@^2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-2.1.1.tgz#4a1c152d429df3d441669498e2486d3596ebaf1d"
+  integrity sha512-umZHcSrwlDHo2TGMXv0DZ8dIUGunZ2Iv68YZnrmCiBPkZ4aaOhtv7pXJKeki9k3qJ3RJr0cDyitcl5wEH3AYog==
+
 isarray@^1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
@@ -3632,6 +3647,13 @@ onetime@^5.1.0:
   dependencies:
     mimic-fn "^2.1.0"
 
+open@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/open/-/open-7.0.0.tgz#7e52999b14eb73f90f0f0807fe93897c4ae73ec9"
+  integrity sha512-K6EKzYqnwQzk+/dzJAQSBORub3xlBTxMz+ntpZpH/LyCa1o6KjXhuN+2npAaI9jaSmU3R1Q8NWf4KUWcyytGsQ==
+  dependencies:
+    is-wsl "^2.1.0"
+
 opencollective-postinstall@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.2.tgz#5657f1bede69b6e33a45939b061eb53d3c6c3a89"
@@ -3930,7 +3952,7 @@ prettier-plugin-toml@^0.3.1:
     "@toml-tools/parser" "^0.3.1"
     prettier "^1.16.0"
 
-prettier@^1.16.0, prettier@~1.18.2:
+prettier@^1.16.0:
   version "1.18.2"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.18.2.tgz#6823e7c5900017b4bd3acf46fe9ac4b4d7bda9ea"
   integrity sha512-OeHeMc0JhFE9idD4ZdtNibzY0+TPHSpSSb9h8FqtP+YnoZZ1sl8Vc9b1sasjfymH3SonAF4QcA2+mzHPhMvIiw==

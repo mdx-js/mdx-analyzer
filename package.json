@@ -39,7 +39,7 @@
     "@types/node": "^12.12.24",
     "@types/react": "^16.9.17",
     "@types/vscode": "^1.41.0",
-    "core-js": "^3.6.1",
+    "core-js": "^3.6.3",
     "mocha": "^7.0.0",
     "npm-run-all": "^4.1.5",
     "ts-node": "^8.5.4",

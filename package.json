@@ -34,21 +34,21 @@
     "watch": "tsc -b -w"
   },
   "devDependencies": {
-    "@1stg/lib-config": "^0.1.14",
+    "@1stg/lib-config": "^0.1.19",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.12.8",
-    "@types/react": "^16.9.11",
-    "@types/vscode": "^1.40.0",
-    "core-js": "^3.4.1",
-    "mocha": "^6.2.2",
+    "@types/node": "^13.1.8",
+    "@types/react": "^16.9.19",
+    "@types/vscode": "^1.41.0",
+    "core-js": "^3.6.4",
+    "mocha": "^7.0.0",
     "npm-run-all": "^4.1.5",
-    "ts-node": "^8.5.2",
-    "typescript": "^3.7.2",
-    "vscode-test": "^1.2.3"
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5",
+    "vscode-test": "^1.3.0"
   },
   "resolutions": {
-    "@babel/core": "^7.7.2",
-    "@babel/preset-env": "^7.7.1"
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3"
   },
   "icon": "assets/mdx.png",
   "activationEvents": [

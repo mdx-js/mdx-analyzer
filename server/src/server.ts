@@ -6,14 +6,17 @@
 import {
   createConnection,
   TextDocuments,
-  TextDocument,
+  Diagnostic,
   ProposedFeatures,
   InitializeParams,
   DidChangeConfigurationNotification,
   CompletionItem,
   CompletionItemKind,
   TextDocumentPositionParams,
+  TextDocumentSyncKind,
+  InitializeResult,
 } from 'vscode-languageserver'
+import { TextDocument } from 'vscode-languageserver-textdocument'
 
 // Create a connection for the server. The connection uses Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -21,7 +24,7 @@ const connection = createConnection(ProposedFeatures.all)
 
 // Create a simple text document manager. The text document manager
 // supports full document sync only
-const documents: TextDocuments = new TextDocuments()
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument)
 
 let hasConfigurationCapability = false
 let hasWorkspaceFolderCapability = false
@@ -44,15 +47,23 @@ connection.onInitialize((params: InitializeParams) => {
     capabilities.textDocument.publishDiagnostics.relatedInformation
   )
 
-  return {
+  const result: InitializeResult = {
     capabilities: {
-      textDocumentSync: documents.syncKind,
+      textDocumentSync: TextDocumentSyncKind.Full,
       // Tell the client that the server supports code completion
       completionProvider: {
         resolveProvider: true,
       },
     },
   }
+  if (hasWorkspaceFolderCapability) {
+    result.capabilities.workspace = {
+      workspaceFolders: {
+        supported: true,
+      },
+    }
+  }
+  return result
 })
 
 connection.onInitialized(() => {
@@ -77,13 +88,26 @@ interface MdxSettings {
 // Please note that this is not the case when using this server with the client provided in this example
 // but could happen with other clients.
 const defaultSettings: MdxSettings = { debug: false }
-
 let globalSettings: MdxSettings = defaultSettings
 
 // Cache the settings of all open documents
 const documentSettings: Map<string, Thenable<MdxSettings>> = new Map()
 
-export function getDocumentSettings(resource: string): Thenable<MdxSettings> {
+connection.onDidChangeConfiguration(change => {
+  if (hasConfigurationCapability) {
+    // Reset all cached document settings
+    documentSettings.clear()
+  } else {
+    globalSettings = (change.settings.languageServerExample ||
+      defaultSettings) as MdxSettings
+  }
+
+  // Revalidate all open text documents
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  documents.all().forEach(validateTextDocument)
+})
+
+function getDocumentSettings(resource: string): Thenable<MdxSettings> {
   if (!hasConfigurationCapability) {
     return Promise.resolve(globalSettings)
   }
@@ -98,25 +122,6 @@ export function getDocumentSettings(resource: string): Thenable<MdxSettings> {
   return result
 }
 
-function validateTextDocument(_textDocument: TextDocument) {
-  // In this simple example we get the settings for every validate run.
-  if (hasDiagnosticRelatedInformationCapability) {
-    //
-  }
-}
-
-connection.onDidChangeConfiguration(change => {
-  if (hasConfigurationCapability) {
-    // Reset all cached document settings
-    documentSettings.clear()
-  } else {
-    globalSettings = change.settings.languageServerExample || defaultSettings
-  }
-
-  // Revalidate all open text documents
-  documents.all().forEach(validateTextDocument)
-})
-
 // Only keep settings for open documents
 documents.onDidClose(e => {
   documentSettings.delete(e.document.uri)
@@ -125,8 +130,24 @@ documents.onDidClose(e => {
 // The content of a text document has changed. This event is emitted
 // when the text document first opened or when its content has changed.
 documents.onDidChangeContent(change => {
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   validateTextDocument(change.document)
 })
+
+async function validateTextDocument(textDocument: TextDocument): Promise<void> {
+  // In this simple example we get the settings for every validate run.
+  const settings = await getDocumentSettings(textDocument.uri)
+
+  const diagnostics: Diagnostic[] = []
+
+  // The validator creates diagnostics for all uppercase words length 2 and more
+  if (settings.debug && hasDiagnosticRelatedInformationCapability) {
+    //
+  }
+
+  // Send the computed diagnostics to VSCode.
+  connection.sendDiagnostics({ uri: textDocument.uri, diagnostics })
+}
 
 connection.onDidChangeWatchedFiles(_change => {
   // Monitored files have change in VSCode
@@ -172,19 +193,19 @@ connection.onCompletionResolve(
 /*
 connection.onDidOpenTextDocument((params) => {
 	// A text document got opened in VSCode.
-	// params.uri uniquely identifies the document. For documents store on disk this is a file URI.
-	// params.text the initial full content of the document.
+	// params.textDocument.uri uniquely identifies the document. For documents store on disk this is a file URI.
+	// params.textDocument.text the initial full content of the document.
 	connection.console.log(`${params.textDocument.uri} opened.`);
 });
 connection.onDidChangeTextDocument((params) => {
 	// The content of a text document did change in VSCode.
-	// params.uri uniquely identifies the document.
+	// params.textDocument.uri uniquely identifies the document.
 	// params.contentChanges describe the content changes to the document.
 	connection.console.log(`${params.textDocument.uri} changed: ${JSON.stringify(params.contentChanges)}`);
 });
 connection.onDidCloseTextDocument((params) => {
 	// A text document got closed in VSCode.
-	// params.uri uniquely identifies the document.
+	// params.textDocument.uri uniquely identifies the document.
 	connection.console.log(`${params.textDocument.uri} closed.`);
 });
 */

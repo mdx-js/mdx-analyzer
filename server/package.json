@@ -10,6 +10,7 @@
     "node": ">=6.9.0"
   },
   "dependencies": {
-    "vscode-languageserver": "^5.2.1"
+    "vscode-languageserver": "^6.1.1",
+    "vscode-languageserver-textdocument": "^1.0.1"
   }
 }

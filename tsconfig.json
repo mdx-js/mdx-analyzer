@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "incremental": false,
     "noEmit": true
   },
   "references": [

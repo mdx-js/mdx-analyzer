@@ -28,7 +28,7 @@
     "build": "tsc -b",
     "lint": "run-p lint:*",
     "lint:es": "cross-env PARSER_NO_WATCH=true eslint . --cache --ext js,md.mdx,ts,tsx -f friendly",
-    "lint:tsc": "tsc --noEmit",
+    "lint:tsc": "tsc",
     "test": "ts-node client/test",
     "vscode:prepublish": "yarn build",
     "watch": "tsc -b -w"
@@ -45,10 +45,6 @@
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5",
     "vscode-test": "^1.3.0"
-  },
-  "resolutions": {
-    "@babel/core": "^7.8.3",
-    "@babel/preset-env": "^7.8.3"
   },
   "icon": "assets/mdx.png",
   "activationEvents": [

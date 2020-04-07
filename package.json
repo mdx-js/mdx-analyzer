@@ -34,7 +34,7 @@
     "watch": "tsc -b -w"
   },
   "devDependencies": {
-    "@1stg/lib-config": "^0.4.2",
+    "@1stg/lib-config": "^0.4.5",
     "@types/mocha": "^5.2.7",
     "@types/node": "^13.11.0",
     "@types/react": "^16.9.32",

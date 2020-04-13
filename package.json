@@ -48,7 +48,7 @@
   },
   "resolutions": {
     "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0"
+    "@babel/preset-env": "^7.9.5"
   },
   "icon": "assets/mdx.png",
   "activationEvents": [

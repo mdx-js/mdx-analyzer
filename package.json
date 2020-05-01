@@ -36,7 +36,7 @@
   "devDependencies": {
     "@1stg/lib-config": "^0.4.5",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^13.13.0",
+    "@types/node": "^13.13.4",
     "@types/react": "^16.9.34",
     "@types/vscode": "^1.44.0",
     "core-js": "^3.6.5",

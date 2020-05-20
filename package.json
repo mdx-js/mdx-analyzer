@@ -6,7 +6,7 @@
   "categories": [
     "Programming Languages"
   ],
-  "repository": "git@github.com:rx-ts/vscode-mdx.git",
+  "repository": "https://github.com/mdx-js/vscode-mdx",
   "author": "JounQin",
   "publisher": "JounQin",
   "license": "MIT",

@@ -38,7 +38,7 @@
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.13.15",
     "@types/react": "^16.9.41",
-    "@types/vscode": "^1.46.0",
+    "@types/vscode": "^1.47.0",
     "core-js": "^3.6.5",
     "mocha": "^7.2.0",
     "npm-run-all": "^4.1.5",

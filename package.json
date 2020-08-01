@@ -37,7 +37,7 @@
     "@1stg/lib-config": "^0.5.1",
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.13.15",
-    "@types/react": "^16.9.41",
+    "@types/react": "^16.9.44",
     "@types/vscode": "^1.47.0",
     "core-js": "^3.6.5",
     "mocha": "^7.2.0",

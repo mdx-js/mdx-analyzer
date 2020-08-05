@@ -16,7 +16,7 @@ You can install this extension from the [Marketplace](https://marketplace.visual
 // .vscode/settings.json
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll.eslint": true
   },
   "eslint.options": {
     "extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
@@ -30,7 +30,7 @@ Markdown Syntax could also be linted via [eslint-plugin-mdx][] and [remark-lint]
 
 > it will read [remark][]'s [configuration](https://github.com/remarkjs/remark/tree/master/packages/remark-cli#remark-cli) automatically via [cosmiconfig](https://github.com/davidtheclark/cosmiconfig). But `.remarkignore` will not be respected, you should use `.eslintignore` instead.
 
-More usage detail please refer to [eslint-plugin-mdx][]'s [documentation](https://github.com/rx-ts/eslint-mdx#toc-).
+More usage detail please refer to [eslint-plugin-mdx][]'s [documentation](https://github.com/mdx-js/eslint-mdx#toc-).
 
 ## Auto-close tags
 
@@ -46,6 +46,6 @@ If you want VS Code to automatically close tags while you type, you can install 
 ```
 
 [mdx]: https://github.com/mdx-js/mdx
-[eslint-plugin-mdx]: https://github.com/rx-ts/eslint-mdx
+[eslint-plugin-mdx]: https://github.com/mdx-js/eslint-mdx
 [remark]: https://github.com/remarkjs/remark
 [remark-lint]: https://github.com/remarkjs/remark-lint

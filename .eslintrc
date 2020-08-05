@@ -1,11 +1,4 @@
 {
   "root": true,
-  "extends": "@1stg",
-  "settings": {
-    "node": {
-      "allowModules": [
-        "vscode"
-      ]
-    }
-  }
+  "extends": "@1stg"
 }

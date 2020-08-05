@@ -1,7 +1,0 @@
-{
-  "extends": "@1stg/tsconfig/node",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "target": "es6"
-  }
-}

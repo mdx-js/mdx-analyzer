@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/mdx-js/vscode-mdx/compare/v0.1.4...v0.2.0) (2020-08-05)
+
+
+### Features
+
+* remove unused lsp codes - close [#140](https://github.com/mdx-js/vscode-mdx/issues/140) ([c1383e1](https://github.com/mdx-js/vscode-mdx/commit/c1383e192a80752e10463f4cc792ba9b305bf842))
+
+
+### Bug Fixes
+
+* marketplace "repository" link is broken ([#139](https://github.com/mdx-js/vscode-mdx/issues/139)) ([804e0f7](https://github.com/mdx-js/vscode-mdx/commit/804e0f77438eede4685e01f861056c0a082532e4))
+
 ### [0.1.4](https://github.com/rx-ts/vscode-mdx/compare/v0.1.3...v0.1.4) (2020-04-09)
 
 

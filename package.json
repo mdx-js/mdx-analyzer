@@ -1,12 +1,12 @@
 {
   "name": "vscode-mdx",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "displayName": "VSCode MDX",
   "description": "Visual Studio Code extension for MDX",
   "categories": [
     "Programming Languages"
   ],
-  "repository": "git+https://github.com/mdx-js/vscode-mdx.git",
+  "repository": "https://github.com/mdx-js/vscode-mdx.git",
   "author": "JounQin",
   "publisher": "JounQin",
   "license": "MIT",

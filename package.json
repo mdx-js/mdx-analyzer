@@ -21,10 +21,12 @@
   ],
   "scripts": {
     "lint": "cross-env PARSER_NO_WATCH=true eslint . --cache --ext js,md.mdx,ts,tsx -f friendly",
-    "postinstall": "yarn-deduplicate || exit 0"
+    "postinstall": "yarn-deduplicate || exit 0",
+    "release": "sh release.sh"
   },
   "devDependencies": {
     "@1stg/lib-config": "^0.5.5",
+    "standard-version": "^8.0.2",
     "yarn-deduplicate": "^2.1.1"
   },
   "resolutions": {

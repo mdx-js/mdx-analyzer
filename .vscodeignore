@@ -3,7 +3,7 @@
 *.map
 *.ts
 *.tsbuildinfo
-deploy.sh
+release.sh
 tsconfig.json
 tsconfig.base.json
 node_modules

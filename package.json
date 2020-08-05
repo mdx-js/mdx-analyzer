@@ -1,6 +1,6 @@
 {
   "name": "vscode-mdx",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "displayName": "VSCode MDX",
   "description": "Visual Studio Code extension for MDX",
   "categories": [

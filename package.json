@@ -25,7 +25,7 @@
     "release": "sh release.sh"
   },
   "devDependencies": {
-    "@1stg/lib-config": "^0.5.5",
+    "@1stg/lib-config": "^0.6.0",
     "standard-version": "^8.0.2",
     "yarn-deduplicate": "^2.1.1"
   },

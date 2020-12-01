@@ -27,7 +27,7 @@
   "devDependencies": {
     "@1stg/lib-config": "^0.6.0",
     "standard-version": "^8.0.2",
-    "yarn-deduplicate": "^2.1.1"
+    "yarn-deduplicate": "^3.1.0"
   },
   "resolutions": {
     "prettier": "^2.2.1"

@@ -12,7 +12,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "vscode": ">=1.51.1"
+    "vscode": ">=1.52.1"
   },
   "keywords": [
     "mdx",

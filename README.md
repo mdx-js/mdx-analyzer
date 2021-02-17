@@ -20,7 +20,14 @@ You can install this extension from the [Marketplace](https://marketplace.visual
   },
   "eslint.options": {
     "extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
-  }
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "mdx"
+  ]
 }
 ```
 

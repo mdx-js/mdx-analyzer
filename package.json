@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@1stg/lib-config": "^0.6.1",
-    "standard-version": "^8.0.2",
+    "standard-version": "^9.1.1",
     "yarn-deduplicate": "^2.1.1"
   },
   "resolutions": {

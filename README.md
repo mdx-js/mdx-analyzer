@@ -22,11 +22,12 @@ You can install this extension from the [Marketplace](https://marketplace.visual
     "extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
   },
   "eslint.validate": [
+    "markdown",
+    "mdx",
     "javascript",
     "javascriptreact",
     "typescript",
-    "typescriptreact",
-    "mdx"
+    "typescriptreact"
   ]
 }
 ```

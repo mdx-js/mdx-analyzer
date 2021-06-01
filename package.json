@@ -31,7 +31,7 @@
     "yarn-deduplicate": "^3.1.0"
   },
   "resolutions": {
-    "prettier": "^2.2.1"
+    "prettier": "^2.3.0"
   },
   "icon": "assets/mdx.png",
   "contributes": {

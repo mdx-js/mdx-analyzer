@@ -20,18 +20,18 @@
     "Markdown React"
   ],
   "scripts": {
-    "lint": "cross-env PARSER_NO_WATCH=true eslint . --cache --ext js,md.mdx,ts,tsx -f friendly",
-    "postinstall": "yarn-deduplicate --strategy fewer || exit 0",
+    "lint": "eslint . --cache -f friendly",
+    "prepare": "simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0",
     "release": "sh release.sh"
   },
   "devDependencies": {
-    "@1stg/common-config": "^1.3.0",
-    "standard-version": "^9.1.1",
-    "typescript": "^4.2.3",
+    "@1stg/common-config": "^2.3.1",
+    "standard-version": "^9.3.0",
+    "typescript": "^4.3.5",
     "yarn-deduplicate": "^3.1.0"
   },
   "resolutions": {
-    "prettier": "^2.2.1"
+    "prettier": "^2.3.2"
   },
   "icon": "assets/mdx.png",
   "contributes": {

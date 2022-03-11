@@ -5,3 +5,4 @@
 /.vscode-test
 lib
 node_modules
+dist/

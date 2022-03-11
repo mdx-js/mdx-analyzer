@@ -6,6 +6,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Attach to Remote",
+      "port": 6009,
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node"
+    },
+    {
       "name": "Run Extension",
       "type": "extensionHost",
       "request": "launch",

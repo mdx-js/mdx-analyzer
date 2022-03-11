@@ -12,8 +12,12 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "vscode": ">=1.64.2"
+    "vscode": ">=1.64.1"
   },
+  "main": "./dist/client.js",
+  "activationEvents": [
+    "onLanguage:mdx"
+  ],
   "keywords": [
     "mdx",
     "Markdown",
@@ -104,5 +108,18 @@
         }
       }
     ]
+  },
+  "dependencies": {
+    "@mdx-js/mdx": "1",
+    "@types/node": "^17.0.21",
+    "magic-string": "^0.26.1",
+    "source-map": "^0.7.3",
+    "unist-util-visit": "2",
+    "upath": "^2.0.1",
+    "vscode": "^1.1.37",
+    "vscode-languageclient": "^7.0.0",
+    "vscode-languageserver": "^7.0.0",
+    "vscode-languageserver-textdocument": "^1.0.4",
+    "vscode-uri": "^3.0.3"
   }
 }

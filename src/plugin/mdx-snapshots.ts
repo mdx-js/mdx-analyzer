@@ -1,148 +1,162 @@
-import { convert } from '../core';
 import type * as ts from 'typescript/lib/tsserverlibrary';
-import { Logger } from './logger';
-import { SourceMapper } from './source-mapper';
-import { isNoTextSpanInGeneratedCode, isMdxFilePath } from './utils';
+import { convert } from '../core';
+import { Logger } from './logger'
+import { SourceMapper } from './source-mapper'
+import { isNoTextSpanInGeneratedCode, isMdxFilePath } from './utils'
 
 export class MdxSnapshot {
-    private scriptInfo?: ts.server.ScriptInfo;
-    private lineOffsets?: number[];
-    private convertInternalCodePositions = false;
+  private scriptInfo?: ts.server.ScriptInfo
+  private lineOffsets?: number[]
+  private convertInternalCodePositions = false
 
-    constructor(
-        private typescript: typeof ts,
-        private fileName: string,
-        private mdxCode: string,
-        private mapper: SourceMapper,
-        private logger: Logger,
-        public readonly isTsFile: boolean
-    ) {}
+  constructor(
+    private readonly typescript: typeof ts,
+    private readonly fileName: string,
+    private mdxCode: string,
+    private mapper: SourceMapper,
+    private readonly logger: Logger,
+    public readonly isTsFile: boolean,
+  ) {}
 
-    update(mdxCode: string, mapper: SourceMapper) {
-        this.mdxCode = mdxCode;
-        this.mapper = mapper;
-        this.lineOffsets = undefined;
-        this.log('Updated Snapshot');
+  update(mdxCode: string, mapper: SourceMapper) {
+    this.mdxCode = mdxCode
+    this.mapper = mapper
+    this.lineOffsets = undefined
+    this.log('Updated Snapshot')
+  }
+
+  getOriginalTextSpan(textSpan: ts.TextSpan): ts.TextSpan | null {
+    this.log('[getOriginalTextSpan]', textSpan)
+    if (!isNoTextSpanInGeneratedCode(this.getText(), textSpan)) {
+      return null
     }
 
-    getOriginalTextSpan(textSpan: ts.TextSpan): ts.TextSpan | null {
-        this.log('[getOriginalTextSpan]', textSpan)
-        if (!isNoTextSpanInGeneratedCode(this.getText(), textSpan)) {
-            return null;
-        }
-
-        this.log('[getOriginalOffset]', textSpan)
-        const start = this.getOriginalOffset(textSpan.start);
-        if (start === -1) {
-            return null;
-        }
-
-        // Assumption: We don't change identifiers itself, so we don't change ranges.
-        return {
-            start,
-            length: textSpan.length
-        };
+    this.log('[getOriginalOffset]', textSpan)
+    const start = this.getOriginalOffset(textSpan.start)
+    if (start === -1) {
+      return null
     }
 
-    getOriginalOffset(generatedOffset: number) {
-        if (!this.scriptInfo) {
-            return generatedOffset;
-        }
+    // Assumption: We don't change identifiers itself, so we don't change ranges.
+    return {
+      start,
+      length: textSpan.length,
+    }
+  }
 
-        this.toggleMappingMode(true);
-        const lineOffset = this.scriptInfo.positionToLineOffset(generatedOffset);
-        this.debug('try convert offset', generatedOffset, '/', lineOffset);
-        const original = this.mapper.getOriginalPosition({
-            line: lineOffset.line - 1,
-            character: lineOffset.offset - 1
-        });
-        this.toggleMappingMode(false);
-        if (original.line === -1) {
-            return -1;
-        }
-
-        const originalOffset = this.scriptInfo.lineOffsetToPosition(
-            original.line + 1,
-            original.character + 1
-        );
-        this.log('converted offset to', original, '/', originalOffset);
-        return originalOffset;
+  getOriginalOffset(generatedOffset: number) {
+    if (!this.scriptInfo) {
+      return generatedOffset
     }
 
-    setAndPatchScriptInfo(scriptInfo: ts.server.ScriptInfo) {
-        // @ts-expect-error
-        scriptInfo.scriptKind = this.typescript.ScriptKind.TSX;
-
-        const positionToLineOffset = scriptInfo.positionToLineOffset.bind(scriptInfo);
-        scriptInfo.positionToLineOffset = (position) => {
-            if (this.convertInternalCodePositions) {
-                const lineOffset = positionToLineOffset(position);
-                this.log('positionToLineOffset for generated code', position, lineOffset);
-                return lineOffset;
-            }
-
-            const lineOffset = this.positionAt(position);
-            this.log('positionToLineOffset for original code', position, lineOffset);
-            return { line: lineOffset.line + 1, offset: lineOffset.character + 1 };
-        };
-
-        const lineOffsetToPosition = scriptInfo.lineOffsetToPosition.bind(scriptInfo);
-        scriptInfo.lineOffsetToPosition = (line, offset) => {
-            if (this.convertInternalCodePositions) {
-                const position = lineOffsetToPosition(line, offset);
-                this.log('lineOffsetToPosition for generated code', { line, offset }, position);
-                return position;
-            }
-
-            const position = this.offsetAt({ line: line - 1, character: offset - 1 });
-            this.log('lineOffsetToPosition for original code', { line, offset }, position);
-            return position;
-        };
-
-        this.scriptInfo = scriptInfo;
-        this.log('patched scriptInfo');
+    this.toggleMappingMode(true)
+    const lineOffset = this.scriptInfo.positionToLineOffset(generatedOffset)
+    this.debug('try convert offset', generatedOffset, '/', lineOffset)
+    const original = this.mapper.getOriginalPosition({
+      line: lineOffset.line - 1,
+      character: lineOffset.offset - 1,
+    })
+    this.toggleMappingMode(false)
+    if (original.line === -1) {
+      return -1
     }
 
-    /**
-     * Get the line and character based on the offset
-     * @param offset The index of the position
-     */
-    positionAt(offset: number): ts.LineAndCharacter {
-        offset = this.clamp(offset, 0, this.mdxCode.length);
+    const originalOffset = this.scriptInfo.lineOffsetToPosition(
+      original.line + 1,
+      original.character + 1,
+    )
+    this.log('converted offset to', original, '/', originalOffset)
+    return originalOffset
+  }
 
-        const lineOffsets = this.getLineOffsets();
-        let low = 0;
-        let high = lineOffsets.length;
-        if (high === 0) {
-            return { line: 0, character: offset };
-        }
+  setAndPatchScriptInfo(scriptInfo: ts.server.ScriptInfo) {
+    // @ts-expect-error
+    scriptInfo.scriptKind = this.typescript.ScriptKind.TSX
 
-        while (low < high) {
-            const mid = Math.floor((low + high) / 2);
-            if (lineOffsets[mid] > offset) {
-                high = mid;
-            } else {
-                low = mid + 1;
-            }
-        }
+    const positionToLineOffset =
+      scriptInfo.positionToLineOffset.bind(scriptInfo)
+    scriptInfo.positionToLineOffset = position => {
+      if (this.convertInternalCodePositions) {
+        const lineOffset = positionToLineOffset(position)
+        this.log(
+          'positionToLineOffset for generated code',
+          position,
+          lineOffset,
+        )
+        return lineOffset
+      }
 
-        // low is the least x for which the line offset is larger than the current offset
-        // or array.length if no line offset is larger than the current offset
-        const line = low - 1;
-
-        return { line, character: offset - lineOffsets[line] };
+      const lineOffset = this.positionAt(position)
+      this.log('positionToLineOffset for original code', position, lineOffset)
+      return { line: lineOffset.line + 1, offset: lineOffset.character + 1 }
     }
 
-    /**
-     * Get the index of the line and character position
-     * @param position Line and character position
-     */
-    offsetAt(position: ts.LineAndCharacter): number {
+    const lineOffsetToPosition =
+      scriptInfo.lineOffsetToPosition.bind(scriptInfo)
+    scriptInfo.lineOffsetToPosition = (line, offset) => {
+      if (this.convertInternalCodePositions) {
+        const position = lineOffsetToPosition(line, offset)
+        this.log(
+          'lineOffsetToPosition for generated code',
+          { line, offset },
+          position,
+        )
+        return position
+      }
+
+      const position = this.offsetAt({ line: line - 1, character: offset - 1 })
+      this.log(
+        'lineOffsetToPosition for original code',
+        { line, offset },
+        position,
+      )
+      return position
+    }
+
+    this.scriptInfo = scriptInfo
+    this.log('patched scriptInfo')
+  }
+
+  /**
+   * Get the line and character based on the offset
+   * @param offset The index of the position
+   */
+  positionAt(offset: number): ts.LineAndCharacter {
+    offset = this.clamp(offset, 0, this.mdxCode.length)
+
+    const lineOffsets = this.getLineOffsets()
+    let low = 0
+    let high = lineOffsets.length
+    if (high === 0) {
+      return { line: 0, character: offset }
+    }
+
+    while (low < high) {
+      const mid = Math.floor((low + high) / 2)
+      if (lineOffsets[mid] > offset) {
+        high = mid
+      } else {
+        low = mid + 1
+      }
+    }
+
+    // low is the least x for which the line offset is larger than the current offset
+    // or array.length if no line offset is larger than the current offset
+    const line = low - 1
+
+    return { line, character: offset - lineOffsets[line] }
+  }
+
+  /**
+   * Get the index of the line and character position
+   * @param position Line and character position
+   */
+  offsetAt(position: ts.LineAndCharacter): number {
         const lineOffsets = this.getLineOffsets();
 
         if (position.line >= lineOffsets.length) {
             return this.mdxCode.length;
-        } else if (position.line < 0) {
+        } if (position.line < 0) {
             return 0;
         }
 
@@ -155,142 +169,148 @@ export class MdxSnapshot {
         return this.clamp(nextLineOffset, lineOffset, lineOffset + position.character);
     }
 
-    private getLineOffsets() {
-        if (this.lineOffsets) {
-            return this.lineOffsets;
-        }
+  }
 
-        const lineOffsets = [];
-        const text = this.mdxCode;
-        let isLineStart = true;
-
-        for (let i = 0; i < text.length; i++) {
-            if (isLineStart) {
-                lineOffsets.push(i);
-                isLineStart = false;
-            }
-            const ch = text.charAt(i);
-            isLineStart = ch === '\r' || ch === '\n';
-            if (ch === '\r' && i + 1 < text.length && text.charAt(i + 1) === '\n') {
-                i++;
-            }
-        }
-
-        if (isLineStart && text.length > 0) {
-            lineOffsets.push(text.length);
-        }
-
-        this.lineOffsets = lineOffsets;
-        return lineOffsets;
+  private getLineOffsets() {
+    if (this.lineOffsets) {
+      return this.lineOffsets
     }
 
-    private clamp(num: number, min: number, max: number): number {
-        return Math.max(min, Math.min(max, num));
+    const lineOffsets = []
+    const text = this.mdxCode
+    let isLineStart = true
+
+    for (let i = 0; i < text.length; i++) {
+      if (isLineStart) {
+        lineOffsets.push(i)
+        isLineStart = false
+      }
+      const ch = text.charAt(i)
+      isLineStart = ch === '\r' || ch === '\n'
+      if (ch === '\r' && i + 1 < text.length && text.charAt(i + 1) === '\n') {
+        i++
+      }
     }
 
-    private log(...args: any[]) {
-        this.logger.log('MdxSnapshot:', this.fileName, '-', ...args);
+    if (isLineStart && text.length > 0) {
+      lineOffsets.push(text.length)
     }
 
-    private debug(...args: any[]) {
-        this.logger.debug('MdxSnapshot:', this.fileName, '-', ...args);
-    }
+    this.lineOffsets = lineOffsets
+    return lineOffsets
+  }
 
-    private toggleMappingMode(convertInternalCodePositions: boolean) {
-        this.convertInternalCodePositions = convertInternalCodePositions;
-    }
+  private clamp(num: number, min: number, max: number): number {
+    return Math.max(min, Math.min(max, num))
+  }
 
-    private getText() {
-        const snapshot = this.scriptInfo?.getSnapshot();
-        if (!snapshot) {
-            return '';
-        }
-        return snapshot.getText(0, snapshot.getLength());
+  private log(...args: any[]) {
+    this.logger.log('MdxSnapshot:', this.fileName, '-', ...args)
+  }
+
+  private debug(...args: any[]) {
+    this.logger.debug('MdxSnapshot:', this.fileName, '-', ...args)
+  }
+
+  private toggleMappingMode(convertInternalCodePositions: boolean) {
+    this.convertInternalCodePositions = convertInternalCodePositions
+  }
+
+  private getText() {
+    const snapshot = this.scriptInfo?.getSnapshot()
+    if (!snapshot) {
+      return ''
     }
+    return snapshot.getText(0, snapshot.getLength())
+  }
 }
 
 export class MdxSnapshotManager {
-    private snapshots = new Map<string, MdxSnapshot>();
+  private snapshots = new Map<string, MdxSnapshot>()
 
-    constructor(
-        private typescript: typeof ts,
-        private projectService: ts.server.ProjectService,
-        private logger: Logger
-    ) {
-        this.patchProjectServiceReadFile();
+  constructor(
+    private readonly typescript: typeof ts,
+    private readonly projectService: ts.server.ProjectService,
+    private logger: Logger,
+  ) {
+    this.patchProjectServiceReadFile()
+  }
+
+  get(fileName: string) {
+    return this.snapshots.get(fileName)
+  }
+
+  create(fileName: string): MdxSnapshot | undefined {
+    if (this.snapshots.has(fileName)) {
+      return this.snapshots.get(fileName)!
     }
 
-    get(fileName: string) {
-        return this.snapshots.get(fileName);
+    // This will trigger projectService.host.readFile which is patched below
+    const scriptInfo =
+      this.projectService.getOrCreateScriptInfoForNormalizedPath(
+        this.typescript.server.toNormalizedPath(fileName),
+        false,
+      )
+    if (!scriptInfo) {
+      this.logger.log('Was not able get snapshot for', fileName)
+      return
     }
 
-    create(fileName: string): MdxSnapshot | undefined {
-        if (this.snapshots.has(fileName)) {
-            return this.snapshots.get(fileName)!;
-        }
+    try {
+      scriptInfo.getSnapshot() // needed to trigger readFile
+    } catch {
+      this.logger.log('Loading Snapshot failed', fileName)
+    }
+    const snapshot = this.snapshots.get(fileName)
+    if (!snapshot) {
+      this.logger.log(
+        'Mdx snapshot was not found after trying to load script snapshot for',
+        fileName,
+      )
+      return // should never get here
+    }
+    snapshot.setAndPatchScriptInfo(scriptInfo)
+    this.snapshots.set(fileName, snapshot)
+    return snapshot
+  }
 
-        // This will trigger projectService.host.readFile which is patched below
-        const scriptInfo = this.projectService.getOrCreateScriptInfoForNormalizedPath(
-            this.typescript.server.toNormalizedPath(fileName),
-            false
-        );
-        if (!scriptInfo) {
-            this.logger.log('Was not able get snapshot for', fileName);
-            return;
-        }
-
+  private patchProjectServiceReadFile() {
+    const readFile = this.projectService.host.readFile
+    this.projectService.host.readFile = (path: string) => {
+      if (isMdxFilePath(path)) {
+        this.logger.log('Read Mdx file:', path)
+        const mdxCode = readFile(path) || ''
         try {
-            scriptInfo.getSnapshot(); // needed to trigger readFile
+          const result = convert(mdxCode)
+          this.logger.log('[results]: ' + result.code)
+          const existingSnapshot = this.snapshots.get(path)
+          if (existingSnapshot) {
+            existingSnapshot.update(
+              mdxCode,
+              new SourceMapper(result.map.mappings),
+            )
+          } else {
+            this.snapshots.set(
+              path,
+              new MdxSnapshot(
+                this.typescript,
+                path,
+                mdxCode,
+                new SourceMapper(result.map.mappings),
+                this.logger,
+                false,
+              ),
+            )
+          }
+          this.logger.log('Successfully read Mdx file contents of', path)
+          return result.code
         } catch (e) {
-            this.logger.log('Loading Snapshot failed', fileName);
+          this.logger.log('Error loading Mdx file:', path)
+          this.logger.log('Error:', e)
         }
-        const snapshot = this.snapshots.get(fileName);
-        if (!snapshot) {
-            this.logger.log(
-                'Mdx snapshot was not found after trying to load script snapshot for',
-                fileName
-            );
-            return; // should never get here
-        }
-        snapshot.setAndPatchScriptInfo(scriptInfo);
-        this.snapshots.set(fileName, snapshot);
-        return snapshot;
+      } else {
+        return readFile(path)
+      }
     }
-
-    private patchProjectServiceReadFile() {
-        const readFile = this.projectService.host.readFile;
-        this.projectService.host.readFile = (path: string) => {
-            if (isMdxFilePath(path)) {
-                this.logger.log('Read Mdx file:', path);
-                const mdxCode = readFile(path) || '';
-                try {
-                    const result = convert(mdxCode);
-                    this.logger.log("[results]: " + result.code)
-                    const existingSnapshot = this.snapshots.get(path);
-                    if (existingSnapshot) {
-                        existingSnapshot.update(mdxCode, new SourceMapper(result.map.mappings));
-                    } else {
-                        this.snapshots.set(
-                            path,
-                            new MdxSnapshot(
-                                this.typescript,
-                                path,
-                                mdxCode,
-                                new SourceMapper(result.map.mappings),
-                                this.logger,
-                                false
-                            )
-                        );
-                    }
-                    this.logger.log('Successfully read Mdx file contents of', path);
-                    return result.code;
-                } catch (e) {
-                    this.logger.log('Error loading Mdx file:', path);
-                    this.logger.log('Error:', e);
-                }
-            } else {
-                return readFile(path);
-            }
-        };
-    }
+  }
 }

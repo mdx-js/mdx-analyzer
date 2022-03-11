@@ -1,6 +1,6 @@
 export * from './hosts'
 export * from './types'
-export * from './paths';
+export * from './paths'
 export * from './utils'
 export * from './tsconfig-patch'
 export * from './tsconfig-reader'

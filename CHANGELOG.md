@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/mdx-js/vscode-mdx/compare/v0.2.3...v0.3.0) (2022-07-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* use mdx v2 comment syntax
+
+### Features
+
+* use mdx v2 comment syntax ([b4a5968](https://github.com/mdx-js/vscode-mdx/commit/b4a5968213d83ccca3dd96d0fd2ce3aaba8ab505))
+
 ### [0.2.3](https://github.com/mdx-js/vscode-mdx/compare/v0.2.2...v0.2.3) (2021-03-17)
 
 ### [0.2.2](https://github.com/mdx-js/vscode-mdx/compare/v0.2.1...v0.2.2) (2020-08-05)

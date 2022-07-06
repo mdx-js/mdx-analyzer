@@ -1,9 +1,13 @@
 {
   "comments": {
-    "blockComment": ["<!--", "-->"]
+    "blockComment": ["{/*", "*/}"]
   },
   // symbols used as brackets
-  "brackets": [["{", "}"], ["[", "]"], ["(", ")"]],
+  "brackets": [
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"]
+  ],
   // symbols that are auto closed when typing
   "autoClosingPairs": [
     ["{", "}"],
@@ -31,8 +35,8 @@
       "notIn": ["string"]
     },
     {
-      "open": "<!--",
-      "close": "-->",
+      "open": "{/*",
+      "close": "*/}",
       "notIn": ["string", "comment"]
     }
   ],
@@ -51,8 +55,8 @@
   "folding": {
     "offSide": true,
     "markers": {
-      "start": "^\\s*<!--\\s*#?region\\b.*-->",
-      "end": "^\\s*<!--\\s*#?endregion\\b.*-->"
+      "start": "^\\s*{/*\\s*#?region\\b.**/}",
+      "end": "^\\s*{/*\\s*#?endregion\\b.**/}"
     }
   }
 }

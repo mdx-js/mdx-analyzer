@@ -9,6 +9,41 @@
   "repository": "https://github.com/mdx-js/vscode-mdx.git",
   "author": "JounQin",
   "publisher": "JounQin",
+  "donate": {
+    "recipients": [
+      {
+        "name": "unts",
+        "platform": "opencollective",
+        "address": "https://opencollective.com/unts",
+        "weight": 60
+      },
+      {
+        "name": "rxts",
+        "platform": "opencollective",
+        "address": "https://opencollective.com/rxts",
+        "weight": 20
+      },
+      {
+        "name": "1stG",
+        "email": "i@1stg.me",
+        "weight": 20,
+        "platforms": [
+          {
+            "platform": "opencollective",
+            "address": "https://opencollective.com/1stG"
+          },
+          {
+            "platform": "patreon",
+            "address": "https://www.patreon.com/1stG"
+          }
+        ]
+      }
+    ]
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/unified"
+  },
   "license": "MIT",
   "private": true,
   "engines": {
@@ -21,11 +56,12 @@
   ],
   "scripts": {
     "lint": "eslint . --cache -f friendly",
-    "prepare": "simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0",
+    "prepare": "patch-package && simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0",
     "release": "sh release.sh"
   },
   "devDependencies": {
     "@1stg/common-config": "^5.2.6",
+    "patch-package": "^6.4.7",
     "standard-version": "^9.5.0",
     "typescript": "^4.7.4",
     "yarn-deduplicate": "^5.0.0"
@@ -45,7 +81,7 @@
         "extensions": [
           ".mdx"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.jsonc"
       }
     ],
     "grammars": [

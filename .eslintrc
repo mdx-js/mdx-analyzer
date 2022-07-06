@@ -1,4 +1,14 @@
 {
   "root": true,
-  "extends": "@1stg"
+  "extends": "@1stg",
+  "overrides": [
+    {
+      "files": [
+        "syntaxes/*.json"
+      ],
+      "rules": {
+        "unicorn/filename-case": "off"
+      }
+    }
+  ]
 }

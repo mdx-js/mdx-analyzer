@@ -53,6 +53,33 @@ If you want VS Code to automatically close tags while you type, you can install 
 ]
 ```
 
+## Known `vscode-eslint` issues
+
+1. `Fatal javascript OOM in GC during deserialization`
+
+ESlint is using VS Code's old, built-in version of NodeJS (v12) as provided by Electron.
+Please add the following setting to use system default Node runtime instead:
+
+```json
+{
+  "eslint.runtime": "node"
+}
+```
+
+Please visit https://github.com/microsoft/vscode-eslint/issues/1498#issuecomment-1175813839 as reference for details.
+
+2. `JavaScript heap out of memory`
+
+The default memory limit of Node.js is `1G`, please add the following setting to increase the limit:
+
+```json
+{
+  "eslint.execArgv": ["--max_old_space_size=8192"]
+}
+```
+
+Please visit https://github.com/microsoft/vscode-eslint/issues/733 as reference for details.
+
 [mdx]: https://github.com/mdx-js/mdx
 [eslint-plugin-mdx]: https://github.com/mdx-js/eslint-mdx
 [remark]: https://github.com/remarkjs/remark

@@ -8,7 +8,7 @@
   ],
   "repository": "https://github.com/mdx-js/vscode-mdx.git",
   "author": "JounQin",
-  "publisher": "JounQin",
+  "publisher": "unifiedjs",
   "donate": {
     "recipients": [
       {
@@ -56,8 +56,7 @@
   ],
   "scripts": {
     "lint": "eslint . --cache -f friendly",
-    "prepare": "patch-package && simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0",
-    "release": "sh release.sh"
+    "prepare": "patch-package && simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0"
   },
   "devDependencies": {
     "@1stg/common-config": "^5.2.6",

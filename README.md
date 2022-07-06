@@ -1,9 +1,9 @@
 # [Visual Studio Code](https://code.visualstudio.com) extension for [MDX]
 
 [![GitHub Actions](https://github.com/mdx-js/vscode-mdx/workflows/CI/badge.svg)](https://github.com/mdx-js/vscode-mdx/actions/workflows/ci.yml)
-![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/JounQin.vscode-mdx)
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/JounQin.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=JounQin.vscode-mdx)
 [![GitHub release](https://img.shields.io/github/release/mdx-js/vscode-mdx)](https://github.com/mdx-js/vscode-mdx/releases)
-![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/JounQin.vscode-mdx)
+[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/JounQin.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=JounQin.vscode-mdx)
 
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com)
 [![Conventional Commits](https://img.shields.io/badge/conventional%20commits-1.0.0-yellow.svg)](https://conventionalcommits.org)

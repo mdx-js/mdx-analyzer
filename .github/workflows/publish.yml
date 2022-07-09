@@ -10,12 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+
+      - name: Install Dependencies
+        run: yarn --frozen-lockfile
 
       - name: ovsx publish
         uses: HaaLeo/publish-vscode-extension@v1
@@ -29,7 +30,6 @@ jobs:
           pat: ${{ secrets.VSCE_TOKEN }}
           registryUrl: https://marketplace.visualstudio.com
           extensionFile: ${{ steps.ovsx_publish.outputs.vsixPath }}
-          packagePath: ''
 
       - uses: actions/upload-artifact@v3
         with:

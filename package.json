@@ -57,8 +57,7 @@
   ],
   "scripts": {
     "lint": "eslint . --cache -f friendly",
-    "prepare": "patch-package && simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0",
-    "release": "changeset publish"
+    "prepare": "patch-package && simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0"
   },
   "devDependencies": {
     "@1stg/common-config": "^6.0.0",

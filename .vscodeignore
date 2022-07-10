@@ -6,4 +6,6 @@
 tsconfig.json
 tsconfig.base.json
 node_modules
+patches
+test
 yarn.lock

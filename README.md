@@ -8,7 +8,7 @@
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com)
 [![Conventional Commits](https://img.shields.io/badge/conventional%20commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![Standard Version](https://img.shields.io/badge/maintained%20with-standard%20version-cc00ff.svg)](https://github.com/conventional-changelog/standard-version)
+[![changesets](https://img.shields.io/badge/maintained%20with-changesets-cc00ff.svg)](https://github.com/changesets/changesets)
 
 Adds language support for [MDX].
 

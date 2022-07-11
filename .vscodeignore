@@ -3,8 +3,9 @@
 *.map
 *.ts
 *.tsbuildinfo
-release.sh
 tsconfig.json
 tsconfig.base.json
 node_modules
+patches
+test
 yarn.lock

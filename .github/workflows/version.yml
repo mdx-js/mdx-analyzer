@@ -28,11 +28,8 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
+          publish: git push --follow-tags
           commit: 'chore: release vscode-mdx'
           title: 'chore: release vscode-mdx'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push Tags
-        if: steps.changesets.outputs.hasChangesets == 'false'
-        run: git push --follow-tags

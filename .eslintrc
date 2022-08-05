@@ -4,6 +4,7 @@
   "overrides": [
     {
       "files": [
+        ".github/*.yml",
         "syntaxes/*.json"
       ],
       "rules": {

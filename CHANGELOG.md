@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+### Patch Changes
+
+- [#212](https://github.com/mdx-js/vscode-mdx/pull/212) [`f73d790`](https://github.com/mdx-js/vscode-mdx/commit/f73d790b52cd70b0c984dd956aece5ef848aaf96) Thanks [@JounQin](https://github.com/JounQin)! - docs: change to use transferred publisher
+
 ## 1.0.0
 
 ### Major Changes

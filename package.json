@@ -1,8 +1,8 @@
 {
   "name": "vscode-mdx",
   "version": "1.0.1",
-  "displayName": "VSCode MDX",
-  "description": "Visual Studio Code extension for MDX",
+  "displayName": "MDX",
+  "description": "Language support for MDX",
   "categories": [
     "Programming Languages"
   ],
@@ -44,6 +44,9 @@
     "type": "opencollective",
     "url": "https://opencollective.com/unified"
   },
+  "sponsor": {
+    "url": "https://github.com/mdx-js/vscode-mdx?sponsor=1"
+  },
   "license": "MIT",
   "private": true,
   "packageManager": "yarn@1.22.19",
@@ -60,12 +63,12 @@
     "prepare": "patch-package && simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0"
   },
   "devDependencies": {
-    "@1stg/common-config": "^6.1.4",
+    "@1stg/common-config": "^7.0.0",
     "@changesets/changelog-github": "^0.4.6",
-    "@changesets/cli": "^2.24.2",
+    "@changesets/cli": "^2.24.3",
     "patch-package": "^6.4.7",
     "typescript": "^4.7.4",
-    "yarn-deduplicate": "^5.0.0"
+    "yarn-deduplicate": "^5.0.2"
   },
   "resolutions": {
     "prettier": "^2.7.1"
@@ -141,5 +144,6 @@
         }
       }
     ]
-  }
+  },
+  "qna": "https://github.com/orgs/mdx-js/discussions"
 }

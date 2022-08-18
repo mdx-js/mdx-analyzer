@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+### Patch Changes
+
+- [#214](https://github.com/mdx-js/vscode-mdx/pull/214) [`4275105`](https://github.com/mdx-js/vscode-mdx/commit/4275105e18d61b231ffcc18b23c7b6e827a35283) Thanks [@remcohaszing](https://github.com/remcohaszing)! - chore: update extension metadata content and README
+
 ## 1.0.1
 
 ### Patch Changes

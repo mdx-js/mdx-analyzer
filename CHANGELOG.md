@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3
+
+### Patch Changes
+
+- [#219](https://github.com/mdx-js/vscode-mdx/pull/219) [`46d91dc`](https://github.com/mdx-js/vscode-mdx/commit/46d91dc43e8c862be089cc4aad34ed2dc4336534) Thanks [@grahampcharles](https://github.com/grahampcharles)! - fix: remove superfluous `embeddedLanguages` setting
+
 ## 1.0.2
 
 ### Patch Changes

@@ -1,0 +1,16 @@
+{
+  "name": "@mdx-js/monaco",
+  "version": "0.0.0",
+  "type": "module",
+  "peerDependencies": {
+    "monaco-editor": ">=0.30.0"
+  },
+  "dependencies": {
+    "@mdx-js/language-service": "0.0.0",
+    "monaco-worker-manager": "^2.0.0"
+  },
+  "devDependencies": {
+    "monaco-editor": "^0.34.0",
+    "vite": "^3.0.0"
+  }
+}

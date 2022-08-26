@@ -1,6 +1,11 @@
 {
   "root": true,
   "extends": "@1stg",
+  "rules": {
+    "no-undef": "off",
+    "import/no-unresolved": "off",
+    "jsdoc/no-undefined-types": "off"
+  },
   "overrides": [
     {
       "files": [

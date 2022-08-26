@@ -10,7 +10,29 @@
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}"]
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "${workspaceFolder}/test/fixture.mdx"
+      ],
+      "presentation": {
+        "hidden": true
+      }
+    },
+    {
+      "name": "Debug language server",
+      "type": "node",
+      "request": "attach",
+      "port": 6009,
+      "presentation": {
+        "hidden": true
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "preLaunchTask": "build",
+      "name": "Extension + Language server",
+      "configurations": ["Run Extension", "Debug language server"]
     }
   ]
 }

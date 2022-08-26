@@ -1,0 +1,16 @@
+{
+  "name": "@mdx-js/language-service",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": "./index.js",
+  "dependencies": {
+    "@mdx-js/mdx": "^2.0.0",
+    "remark-mdx": "^2.0.0",
+    "remark-parse": "^10.0.0",
+    "unified": "^10.0.0",
+    "unist-util-lsp": "^1.0.0",
+    "unist-util-visit": "^4.0.0",
+    "vscode-languageserver-textdocument": "^1.0.0",
+    "vscode-languageserver-types": "^3.0.0"
+  }
+}

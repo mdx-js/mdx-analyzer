@@ -1,7 +1,6 @@
 *.log
 *.tsbuildinfo
 .*cache
-!/.vscode
 /.vscode-test
-lib
 node_modules
+/out/

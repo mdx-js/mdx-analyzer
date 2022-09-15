@@ -31,7 +31,7 @@ h1 {
   margin: 0 auto 0 1rem;
 }
 
-nav {
+.navbar {
   align-items: center;
   background: var(--primary-color);
   box-shadow: 0px 5px 5px var(--shadow-color);
@@ -55,8 +55,33 @@ main {
   box-shadow: 0 0 10px var(--shadow-color);
   display: flex;
   flex: 1 1 auto;
-  flex-flow: column;
   margin: 1.5rem;
+}
+
+#files {
+  border-right: 1px solid var(--shadow-color);
+  color: var(--foreground-color);
+  list-style: none;
+  margin: 0;
+  padding: 2rem 0;
+}
+
+#files a {
+  color: var(--foreground-color);
+  display: block;
+  padding: 0.25rem 1rem 0.25rem 0.5rem;
+  text-decoration: none;
+}
+
+#files a:hover,
+#files a:target {
+  background: var(--shadow-color);
+}
+
+.wrapper {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: column;
 }
 
 #schema-selection {

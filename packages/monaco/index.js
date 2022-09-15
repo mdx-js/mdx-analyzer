@@ -10,7 +10,7 @@ import { createLinkProvider } from './lib/language-features.js'
  */
 export function initializeMonacoMDX(monaco) {
   /**
-   * @type {import('monaco-worker-manager').WorkerManager<import('@mdx-js/language-service').MDXLanguageService>}
+   * @type {import('monaco-worker-manager').WorkerManager<import('./mdx.worker.js').MDXWorker>}
    */
   const worker = createWorkerManager(monaco, {
     label: 'mdx',

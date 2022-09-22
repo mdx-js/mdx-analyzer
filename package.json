@@ -63,7 +63,7 @@
     "Markdown React"
   ],
   "scripts": {
-    "build": "esbuild @mdx-js/language-client @mdx-js/language-server --bundle --platform=node --target=node16 --format=cjs --external:vscode --outdir=out",
+    "build": "esbuild @mdx-js/language-client @mdx-js/language-server --bundle --platform=node --target=node16 --format=cjs --external:vscode --external:typescript --outdir=out --sourcemap=inline",
     "lint": "eslint . --cache -f friendly",
     "prepare": "patch-package && simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0",
     "vscode:prepublish": "yarn build --minify"
@@ -72,8 +72,10 @@
     "@1stg/common-config": "^7.1.1",
     "@changesets/changelog-github": "^0.4.6",
     "@changesets/cli": "^2.24.4",
+    "@types/react": "^18.0.20",
     "esbuild": "^0.15.0",
     "patch-package": "^6.4.7",
+    "react": "^18.2.0",
     "typescript": "^4.7.4",
     "yarn-deduplicate": "^5.0.2"
   },
@@ -82,7 +84,8 @@
   },
   "icon": "assets/mdx.png",
   "activationEvents": [
-    "onLanguage:mdx"
+    "onLanguage:mdx",
+    "onLanguage:typescript"
   ],
   "contributes": {
     "languages": [

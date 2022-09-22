@@ -19,8 +19,6 @@
  * @returns {TypeScriptWorkerClass} A custom TypeScript worker which knows how to handle MDX.
  */
 function worker(TypeScriptWorker, _ts, _libFileMap) {
-  console.log(TypeScriptWorker)
-  console.log('Using custom TypeScript worker')
   return class MDXTSWorker extends TypeScriptWorker {
     /**
      * @param {IWorkerContext} ctx
@@ -28,7 +26,6 @@ function worker(TypeScriptWorker, _ts, _libFileMap) {
      */
     constructor(ctx, options) {
       super(ctx, options)
-      console.log(ctx, options)
     }
   }
 }

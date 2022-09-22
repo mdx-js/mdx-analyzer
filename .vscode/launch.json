@@ -12,6 +12,7 @@
       "runtimeExecutable": "${execPath}",
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}",
+        "${workspaceFolder}/test",
         "${workspaceFolder}/test/fixture.mdx"
       ],
       "presentation": {
@@ -25,7 +26,11 @@
       "port": 6009,
       "presentation": {
         "hidden": true
-      }
+      },
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/vscode-*/**"
+      ]
     }
   ],
   "compounds": [

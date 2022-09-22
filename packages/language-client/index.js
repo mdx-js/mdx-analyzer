@@ -20,7 +20,15 @@ export async function activate(context) {
   client = new LanguageClient(
     'MDX',
     { run, debug: { ...run, options: { execArgv: ['--inspect=6009'] } } },
-    { documentSelector: [{ scheme: 'file', language: 'mdx' }] },
+    {
+      documentSelector: [
+        { scheme: 'file', language: 'mdx' },
+        { scheme: 'file', language: 'typescript' },
+        { scheme: 'file', language: 'typescriptreact' },
+        { scheme: 'file', language: 'javascript' },
+        { scheme: 'file', language: 'javascriptreact' },
+      ],
+    },
   )
 
   await client.start()

@@ -29,6 +29,7 @@
     "@typescript-eslint/unbound-method": "off",
     "import/no-unresolved": "off",
     "jsdoc/no-undefined-types": "off",
+    "jsdoc/valid-types": "off",
     "react/react-in-jsx-scope": "off"
   },
   "overrides": [

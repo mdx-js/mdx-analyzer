@@ -1,28 +1,21 @@
-import { createWorkerManager } from 'monaco-worker-manager'
-
-import { createLinkProvider } from './lib/language-features.js'
+import {
+  createDefinitionProvider,
+  createHoverProvider,
+} from './lib/language-features.js'
 
 /**
  * Initialize MDX intellisense for MDX.
  *
- * @param {typeof import('monaco-editor')} monaco The Monaco editor  module.
+ * @param {typeof import('monaco-editor')} monaco The Monaco editor module.
  * @returns {import('monaco-editor').IDisposable} A disposable.
  */
 export function initializeMonacoMDX(monaco) {
-  /**
-   * @type {import('monaco-worker-manager').WorkerManager<import('./mdx.worker.js').MDXWorker>}
-   */
-  const worker = createWorkerManager(monaco, {
-    label: 'mdx',
-    moduleId: '@mdx-js/monaco',
-  })
-
   const disposables = [
-    worker,
     monaco.languages.registerDefinitionProvider(
       'mdx',
-      createLinkProvider(monaco, worker.getWorker),
+      createDefinitionProvider(monaco),
     ),
+    monaco.languages.registerHoverProvider('mdx', createHoverProvider(monaco)),
   ]
 
   return {

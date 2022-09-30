@@ -5,6 +5,7 @@
     "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
+    "types": ["node", "typescript/lib/typescriptServices"],
     "paths": {
       "@mdx-js/language-service": ["../language-service/index.js"],
       "@mdx-js/monaco": ["./index.js"]

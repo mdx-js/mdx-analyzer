@@ -21,10 +21,6 @@ window.MonacoEnvironment = {
             import.meta.url,
           ),
         )
-      case 'mdx':
-        return new Worker(
-          new URL('@mdx-js/monaco/mdx.worker.js', import.meta.url),
-        )
       default:
         throw new Error(`Unsupported worker label: ${label}`)
     }
@@ -47,23 +43,47 @@ const element = /** @type {HTMLDivElement} */ (
 )
 
 const model = monaco.editor.createModel(
-  //   `import { MyComponent } from 'my-library'
-  // import { sum } from './sum.ts'
+  `import { sum } from './sum.js'
 
-  // MDX combines markdown and JSX
+MDX combines markdown and JSX
 
-  // {sum([1, 2])}
+{sum([1, 2])}
 
-  // # Hello
+# Hello
 
-  // This is a [link][mdx]
+This is a [link][mdx]
 
-  // // This is JSX
-  // <MyComponent />
+// This is JSX
+<MyComponent />
 
-  // [mdx]: https://mdx-js.com
-  // `,
-  `import { sum } from './sum'
+{/**
+  * This function renders a React element.
+  */}
+export function MyComponent() {
+  return <div>Hello intellisense!</div>
+}
+
+export function WithLayout(props) {
+  return <MDXContent {...props} />
+}
+
+<div>
+
+  This is markdown content
+
+  Hello {props.name}
+
+</div>
+
+Hello {props.name}
+
+[mdx]: https://mdx-js.com
+
+{/**
+  * @typedef {object} Props
+  * @property {string} name
+  * The name to display.
+  */}
 `,
   undefined,
   monaco.Uri.parse('file:///document.mdx'),

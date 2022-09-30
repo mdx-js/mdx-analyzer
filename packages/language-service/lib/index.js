@@ -16,7 +16,7 @@
  * @typedef {object} MDXLanguageService
  * @property {(document: TextDocument, position: Position) => LocationLink[]} doLocationLinks
  * Provide document links
- * @property {(document: TextDocument, position: Position) => Hover} doHover
+ * @property {(document: TextDocument, position: Position) => Hover | undefined} doHover
  * Provide document hovers
  */
 

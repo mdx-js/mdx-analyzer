@@ -1,5 +1,10 @@
+import { fileURLToPath } from 'node:url'
+
 import HtmlWebPackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+
+const monacoUnified = new URL('../../', import.meta.url)
+const nodeModules = new URL('node_modules/', monacoUnified)
 
 /**
  * @type {import('webpack').Configuration}
@@ -11,7 +16,16 @@ export default {
     main: './src/index.js',
     'custom.worker': './src/custom.worker.js',
   },
+  resolve: {
+    alias: {
+      'decode-named-character-reference': fileURLToPath(
+        new URL('decode-named-character-reference/index.js', nodeModules),
+      ),
+    },
+  },
   module: {
+    exprContextRegExp: /$^/,
+    exprContextCritical: false,
     rules: [
       {
         test: /\.css$/,

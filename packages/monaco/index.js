@@ -1,6 +1,10 @@
+import { registerMarkerDataProvider } from 'monaco-marker-data-provider'
+
 import {
   createDefinitionProvider,
   createHoverProvider,
+  createMarkerDataProvider,
+  createReferenceProvider,
 } from './lib/language-features.js'
 
 /**
@@ -16,6 +20,11 @@ export function initializeMonacoMDX(monaco) {
       createDefinitionProvider(monaco),
     ),
     monaco.languages.registerHoverProvider('mdx', createHoverProvider(monaco)),
+    monaco.languages.registerReferenceProvider(
+      'mdx',
+      createReferenceProvider(monaco),
+    ),
+    registerMarkerDataProvider(monaco, 'mdx', createMarkerDataProvider(monaco)),
   ]
 
   return {

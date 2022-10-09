@@ -27,6 +27,11 @@ window.MonacoEnvironment = {
   },
 }
 
+monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+  checkJs: true,
+  moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+})
+
 monaco.languages.typescript.typescriptDefaults.setWorkerOptions({
   customWorkerPath: './custom.worker.js',
 })
@@ -193,3 +198,29 @@ monaco.editor.onDidChangeMarkers(([resource]) => {
     updateMarkers(resource)
   }
 })
+
+/**
+ * @typedef {object} EditorService
+ * @property {(input: { resource: monaco.Uri }, source: monaco.editor.IStandaloneCodeEditor) => Promise<unknown>} openCodeEditor
+ * Resolve a reference.
+ */
+
+// @ts-expect-error This API isn’t officially exposed.
+// https://github.com/microsoft/monaco-editor/issues/2000
+const editorService = /** @type {EditorService} */ (editor._codeEditorService)
+const openEditorBase = editorService.openCodeEditor.bind(editorService)
+
+editorService.openCodeEditor =
+  /**
+   * @param {{ resource: monaco.Uri }} input
+   * @param {monaco.editor.IStandaloneCodeEditor} source
+   */
+  async (input, source) => {
+    const result = await openEditorBase(input, source)
+
+    if (!result) {
+      location.hash = input.resource.path.slice(1)
+    }
+
+    return result
+  }

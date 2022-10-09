@@ -6,6 +6,7 @@
  * @typedef {import('mdast-util-mdx').MdxFlowExpression} MdxFlowExpression
  * @typedef {import('mdast-util-mdx').MdxJsxAttribute} MdxJsxAttribute
  * @typedef {import('mdast-util-mdx').MdxTextExpression} MdxTextExpression
+ * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
  * @typedef {import('unified').Processor<Root>} Processor
  * @typedef {import('unist').Node} Node
  * @typedef {import('unist').Parent} Parent
@@ -191,21 +192,43 @@ export function mdxToJsx(mdx, processor) {
 
 /**
  * @param {string} tsCode
- * @param {number} offset
+ * @param {number} position
  * @returns {number} XXX
  */
-export function toOriginalPosition(tsCode, offset) {
-  if (offset < tsCode.length) {
-    return offset
+export function toOriginalPosition(tsCode, position) {
+  if (position < tsCode.length) {
+    return position
   }
-  return offset - tsCode.length - componentStart.length
+  return position - tsCode.length - componentStart.length
 }
 
 /**
  * @param {string} tsCode
- * @param {number} offset
+ * @param {number} position
  * @returns {number} XXX
  */
-export function toJSXPosition(tsCode, offset) {
-  return offset + tsCode.length + componentStart.length
+export function toJSXPosition(tsCode, position) {
+  return position + tsCode.length + componentStart.length
+}
+
+/**
+ * @param {IScriptSnapshot} snapshot A snapshot of the original source code.
+ * @param {number} position The position of the incoming request.
+ * @returns {number} The position mapped to the JSX part of the shadowed code.
+ */
+export function getJSXPosition(snapshot, position) {
+  return position + componentStart.length + snapshot.getLength()
+}
+
+/**
+ * @param {IScriptSnapshot} snapshot A snapshot of the original source code.
+ * @param {number} position The position inside the shadowed code.
+ * @returns {number} The position mapped back to the original source code.
+ */
+export function getOriginalPosition(snapshot, position) {
+  const originalLength = snapshot.getLength()
+  if (position < originalLength) {
+    return position
+  }
+  return position - originalLength - componentStart.length
 }

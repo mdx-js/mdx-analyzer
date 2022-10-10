@@ -48,13 +48,27 @@ const element = /** @type {HTMLDivElement} */ (
 )
 
 const model = monaco.editor.createModel(
-  `import { sum } from './sum.js'
+  `import { Avatar } from './avatar.js'
+import { sum } from './sum.js'
+
+{/**
+  * @typedef {object} Props
+  * @property {number} age
+  * The age of the user.
+  * @property {string} name
+  * The name to display.
+  * @property {string} avatar
+  * The avatar to display.
+  */}
+
+<Avatar src={props.age} />
+
+# Hello
 
 MDX combines markdown and JSX
 
-{sum([1, 2])}
+{sum(['1', 2])}
 
-# Hello
 
 This is a [link][mdx]
 
@@ -68,6 +82,9 @@ export function MyComponent() {
   return <div>Hello intellisense!</div>
 }
 
+{/**
+  * @param {Props} props
+  */}
 export function WithLayout(props) {
   return <MDXContent {...props} />
 }
@@ -84,11 +101,6 @@ Hello {props.name}
 
 [mdx]: https://mdx-js.com
 
-{/**
-  * @typedef {object} Props
-  * @property {string} name
-  * The name to display.
-  */}
 `,
   undefined,
   monaco.Uri.parse('file:///document.mdx'),
@@ -127,6 +139,18 @@ export function sum(numbers: number[]): number {
 `,
     undefined,
     monaco.Uri.parse('file:///sum.ts'),
+  ),
+  monaco.editor.createModel(
+    `interface AvatarProps {
+  src: string;
+}
+
+export function Avatar({ src }: AvatarProps) {
+  return <img src={src} />
+}
+`,
+    undefined,
+    monaco.Uri.parse('file:///avatar.tsx'),
   ),
 ]
 

@@ -20,7 +20,9 @@ import { visit } from 'unist-util-visit'
 
 const componentStart = `
 /**
- * @param {Props} props The props that have been passed to the MDX component.
+ * Render the MDX contents.
+ *
+ * @param {MDXContentProps} props The props that have been passed to the MDX component.
  */
 export default function MDXContent(props) {
   return <>
@@ -28,6 +30,9 @@ export default function MDXContent(props) {
 const componentEnd = `
   </>
 }
+
+// @ts-ignore
+/** @typedef {Props} MDXContentProps */
 `
 
 const whitespaceRegex = /\s/u
@@ -52,7 +57,7 @@ function shouldShow(positions, index) {
   }
 
   positions.shift()
-  return false
+  return shouldShow(positions, index)
 }
 
 /**

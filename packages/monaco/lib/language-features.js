@@ -2,6 +2,8 @@
  * @typedef {import('monaco-editor').editor.IMarkerData} IMarkerData
  * @typedef {import('monaco-editor').editor.IRelatedInformation} IRelatedInformation
  * @typedef {import('monaco-editor').editor.ITextModel} ITextModel
+ * @typedef {import('monaco-editor').languages.typescript.Diagnostic} Diagnostic
+ * @typedef {import('monaco-editor').languages.typescript.DiagnosticRelatedInformation} DiagnosticRelatedInformation
  * @typedef {import('monaco-editor').languages.ILink} ILink
  * @typedef {import('monaco-editor').languages.Location} Location
  * @typedef {import('monaco-editor').IRange} IRange
@@ -85,8 +87,8 @@ export function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
 
 /**
  * @param {ITextModel} model
- * @param {ts.DiagnosticRelatedInformation[]} [relatedInformation]
- * @returns {IRelatedInformation[]}
+ * @param {DiagnosticRelatedInformation[]} [relatedInformation]
+ * @returns {IRelatedInformation[]} TypeScript diagnostic related information as Monaco related information.
  */
 function convertRelatedInformation(model, relatedInformation) {
   if (!relatedInformation) {
@@ -105,6 +107,7 @@ function convertRelatedInformation(model, relatedInformation) {
       continue
     }
     const infoStart = info.start || 0
+    // eslint-disable-next-line unicorn/explicit-length-check
     const infoLength = info.length || 1
     const { lineNumber: startLineNumber, column: startColumn } =
       relatedResource.getPositionAt(infoStart)
@@ -126,7 +129,7 @@ function convertRelatedInformation(model, relatedInformation) {
 /**
  * @param {typeof import('monaco-editor')} monaco
  * @param {ts.DiagnosticCategory} category
- * @returns {MarkerSeverity}
+ * @returns {MarkerSeverity} TypeScript diagnostic severity as Monaco marker severity.
  */
 function tsDiagnosticCategoryToMarkerSeverity(monaco, category) {
   switch (category) {
@@ -143,11 +146,12 @@ function tsDiagnosticCategoryToMarkerSeverity(monaco, category) {
 /**
  * @param {typeof import('monaco-editor')} monaco
  * @param {ITextModel} model
- * @param {ts.Diagnostic} diag
- * @returns {IMarkerData}
+ * @param {Diagnostic} diag
+ * @returns {IMarkerData} The TypeScript diagnostic converted to Monaco marker data.
  */
 function convertDiagnostics(monaco, model, diag) {
   const diagStart = diag.start || 0
+  // eslint-disable-next-line unicorn/explicit-length-check
   const diagLength = diag.length || 1
   const { lineNumber: startLineNumber, column: startColumn } =
     model.getPositionAt(diagStart)
@@ -273,15 +277,19 @@ export function createMarkerDataProvider(monaco) {
 
     async provideMarkerData(model) {
       const worker = await getWorker(monaco, model)
-      const diagnostics = await worker.getSemanticDiagnostics(String(model.uri))
+      const uri = String(model.uri)
+      const diagnostics = await Promise.all([
+        worker.getSemanticDiagnostics(uri),
+        worker.getSuggestionDiagnostics(uri),
+      ])
 
       if (model.isDisposed()) {
         return
       }
 
-      return diagnostics.map(diagnostic =>
-        convertDiagnostics(monaco, model, diagnostic),
-      )
+      return diagnostics
+        .flat()
+        .map(diagnostic => convertDiagnostics(monaco, model, diagnostic))
     },
   }
 }

@@ -155,7 +155,20 @@ export function createMDXLanguageService(ts, host, processor) {
    * @param {Diagnostic} diagnostic
    */
   function patchDiagnostic(diagnostic) {
-    console.log(diagnostic)
+    const fileName = diagnostic.file?.fileName
+    if (!fileName || !isMdx(fileName)) {
+      return
+    }
+
+    const snapshot = host.getScriptSnapshot(fileName)
+
+    if (!snapshot) {
+      return
+    }
+
+    if (diagnostic.start != null) {
+      diagnostic.start = getOriginalPosition(snapshot, diagnostic.start)
+    }
   }
 
   /**
@@ -164,7 +177,6 @@ export function createMDXLanguageService(ts, host, processor) {
   function patchDiagnosticsWithLocation(diagnostics) {
     for (const diagnostic of diagnostics) {
       patchDiagnostic(diagnostic)
-      console.log(diagnostic)
     }
   }
 
@@ -645,8 +657,6 @@ export function createMDXLanguageService(ts, host, processor) {
     getSemanticDiagnostics(fileName) {
       const diagnostics = ls.getSemanticDiagnostics(fileName)
 
-      console.log(diagnostics)
-
       for (const diagnostic of diagnostics) {
         patchDiagnostic(diagnostic)
       }
@@ -681,11 +691,13 @@ export function createMDXLanguageService(ts, host, processor) {
     },
 
     getSuggestionDiagnostics(fileName) {
-      if (!isMdx(fileName)) {
-        return ls.getSuggestionDiagnostics(fileName)
+      const diagnostics = ls.getSuggestionDiagnostics(fileName)
+
+      for (const diagnostic of diagnostics) {
+        patchDiagnostic(diagnostic)
       }
 
-      throw new Error('getSuggestionDiagnostics is not supported for MDX files')
+      return diagnostics
     },
 
     getSyntacticClassifications(fileName, span) {

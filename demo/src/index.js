@@ -13,6 +13,13 @@ window.MonacoEnvironment = {
             import.meta.url,
           ),
         )
+      case 'json':
+        return new Worker(
+          new URL(
+            'monaco-editor/esm/vs/language/json/json.worker.js',
+            import.meta.url,
+          ),
+        )
       case 'javascript':
       case 'typescript':
         return new Worker(
@@ -20,6 +27,10 @@ window.MonacoEnvironment = {
             'monaco-editor/esm/vs/language/typescript/ts.worker.js',
             import.meta.url,
           ),
+        )
+      case 'mdx':
+        return new Worker(
+          new URL('@mdx-js/monaco/mdx.worker.js', import.meta.url),
         )
       default:
         throw new Error(`Unsupported worker label: ${label}`)
@@ -33,7 +44,7 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
 })
 
 monaco.languages.typescript.typescriptDefaults.setWorkerOptions({
-  customWorkerPath: './custom.worker.js',
+  customWorkerPath: './mdx.override.js',
 })
 
 monaco.languages.register({
@@ -43,123 +54,53 @@ monaco.languages.register({
 
 initializeMonacoMDX(monaco)
 
+const fileTree = /** @type {HTMLElement} */ (document.querySelector('#files'))
+monaco.editor.onDidCreateModel(model => {
+  const path = model.uri.path
+  const anchor = document.createElement('a')
+  anchor.id = path
+  anchor.href = `#${path}`
+  anchor.textContent = path.slice(1)
+  fileTree.append(anchor)
+})
+
+const rootUri = monaco.Uri.parse('file:///')
+
+/**
+ * @param {string} path
+ * @param {string} value
+ */
+function createFile(path, value) {
+  const uri = monaco.Uri.joinPath(rootUri, path)
+  monaco.editor.createModel(value, undefined, uri)
+}
+
+const context =
+  /** @type {(path: string) => __WebpackModuleApi.RequireContext} */ (
+    import.meta.webpackContext
+  )('../../test')
+
+for (const key of context.keys().sort()) {
+  createFile(key, context(key))
+}
+
 const element = /** @type {HTMLDivElement} */ (
   document.querySelector('#editor')
 )
 
-const model = monaco.editor.createModel(
-  `import { Avatar } from './avatar.js'
-import { sum } from './sum.js'
-
-{/**
-  * @typedef {object} Props
-  * @property {number} age
-  * The age of the user.
-  * @property {string} name
-  * The name to display.
-  * @property {string} avatar
-  * The avatar to display.
-  */}
-
-<Avatar src={props.age} />
-
-# Hello
-
-MDX combines markdown and JSX
-
-{sum(['1', 2])}
-
-
-This is a [link][mdx]
-
-// This is JSX
-<MyComponent />
-
-{/**
-  * This function renders a React element.
-  */}
-export function MyComponent() {
-  return <div>Hello intellisense!</div>
-}
-
-{/**
-  * @param {Props} props
-  */}
-export function WithLayout(props) {
-  return <MDXContent {...props} />
-}
-
-<div>
-
-  This is markdown content
-
-  Hello {props.name}
-
-</div>
-
-Hello {props.name}
-
-[mdx]: https://mdx-js.com
-
-`,
-  undefined,
-  monaco.Uri.parse('file:///document.mdx'),
-)
-
-const models = [
-  monaco.editor.createModel(
-    `
-/**
- * Add two numbers together.
- */
-export function add(a: number, b: number): number {
-  return a + b
-}
-`,
-    undefined,
-    monaco.Uri.parse('file:///add.ts'),
-  ),
-  model,
-  monaco.editor.createModel(
-    `
-import { add } from './add'
-
-/**
- * Create a sum of all numbers
- */
-export function sum(numbers: number[]): number {
-  let total = 0
-
-  for(const number of numbers) {
-    total = add(total, number)
-  }
-
-  return total
-}
-`,
-    undefined,
-    monaco.Uri.parse('file:///sum.ts'),
-  ),
-  monaco.editor.createModel(
-    `interface AvatarProps {
-  src: string;
-}
-
-export function Avatar({ src }: AvatarProps) {
-  return <img src={src} />
-}
-`,
-    undefined,
-    monaco.Uri.parse('file:///avatar.tsx'),
-  ),
-]
-
 function getModel() {
-  return (
-    models.find(
-      model => model.uri.path.slice(1) === window.location.hash.slice(1),
-    ) || model
-  )
+  const hash = window.location.hash.slice(1)
+  const models = monaco.editor.getModels()
+  let mdxModel
+  for (const model of models) {
+    if (model.uri.path === hash) {
+      return model
+    }
+    if (model.uri.path.endsWith('.mdx')) {
+      mdxModel = model
+    }
+  }
+  return /** @type {monaco.editor.ITextModel} */ (mdxModel)
 }
 
 const editor = monaco.editor.create(element, {
@@ -243,7 +184,7 @@ editorService.openCodeEditor =
     const result = await openEditorBase(input, source)
 
     if (!result) {
-      location.hash = input.resource.path.slice(1)
+      location.hash = input.resource.path
     }
 
     return result

@@ -4,10 +4,7 @@
  * @typedef {import('monaco-editor').editor.ITextModel} ITextModel
  * @typedef {import('monaco-editor').languages.typescript.Diagnostic} Diagnostic
  * @typedef {import('monaco-editor').languages.typescript.DiagnosticRelatedInformation} DiagnosticRelatedInformation
- * @typedef {import('monaco-editor').languages.ILink} ILink
  * @typedef {import('monaco-editor').languages.Location} Location
- * @typedef {import('monaco-editor').IRange} IRange
- * @typedef {import('monaco-editor').IPosition} IPosition
  * @typedef {import('monaco-editor').MarkerSeverity} MarkerSeverity
  * @typedef {import('monaco-editor').MarkerTag} MarkerTag
  */

@@ -50,6 +50,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
+    "demo",
     "packages/*"
   ],
   "packageManager": "yarn@1.22.19",
@@ -66,6 +67,7 @@
     "build": "esbuild @mdx-js/language-client @mdx-js/language-server --bundle --platform=node --target=node16 --format=cjs --external:vscode --external:typescript --outdir=out --sourcemap=inline",
     "lint": "eslint . --cache -f friendly",
     "prepare": "patch-package && simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0",
+    "start": "yarn workspace @mdx-js/monaco-demo run start",
     "vscode:prepublish": "yarn build --minify"
   },
   "devDependencies": {

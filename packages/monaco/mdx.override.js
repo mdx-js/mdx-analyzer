@@ -8,10 +8,10 @@
 
 /**
  * @typedef {object} Options
- * @property {CompilerOptions} compilerOptions XXX
- * @property {string} customWorkerPath XXX
- * @property {IExtraLibs} extraLibs XXX
- * @property {InlayHintsOptions} inlayHintsOptions XXX
+ * @property {CompilerOptions} compilerOptions The TypeScript compiler options configured by the user.
+ * @property {string} customWorkerPath The path to a custom worker.
+ * @property {IExtraLibs} extraLibs Additional libraries to load.
+ * @property {InlayHintsOptions} inlayHintsOptions The TypeScript inlay hints options.
  */
 
 /**
@@ -23,21 +23,13 @@ import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import { unified } from 'unified'
 
-self.addEventListener('message', event => {
-  if (Array.isArray(event.data.args)) {
-    console.log(...event.data.args)
-  }
-})
-
 const remark = unified().use(remarkParse).use(remarkMdx)
 
 /**
  * @param {TypeScriptWorkerClass} TypeScriptWorker
- * @param {typeof ts} _ts
- * @param {Record<string, string>} _libFileMap
  * @returns {TypeScriptWorkerClass} A custom TypeScript worker which knows how to handle MDX.
  */
-function worker(TypeScriptWorker, _ts, _libFileMap) {
+function worker(TypeScriptWorker) {
   return class MDXWorker extends TypeScriptWorker {
     _languageService = createMDXLanguageService(ts, this, remark)
   }

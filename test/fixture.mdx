@@ -1,15 +1,80 @@
-import { Profile } from './profile.js'
+# MDX intellisense
+
+## What is MDX?
+
+[MDX][mdx] allows you to write JSX and ESM inside your markdown. This means you
+can use the full power of a framework like [React](https://reactjs.org) while
+you focus on content. 🤯
+
+### Markdown
+
+Because MDX is based on markdown, you can leverage the full power of markdown, such as 
+
+- lists
+- `code`
+- _italic_
+- and **bold** markup.
+
+### Imports
+
+For example, you can write JavaScript imports and exports like so:
+
+import { Avatar } from './components/Avatar.js'
 
 export const meta = {
   title: 'Blog Post',
 }
 
+You can even declare functions
+
+export function sayHi() {
+  console.log('Hello from MDX!')
+}
+
+### JavaScript expressions and JSX
+
+The real power of MDX is the power to mix markdown with JavaScript and JSX.
+
+For example, the following will render an avatar.
+
+<Avatar
+  avatar={props.avatar}
+  name={props.name}
+/>
+
+And everyone likes {Math.PI} 🥧.
+
+## Intellisense
+
+Ok cool, we now understand the basics of MDX. I like a smart editor. How do we get that to work?
+
+Well, MDX supports comments too. {/** This comment is ignored */}
+
+MDX leverages TypeScript’s [JSDoc types](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html)
+to provide intellisense.
+
+To get type safety for props, define the `Props` type.
+
 {/**
   * @typedef {object} Props
+  * @property {string} avatar
+  * A link to the user’s profile image
   * @property {string} name
-  * The name to display
+  * The user’s display name.
+  * @property {Date} birthdate
+  * When the user was born.
   */}
 
-Hello {props.name}
+If you hover over the props below, you’ll see the types are checked.
 
-<Profile />
+<Avatar
+  avatar={props.avatar}
+  birthdate={props.birthdate}
+  name={props.name}
+/>
+
+Born: {props.birthdate}
+
+Also {props.invalidProps} will be marked as such.
+
+[mdx]: https://mdx-js.com

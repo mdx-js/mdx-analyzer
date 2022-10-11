@@ -3,8 +3,8 @@ import { fileURLToPath } from 'node:url'
 import HtmlWebPackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
-const monacoUnified = new URL('../../', import.meta.url)
-const nodeModules = new URL('node_modules/', monacoUnified)
+const projectRoot = new URL('../', import.meta.url)
+const nodeModules = new URL('node_modules/', projectRoot)
 
 /**
  * @type {import('webpack').Configuration}
@@ -14,7 +14,9 @@ export default {
   mode: 'development',
   entry: {
     main: './src/index.js',
-    'custom.worker': './src/custom.worker.js',
+    'mdx.override': fileURLToPath(
+      new URL('@mdx-js/monaco/mdx.override.js', nodeModules),
+    ),
   },
   resolve: {
     alias: {
@@ -34,6 +36,10 @@ export default {
       {
         test: /\.(svg|ttf)$/,
         type: 'asset/resource',
+      },
+      {
+        test: /\/test\//,
+        type: 'asset/source',
       },
     ],
   },

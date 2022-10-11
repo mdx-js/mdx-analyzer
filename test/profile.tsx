@@ -2,7 +2,7 @@ interface ProfileProps {
   /**
    * How old fhe person is in years.
    */
-  age: number;
+  age: number
 
   /**
    * The display name of the user.
@@ -13,7 +13,7 @@ interface ProfileProps {
    *
    * @deprecated asd
    */
-  name: string;
+  name: string
 }
 
 /**

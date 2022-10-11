@@ -5,6 +5,8 @@ import ts from 'typescript'
 import { unified } from 'unified'
 import {
   createConnection,
+  LocationLink,
+  MarkupKind,
   ProposedFeatures,
   Range,
   TextDocuments,
@@ -16,7 +18,7 @@ const processor = unified().use(remarkParse).use(remarkMdx)
 const connection = createConnection(ProposedFeatures.all)
 const documents = new TextDocuments(TextDocument)
 /** @type {ts.LanguageService} */
-let languageService
+let ls
 
 /**
  * @param {ts.SymbolDisplayPart[] | undefined} displayParts
@@ -59,26 +61,18 @@ function textSpanToRange(doc, span) {
 }
 
 connection.onInitialize(() => {
-  languageService = createMDXLanguageService(
+  ls = createMDXLanguageService(
     ts,
     {
-      readFile(filename) {
-        return ts.sys.readFile(filename)
-      },
+      readFile: ts.sys.readFile,
       writeFile: ts.sys.writeFile,
       directoryExists: ts.sys.directoryExists,
       getDirectories: ts.sys.getDirectories,
       readDirectory: ts.sys.readDirectory,
       realpath: ts.sys.realpath,
-      fileExists(filename) {
-        return ts.sys.fileExists(filename)
-      },
+      fileExists: ts.sys.fileExists,
       getCompilationSettings() {
-        return {
-          allowJs: true,
-          jsx: ts.JsxEmit.Preserve,
-          allowNonTsExtensions: true,
-        }
+        return {}
       },
       getCurrentDirectory() {
         return process.cwd()
@@ -117,10 +111,32 @@ connection.onDefinition(params => {
   const doc = documents.get(params.textDocument.uri)
 
   if (!doc) {
-    return []
+    return
   }
 
-  return languageService.doLocationLinks(doc, params.position)
+  const entries = ls.getDefinitionAtPosition(
+    doc.uri,
+    doc.offsetAt(params.position),
+  )
+
+  if (!entries) {
+    return
+  }
+
+  /** @type {LocationLink[]} */
+  const result = []
+  for (const entry of entries) {
+    if (entry.fileName === doc.uri) {
+      result.push(
+        LocationLink.create(
+          entry.fileName,
+          textSpanToRange(doc, entry.textSpan),
+          textSpanToRange(doc, entry.textSpan),
+        ),
+      )
+    }
+  }
+  return result
 })
 
 connection.onHover(params => {
@@ -130,10 +146,7 @@ connection.onHover(params => {
     return
   }
 
-  const info = languageService.getQuickInfoAtPosition(
-    doc.uri,
-    doc.offsetAt(params.position),
-  )
+  const info = ls.getQuickInfoAtPosition(doc.uri, doc.offsetAt(params.position))
 
   if (!info) {
     return
@@ -147,14 +160,15 @@ connection.onHover(params => {
 
   return {
     range: textSpanToRange(doc, info.textSpan),
-    contents: [
-      {
-        value: '```typescript\n' + contents + '\n```\n',
-      },
-      {
-        value: documentation + (tags ? '\n\n' + tags : ''),
-      },
-    ],
+    contents: {
+      kind: MarkupKind.Markdown,
+      value:
+        '```typescript\n' +
+        contents +
+        '\n```\n' +
+        documentation +
+        (tags ? '\n\n' + tags : ''),
+    },
   }
 })
 

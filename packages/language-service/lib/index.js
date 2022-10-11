@@ -6,11 +6,18 @@
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
  * @typedef {import('typescript').LanguageService} LanguageService
  * @typedef {import('typescript').LanguageServiceHost} LanguageServiceHost
+ * @typedef {import('typescript').SymbolDisplayPart} SymbolDisplayPart
  * @typedef {import('typescript').TextSpan} TextSpan
  * @typedef {import('unified').Processor<Root>} Processor
  */
 
-import { getJSXPosition, getOriginalPosition, mdxToJsx } from './utils.js'
+import { getMarkdownDefinitionAtPosition } from './markdown.js'
+import {
+  getJSXPosition,
+  getOriginalPosition,
+  mdxToJsx,
+  unistPositionToTextSpan,
+} from './utils.js'
 
 /**
  * @param {string} fileName
@@ -383,9 +390,34 @@ export function createMDXLanguageService(ts, host, processor) {
 
       if (definition) {
         patchDocumentSpans(definition)
+      } else {
+        definition = []
       }
 
-      return definition
+      if (!isMdx(fileName)) {
+        return definition
+      }
+
+      const node = getMarkdownDefinitionAtPosition(
+        processor.parse(snapshot.getText(0, snapshot.getLength())),
+        position,
+      )
+
+      if (!node?.position) {
+        return definition
+      }
+
+      return [
+        ...definition,
+        {
+          textSpan: unistPositionToTextSpan(node.position),
+          fileName,
+          kind: ts.ScriptElementKind.linkName,
+          name: fileName,
+          containerKind: ts.ScriptElementKind.linkName,
+          containerName: fileName,
+        },
+      ]
     },
 
     getDocCommentTemplateAtPosition(fileName, position, options) {
@@ -618,20 +650,47 @@ export function createMDXLanguageService(ts, host, processor) {
 
       if (quickInfo) {
         patchTextSpan(fileName, snapshot, quickInfo.textSpan)
+        return quickInfo
       }
 
-      return quickInfo
+      const node = getMarkdownDefinitionAtPosition(
+        processor.parse(snapshot.getText(0, snapshot.getLength())),
+        position,
+      )
+
+      if (!node?.position) {
+        return
+      }
+
+      /** @type {import('typescript').SymbolDisplayPart[]} */
+      const displayParts = [
+        { text: '[', kind: 'punctuation' },
+        { text: node.identifier, kind: 'aliasName' },
+        { text: ']', kind: 'punctuation' },
+        { text: ':', kind: 'punctuation' },
+        { text: ' ', kind: 'space' },
+        { text: node.url, kind: 'aliasName' },
+      ]
+      if (node.title) {
+        displayParts.push(
+          { text: ' ', kind: 'space' },
+          { text: JSON.stringify(node.title), kind: 'stringLiteral' },
+        )
+      }
+      return {
+        kind: ts.ScriptElementKind.linkName,
+        kindModifiers: 'asd',
+        textSpan: unistPositionToTextSpan(node.position),
+        displayParts,
+      }
     },
 
     getReferencesAtPosition(fileName, position) {
       const referenceEntries = ls.getReferencesAtPosition(fileName, position)
 
-      console.log(referenceEntries)
-
       if (referenceEntries) {
         patchDocumentSpans(referenceEntries)
       }
-      console.log(referenceEntries)
 
       return referenceEntries
     },

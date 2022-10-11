@@ -7,9 +7,11 @@
  * @typedef {import('mdast-util-mdx').MdxJsxAttribute} MdxJsxAttribute
  * @typedef {import('mdast-util-mdx').MdxTextExpression} MdxTextExpression
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
+ * @typedef {import('typescript').TextSpan} TextSpan
  * @typedef {import('unified').Processor<Root>} Processor
  * @typedef {import('unist').Node} Node
  * @typedef {import('unist').Parent} Parent
+ * @typedef {import('unist').Position} Position
  */
 
 /**
@@ -236,4 +238,19 @@ export function getOriginalPosition(snapshot, position) {
     return position
   }
   return position - originalLength - componentStart.length
+}
+
+/**
+ * Represent a unist position as a TypeScript text span.
+ *
+ * @param {Position} position The unist position to represent.
+ * @returns {TextSpan} The input position as a text span.
+ */
+export function unistPositionToTextSpan(position) {
+  return {
+    start: /** @type {number} */ (position.start.offset),
+    length:
+      /** @type {number} */ (position.end.offset) -
+      /** @type {number} */ (position.start.offset),
+  }
 }

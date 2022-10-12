@@ -8,8 +8,12 @@
  * @typedef {import('typescript').LanguageServiceHost} LanguageServiceHost
  * @typedef {import('typescript').SymbolDisplayPart} SymbolDisplayPart
  * @typedef {import('typescript').TextSpan} TextSpan
- * @typedef {import('unified').Processor<Root>} Processor
+ * @typedef {import('unified').PluggableList} PluggableList
  */
+
+import remarkMdx from 'remark-mdx'
+import remarkParse from 'remark-parse'
+import { unified } from 'unified'
 
 import { getMarkdownDefinitionAtPosition } from './markdown.js'
 import {
@@ -41,10 +45,15 @@ function patchTextSpan(fileName, snapshot, textSpan) {
 /**
  * @param {import('typescript')} ts
  * @param {LanguageServiceHost} host
- * @param {Processor} processor
+ * @param {PluggableList} [plugins]
  * @returns {LanguageService} XXX
  */
-export function createMDXLanguageService(ts, host, processor) {
+export function createMDXLanguageService(ts, host, plugins) {
+  const processor = unified().use(remarkParse).use(remarkMdx)
+  if (plugins) {
+    processor.use(plugins)
+  }
+
   /** @type {LanguageServiceHost} */
   const internalHost = {
     fileExists: host.fileExists.bind(host),

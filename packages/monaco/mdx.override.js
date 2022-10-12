@@ -19,11 +19,6 @@
  */
 
 import { createMDXLanguageService } from '@mdx-js/language-service'
-import remarkMdx from 'remark-mdx'
-import remarkParse from 'remark-parse'
-import { unified } from 'unified'
-
-const remark = unified().use(remarkParse).use(remarkMdx)
 
 /**
  * @param {TypeScriptWorkerClass} TypeScriptWorker
@@ -31,7 +26,7 @@ const remark = unified().use(remarkParse).use(remarkMdx)
  */
 function worker(TypeScriptWorker) {
   return class MDXWorker extends TypeScriptWorker {
-    _languageService = createMDXLanguageService(ts, this, remark)
+    _languageService = createMDXLanguageService(ts, this)
   }
 }
 

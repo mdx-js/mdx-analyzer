@@ -125,7 +125,6 @@ function findLastOffset(node) {
  * @param {Processor} processor
  * @returns {string} JavaScript code that matches the MDX code, but shadowed.
  */
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export function mdxToJsx(mdx, processor) {
   const ast = processor.parse(mdx)
 

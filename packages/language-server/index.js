@@ -1,8 +1,5 @@
 import { createMDXLanguageService } from '@mdx-js/language-service'
-import remarkMdx from 'remark-mdx'
-import remarkParse from 'remark-parse'
 import ts from 'typescript'
-import { unified } from 'unified'
 import {
   createConnection,
   LocationLink,
@@ -19,49 +16,44 @@ import {
   textSpanToRange,
 } from './lib/convert.js'
 
-const processor = unified().use(remarkParse).use(remarkMdx)
 const connection = createConnection(ProposedFeatures.all)
 const documents = new TextDocuments(TextDocument)
 /** @type {ts.LanguageService} */
 let ls
 
 connection.onInitialize(() => {
-  ls = createMDXLanguageService(
-    ts,
-    {
-      readFile: ts.sys.readFile,
-      writeFile: ts.sys.writeFile,
-      directoryExists: ts.sys.directoryExists,
-      getDirectories: ts.sys.getDirectories,
-      readDirectory: ts.sys.readDirectory,
-      realpath: ts.sys.realpath,
-      fileExists: ts.sys.fileExists,
-      getCompilationSettings() {
-        return {}
-      },
-      getCurrentDirectory() {
-        return process.cwd()
-      },
-      getDefaultLibFileName: ts.getDefaultLibFilePath,
-      getScriptFileNames: () => documents.keys(),
-      getScriptSnapshot(fileName) {
-        const doc = documents.get(fileName)
-
-        if (!doc) {
-          return
-        }
-
-        return ts.ScriptSnapshot.fromString(doc.getText())
-      },
-      getScriptVersion(filename) {
-        const doc = documents.get(filename)
-
-        return String(doc?.version)
-      },
-      useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames,
+  ls = createMDXLanguageService(ts, {
+    readFile: ts.sys.readFile,
+    writeFile: ts.sys.writeFile,
+    directoryExists: ts.sys.directoryExists,
+    getDirectories: ts.sys.getDirectories,
+    readDirectory: ts.sys.readDirectory,
+    realpath: ts.sys.realpath,
+    fileExists: ts.sys.fileExists,
+    getCompilationSettings() {
+      return {}
     },
-    processor,
-  )
+    getCurrentDirectory() {
+      return process.cwd()
+    },
+    getDefaultLibFileName: ts.getDefaultLibFilePath,
+    getScriptFileNames: () => documents.keys(),
+    getScriptSnapshot(fileName) {
+      const doc = documents.get(fileName)
+
+      if (!doc) {
+        return
+      }
+
+      return ts.ScriptSnapshot.fromString(doc.getText())
+    },
+    getScriptVersion(filename) {
+      const doc = documents.get(filename)
+
+      return String(doc?.version)
+    },
+    useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames,
+  })
 
   return {
     capabilities: {

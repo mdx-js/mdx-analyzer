@@ -8,57 +8,22 @@ import {
   LocationLink,
   MarkupKind,
   ProposedFeatures,
-  Range,
   TextDocuments,
   TextDocumentSyncKind,
 } from 'vscode-languageserver/node.js'
 import { TextDocument } from 'vscode-languageserver-textdocument'
+
+import {
+  displayPartsToString,
+  tagToString,
+  textSpanToRange,
+} from './lib/convert.js'
 
 const processor = unified().use(remarkParse).use(remarkMdx)
 const connection = createConnection(ProposedFeatures.all)
 const documents = new TextDocuments(TextDocument)
 /** @type {ts.LanguageService} */
 let ls
-
-/**
- * @param {ts.SymbolDisplayPart[] | undefined} displayParts
- * @returns {string} XXX
- */
-function displayPartsToString(displayParts) {
-  if (displayParts) {
-    return displayParts.map(displayPart => displayPart.text).join('')
-  }
-  return ''
-}
-
-/**
- * @param {ts.JSDocTagInfo} tag
- * @returns {string} XXX
- */
-function tagToString(tag) {
-  let tagLabel = `*@${tag.name}*`
-  if (tag.name === 'param' && tag.text) {
-    const [paramName, ...rest] = tag.text
-    tagLabel += `\`${paramName.text}\``
-    if (rest.length > 0) tagLabel += ` — ${rest.map(r => r.text).join(' ')}`
-  } else if (Array.isArray(tag.text)) {
-    tagLabel += ` — ${tag.text.map(r => r.text).join(' ')}`
-  } else if (tag.text) {
-    tagLabel += ` — ${tag.text}`
-  }
-  return tagLabel
-}
-
-/**
- * @param {TextDocument} doc
- * @param {ts.TextSpan} span
- * @returns {Range} XXX
- */
-function textSpanToRange(doc, span) {
-  const p1 = doc.positionAt(span.start)
-  const p2 = doc.positionAt(span.start + span.length)
-  return Range.create(p1, p2)
-}
 
 connection.onInitialize(() => {
   ls = createMDXLanguageService(

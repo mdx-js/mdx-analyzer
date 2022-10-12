@@ -329,19 +329,35 @@ export function createMDXLanguageService(ts, host, processor) {
       preferences,
       data,
     ) {
-      if (!isMdx(fileName)) {
-        return ls.getCompletionEntryDetails(
-          fileName,
-          position,
-          entryName,
-          formatOptions,
-          source,
-          preferences,
-          data,
-        )
+      const details = ls.getCompletionEntryDetails(
+        fileName,
+        position,
+        entryName,
+        formatOptions,
+        source,
+        preferences,
+        data,
+      )
+
+      if (details || !isMdx(fileName)) {
+        return details
       }
 
-      // XXX
+      const snapshot = host.getScriptSnapshot(fileName)
+
+      if (!snapshot) {
+        return details
+      }
+
+      return ls.getCompletionEntryDetails(
+        fileName,
+        getJSXPosition(snapshot, position),
+        entryName,
+        formatOptions,
+        source,
+        preferences,
+        data,
+      )
     },
 
     getCompletionEntrySymbol(fileName, position, name, source) {
@@ -353,16 +369,47 @@ export function createMDXLanguageService(ts, host, processor) {
     },
 
     getCompletionsAtPosition(fileName, position, options, formattingSettings) {
+      let completionInfo = ls.getCompletionsAtPosition(
+        fileName,
+        position,
+        options,
+        formattingSettings,
+      )
+
       if (!isMdx(fileName)) {
-        return ls.getCompletionsAtPosition(
+        return completionInfo
+      }
+
+      const snapshot = host.getScriptSnapshot(fileName)
+
+      if (!snapshot) {
+        return completionInfo
+      }
+
+      if (!completionInfo) {
+        completionInfo = ls.getCompletionsAtPosition(
           fileName,
-          position,
+          getJSXPosition(snapshot, position),
           options,
           formattingSettings,
         )
+        if (completionInfo?.optionalReplacementSpan) {
+          patchTextSpan(
+            fileName,
+            snapshot,
+            completionInfo.optionalReplacementSpan,
+          )
+        }
+        if (completionInfo?.entries) {
+          for (const entry of completionInfo.entries) {
+            if (entry.replacementSpan) {
+              patchTextSpan(fileName, snapshot, entry.replacementSpan)
+            }
+          }
+        }
       }
 
-      // XXX
+      return completionInfo
     },
 
     getDefinitionAndBoundSpan(fileName, position) {

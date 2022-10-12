@@ -1,13 +1,54 @@
 /**
+ * @typedef {import('monaco-editor')} monaco
  * @typedef {import('monaco-editor').editor.IMarkerData} IMarkerData
  * @typedef {import('monaco-editor').editor.IRelatedInformation} IRelatedInformation
  * @typedef {import('monaco-editor').editor.ITextModel} ITextModel
  * @typedef {import('monaco-editor').languages.typescript.Diagnostic} Diagnostic
  * @typedef {import('monaco-editor').languages.typescript.DiagnosticRelatedInformation} DiagnosticRelatedInformation
+ * @typedef {import('monaco-editor').languages.CompletionItemKind} CompletionItemKind
+ * @typedef {import('monaco-editor').languages.CompletionItem} CompletionItem
  * @typedef {import('monaco-editor').languages.Location} Location
  * @typedef {import('monaco-editor').MarkerSeverity} MarkerSeverity
  * @typedef {import('monaco-editor').MarkerTag} MarkerTag
+ * @typedef {import('monaco-editor').Uri} Uri
  */
+
+/**
+ * @param {monaco} monaco
+ * @param {ts.ScriptElementKind} kind
+ * @returns {CompletionItemKind} The matching Monaco completion item kind.
+ */
+function convertScriptElementKind(monaco, kind) {
+  switch (kind) {
+    case 'primitive type':
+    case 'keyword':
+      return monaco.languages.CompletionItemKind.Keyword
+    case 'var':
+    case 'local var':
+      return monaco.languages.CompletionItemKind.Variable
+    case 'property':
+    case 'getter':
+    case 'setter':
+      return monaco.languages.CompletionItemKind.Field
+    case 'function':
+    case 'method':
+    case 'construct':
+    case 'call':
+    case 'index':
+      return monaco.languages.CompletionItemKind.Function
+    case 'enum':
+      return monaco.languages.CompletionItemKind.Enum
+    case 'module':
+      return monaco.languages.CompletionItemKind.Module
+    case 'class':
+      return monaco.languages.CompletionItemKind.Class
+    case 'interface':
+      return monaco.languages.CompletionItemKind.Interface
+    case 'warning':
+      return monaco.languages.CompletionItemKind.File
+  }
+  return monaco.languages.CompletionItemKind.Property
+}
 
 /**
  * @param {ts.SymbolDisplayPart[] | undefined} displayParts
@@ -18,6 +59,20 @@ function displayPartsToString(displayParts) {
     return displayParts.map(displayPart => displayPart.text).join('')
   }
   return ''
+}
+
+/**
+ * @param {ts.CompletionEntryDetails} details
+ * @returns {string} XXX
+ */
+function createDocumentationString(details) {
+  let documentationString = displayPartsToString(details.documentation)
+  if (details.tags) {
+    for (const tag of details.tags) {
+      documentationString += `\n\n${tagToString(tag)}`
+    }
+  }
+  return documentationString
 }
 
 /**
@@ -183,11 +238,93 @@ function convertDiagnostics(monaco, model, diag) {
 
 /**
  * @param {typeof import('monaco-editor')} monaco
- * @param {import('monaco-editor').editor.ITextModel} model
+ * @param {Uri} uri
  */
-async function getWorker(monaco, model) {
+async function getWorker(monaco, uri) {
   const worker = await monaco.languages.typescript.getTypeScriptWorker()
-  return worker(model.uri)
+  return worker(uri)
+}
+
+/**
+ * @param {typeof import('monaco-editor')} monaco
+ * @returns {import('monaco-editor').languages.CompletionItemProvider} A completion item provider for MDX documents.
+ */
+export function createCompletionItemProvider(monaco) {
+  return {
+    async provideCompletionItems(model, position) {
+      const worker = await getWorker(monaco, model.uri)
+      const offset = model.getOffsetAt(position)
+      const wordInfo = model.getWordUntilPosition(position)
+      const wordRange = new monaco.Range(
+        position.lineNumber,
+        wordInfo.startColumn,
+        position.lineNumber,
+        wordInfo.endColumn,
+      )
+
+      if (model.isDisposed()) {
+        return
+      }
+
+      const info = /** @type {ts.CompletionInfo | undefined} */ (
+        await worker.getCompletionsAtPosition(String(model.uri), offset)
+      )
+
+      if (!info || model.isDisposed()) {
+        return
+      }
+
+      const suggestions = info.entries.map(entry => {
+        const range = entry.replacementSpan
+          ? textSpanToRange(model, entry.replacementSpan)
+          : wordRange
+
+        const tags = entry.kindModifiers?.includes('deprecated')
+          ? [monaco.languages.CompletionItemTag.Deprecated]
+          : []
+
+        return {
+          uri: model.uri,
+          position,
+          offset,
+          range,
+          label: entry.name,
+          insertText: entry.name,
+          sortText: entry.sortText,
+          kind: convertScriptElementKind(monaco, entry.kind),
+          tags,
+        }
+      })
+
+      return {
+        suggestions,
+      }
+    },
+
+    async resolveCompletionItem(item) {
+      const { label, offset, uri } = /** @type {any} */ (item)
+
+      const worker = await getWorker(monaco, uri)
+
+      const details = /** @type {ts.CompletionEntryDetails | undefined} */ (
+        await worker.getCompletionEntryDetails(String(uri), offset, label)
+      )
+
+      if (!details) {
+        return item
+      }
+
+      return {
+        ...item,
+        label: details.name,
+        kind: convertScriptElementKind(monaco, details.kind),
+        detail: displayPartsToString(details.displayParts),
+        documentation: {
+          value: createDocumentationString(details),
+        },
+      }
+    },
+  }
 }
 
 /**
@@ -197,7 +334,7 @@ async function getWorker(monaco, model) {
 export function createHoverProvider(monaco) {
   return {
     async provideHover(model, position) {
-      const worker = await getWorker(monaco, model)
+      const worker = await getWorker(monaco, model.uri)
 
       /** @type {ts.QuickInfo | undefined} */
       const info = await worker.getQuickInfoAtPosition(
@@ -237,7 +374,7 @@ export function createHoverProvider(monaco) {
 export function createDefinitionProvider(monaco) {
   return {
     async provideDefinition(model, position) {
-      const worker = await getWorker(monaco, model)
+      const worker = await getWorker(monaco, model.uri)
 
       const offset = model.getOffsetAt(position)
       const entries = /** @type {ts.ReferenceEntry[] | undefined} */ (
@@ -273,7 +410,7 @@ export function createMarkerDataProvider(monaco) {
     owner: 'mdx',
 
     async provideMarkerData(model) {
-      const worker = await getWorker(monaco, model)
+      const worker = await getWorker(monaco, model.uri)
       const uri = String(model.uri)
       const diagnostics = await Promise.all([
         worker.getSemanticDiagnostics(uri),
@@ -298,7 +435,7 @@ export function createMarkerDataProvider(monaco) {
 export function createReferenceProvider(monaco) {
   return {
     async provideReferences(model, position) {
-      const worker = await getWorker(monaco, model)
+      const worker = await getWorker(monaco, model.uri)
       const resource = model.uri
       const offset = model.getOffsetAt(position)
 

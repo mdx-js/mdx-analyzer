@@ -106,6 +106,7 @@ function getModel() {
 const editor = monaco.editor.create(element, {
   automaticLayout: true,
   model: getModel(),
+  suggest: { showWords: false },
   theme: window.matchMedia('(prefers-color-scheme: dark)').matches
     ? 'vs-dark'
     : 'vs-light',

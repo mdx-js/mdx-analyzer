@@ -1,6 +1,7 @@
 import { registerMarkerDataProvider } from 'monaco-marker-data-provider'
 
 import {
+  createCompletionItemProvider,
   createDefinitionProvider,
   createHoverProvider,
   createMarkerDataProvider,
@@ -15,6 +16,10 @@ import {
  */
 export function initializeMonacoMDX(monaco) {
   const disposables = [
+    monaco.languages.registerCompletionItemProvider(
+      'mdx',
+      createCompletionItemProvider(monaco),
+    ),
     monaco.languages.registerDefinitionProvider(
       'mdx',
       createDefinitionProvider(monaco),

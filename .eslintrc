@@ -30,6 +30,7 @@
     "import/no-unresolved": "off",
     "jsdoc/no-undefined-types": "off",
     "jsdoc/valid-types": "off",
+    "n/no-unsupported-features/es-builtins": "off",
     "react/react-in-jsx-scope": "off"
   },
   "overrides": [

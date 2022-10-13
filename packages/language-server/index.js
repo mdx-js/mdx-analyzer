@@ -2,6 +2,7 @@ import { createMDXLanguageService } from '@mdx-js/language-service'
 import ts from 'typescript'
 import {
   createConnection,
+  CompletionItemTag,
   LocationLink,
   MarkupKind,
   ProposedFeatures,
@@ -11,6 +12,8 @@ import {
 import { TextDocument } from 'vscode-languageserver-textdocument'
 
 import {
+  convertScriptElementKind,
+  createDocumentationString,
   displayPartsToString,
   tagToString,
   textSpanToRange,
@@ -57,10 +60,89 @@ connection.onInitialize(() => {
 
   return {
     capabilities: {
-      textDocumentSync: TextDocumentSyncKind.Full,
+      completionProvider: {
+        completionItem: {
+          labelDetailsSupport: true,
+        },
+        resolveProvider: true,
+      },
       definitionProvider: true,
       hoverProvider: true,
+      textDocumentSync: TextDocumentSyncKind.Full,
     },
+  }
+})
+
+connection.onCompletion(params => {
+  const doc = documents.get(params.textDocument.uri)
+
+  if (!doc) {
+    return []
+  }
+
+  const offset = doc.offsetAt(params.position)
+
+  const info = ls.getCompletionsAtPosition(doc.uri, offset, {
+    triggerKind: params.context?.triggerKind,
+    triggerCharacter: /** @type {ts.CompletionsTriggerCharacter} */ (
+      params.context?.triggerCharacter
+    ),
+  })
+
+  if (!info) {
+    return []
+  }
+
+  return {
+    isIncomplete: Boolean(info.isIncomplete),
+    items: info.entries.map(entry => ({
+      data: {
+        data: entry.data,
+        offset,
+        source: entry.source,
+        uri: doc.uri,
+      },
+      insertText: entry.name,
+      kind: convertScriptElementKind(entry.kind),
+      label: entry.name,
+      sortText: entry.sortText,
+      source: entry.source,
+      tags: entry.kindModifiers?.includes('deprecated')
+        ? [CompletionItemTag.Deprecated]
+        : [],
+    })),
+  }
+})
+
+connection.onCompletionResolve(params => {
+  const { data, offset, source, uri } = params.data
+
+  const doc = documents.get(uri)
+
+  if (!doc) {
+    return params
+  }
+
+  const details = ls.getCompletionEntryDetails(
+    uri,
+    offset,
+    params.label,
+    undefined,
+    source,
+    undefined,
+    data,
+  )
+
+  return {
+    ...params,
+    detail: details?.displayParts
+      ? displayPartsToString(details.displayParts)
+      : undefined,
+    documentation: details
+      ? { kind: MarkupKind.Markdown, value: createDocumentationString(details) }
+      : undefined,
+    kind: details?.kind ? convertScriptElementKind(details.kind) : undefined,
+    label: details?.name ?? params.label,
   }
 })
 

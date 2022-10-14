@@ -38,7 +38,8 @@
     {
       "preLaunchTask": "build",
       "name": "Extension + Language server",
-      "configurations": ["Run Extension", "Debug language server"]
+      "configurations": ["Run Extension", "Debug language server"],
+      "stopAll": true
     }
   ]
 }

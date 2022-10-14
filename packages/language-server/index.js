@@ -68,6 +68,7 @@ connection.onInitialize(() => {
       },
       definitionProvider: true,
       hoverProvider: true,
+      referencesProvider: true,
       textDocumentSync: TextDocumentSyncKind.Full,
     },
   }
@@ -209,6 +210,24 @@ connection.onHover(params => {
         (tags ? '\n\n' + tags : ''),
     },
   }
+})
+
+connection.onReferences(params => {
+  const doc = documents.get(params.textDocument.uri)
+
+  if (!doc) {
+    return
+  }
+
+  const entries = ls.getReferencesAtPosition(
+    doc.uri,
+    doc.offsetAt(params.position),
+  )
+
+  return entries?.map(entry => ({
+    uri: entry.fileName,
+    range: textSpanToRange(doc, entry.textSpan),
+  }))
 })
 
 connection.listen()

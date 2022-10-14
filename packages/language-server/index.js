@@ -1,3 +1,8 @@
+/**
+ * @typedef {import('vscode-languageserver').TextDocumentChangeEvent<TextDocument>} TextDocumentChangeEvent
+ * @typedef {import('vscode-languageserver-textdocument').TextDocument} TextDocument
+ */
+
 import { createMDXLanguageService } from '@mdx-js/language-service'
 import ts from 'typescript'
 import {
@@ -6,21 +11,20 @@ import {
   LocationLink,
   MarkupKind,
   ProposedFeatures,
-  TextDocuments,
   TextDocumentSyncKind,
 } from 'vscode-languageserver/node.js'
-import { TextDocument } from 'vscode-languageserver-textdocument'
 
 import {
+  convertDiagnostics,
   convertScriptElementKind,
   createDocumentationString,
   displayPartsToString,
   tagToString,
   textSpanToRange,
 } from './lib/convert.js'
+import { documents } from './lib/documents.js'
 
 const connection = createConnection(ProposedFeatures.all)
-const documents = new TextDocuments(TextDocument)
 /** @type {ts.LanguageService} */
 let ls
 
@@ -67,6 +71,9 @@ connection.onInitialize(() => {
         resolveProvider: true,
       },
       definitionProvider: true,
+      // diagnosticProvider: {
+      //   documentSelector: [],
+      // },
       hoverProvider: true,
       referencesProvider: true,
       textDocumentSync: TextDocumentSyncKind.Full,
@@ -229,6 +236,33 @@ connection.onReferences(params => {
     range: textSpanToRange(doc, entry.textSpan),
   }))
 })
+
+documents.onDidClose(event => {
+  connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] })
+})
+
+/**
+ * @param {TextDocumentChangeEvent} event
+ */
+function checkDiagnostics(event) {
+  const { uri } = event.document
+
+  const diagnostics = [
+    ...ls.getSemanticDiagnostics(uri),
+    ...ls.getSuggestionDiagnostics(uri),
+  ]
+
+  connection.sendDiagnostics({
+    uri,
+    diagnostics: diagnostics.map(diag =>
+      convertDiagnostics(ts, event.document, diag),
+    ),
+  })
+}
+
+documents.onDidChangeContent(checkDiagnostics)
+
+documents.onDidOpen(checkDiagnostics)
 
 connection.listen()
 documents.listen(connection)

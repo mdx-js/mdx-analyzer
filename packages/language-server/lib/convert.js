@@ -226,8 +226,6 @@ export function convertDiagnostics(ts, doc, diag) {
     tags.push(DiagnosticTag.Deprecated)
   }
 
-  console.log(diag)
-
   return {
     code: `ts${diag.code}`,
     message: flattenDiagnosticMessageText(diag.messageText, '\n'),

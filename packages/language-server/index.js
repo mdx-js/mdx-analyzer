@@ -3,7 +3,8 @@
  * @typedef {import('vscode-languageserver-textdocument').TextDocument} TextDocument
  */
 
-import { createMDXLanguageService } from '@mdx-js/language-service'
+import { fileURLToPath } from 'node:url'
+
 import ts from 'typescript'
 import {
   createConnection,
@@ -23,45 +24,11 @@ import {
   textSpanToRange,
 } from './lib/convert.js'
 import { documents } from './lib/documents.js'
+import { getOrCreateLanguageService } from './lib/language-service-manager.js'
 
 const connection = createConnection(ProposedFeatures.all)
-/** @type {ts.LanguageService} */
-let ls
 
 connection.onInitialize(() => {
-  ls = createMDXLanguageService(ts, {
-    readFile: ts.sys.readFile,
-    writeFile: ts.sys.writeFile,
-    directoryExists: ts.sys.directoryExists,
-    getDirectories: ts.sys.getDirectories,
-    readDirectory: ts.sys.readDirectory,
-    realpath: ts.sys.realpath,
-    fileExists: ts.sys.fileExists,
-    getCompilationSettings() {
-      return {}
-    },
-    getCurrentDirectory() {
-      return process.cwd()
-    },
-    getDefaultLibFileName: ts.getDefaultLibFilePath,
-    getScriptFileNames: () => documents.keys(),
-    getScriptSnapshot(fileName) {
-      const doc = documents.get(fileName)
-
-      if (!doc) {
-        return
-      }
-
-      return ts.ScriptSnapshot.fromString(doc.getText())
-    },
-    getScriptVersion(filename) {
-      const doc = documents.get(filename)
-
-      return String(doc?.version)
-    },
-    useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames,
-  })
-
   return {
     capabilities: {
       completionProvider: {
@@ -71,9 +38,6 @@ connection.onInitialize(() => {
         resolveProvider: true,
       },
       definitionProvider: true,
-      // diagnosticProvider: {
-      //   documentSelector: [],
-      // },
       hoverProvider: true,
       referencesProvider: true,
       textDocumentSync: TextDocumentSyncKind.Full,
@@ -89,8 +53,8 @@ connection.onCompletion(params => {
   }
 
   const offset = doc.offsetAt(params.position)
-
-  const info = ls.getCompletionsAtPosition(doc.uri, offset, {
+  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const info = ls.getCompletionsAtPosition(fileURLToPath(doc.uri), offset, {
     triggerKind: params.context?.triggerKind,
     triggerCharacter: /** @type {ts.CompletionsTriggerCharacter} */ (
       params.context?.triggerCharacter
@@ -131,8 +95,9 @@ connection.onCompletionResolve(params => {
     return params
   }
 
+  const ls = getOrCreateLanguageService(ts, uri)
   const details = ls.getCompletionEntryDetails(
-    uri,
+    fileURLToPath(uri),
     offset,
     params.label,
     undefined,
@@ -161,8 +126,9 @@ connection.onDefinition(params => {
     return
   }
 
+  const ls = getOrCreateLanguageService(ts, doc.uri)
   const entries = ls.getDefinitionAtPosition(
-    doc.uri,
+    fileURLToPath(doc.uri),
     doc.offsetAt(params.position),
   )
 
@@ -193,7 +159,11 @@ connection.onHover(params => {
     return
   }
 
-  const info = ls.getQuickInfoAtPosition(doc.uri, doc.offsetAt(params.position))
+  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const info = ls.getQuickInfoAtPosition(
+    fileURLToPath(doc.uri),
+    doc.offsetAt(params.position),
+  )
 
   if (!info) {
     return
@@ -226,8 +196,9 @@ connection.onReferences(params => {
     return
   }
 
+  const ls = getOrCreateLanguageService(ts, doc.uri)
   const entries = ls.getReferencesAtPosition(
-    doc.uri,
+    fileURLToPath(doc.uri),
     doc.offsetAt(params.position),
   )
 
@@ -246,10 +217,10 @@ documents.onDidClose(event => {
  */
 function checkDiagnostics(event) {
   const { uri } = event.document
-
+  const ls = getOrCreateLanguageService(ts, uri)
   const diagnostics = [
-    ...ls.getSemanticDiagnostics(uri),
-    ...ls.getSuggestionDiagnostics(uri),
+    ...ls.getSemanticDiagnostics(fileURLToPath(uri)),
+    ...ls.getSuggestionDiagnostics(fileURLToPath(uri)),
   ]
 
   connection.sendDiagnostics({

@@ -18,8 +18,6 @@ function createGetScriptSnapshot(ts) {
   return fileName => {
     const doc = documents.get(String(pathToFileURL(fileName)))
 
-    console.log('getScriptSnapshot', fileName)
-
     if (doc) {
       return ts.ScriptSnapshot.fromString(doc.getText())
     }

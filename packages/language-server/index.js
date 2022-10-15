@@ -19,8 +19,6 @@ import {
   convertDiagnostics,
   convertScriptElementKind,
   createDocumentationString,
-  displayPartsToString,
-  tagToString,
   textSpanToRange,
 } from './lib/convert.js'
 import { documents } from './lib/documents.js'
@@ -109,10 +107,13 @@ connection.onCompletionResolve(params => {
   return {
     ...params,
     detail: details?.displayParts
-      ? displayPartsToString(details.displayParts)
+      ? ts.displayPartsToString(details.displayParts)
       : undefined,
     documentation: details
-      ? { kind: MarkupKind.Markdown, value: createDocumentationString(details) }
+      ? {
+          kind: MarkupKind.Markdown,
+          value: createDocumentationString(ts, details),
+        }
       : undefined,
     kind: details?.kind ? convertScriptElementKind(details.kind) : undefined,
     label: details?.name ?? params.label,
@@ -169,11 +170,7 @@ connection.onHover(params => {
     return
   }
 
-  const documentation = displayPartsToString(info.documentation)
-  const tags = info.tags
-    ? info.tags.map(tag => tagToString(tag)).join('  \n\n')
-    : ''
-  const contents = displayPartsToString(info.displayParts)
+  const contents = ts.displayPartsToString(info.displayParts)
 
   return {
     range: textSpanToRange(doc, info.textSpan),
@@ -183,8 +180,7 @@ connection.onHover(params => {
         '```typescript\n' +
         contents +
         '\n```\n' +
-        documentation +
-        (tags ? '\n\n' + tags : ''),
+        createDocumentationString(ts, info),
     },
   }
 })

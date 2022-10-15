@@ -6,6 +6,7 @@
  * @typedef {import('typescript').DiagnosticMessageChain} DiagnosticMessageChain
  * @typedef {import('typescript').DiagnosticRelatedInformation} DiagnosticRelatedInformation
  * @typedef {import('typescript').JSDocTagInfo} JSDocTagInfo
+ * @typedef {import('typescript').QuickInfo} QuickInfo
  * @typedef {import('typescript').SymbolDisplayPart} SymbolDisplayPart
  * @typedef {import('typescript').ScriptElementKind} ScriptElementKind
  * @typedef {import('typescript').TextSpan} TextSpan
@@ -60,11 +61,12 @@ export function convertScriptElementKind(kind) {
 }
 
 /**
- * @param {CompletionEntryDetails} details
+ * @param {ts} ts
+ * @param {CompletionEntryDetails | QuickInfo} details
  * @returns {string} XXX
  */
-export function createDocumentationString(details) {
-  let documentationString = displayPartsToString(details.documentation)
+export function createDocumentationString(ts, details) {
+  let documentationString = ts.displayPartsToString(details.documentation)
   if (details.tags) {
     for (const tag of details.tags) {
       documentationString += `\n\n${tagToString(tag)}`
@@ -74,21 +76,10 @@ export function createDocumentationString(details) {
 }
 
 /**
- * @param {SymbolDisplayPart[] | undefined} displayParts
- * @returns {string} XXX
- */
-export function displayPartsToString(displayParts) {
-  if (displayParts) {
-    return displayParts.map(displayPart => displayPart.text).join('')
-  }
-  return ''
-}
-
-/**
  * @param {JSDocTagInfo} tag
  * @returns {string} XXX
  */
-export function tagToString(tag) {
+function tagToString(tag) {
   let tagLabel = `*@${tag.name}*`
   if (tag.name === 'param' && tag.text) {
     const [paramName, ...rest] = tag.text

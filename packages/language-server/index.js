@@ -140,15 +140,13 @@ connection.onDefinition(params => {
   /** @type {LocationLink[]} */
   const result = []
   for (const entry of entries) {
-    if (entry.fileName === doc.uri) {
-      result.push(
-        LocationLink.create(
-          entry.fileName,
-          textSpanToRange(doc, entry.textSpan),
-          textSpanToRange(doc, entry.textSpan),
-        ),
-      )
-    }
+    result.push(
+      LocationLink.create(
+        entry.fileName,
+        textSpanToRange(doc, entry.textSpan),
+        textSpanToRange(doc, entry.textSpan),
+      ),
+    )
   }
   return result
 })

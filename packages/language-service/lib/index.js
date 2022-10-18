@@ -16,6 +16,7 @@ import remarkParse from 'remark-parse'
 import { unified } from 'unified'
 
 import { getMarkdownDefinitionAtPosition } from './markdown.js'
+import { bindAll } from './object.js'
 import {
   getJSXPosition,
   getOriginalPosition,
@@ -54,79 +55,42 @@ export function createMDXLanguageService(ts, host, plugins) {
     processor.use(plugins)
   }
 
-  /** @type {LanguageServiceHost} */
-  const internalHost = {
-    fileExists: host.fileExists.bind(host),
-    getCurrentDirectory: host.getCurrentDirectory.bind(host),
-    getDefaultLibFileName: host.getDefaultLibFileName.bind(host),
-    getScriptFileNames: host.getScriptFileNames.bind(host),
-    getScriptVersion: host.getScriptVersion.bind(host),
-    readFile: host.readFile.bind(host),
+  const internalHost = bindAll(host)
 
-    directoryExists: host.directoryExists?.bind(host),
-    error: host.error?.bind(host),
-    getCancellationToken: host.getCancellationToken?.bind(host),
-    getCompilerHost: host.getCompilerHost?.bind(host),
-    getCustomTransformers: host.getCustomTransformers?.bind(host),
-    getDirectories: host.getDirectories?.bind(host),
-    getLocalizedDiagnosticMessages:
-      host.getLocalizedDiagnosticMessages?.bind(host),
-    getNewLine: host.getNewLine?.bind(host),
-    getParsedCommandLine: host.getParsedCommandLine?.bind(host),
-    getProjectReferences: host.getProjectReferences?.bind(host),
-    getProjectVersion: host.getProjectVersion?.bind(host),
-    getResolvedModuleWithFailedLookupLocationsFromCache:
-      host.getResolvedModuleWithFailedLookupLocationsFromCache?.bind(host),
-    getTypeRootsVersion: host.getTypeRootsVersion?.bind(host),
-    installPackage: host.installPackage?.bind(host),
-    isKnownTypesPackageName: host.isKnownTypesPackageName?.bind(host),
-    log: host.log?.bind(host),
-    readDirectory: host.readDirectory?.bind(host),
-    realpath: host.realpath?.bind(host),
-    resolveModuleNames: host.resolveModuleNames?.bind(host),
-    resolveTypeReferenceDirectives:
-      host.resolveTypeReferenceDirectives?.bind(host),
-    trace: host.trace?.bind(host),
-    useCaseSensitiveFileNames: host.useCaseSensitiveFileNames?.bind(host),
-    writeFile: host.writeFile?.bind(host),
+  internalHost.getCompilationSettings = () => ({
+    jsx: ts.JsxEmit.Preserve,
+    ...host.getCompilationSettings(),
+    allowJs: true,
+    allowNonTsExtensions: true,
+  })
 
-    getCompilationSettings() {
-      return {
-        jsx: ts.JsxEmit.Preserve,
-        ...host.getCompilationSettings(),
-        allowJs: true,
-        allowNonTsExtensions: true,
-      }
-    },
+  internalHost.getScriptKind = fileName => {
+    if (isMdx(fileName)) {
+      return ts.ScriptKind.JSX
+    }
+    return host.getScriptKind?.(fileName) ?? ts.ScriptKind.JS
+  }
 
-    getScriptKind(fileName) {
-      if (isMdx(fileName)) {
-        return ts.ScriptKind.JSX
-      }
-      return host.getScriptKind?.(fileName) ?? ts.ScriptKind.JS
-    },
+  internalHost.getScriptSnapshot = fileName => {
+    const snapshot = host.getScriptSnapshot(fileName)
 
-    getScriptSnapshot(fileName) {
-      const snapshot = host.getScriptSnapshot(fileName)
+    if (!snapshot || !isMdx(fileName)) {
+      return snapshot
+    }
 
-      if (!snapshot || !isMdx(fileName)) {
-        return snapshot
-      }
+    const length = snapshot.getLength()
+    const mdx = snapshot.getText(0, length)
+    const js = mdxToJsx(mdx, processor)
 
-      const length = snapshot.getLength()
-      const mdx = snapshot.getText(0, length)
-      const js = mdxToJsx(mdx, processor)
-
-      return {
-        getText: (start, end) => js.slice(start, end),
-        getLength: () => js.length,
-        // eslint-disable-next-line unicorn/no-useless-undefined
-        getChangeRange: () => undefined,
-        dispose() {
-          snapshot.dispose?.()
-        },
-      }
-    },
+    return {
+      getText: (start, end) => js.slice(start, end),
+      getLength: () => js.length,
+      // eslint-disable-next-line unicorn/no-useless-undefined
+      getChangeRange: () => undefined,
+      dispose() {
+        snapshot.dispose?.()
+      },
+    }
   }
 
   const ls = ts.createLanguageService(internalHost)

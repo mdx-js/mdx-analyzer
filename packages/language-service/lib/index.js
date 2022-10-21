@@ -100,8 +100,8 @@ export function createMDXLanguageService(ts, host, plugins) {
     _reusedNames,
     redirectedReference,
     options,
-  ) => {
-    return moduleNames.map(moduleName => {
+  ) =>
+    moduleNames.map(moduleName => {
       const resolvedModule = ts.resolveModuleName(
         moduleName,
         containingFile,
@@ -123,7 +123,6 @@ export function createMDXLanguageService(ts, host, plugins) {
 
       return resolvedModule
     })
-  }
 
   const ls = ts.createLanguageService(internalHost)
 

@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 
 import { createMDXLanguageService } from '@mdx-js/language-service'
 
-import { documents } from './documents.js'
+import { getDocByFileName } from './documents.js'
 
 /**
  * @param {ts} ts
@@ -16,7 +16,7 @@ import { documents } from './documents.js'
  */
 function createGetScriptSnapshot(ts) {
   return fileName => {
-    const doc = documents.get(String(pathToFileURL(fileName)))
+    const doc = getDocByFileName(fileName)
 
     if (doc) {
       return ts.ScriptSnapshot.fromString(doc.getText())
@@ -35,9 +35,9 @@ function createGetScriptSnapshot(ts) {
  * @returns {string} The script version
  */
 function getScriptVersion(fileName) {
-  const doc = documents.get(fileName)
+  const doc = getDocByFileName(fileName)
 
-  return String(doc?.version)
+  return doc ? String(doc.version) : '0'
 }
 
 /** @type {LanguageService} */
@@ -84,10 +84,16 @@ export function getOrCreateLanguageService(ts, uri) {
     return getDefaultLanguageService(ts)
   }
 
+  let ls = cache.get(configPath)
+  if (ls) {
+    return ls
+  }
+
   const jsonText = ts.sys.readFile(configPath)
   if (jsonText == null) {
     return getDefaultLanguageService(ts)
   }
+
   const { config, error } = ts.parseConfigFileTextToJson(configPath, jsonText)
   if (error || !config) {
     return getDefaultLanguageService(ts)
@@ -110,20 +116,16 @@ export function getOrCreateLanguageService(ts, uri) {
       ],
     )
 
-  let ls = cache.get(uri)
-  if (ls) {
-    return ls
-  }
   ls = createMDXLanguageService(ts, {
     ...ts.sys,
     getCompilationSettings: () => options,
     getDefaultLibFileName: ts.getDefaultLibFilePath,
     getProjectReferences: () => projectReferences,
+    getScriptFileNames: () => fileNames,
     getScriptSnapshot: createGetScriptSnapshot(ts),
     getScriptVersion,
-    getScriptFileNames: () => fileNames,
     useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames,
   })
-  cache.set(uri, ls)
+  cache.set(configPath, ls)
   return ls
 }

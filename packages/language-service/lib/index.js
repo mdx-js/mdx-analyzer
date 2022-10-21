@@ -17,6 +17,7 @@ import { unified } from 'unified'
 
 import { getMarkdownDefinitionAtPosition } from './markdown.js'
 import { bindAll } from './object.js'
+import { fakeMdxPath } from './path.js'
 import {
   getJSXPosition,
   getOriginalPosition,
@@ -91,6 +92,37 @@ export function createMDXLanguageService(ts, host, plugins) {
         snapshot.dispose?.()
       },
     }
+  }
+
+  internalHost.resolveModuleNames = (
+    moduleNames,
+    containingFile,
+    _reusedNames,
+    redirectedReference,
+    options,
+  ) => {
+    return moduleNames.map(moduleName => {
+      const resolvedModule = ts.resolveModuleName(
+        moduleName,
+        containingFile,
+        options,
+        {
+          ...internalHost,
+          readFile: fileName => host.readFile(fakeMdxPath(fileName)),
+          fileExists: fileName => host.fileExists(fakeMdxPath(fileName)),
+        },
+        undefined,
+        redirectedReference,
+      ).resolvedModule
+
+      if (resolvedModule) {
+        resolvedModule.resolvedFileName = fakeMdxPath(
+          resolvedModule.resolvedFileName,
+        )
+      }
+
+      return resolvedModule
+    })
   }
 
   const ls = ts.createLanguageService(internalHost)

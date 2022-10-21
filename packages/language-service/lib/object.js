@@ -8,14 +8,25 @@
 export function bindAll(object) {
   /** @type {T} */
   const copy = Object.create(null)
-  // eslint-disable-next-line sonar/for-in
-  for (const key in object) {
-    const value = object[key]
-    if (typeof value === 'function') {
-      copy[key] = value.bind(object)
-    } else {
-      copy[key] = value
+  let proto = object
+
+  while (proto) {
+    for (const key of Object.getOwnPropertyNames(proto)) {
+      const k = /** @type {keyof T} */ (key)
+      if (k === 'constructor') {
+        continue
+      }
+      if (k in copy) {
+        continue
+      }
+      const value = object[k]
+      if (typeof value === 'function') {
+        copy[k] = value.bind(object)
+      } else {
+        copy[k] = value
+      }
     }
+    proto = Object.getPrototypeOf(proto)
   }
   return copy
 }

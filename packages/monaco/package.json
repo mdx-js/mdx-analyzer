@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "peerDependencies": {
-    "monaco-editor": ">=0.30.0"
+    "monaco-editor": ">=0.34.0"
   },
   "peerDependenciesMeta": {
     "monaco-editor": {

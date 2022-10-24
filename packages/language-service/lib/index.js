@@ -15,6 +15,7 @@ import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import { unified } from 'unified'
 
+import { toDiagnostic } from './error.js'
 import { getMarkdownDefinitionAtPosition } from './markdown.js'
 import { bindAll } from './object.js'
 import { fakeMdxPath } from './path.js'
@@ -56,6 +57,8 @@ export function createMDXLanguageService(ts, host, plugins) {
     processor.use(plugins)
   }
 
+  /** @type {Map<string, [DiagnosticWithLocation]>} */
+  const errorCache = new Map()
   const internalHost = bindAll(host)
 
   internalHost.getCompilationSettings = () => ({
@@ -81,7 +84,15 @@ export function createMDXLanguageService(ts, host, plugins) {
 
     const length = snapshot.getLength()
     const mdx = snapshot.getText(0, length)
-    const js = mdxToJsx(mdx, processor)
+    /** @type {string} */
+    let js
+    try {
+      js = mdxToJsx(mdx, processor)
+      errorCache.delete(fileName)
+    } catch (error) {
+      js = 'export {}\n'
+      errorCache.set(fileName, toDiagnostic(ts, error))
+    }
 
     return {
       getText: (start, end) => js.slice(start, end),
@@ -343,6 +354,10 @@ export function createMDXLanguageService(ts, host, plugins) {
         data,
       )
 
+      if (errorCache.has(fileName)) {
+        return
+      }
+
       if (details || !isMdx(fileName)) {
         return details
       }
@@ -379,6 +394,10 @@ export function createMDXLanguageService(ts, host, plugins) {
         options,
         formattingSettings,
       )
+
+      if (errorCache.has(fileName)) {
+        return
+      }
 
       if (!isMdx(fileName)) {
         return completionInfo
@@ -432,6 +451,11 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       let definition = ls.getDefinitionAtPosition(fileName, position)
+
+      if (errorCache.has(fileName)) {
+        return
+      }
+
       if (!definition?.length) {
         definition = ls.getDefinitionAtPosition(
           fileName,
@@ -704,6 +728,10 @@ export function createMDXLanguageService(ts, host, plugins) {
         return quickInfo
       }
 
+      if (errorCache.has(fileName)) {
+        return
+      }
+
       const node = getMarkdownDefinitionAtPosition(
         processor.parse(snapshot.getText(0, snapshot.getLength())),
         position,
@@ -738,6 +766,10 @@ export function createMDXLanguageService(ts, host, plugins) {
 
     getReferencesAtPosition(fileName, position) {
       const referenceEntries = ls.getReferencesAtPosition(fileName, position)
+
+      if (errorCache.has(fileName)) {
+        return
+      }
 
       if (referenceEntries) {
         patchDocumentSpans(referenceEntries)
@@ -822,6 +854,10 @@ export function createMDXLanguageService(ts, host, plugins) {
 
     getSyntacticDiagnostics(fileName) {
       const diagnostics = ls.getSyntacticDiagnostics(fileName)
+      const errors = errorCache.get(fileName)
+      if (errors) {
+        return errors
+      }
 
       patchDiagnosticsWithLocation(diagnostics)
 

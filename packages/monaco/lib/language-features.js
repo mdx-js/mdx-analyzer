@@ -197,6 +197,7 @@ export function createMarkerDataProvider(monaco) {
       const diagnostics = await Promise.all([
         worker.getSemanticDiagnostics(uri),
         worker.getSuggestionDiagnostics(uri),
+        worker.getSyntacticDiagnostics(uri),
       ])
 
       if (model.isDisposed()) {

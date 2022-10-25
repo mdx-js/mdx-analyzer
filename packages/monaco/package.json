@@ -2,6 +2,34 @@
   "name": "@mdx-js/monaco",
   "version": "0.0.0",
   "type": "module",
+  "description": "MDX intellisense in Monaco editor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdx-js/vscode-mdx.git",
+    "directory": "packages/monaco"
+  },
+  "homepage": "https://mdxjs.com",
+  "bugs": "https://github.com/mdx-js/vscode-mdx/issues",
+  "author": "Remco Haszing <remcohaszing@gmail.com>",
+  "funding": "https://opencollective.com/unified",
+  "license": "MIT",
+  "main": "./index.js",
+  "files": [
+    "*.d.ts",
+    "*.js",
+    "lib"
+  ],
+  "keywords": [
+    "intellisense",
+    "mdx",
+    "monaco",
+    "monaco-editor",
+    "typescript",
+    "unified"
+  ],
+  "scripts": {
+    "prepack": "tsc --build --clean && tsc --build"
+  },
   "peerDependencies": {
     "monaco-editor": ">=0.34.0"
   },
@@ -14,5 +42,6 @@
     "@mdx-js/language-service": "0.0.0",
     "monaco-marker-data-provider": "^1.0.0",
     "monaco-worker-manager": "^2.0.0"
-  }
+  },
+  "sideEffects": false
 }

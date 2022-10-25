@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * @typedef {import('vscode-languageserver').TextDocumentChangeEvent<TextDocument>} TextDocumentChangeEvent
  * @typedef {import('vscode-languageserver-textdocument').TextDocument} TextDocument

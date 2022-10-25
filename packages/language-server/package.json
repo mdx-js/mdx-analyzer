@@ -2,6 +2,33 @@
   "name": "@mdx-js/language-server",
   "version": "0.0.0",
   "type": "module",
+  "description": "MDX intellisense in Monaco editor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdx-js/vscode-mdx.git",
+    "directory": "packages/language-server"
+  },
+  "homepage": "https://mdxjs.com",
+  "bugs": "https://github.com/mdx-js/vscode-mdx/issues",
+  "author": "Remco Haszing <remcohaszing@gmail.com>",
+  "funding": "https://opencollective.com/unified",
+  "license": "MIT",
+  "bin": {
+    "mdx-language-server": "./index.js"
+  },
+  "files": [
+    "*.d.ts",
+    "*.js",
+    "lib"
+  ],
+  "keywords": [
+    "intellisense",
+    "mdx",
+    "monaco",
+    "monaco-editor",
+    "typescript",
+    "unified"
+  ],
   "dependencies": {
     "@mdx-js/language-service": "0.0.0",
     "vscode-languageserver": "^8.0.0",

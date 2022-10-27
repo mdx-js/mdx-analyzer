@@ -19,7 +19,10 @@ export async function activate(context) {
 
   client = new LanguageClient(
     'MDX',
-    { run, debug: { ...run, options: { execArgv: ['--inspect=6009'] } } },
+    {
+      run,
+      debug: { ...run, options: { execArgv: ['--inspect=6009', '--nolazy'] } },
+    },
     {
       documentSelector: [
         { scheme: 'file', language: 'mdx' },

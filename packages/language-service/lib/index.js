@@ -9,6 +9,7 @@
  * @typedef {import('typescript').SymbolDisplayPart} SymbolDisplayPart
  * @typedef {import('typescript').TextSpan} TextSpan
  * @typedef {import('unified').PluggableList} PluggableList
+ * @typedef {import('./utils.js').MDXSnapshot} MDXSnapshot
  */
 
 import remarkMdx from 'remark-mdx'
@@ -20,7 +21,6 @@ import { getMarkdownDefinitionAtPosition } from './markdown.js'
 import { bindAll } from './object.js'
 import { fakeMdxPath } from './path.js'
 import {
-  getJSXPosition,
   getOriginalPosition,
   mdxToJsx,
   unistPositionToTextSpan,
@@ -57,8 +57,10 @@ export function createMDXLanguageService(ts, host, plugins) {
     processor.use(plugins)
   }
 
-  /** @type {Map<string, [DiagnosticWithLocation]>} */
-  const errorCache = new Map()
+  /** @type {Map<string, string>} */
+  const scriptVersions = new Map()
+  /** @type {Map<string, MDXSnapshot>} */
+  const scriptSnapshots = new Map()
   const internalHost = bindAll(host)
 
   internalHost.getCompilationSettings = () => ({
@@ -76,33 +78,43 @@ export function createMDXLanguageService(ts, host, plugins) {
   }
 
   internalHost.getScriptSnapshot = fileName => {
-    const snapshot = host.getScriptSnapshot(fileName)
+    if (!isMdx(fileName)) {
+      return host.getScriptSnapshot(fileName)
+    }
 
-    if (!snapshot || !isMdx(fileName)) {
+    const snapshot = scriptSnapshots.get(fileName)
+    if (snapshot) {
       return snapshot
     }
 
-    const length = snapshot.getLength()
-    const mdx = snapshot.getText(0, length)
-    /** @type {string} */
-    let js
-    try {
-      js = mdxToJsx(mdx, processor)
-      errorCache.delete(fileName)
-    } catch (error) {
-      js = 'export {}\n'
-      errorCache.set(fileName, toDiagnostic(ts, error))
+    const externalSnapshot = host.getScriptSnapshot(fileName)
+    if (!externalSnapshot) {
+      return
     }
 
-    return {
-      getText: (start, end) => js.slice(start, end),
-      getLength: () => js.length,
-      // eslint-disable-next-line unicorn/no-useless-undefined
-      getChangeRange: () => undefined,
-      dispose() {
-        snapshot.dispose?.()
-      },
+    const length = externalSnapshot.getLength()
+    const mdx = externalSnapshot.getText(0, length)
+    const newSnapshot = mdxToJsx(mdx, processor)
+    newSnapshot.dispose = () => {
+      externalSnapshot.dispose?.()
+      scriptSnapshots.delete(fileName)
+      scriptVersions.delete(fileName)
     }
+    scriptSnapshots.set(fileName, newSnapshot)
+    return newSnapshot
+  }
+
+  internalHost.getScriptVersion = fileName => {
+    const externalVersion = host.getScriptVersion(fileName)
+    if (!isMdx(fileName)) {
+      return externalVersion
+    }
+    const internalVersion = scriptVersions.get(fileName)
+    if (externalVersion !== internalVersion) {
+      scriptSnapshots.delete(fileName)
+      scriptVersions.set(fileName, externalVersion)
+    }
+    return externalVersion
   }
 
   internalHost.resolveModuleNames = (
@@ -138,11 +150,44 @@ export function createMDXLanguageService(ts, host, plugins) {
   const ls = ts.createLanguageService(internalHost)
 
   /**
+   * @param {string} fileName
+   * @returns {MDXSnapshot | undefined} The synchronized MDX snapshot.
+   */
+  function syncSnapshot(fileName) {
+    if (!isMdx(fileName)) {
+      return
+    }
+    const snapshot = scriptSnapshots.get(fileName)
+    const externalVersion = host.getScriptVersion(fileName)
+    const internalVersion = scriptVersions.get(fileName)
+    if (internalVersion === externalVersion && snapshot) {
+      return snapshot
+    }
+
+    const externalSnapshot = host.getScriptSnapshot(fileName)
+    if (!externalSnapshot) {
+      return
+    }
+
+    const length = externalSnapshot.getLength()
+    const mdx = externalSnapshot.getText(0, length)
+    const newSnapshot = mdxToJsx(mdx, processor)
+    newSnapshot.dispose = () => {
+      externalSnapshot.dispose?.()
+      scriptSnapshots.delete(fileName)
+      scriptVersions.delete(fileName)
+    }
+    scriptSnapshots.set(fileName, newSnapshot)
+    scriptVersions.set(fileName, externalVersion)
+    return newSnapshot
+  }
+
+  /**
    * @param {readonly DocumentSpan[]} documentSpans
    */
   function patchDocumentSpans(documentSpans) {
     for (const documentSpan of documentSpans) {
-      const snapshot = host.getScriptSnapshot(documentSpan.fileName)
+      const snapshot = scriptSnapshots.get(documentSpan.fileName)
       patchTextSpan(documentSpan.fileName, snapshot, documentSpan.textSpan)
 
       if (documentSpan.contextSpan) {
@@ -150,7 +195,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       if (documentSpan.originalFileName) {
-        const originalSnapshot = host.getScriptSnapshot(
+        const originalSnapshot = scriptSnapshots.get(
           documentSpan.originalFileName,
         )
 
@@ -289,13 +334,12 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getBreakpointStatementAtPosition(fileName, position) {
+      const snapshot = syncSnapshot(fileName)
       const textSpan = ls.getBreakpointStatementAtPosition(fileName, position)
 
       if (!textSpan) {
         return
       }
-
-      const snapshot = host.getScriptSnapshot(fileName)
 
       if (snapshot) {
         patchTextSpan(fileName, snapshot, textSpan)
@@ -344,33 +388,10 @@ export function createMDXLanguageService(ts, host, plugins) {
       preferences,
       data,
     ) {
-      const details = ls.getCompletionEntryDetails(
-        fileName,
-        position,
-        entryName,
-        formatOptions,
-        source,
-        preferences,
-        data,
-      )
-
-      if (errorCache.has(fileName)) {
-        return
-      }
-
-      if (details || !isMdx(fileName)) {
-        return details
-      }
-
-      const snapshot = host.getScriptSnapshot(fileName)
-
-      if (!snapshot) {
-        return details
-      }
-
+      const snapshot = syncSnapshot(fileName)
       return ls.getCompletionEntryDetails(
         fileName,
-        getJSXPosition(snapshot, position),
+        snapshot?.getShadowPosition(position) ?? position,
         entryName,
         formatOptions,
         source,
@@ -388,46 +409,28 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getCompletionsAtPosition(fileName, position, options, formattingSettings) {
-      let completionInfo = ls.getCompletionsAtPosition(
+      const snapshot = syncSnapshot(fileName)
+      const completionInfo = ls.getCompletionsAtPosition(
         fileName,
-        position,
+        snapshot?.getShadowPosition(position) ?? position,
         options,
         formattingSettings,
       )
-
-      if (errorCache.has(fileName)) {
-        return
-      }
-
-      if (!isMdx(fileName)) {
+      if (!isMdx(fileName) || !snapshot || !completionInfo) {
         return completionInfo
       }
 
-      const snapshot = host.getScriptSnapshot(fileName)
-
-      if (!snapshot) {
-        return completionInfo
-      }
-
-      if (!completionInfo) {
-        completionInfo = ls.getCompletionsAtPosition(
+      if (completionInfo.optionalReplacementSpan) {
+        patchTextSpan(
           fileName,
-          getJSXPosition(snapshot, position),
-          options,
-          formattingSettings,
+          snapshot,
+          completionInfo.optionalReplacementSpan,
         )
-        if (completionInfo?.optionalReplacementSpan) {
-          patchTextSpan(
-            fileName,
-            snapshot,
-            completionInfo.optionalReplacementSpan,
-          )
-        }
-        if (completionInfo?.entries) {
-          for (const entry of completionInfo.entries) {
-            if (entry.replacementSpan) {
-              patchTextSpan(fileName, snapshot, entry.replacementSpan)
-            }
+      }
+      if (completionInfo.entries) {
+        for (const entry of completionInfo.entries) {
+          if (entry.replacementSpan) {
+            patchTextSpan(fileName, snapshot, entry.replacementSpan)
           }
         }
       }
@@ -444,55 +447,41 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getDefinitionAtPosition(fileName, position) {
-      const snapshot = host.getScriptSnapshot(fileName)
+      const snapshot = syncSnapshot(fileName)
 
-      if (!snapshot) {
-        return
-      }
-
-      let definition = ls.getDefinitionAtPosition(fileName, position)
-
-      if (errorCache.has(fileName)) {
-        return
-      }
-
-      if (!definition?.length) {
-        definition = ls.getDefinitionAtPosition(
-          fileName,
-          getJSXPosition(snapshot, position),
-        )
-      }
+      const definition = ls.getDefinitionAtPosition(
+        fileName,
+        snapshot?.getShadowPosition(position) ?? position,
+      )
 
       if (definition) {
         patchDocumentSpans(definition)
-      } else {
-        definition = []
       }
 
       if (!isMdx(fileName)) {
         return definition
       }
 
-      const node = getMarkdownDefinitionAtPosition(
-        processor.parse(snapshot.getText(0, snapshot.getLength())),
-        position,
-      )
+      if (snapshot) {
+        const node = getMarkdownDefinitionAtPosition(snapshot.ast, position)
 
-      if (!node?.position) {
-        return definition
+        if (node?.position) {
+          const result = definition ?? []
+          return [
+            ...result,
+            {
+              textSpan: unistPositionToTextSpan(node.position),
+              fileName,
+              kind: ts.ScriptElementKind.linkName,
+              name: fileName,
+              containerKind: ts.ScriptElementKind.linkName,
+              containerName: fileName,
+            },
+          ]
+        }
       }
 
-      return [
-        ...definition,
-        {
-          textSpan: unistPositionToTextSpan(node.position),
-          fileName,
-          kind: ts.ScriptElementKind.linkName,
-          name: fileName,
-          containerKind: ts.ScriptElementKind.linkName,
-          containerName: fileName,
-        },
-      ]
+      return definition
     },
 
     getDocCommentTemplateAtPosition(fileName, position, options) {
@@ -709,33 +698,23 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getQuickInfoAtPosition(fileName, position) {
-      if (!isMdx(fileName)) {
-        return ls.getQuickInfoAtPosition(fileName, position)
-      }
+      const snapshot = syncSnapshot(fileName)
 
-      const snapshot = host.getScriptSnapshot(fileName)
-
-      if (!snapshot) {
-        return
-      }
-
-      const quickInfo =
-        ls.getQuickInfoAtPosition(fileName, position) ||
-        ls.getQuickInfoAtPosition(fileName, getJSXPosition(snapshot, position))
+      const quickInfo = ls.getQuickInfoAtPosition(
+        fileName,
+        snapshot?.getShadowPosition(position) ?? position,
+      )
 
       if (quickInfo) {
         patchTextSpan(fileName, snapshot, quickInfo.textSpan)
         return quickInfo
       }
 
-      if (errorCache.has(fileName)) {
+      if (!snapshot) {
         return
       }
 
-      const node = getMarkdownDefinitionAtPosition(
-        processor.parse(snapshot.getText(0, snapshot.getLength())),
-        position,
-      )
+      const node = getMarkdownDefinitionAtPosition(snapshot.ast, position)
 
       if (!node?.position) {
         return
@@ -765,11 +744,11 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getReferencesAtPosition(fileName, position) {
-      const referenceEntries = ls.getReferencesAtPosition(fileName, position)
-
-      if (errorCache.has(fileName)) {
-        return
-      }
+      const snapshot = syncSnapshot(fileName)
+      const referenceEntries = ls.getReferencesAtPosition(
+        fileName,
+        snapshot?.getShadowPosition(position) ?? position,
+      )
 
       if (referenceEntries) {
         patchDocumentSpans(referenceEntries)
@@ -853,11 +832,11 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getSyntacticDiagnostics(fileName) {
-      const diagnostics = ls.getSyntacticDiagnostics(fileName)
-      const errors = errorCache.get(fileName)
-      if (errors) {
-        return errors
+      const snapshot = syncSnapshot(fileName)
+      if (snapshot?.error) {
+        return toDiagnostic(ts, snapshot.error)
       }
+      const diagnostics = ls.getSyntacticDiagnostics(fileName)
 
       patchDiagnosticsWithLocation(diagnostics)
 

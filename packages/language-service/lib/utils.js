@@ -18,6 +18,22 @@
  * @typedef {[start: number, end: number]} OffsetRange
  */
 
+/**
+ * @typedef {object} MDXShadow
+ * @property {(start?: number, end?: number) => string} getText
+ * Same as {@link IScriptSnapshot.getText}, except omitting start and end, returns the entire text.
+ * @property {(position: number) => number | undefined} getShadowPosition
+ * Map a position from the real MDX document to the JSX shadow document.
+ * @property {unknown} [error]
+ * This is defined if a parsing error has occurred.
+ * @property {Root} ast
+ * The markdown AST (mdast).
+ */
+
+/**
+ * @typedef {MDXShadow & IScriptSnapshot} MDXSnapshot
+ */
+
 import { visit } from 'unist-util-visit'
 
 const componentStart = `
@@ -37,6 +53,8 @@ const componentEnd = `
 /** @typedef {Props} MDXContentProps */
 `
 
+const fallback = 'export {}\n'
+
 const whitespaceRegex = /\s/u
 
 /**
@@ -45,21 +63,7 @@ const whitespaceRegex = /\s/u
  * @returns {boolean} XXX
  */
 function shouldShow(positions, index) {
-  if (positions.length === 0) {
-    return false
-  }
-
-  const [start, end] = positions[0]
-  if (index < start) {
-    return false
-  }
-
-  if (index < end) {
-    return true
-  }
-
-  positions.shift()
-  return shouldShow(positions, index)
+  return positions.some(([start, end]) => start <= index && index < end)
 }
 
 /**
@@ -123,10 +127,29 @@ function findLastOffset(node) {
  * @see https://code.visualstudio.com/api/language-extensions/embedded-languages#language-services-sample
  * @param {string} mdx
  * @param {Processor} processor
- * @returns {string} JavaScript code that matches the MDX code, but shadowed.
+ * @returns {MDXSnapshot} JavaScript code that matches the MDX code, but shadowed.
  */
 export function mdxToJsx(mdx, processor) {
-  const ast = processor.parse(mdx)
+  /** @type {Root} */
+  let ast
+  try {
+    ast = processor.parse(mdx)
+  } catch (error) {
+    return {
+      // eslint-disable-next-line no-empty-function
+      dispose() {},
+      ast: processor.parse(fallback),
+      error,
+      // eslint-disable-next-line unicorn/no-useless-undefined
+      getChangeRange: () => undefined,
+      getText: (start = 0, end = fallback.length) => fallback.slice(start, end),
+      getLength: () => fallback.length,
+      getShadowPosition() {
+        // eslint-disable-next-line unicorn/no-useless-undefined
+        return undefined
+      },
+    }
+  }
 
   /** @type {OffsetRange[]} */
   const esmPositions = []
@@ -193,16 +216,25 @@ export function mdxToJsx(mdx, processor) {
     jsxShadow += shouldShow(jsxPositions, index) ? char : ' '
   }
 
-  return esmShadow + componentStart + jsxShadow + componentEnd
-}
+  const js = esmShadow + componentStart + jsxShadow + componentEnd
 
-/**
- * @param {IScriptSnapshot} snapshot A snapshot of the original source code.
- * @param {number} position The position of the incoming request.
- * @returns {number} The position mapped to the JSX part of the shadowed code.
- */
-export function getJSXPosition(snapshot, position) {
-  return position + componentStart.length + snapshot.getLength()
+  return {
+    ast,
+    // eslint-disable-next-line no-empty-function
+    dispose() {},
+    // eslint-disable-next-line unicorn/no-useless-undefined
+    getChangeRange: () => undefined,
+    getText: (start = 0, end = js.length) => js.slice(start, end),
+    getLength: () => js.length,
+    getShadowPosition(position) {
+      if (shouldShow(esmPositions, position)) {
+        return position
+      }
+      if (shouldShow(jsxPositions, position)) {
+        return esmShadow.length + componentStart.length + position
+      }
+    },
+  }
 }
 
 /**

@@ -212,10 +212,12 @@ documents.onDidClose(event => {
  */
 function checkDiagnostics(event) {
   const { uri } = event.document
+  const path = fileURLToPath(uri)
   const ls = getOrCreateLanguageService(ts, uri)
   const diagnostics = [
-    ...ls.getSemanticDiagnostics(fileURLToPath(uri)),
-    ...ls.getSuggestionDiagnostics(fileURLToPath(uri)),
+    ...ls.getSemanticDiagnostics(path),
+    ...ls.getSuggestionDiagnostics(path),
+    ...ls.getSyntacticDiagnostics(path),
   ]
 
   connection.sendDiagnostics({

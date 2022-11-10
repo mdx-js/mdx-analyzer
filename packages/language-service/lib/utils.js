@@ -1,11 +1,6 @@
 /**
  * @typedef {import('estree').Program} Program
  * @typedef {import('mdast').Root} Root
- * @typedef {import('mdast').Content} Content
- * @typedef {import('mdast-util-mdx').MdxjsEsm} MdxjsEsm
- * @typedef {import('mdast-util-mdx').MdxFlowExpression} MdxFlowExpression
- * @typedef {import('mdast-util-mdx').MdxJsxAttribute} MdxJsxAttribute
- * @typedef {import('mdast-util-mdx').MdxTextExpression} MdxTextExpression
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
  * @typedef {import('typescript').TextSpan} TextSpan
  * @typedef {import('unified').Processor<Root>} Processor
@@ -24,6 +19,8 @@
  * Same as {@link IScriptSnapshot.getText}, except omitting start and end, returns the entire text.
  * @property {(position: number) => number | undefined} getShadowPosition
  * Map a position from the real MDX document to the JSX shadow document.
+ * @property {(shadowPosition: number) => number} getRealPosition
+ * Map a position from the shadow document to the real MDX document.
  * @property {unknown} [error]
  * This is defined if a parsing error has occurred.
  * @property {Root} ast
@@ -144,10 +141,9 @@ export function mdxToJsx(mdx, processor) {
       getChangeRange: () => undefined,
       getText: (start = 0, end = fallback.length) => fallback.slice(start, end),
       getLength: () => fallback.length,
-      getShadowPosition() {
-        // eslint-disable-next-line unicorn/no-useless-undefined
-        return undefined
-      },
+      // eslint-disable-next-line unicorn/no-useless-undefined
+      getShadowPosition: () => undefined,
+      getRealPosition: () => 0,
     }
   }
 
@@ -234,20 +230,22 @@ export function mdxToJsx(mdx, processor) {
         return esmShadow.length + componentStart.length + position
       }
     },
+    getRealPosition(shadowPosition) {
+      if (shadowPosition <= esmShadow.length) {
+        return shadowPosition
+      }
+      if (shadowPosition <= esmShadow.length + componentStart.length) {
+        return 0
+      }
+      if (
+        shadowPosition <=
+        esmShadow.length + componentStart.length + jsxShadow.length
+      ) {
+        return shadowPosition - esmShadow.length - componentStart.length
+      }
+      return 0
+    },
   }
-}
-
-/**
- * @param {IScriptSnapshot} snapshot A snapshot of the original source code.
- * @param {number} position The position inside the shadowed code.
- * @returns {number} The position mapped back to the original source code.
- */
-export function getOriginalPosition(snapshot, position) {
-  const originalLength = snapshot.getLength()
-  if (position < originalLength) {
-    return position
-  }
-  return position - originalLength - componentStart.length
 }
 
 /**

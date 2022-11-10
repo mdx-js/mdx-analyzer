@@ -20,11 +20,7 @@ import { toDiagnostic } from './error.js'
 import { getMarkdownDefinitionAtPosition } from './markdown.js'
 import { bindAll } from './object.js'
 import { fakeMdxPath } from './path.js'
-import {
-  getOriginalPosition,
-  mdxToJsx,
-  unistPositionToTextSpan,
-} from './utils.js'
+import { mdxToJsx, unistPositionToTextSpan } from './utils.js'
 
 /**
  * @param {string} fileName
@@ -36,12 +32,12 @@ function isMdx(fileName) {
 
 /**
  * @param {string} fileName
- * @param {IScriptSnapshot | undefined} snapshot
+ * @param {MDXSnapshot | undefined} snapshot
  * @param {TextSpan} textSpan
  */
 function patchTextSpan(fileName, snapshot, textSpan) {
   if (snapshot && isMdx(fileName)) {
-    textSpan.start = getOriginalPosition(snapshot, textSpan.start)
+    textSpan.start = snapshot.getRealPosition(textSpan.start)
   }
 }
 
@@ -227,14 +223,14 @@ export function createMDXLanguageService(ts, host, plugins) {
       return
     }
 
-    const snapshot = host.getScriptSnapshot(fileName)
+    const snapshot = scriptSnapshots.get(fileName)
 
     if (!snapshot) {
       return
     }
 
     if (diagnostic.start != null) {
-      diagnostic.start = getOriginalPosition(snapshot, diagnostic.start)
+      diagnostic.start = snapshot.getRealPosition(diagnostic.start)
     }
   }
 
@@ -322,9 +318,8 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getBraceMatchingAtPosition(fileName, position) {
+      const snapshot = syncSnapshot(fileName)
       const textSpans = ls.getBraceMatchingAtPosition(fileName, position)
-
-      const snapshot = host.getScriptSnapshot(fileName)
 
       for (const textSpan of textSpans) {
         patchTextSpan(fileName, snapshot, textSpan)
@@ -776,6 +771,7 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getSemanticDiagnostics(fileName) {
+      syncSnapshot(fileName)
       const diagnostics = ls.getSemanticDiagnostics(fileName)
 
       for (const diagnostic of diagnostics) {
@@ -812,6 +808,7 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getSuggestionDiagnostics(fileName) {
+      syncSnapshot(fileName)
       const diagnostics = ls.getSuggestionDiagnostics(fileName)
 
       for (const diagnostic of diagnostics) {

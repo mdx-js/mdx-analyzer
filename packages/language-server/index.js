@@ -14,6 +14,7 @@ import {
   MarkupKind,
   ProposedFeatures,
   TextDocumentSyncKind,
+  TextEdit,
 } from 'vscode-languageserver/node.js'
 
 import {
@@ -22,7 +23,7 @@ import {
   createDocumentationString,
   textSpanToRange,
 } from './lib/convert.js'
-import { documents } from './lib/documents.js'
+import { documents, getDocByFileName } from './lib/documents.js'
 import { getOrCreateLanguageService } from './lib/language-service-manager.js'
 
 const connection = createConnection(ProposedFeatures.all)
@@ -39,6 +40,9 @@ connection.onInitialize(() => {
       definitionProvider: true,
       hoverProvider: true,
       referencesProvider: true,
+      renameProvider: {
+        prepareProvider: true,
+      },
       textDocumentSync: TextDocumentSyncKind.Full,
     },
   }
@@ -201,6 +205,57 @@ connection.onReferences(params => {
     uri: entry.fileName,
     range: textSpanToRange(doc, entry.textSpan),
   }))
+})
+
+connection.onPrepareRename(params => {
+  const doc = documents.get(params.textDocument.uri)
+
+  if (!doc) {
+    return
+  }
+
+  const fileName = fileURLToPath(doc.uri)
+  const position = doc.offsetAt(params.position)
+  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const renameInfo = ls.getRenameInfo(fileName, position, {
+    allowRenameOfImportPath: false,
+  })
+
+  if (renameInfo.canRename) {
+    return textSpanToRange(doc, renameInfo.triggerSpan)
+  }
+})
+
+connection.onRenameRequest(params => {
+  const doc = documents.get(params.textDocument.uri)
+
+  if (!doc) {
+    return
+  }
+
+  const fileName = fileURLToPath(doc.uri)
+  const position = doc.offsetAt(params.position)
+  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const locations = ls.findRenameLocations(fileName, position, false, false)
+
+  if (!locations?.length) {
+    return
+  }
+
+  /** @type {Record<string, TextEdit[]>} */
+  const changes = {}
+  for (const location of locations) {
+    const doc = getDocByFileName(location.fileName)
+    if (!doc) {
+      continue
+    }
+    changes[doc.uri] ||= []
+    const textEdits = changes[doc.uri]
+    textEdits.push(
+      TextEdit.replace(textSpanToRange(doc, location.textSpan), params.newName),
+    )
+  }
+  return { changes }
 })
 
 documents.onDidClose(event => {

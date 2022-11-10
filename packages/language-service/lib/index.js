@@ -283,15 +283,30 @@ export function createMDXLanguageService(ts, host, plugins) {
       findInComments,
       providePrefixAndSuffixTextForRename,
     ) {
-      if (!isMdx(fileName)) {
-        return ls.findRenameLocations(
-          fileName,
-          position,
-          findInStrings,
-          findInComments,
-          providePrefixAndSuffixTextForRename,
-        )
+      const snapshot = syncSnapshot(fileName)
+      const locations = ls.findRenameLocations(
+        fileName,
+        snapshot?.getShadowPosition(position) ?? position,
+        findInStrings,
+        findInComments,
+        providePrefixAndSuffixTextForRename,
+      )
+
+      if (locations) {
+        for (const location of locations) {
+          const locationSnapshot = scriptSnapshots.get(location.fileName)
+          patchTextSpan(location.fileName, locationSnapshot, location.textSpan)
+          if (location.contextSpan) {
+            patchTextSpan(
+              location.fileName,
+              locationSnapshot,
+              location.contextSpan,
+            )
+          }
+        }
       }
+
+      return locations
 
       // XXX
     },
@@ -753,11 +768,18 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getRenameInfo(fileName, position, options) {
-      if (!isMdx(fileName)) {
-        return ls.getRenameInfo(fileName, position, options)
+      const snapshot = syncSnapshot(fileName)
+      const info = ls.getRenameInfo(
+        fileName,
+        snapshot?.getShadowPosition(position) ?? position,
+        options,
+      )
+
+      if (info.canRename) {
+        patchTextSpan(fileName, snapshot, info.triggerSpan)
       }
 
-      throw new Error('getRenameInfo is not supported for MDX files')
+      return info
     },
 
     getSemanticClassifications(fileName, span) {

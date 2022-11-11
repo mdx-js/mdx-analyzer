@@ -7,6 +7,7 @@
  * @typedef {import('typescript').DiagnosticMessageChain} DiagnosticMessageChain
  * @typedef {import('typescript').DiagnosticRelatedInformation} DiagnosticRelatedInformation
  * @typedef {import('typescript').JSDocTagInfo} JSDocTagInfo
+ * @typedef {import('typescript').NavigationBarItem} NavigationBarItem
  * @typedef {import('typescript').QuickInfo} QuickInfo
  * @typedef {import('typescript').SymbolDisplayPart} SymbolDisplayPart
  * @typedef {import('typescript').ScriptElementKind} ScriptElementKind
@@ -20,8 +21,10 @@ import {
   CompletionItemKind,
   DiagnosticSeverity,
   DiagnosticTag,
+  DocumentSymbol,
   LocationLink,
   Range,
+  SymbolKind,
 } from 'vscode-languageserver'
 
 import { documents } from './documents.js'
@@ -60,6 +63,34 @@ export function convertScriptElementKind(kind) {
       return CompletionItemKind.File
   }
   return CompletionItemKind.Property
+}
+
+/**
+ * @param {ScriptElementKind} kind
+ * @returns {SymbolKind} The matching Monaco completion item kind.
+ */
+export function convertScriptElementKindToSymbolKind(kind) {
+  switch (kind) {
+    case 'property':
+    case 'getter':
+    case 'setter':
+      return SymbolKind.Property
+    case 'function':
+    case 'method':
+    case 'construct':
+    case 'call':
+    case 'index':
+      return SymbolKind.Function
+    case 'enum':
+      return SymbolKind.Enum
+    case 'module':
+      return SymbolKind.Module
+    case 'class':
+      return SymbolKind.Class
+    case 'interface':
+      return SymbolKind.Interface
+  }
+  return SymbolKind.Variable
 }
 
 /**
@@ -248,4 +279,26 @@ export function definitionInfoToLocationLinks(doc, info) {
       textSpanToRange(doc, entry.textSpan),
     ),
   )
+}
+
+/**
+ * Convert TypeScript navigation bar items to location links.
+ *
+ * @param {TextDocument} doc
+ * @param {NavigationBarItem[]} items
+ * @returns {DocumentSymbol[]} The navigation bar items as document symvols
+ */
+export function convertNavigationBarItems(doc, items) {
+  return items
+    .filter(item => item.kind !== 'module')
+    .map(item => {
+      return DocumentSymbol.create(
+        item.text,
+        undefined,
+        convertScriptElementKindToSymbolKind(item.kind),
+        textSpanToRange(doc, item.spans[0]),
+        textSpanToRange(doc, item.spans[0]),
+        convertNavigationBarItems(doc, item.childItems),
+      )
+    })
 }

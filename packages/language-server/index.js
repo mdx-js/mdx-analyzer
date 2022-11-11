@@ -18,6 +18,7 @@ import {
 
 import {
   convertDiagnostics,
+  convertNavigationBarItems,
   convertScriptElementKind,
   createDocumentationString,
   definitionInfoToLocationLinks,
@@ -38,6 +39,7 @@ connection.onInitialize(() => {
         resolveProvider: true,
       },
       definitionProvider: true,
+      documentSymbolProvider: { label: 'MDX' },
       foldingRangeProvider: true,
       hoverProvider: true,
       referencesProvider: true,
@@ -157,6 +159,19 @@ connection.onTypeDefinition(params => {
   )
 
   return definitionInfoToLocationLinks(doc, entries)
+})
+
+connection.onDocumentSymbol(params => {
+  const doc = documents.get(params.textDocument.uri)
+
+  if (!doc) {
+    return
+  }
+
+  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const navigationBarItems = ls.getNavigationBarItems(fileURLToPath(doc.uri))
+
+  return convertNavigationBarItems(doc, navigationBarItems)
 })
 
 connection.onFoldingRanges(params => {

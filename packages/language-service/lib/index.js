@@ -6,6 +6,7 @@
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
  * @typedef {import('typescript').LanguageService} LanguageService
  * @typedef {import('typescript').LanguageServiceHost} LanguageServiceHost
+ * @typedef {import('typescript').NavigationBarItem} NavigationBarItem
  * @typedef {import('typescript').SymbolDisplayPart} SymbolDisplayPart
  * @typedef {import('typescript').TextSpan} TextSpan
  * @typedef {import('unified').PluggableList} PluggableList
@@ -39,6 +40,20 @@ function isMdx(fileName) {
 function patchTextSpan(fileName, snapshot, textSpan) {
   if (snapshot && isMdx(fileName)) {
     textSpan.start = snapshot.getRealPosition(textSpan.start)
+  }
+}
+
+/**
+ * @param {string} fileName
+ * @param {MDXSnapshot} snapshot
+ * @param {NavigationBarItem} item
+ */
+function patchNavigationBarItem(fileName, snapshot, item) {
+  for (const span of item.spans) {
+    patchTextSpan(fileName, snapshot, span)
+  }
+  for (const child of item.childItems) {
+    patchNavigationBarItem(fileName, snapshot, child)
   }
 }
 
@@ -669,11 +684,16 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getNavigationBarItems(fileName) {
-      if (!isMdx(fileName)) {
-        return ls.getNavigationBarItems(fileName)
+      const snapshot = syncSnapshot(fileName)
+      const navigationBarItems = ls.getNavigationBarItems(fileName)
+
+      if (snapshot) {
+        for (const item of navigationBarItems) {
+          patchNavigationBarItem(fileName, snapshot, item)
+        }
       }
 
-      throw new Error('getNavigationBarItems is not supported for MDX files')
+      return navigationBarItems
     },
 
     getNavigationTree(fileName) {

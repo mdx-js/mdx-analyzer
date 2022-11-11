@@ -38,6 +38,7 @@ connection.onInitialize(() => {
         resolveProvider: true,
       },
       definitionProvider: true,
+      foldingRangeProvider: true,
       hoverProvider: true,
       referencesProvider: true,
       renameProvider: {
@@ -156,6 +157,30 @@ connection.onTypeDefinition(params => {
   )
 
   return definitionInfoToLocationLinks(doc, entries)
+})
+
+connection.onFoldingRanges(params => {
+  const doc = documents.get(params.textDocument.uri)
+
+  if (!doc) {
+    return
+  }
+
+  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const outlineSpans = ls.getOutliningSpans(fileURLToPath(doc.uri))
+
+  return outlineSpans.map(span => {
+    const start = doc.positionAt(span.textSpan.start)
+    const end = doc.positionAt(span.textSpan.start + span.textSpan.length)
+
+    return {
+      endCharacter: end.character,
+      endLine: end.line,
+      startCharacter: start.character,
+      startLine: start.line,
+      collapsedText: span.bannerText,
+    }
+  })
 })
 
 connection.onHover(params => {

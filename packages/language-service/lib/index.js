@@ -692,11 +692,15 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getOutliningSpans(fileName) {
-      if (!isMdx(fileName)) {
-        return ls.getOutliningSpans(fileName)
+      const snapshot = syncSnapshot(fileName)
+      const outliningSpans = ls.getOutliningSpans(fileName)
+
+      for (const span of outliningSpans) {
+        patchTextSpan(fileName, snapshot, span.hintSpan)
+        patchTextSpan(fileName, snapshot, span.textSpan)
       }
 
-      throw new Error('getOutliningSpans is not supported for MDX files')
+      return outliningSpans
     },
 
     getProgram() {

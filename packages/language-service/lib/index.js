@@ -19,6 +19,7 @@ import { unified } from 'unified'
 import { toDiagnostic } from './error.js'
 import { getMarkdownDefinitionAtPosition } from './markdown.js'
 import { bindAll } from './object.js'
+import { getFoldingRegions } from './outline.js'
 import { fakeMdxPath } from './path.js'
 import { mdxToJsx, unistPositionToTextSpan } from './utils.js'
 
@@ -698,6 +699,10 @@ export function createMDXLanguageService(ts, host, plugins) {
       for (const span of outliningSpans) {
         patchTextSpan(fileName, snapshot, span.hintSpan)
         patchTextSpan(fileName, snapshot, span.textSpan)
+      }
+
+      if (snapshot) {
+        outliningSpans.push(...getFoldingRegions(ts, snapshot.ast))
       }
 
       return outliningSpans

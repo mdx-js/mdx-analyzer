@@ -178,7 +178,6 @@ connection.onFoldingRanges(params => {
       endLine: end.line,
       startCharacter: start.character,
       startLine: start.line,
-      collapsedText: span.bannerText,
     }
   })
 })

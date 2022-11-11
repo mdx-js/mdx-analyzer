@@ -1,6 +1,7 @@
 /**
  * @typedef {import('typescript')} ts
  * @typedef {import('typescript').CompletionEntryDetails} CompletionEntryDetails
+ * @typedef {import('typescript').DefinitionInfo} DefinitionInfo
  * @typedef {import('typescript').Diagnostic} Diagnostic
  * @typedef {import('typescript').DiagnosticCategory} DiagnosticCategory
  * @typedef {import('typescript').DiagnosticMessageChain} DiagnosticMessageChain
@@ -19,6 +20,7 @@ import {
   CompletionItemKind,
   DiagnosticSeverity,
   DiagnosticTag,
+  LocationLink,
   Range,
 } from 'vscode-languageserver'
 
@@ -225,4 +227,25 @@ export function convertDiagnostics(ts, doc, diag) {
     severity: tsDiagnosticCategoryToMarkerSeverity(ts, diag.category),
     tags,
   }
+}
+
+/**
+ * Convert TypeScript definition info to location links.
+ *
+ * @param {TextDocument} doc
+ * @param {readonly DefinitionInfo[] | undefined} info
+ * @returns {LocationLink[] | undefined} The location links
+ */
+export function definitionInfoToLocationLinks(doc, info) {
+  if (!info) {
+    return
+  }
+
+  return info.map(entry =>
+    LocationLink.create(
+      entry.fileName,
+      textSpanToRange(doc, entry.textSpan),
+      textSpanToRange(doc, entry.textSpan),
+    ),
+  )
 }

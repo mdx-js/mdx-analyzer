@@ -10,7 +10,6 @@ import ts from 'typescript'
 import {
   createConnection,
   CompletionItemTag,
-  LocationLink,
   MarkupKind,
   ProposedFeatures,
   TextDocumentSyncKind,
@@ -21,6 +20,7 @@ import {
   convertDiagnostics,
   convertScriptElementKind,
   createDocumentationString,
+  definitionInfoToLocationLinks,
   textSpanToRange,
 } from './lib/convert.js'
 import { documents, getDocByFileName } from './lib/documents.js'
@@ -44,6 +44,7 @@ connection.onInitialize(() => {
         prepareProvider: true,
       },
       textDocumentSync: TextDocumentSyncKind.Full,
+      typeDefinitionProvider: true,
     },
   }
 })
@@ -138,22 +139,23 @@ connection.onDefinition(params => {
     doc.offsetAt(params.position),
   )
 
-  if (!entries) {
+  return definitionInfoToLocationLinks(doc, entries)
+})
+
+connection.onTypeDefinition(params => {
+  const doc = documents.get(params.textDocument.uri)
+
+  if (!doc) {
     return
   }
 
-  /** @type {LocationLink[]} */
-  const result = []
-  for (const entry of entries) {
-    result.push(
-      LocationLink.create(
-        entry.fileName,
-        textSpanToRange(doc, entry.textSpan),
-        textSpanToRange(doc, entry.textSpan),
-      ),
-    )
-  }
-  return result
+  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const entries = ls.getTypeDefinitionAtPosition(
+    fileURLToPath(doc.uri),
+    doc.offsetAt(params.position),
+  )
+
+  return definitionInfoToLocationLinks(doc, entries)
 })
 
 connection.onHover(params => {

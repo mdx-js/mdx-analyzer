@@ -468,10 +468,6 @@ export function createMDXLanguageService(ts, host, plugins) {
         patchDocumentSpans(definition)
       }
 
-      if (!isMdx(fileName)) {
-        return definition
-      }
-
       if (snapshot) {
         const node = getMarkdownDefinitionAtPosition(snapshot.ast, position)
 
@@ -871,13 +867,18 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getTypeDefinitionAtPosition(fileName, position) {
-      if (!isMdx(fileName)) {
-        return ls.getTypeDefinitionAtPosition(fileName, position)
+      const snapshot = syncSnapshot(fileName)
+
+      const definition = ls.getDefinitionAtPosition(
+        fileName,
+        snapshot?.getShadowPosition(position) ?? position,
+      )
+
+      if (definition) {
+        patchDocumentSpans(definition)
       }
 
-      throw new Error(
-        'getTypeDefinitionAtPosition is not supported for MDX files',
-      )
+      return definition
     },
 
     isValidBraceCompletionAtPosition(fileName, position, openingBrace) {

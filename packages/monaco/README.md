@@ -1,4 +1,4 @@
-# `@mdx-js/language-service`
+# `@mdx-js/monaco`
 
 ## What is this?
 

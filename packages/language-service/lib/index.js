@@ -685,7 +685,13 @@ export function createMDXLanguageService(ts, host, plugins) {
 
     getNavigationBarItems(fileName) {
       const snapshot = syncSnapshot(fileName)
-      const navigationBarItems = ls.getNavigationBarItems(fileName)
+      let navigationBarItems = ls.getNavigationBarItems(fileName)
+
+      if (isMdx(fileName)) {
+        navigationBarItems = navigationBarItems.filter(
+          item => item.text !== 'MDXContent',
+        )
+      }
 
       if (snapshot) {
         for (const item of navigationBarItems) {

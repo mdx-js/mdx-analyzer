@@ -49,31 +49,5 @@ test('resolve document symbols', async () => {
         start: { line: 4, character: 0 },
       },
     },
-    // XXX This should be removed
-    {
-      children: [],
-      kind: 12,
-      name: 'MDXContent',
-      range: {
-        end: {
-          line: 16,
-          character: 0,
-        },
-        start: {
-          line: 0,
-          character: 0,
-        },
-      },
-      selectionRange: {
-        end: {
-          line: 16,
-          character: 0,
-        },
-        start: {
-          line: 0,
-          character: 0,
-        },
-      },
-    },
   ])
 })

@@ -17,6 +17,8 @@
  * @typedef {import('vscode-languageserver-textdocument').TextDocument} TextDocument
  */
 
+import { pathToFileURL } from 'node:url'
+
 import {
   CompletionItemKind,
   DiagnosticSeverity,
@@ -272,13 +274,22 @@ export function definitionInfoToLocationLinks(doc, info) {
     return
   }
 
-  return info.map(entry =>
-    LocationLink.create(
-      entry.fileName,
-      textSpanToRange(doc, entry.textSpan),
-      textSpanToRange(doc, entry.textSpan),
-    ),
-  )
+  /** @type {LocationLink[]} */
+  const locationLinks = []
+  for (const entry of info) {
+    const url = String(pathToFileURL(entry.fileName))
+    const entryDoc = documents.get(url)
+    if (entryDoc) {
+      locationLinks.push(
+        LocationLink.create(
+          url,
+          textSpanToRange(entryDoc, entry.textSpan),
+          textSpanToRange(entryDoc, entry.textSpan),
+        ),
+      )
+    }
+  }
+  return locationLinks
 }
 
 /**

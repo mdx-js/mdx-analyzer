@@ -37,7 +37,8 @@
     "json-schema-validator/no-invalid": "off",
     "n/no-unsupported-features/es-builtins": "off",
     "react/react-in-jsx-scope": "off",
-    "sonarjs/cognitive-complexity": "off"
+    "sonarjs/cognitive-complexity": "off",
+    "sonarjs/no-duplicate-string": "off"
   },
   "overrides": [
     {

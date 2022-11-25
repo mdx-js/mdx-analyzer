@@ -142,7 +142,7 @@ connection.onDefinition(params => {
     doc.offsetAt(params.position),
   )
 
-  return definitionInfoToLocationLinks(doc, entries)
+  return definitionInfoToLocationLinks(entries)
 })
 
 connection.onTypeDefinition(params => {
@@ -158,7 +158,7 @@ connection.onTypeDefinition(params => {
     doc.offsetAt(params.position),
   )
 
-  return definitionInfoToLocationLinks(doc, entries)
+  return definitionInfoToLocationLinks(entries)
 })
 
 connection.onDocumentSymbol(params => {

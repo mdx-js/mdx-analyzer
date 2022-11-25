@@ -265,11 +265,10 @@ export function convertDiagnostics(ts, doc, diag) {
 /**
  * Convert TypeScript definition info to location links.
  *
- * @param {TextDocument} doc
  * @param {readonly DefinitionInfo[] | undefined} info
  * @returns {LocationLink[] | undefined} The location links
  */
-export function definitionInfoToLocationLinks(doc, info) {
+export function definitionInfoToLocationLinks(info) {
   if (!info) {
     return
   }

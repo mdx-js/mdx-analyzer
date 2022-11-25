@@ -5,7 +5,6 @@
 
 import { spawn } from 'node:child_process'
 import fs from 'node:fs/promises'
-import { fileURLToPath } from 'node:url'
 
 import {
   createProtocolConnection,
@@ -24,7 +23,7 @@ const TEST_TIMEOUT = 3e3
  */
 export function createConnection() {
   const proc = spawn('mdx-language-server', ['--node-ipc'], {
-    cwd: fileURLToPath(new URL('..', import.meta.url)),
+    cwd: new URL('..', import.meta.url),
     stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
   })
   const connection = createProtocolConnection(

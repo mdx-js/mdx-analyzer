@@ -76,9 +76,17 @@ export function createMDXLanguageService(ts, host, plugins) {
   const internalHost = bindAll(host)
 
   internalHost.getCompilationSettings = () => ({
-    jsx: ts.JsxEmit.Preserve,
+    // Default to the JSX automatic runtime, because that’s what MDX does.
+    jsx: ts.JsxEmit.ReactJSX,
+    // Set these defaults to match MDX if the user explicitly sets the classic runtime.
+    jsxFactory: 'React.createElement',
+    jsxFragmentFactory: 'React.Fragment',
+    // Set this default to match MDX if the user overrides the import source.
+    jsxImportSource: 'react',
     ...host.getCompilationSettings(),
+    // Always allow JS for type checking.
     allowJs: true,
+    // This internal TypeScript property lets TypeScript load `.mdx` files.
     allowNonTsExtensions: true,
   })
 

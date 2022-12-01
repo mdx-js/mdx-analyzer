@@ -52,8 +52,6 @@ function getDefaultLanguageService(ts) {
     defaultLanguageService = createMDXLanguageService(ts, {
       ...ts.sys,
       getCompilationSettings: () => ({
-        allowJs: true,
-        allowNonTsExtensions: true,
         lib: ['lib.es2020.full.d.ts'],
         module: ts.ModuleKind.Node16,
         moduleResolution: ts.ModuleResolutionKind.NodeJs,

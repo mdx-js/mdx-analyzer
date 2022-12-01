@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "checkJs": true,
+    "jsx": "react-jsx",
     "module": "node16"
   }
 }

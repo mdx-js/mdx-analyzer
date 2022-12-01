@@ -96,3 +96,53 @@ test('resolve import hover in ESM if the other file is unopened', async () => {
     },
   })
 })
+
+test('resolve import hover in JSX expressions', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {},
+  })
+
+  const { uri } = await openTextDocument(connection, 'node16/a.mdx')
+  const result = await connection.sendRequest(HoverRequest.type, {
+    position: { line: 11, character: 1 },
+    textDocument: { uri },
+  })
+
+  assert.deepStrictEqual(result, {
+    contents: {
+      kind: 'markdown',
+      value: '```typescript\nfunction a(): void\n```\nDescription of `a`',
+    },
+    range: {
+      start: { line: 11, character: 1 },
+      end: { line: 11, character: 2 },
+    },
+  })
+})
+
+test('resolve import hover in JSX elements', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {},
+  })
+
+  const { uri } = await openTextDocument(connection, 'node16/a.mdx')
+  const result = await connection.sendRequest(HoverRequest.type, {
+    position: { line: 13, character: 5 },
+    textDocument: { uri },
+  })
+
+  assert.deepStrictEqual(result, {
+    contents: {
+      kind: 'markdown',
+      value: '```typescript\nfunction Component(): JSX.Element\n```\n',
+    },
+    range: {
+      start: { line: 13, character: 1 },
+      end: { line: 13, character: 10 },
+    },
+  })
+})

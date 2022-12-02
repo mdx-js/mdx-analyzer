@@ -40,6 +40,7 @@ window.MonacoEnvironment = {
 
 monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   checkJs: true,
+  jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
   moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
 })
 
@@ -57,11 +58,13 @@ initializeMonacoMDX(monaco)
 const fileTree = /** @type {HTMLElement} */ (document.querySelector('#files'))
 monaco.editor.onDidCreateModel(model => {
   const path = model.uri.path
-  const anchor = document.createElement('a')
-  anchor.id = path
-  anchor.href = `#${path}`
-  anchor.textContent = path.slice(1)
-  fileTree.append(anchor)
+  if (!path.startsWith('/node_modules')) {
+    const anchor = document.createElement('a')
+    anchor.id = path
+    anchor.href = `#${path}`
+    anchor.textContent = path.slice(1)
+    fileTree.append(anchor)
+  }
 })
 
 const rootUri = monaco.Uri.parse('file:///')
@@ -75,13 +78,26 @@ function createFile(path, value) {
   monaco.editor.createModel(value, undefined, uri)
 }
 
-const context =
-  /** @type {(path: string) => __WebpackModuleApi.RequireContext} */ (
-    import.meta.webpackContext
-  )('../../test')
+if (import.meta.webpackContext) {
+  const typesContext = import.meta.webpackContext('../../node_modules', {
+    regExp:
+      /\/(csstype\/index|@types\/(prop-types\/index|react\/(global|index|jsx-runtime)|scheduler\/tracing))\.d\.ts/,
+  })
 
-for (const key of context.keys().sort()) {
-  createFile(key, context(key))
+  for (const key of typesContext.keys()) {
+    monaco.editor.createModel(
+      typesContext(key),
+      undefined,
+      monaco.Uri.joinPath(rootUri, 'node_modules', key.replace('@types/', '')),
+    )
+  }
+}
+
+if (import.meta.webpackContext) {
+  const demoContext = import.meta.webpackContext('../../test')
+  for (const key of demoContext.keys().sort()) {
+    createFile(key, demoContext(key))
+  }
 }
 
 const element = /** @type {HTMLDivElement} */ (
@@ -103,13 +119,19 @@ function getModel() {
   return /** @type {monaco.editor.ITextModel} */ (mdxModel)
 }
 
+const darkMode = window.matchMedia('(prefers-color-scheme: dark)')
+monaco.editor.setTheme(darkMode.matches ? 'vs-dark' : 'vs-light')
+darkMode.addEventListener('change', () => {
+  monaco.editor.setTheme(darkMode.matches ? 'vs-dark' : 'vs-light')
+})
+
+const initialModel = getModel()
 const editor = monaco.editor.create(element, {
   automaticLayout: true,
-  model: getModel(),
+  model: initialModel,
+  readOnly: initialModel.uri.path.startsWith('/node_modules'),
   suggest: { showWords: false },
-  theme: window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'vs-dark'
-    : 'vs-light',
+  unicodeHighlight: { ambiguousCharacters: false },
 })
 
 /**
@@ -153,10 +175,18 @@ function updateMarkers(resource) {
   }
 }
 
+editor.onDidChangeModel(({ newModelUrl }) => {
+  if (newModelUrl) {
+    editor.updateOptions({
+      readOnly: newModelUrl.path.startsWith('/node_modules'),
+    })
+    updateMarkers(newModelUrl)
+  }
+})
+
 window.addEventListener('hashchange', () => {
   const model = getModel()
   editor.setModel(model)
-  updateMarkers(model.uri)
 })
 
 monaco.editor.onDidChangeMarkers(([resource]) => {

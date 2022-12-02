@@ -41,6 +41,10 @@ export default {
         test: /\/test\//,
         type: 'asset/source',
       },
+      {
+        test: /\.d\.ts$/,
+        type: 'asset/source',
+      },
     ],
   },
   plugins: [

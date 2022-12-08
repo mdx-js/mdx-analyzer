@@ -9,43 +9,8 @@
   "repository": "https://github.com/mdx-js/vscode-mdx.git",
   "author": "JounQin",
   "publisher": "unifiedjs",
-  "donate": {
-    "recipients": [
-      {
-        "name": "unts",
-        "platform": "opencollective",
-        "address": "https://opencollective.com/unts",
-        "weight": 60
-      },
-      {
-        "name": "rxts",
-        "platform": "opencollective",
-        "address": "https://opencollective.com/rxts",
-        "weight": 20
-      },
-      {
-        "name": "1stG",
-        "email": "i@1stg.me",
-        "weight": 20,
-        "platforms": [
-          {
-            "platform": "opencollective",
-            "address": "https://opencollective.com/1stG"
-          },
-          {
-            "platform": "patreon",
-            "address": "https://www.patreon.com/1stG"
-          }
-        ]
-      }
-    ]
-  },
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/unified"
-  },
   "sponsor": {
-    "url": "https://github.com/mdx-js/vscode-mdx?sponsor=1"
+    "url": "https://opencollective.com/unified"
   },
   "license": "MIT",
   "private": true,

@@ -13,8 +13,7 @@
       "args": [
         "--profile-temp",
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "${workspaceFolder}/test",
-        "${workspaceFolder}/test/fixture.mdx"
+        "${workspaceFolder}/fixtures/fixtures.code-workspace"
       ],
       "presentation": {
         "hidden": true

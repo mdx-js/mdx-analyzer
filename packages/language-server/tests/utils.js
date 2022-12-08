@@ -50,7 +50,7 @@ export function createConnection() {
  * @returns {string} The uri that matches the fixture file name.
  */
 export function fixtureUri(fileName) {
-  return String(new URL(`fixtures/${fileName}`, import.meta.url))
+  return String(new URL(`../../../fixtures/${fileName}`, import.meta.url))
 }
 
 /**
@@ -61,7 +61,7 @@ export function fixtureUri(fileName) {
  * @returns {Promise<TextDocumentItem>} The text document that was sent to the server.
  */
 export async function openTextDocument(connection, fileName) {
-  const url = new URL(`fixtures/${fileName}`, import.meta.url)
+  const url = new URL(`../../../fixtures/${fileName}`, import.meta.url)
   const uri = String(url)
   const text = await fs.readFile(url, 'utf8')
   /** @type {TextDocumentItem} */

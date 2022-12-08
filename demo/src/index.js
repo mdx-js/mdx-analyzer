@@ -94,7 +94,7 @@ if (import.meta.webpackContext) {
 }
 
 if (import.meta.webpackContext) {
-  const demoContext = import.meta.webpackContext('../../test')
+  const demoContext = import.meta.webpackContext('../../fixtures/demo')
   for (const key of demoContext.keys().sort()) {
     createFile(key, demoContext(key))
   }

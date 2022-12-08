@@ -38,7 +38,7 @@ export default {
         type: 'asset/resource',
       },
       {
-        test: /\/test\//,
+        test: /\/fixtures\/demo\//,
         type: 'asset/source',
       },
       {

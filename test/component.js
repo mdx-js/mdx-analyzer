@@ -1,1 +1,3 @@
-export default ({ children }) => 'Hello, ' + children
+export default function Component({children}) {
+  return 'Hello, ' + children
+}

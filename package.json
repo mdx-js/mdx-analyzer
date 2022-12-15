@@ -24,15 +24,14 @@
     "Markdown React"
   ],
   "scripts": {
-    "lint": "eslint . --cache -f friendly",
-    "prepare": "patch-package && simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0"
+    "lint": "xo"
   },
   "devDependencies": {
     "@1stg/common-config": "^7.2.0",
     "@changesets/changelog-github": "^0.4.7",
     "@changesets/cli": "^2.25.2",
-    "patch-package": "^6.5.0",
     "typescript": "^4.8.4",
+    "xo": "^0.53.0",
     "yarn-deduplicate": "^5.0.2"
   },
   "resolutions": {
@@ -109,5 +108,16 @@
       }
     ]
   },
-  "qna": "https://github.com/orgs/mdx-js/discussions"
+  "qna": "https://github.com/orgs/mdx-js/discussions",
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "semi": false,
+    "trailingComma": "none"
+  },
+  "xo": {
+    "prettier": true
+  }
 }

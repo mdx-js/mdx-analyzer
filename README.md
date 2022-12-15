@@ -80,34 +80,34 @@ and configure it to also include the language `mdx`:
 
 1.  `Fatal javascript OOM in GC during deserialization`
 
-ESlint is using VS Code’s old, built-in version of NodeJS (v12) as provided by
-Electron.
-Please add the following setting to use system default Node runtime instead:
+    ESlint is using VS Code’s old, built-in version of NodeJS (v12) as provided
+    by Electron.
+    Please add the following setting to use system default Node runtime instead:
 
-```json
-{
-  "eslint.runtime": "node"
-}
-```
+    ```json
+    {
+      "eslint.runtime": "node"
+    }
+    ```
 
-Please visit
-[microsoft/vscode-eslint#1498 (comment)](https://github.com/microsoft/vscode-eslint/issues/1498#issuecomment-1175813839)
-as reference for details.
+    Please visit
+    [microsoft/vscode-eslint#1498 (comment)](https://github.com/microsoft/vscode-eslint/issues/1498#issuecomment-1175813839)
+    as reference for details.
 
 2.  `JavaScript heap out of memory`
 
-The default memory limit of Node.js is `1G`, please add the following setting to
-increase the limit:
+    The default memory limit of Node.js is `1G`, please add the following
+    setting to increase the limit:
 
-```json
-{
-  "eslint.execArgv": ["--max_old_space_size=8192"]
-}
-```
+    ```json
+    {
+      "eslint.execArgv": ["--max_old_space_size=8192"]
+    }
+    ```
 
-Please visit
-[microsoft/vscode-eslint#733](https://github.com/microsoft/vscode-eslint/issues/733)
-as reference for details.
+    Please visit
+    [microsoft/vscode-eslint#733](https://github.com/microsoft/vscode-eslint/issues/733)
+    as reference for details.
 
 ## Sponsor
 

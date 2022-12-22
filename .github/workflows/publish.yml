@@ -19,18 +19,17 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - run: npx vsce package
+
       - name: ovsx publish
-        uses: HaaLeo/publish-vscode-extension@v1
-        id: ovsx_publish
-        with:
-          pat: ${{ secrets.OPEN_VSX_TOKEN }}
+        run: npx ovsx publish --packagePath *.vsix
+        env:
+          OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
 
       - name: vsce publish
-        uses: HaaLeo/publish-vscode-extension@v1
-        with:
-          pat: ${{ secrets.VSCE_TOKEN }}
-          registryUrl: https://marketplace.visualstudio.com
-          extensionFile: ${{ steps.ovsx_publish.outputs.vsixPath }}
+        run: npx vsce publish --packagePath *.vsix
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
 
       - uses: actions/upload-artifact@v3
         with:

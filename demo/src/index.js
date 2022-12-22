@@ -1,62 +1,71 @@
 import './index.css'
 
-import { initializeMonacoMDX } from '@mdx-js/monaco'
+import {initializeMonacoMDX} from '@mdx-js/monaco'
 import * as monaco from 'monaco-editor'
 
 window.MonacoEnvironment = {
   getWorker(_workerId, label) {
     switch (label) {
-      case 'editorWorkerService':
+      case 'editorWorkerService': {
         return new Worker(
           new URL(
             'monaco-editor/esm/vs/editor/editor.worker.js',
-            import.meta.url,
-          ),
+            import.meta.url
+          )
         )
-      case 'json':
+      }
+
+      case 'json': {
         return new Worker(
           new URL(
             'monaco-editor/esm/vs/language/json/json.worker.js',
-            import.meta.url,
-          ),
+            import.meta.url
+          )
         )
+      }
+
       case 'javascript':
-      case 'typescript':
+      case 'typescript': {
         return new Worker(
           new URL(
             'monaco-editor/esm/vs/language/typescript/ts.worker.js',
-            import.meta.url,
-          ),
+            import.meta.url
+          )
         )
-      case 'mdx':
+      }
+
+      case 'mdx': {
         return new Worker(
-          new URL('@mdx-js/monaco/mdx.worker.js', import.meta.url),
+          new URL('@mdx-js/monaco/mdx.worker.js', import.meta.url)
         )
-      default:
+      }
+
+      default: {
         throw new Error(`Unsupported worker label: ${label}`)
+      }
     }
-  },
+  }
 }
 
 monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   checkJs: true,
   jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
-  moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+  moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs
 })
 
 monaco.languages.typescript.typescriptDefaults.setWorkerOptions({
-  customWorkerPath: './mdx.override.js',
+  customWorkerPath: './mdx.override.js'
 })
 
 monaco.languages.register({
   id: 'mdx',
-  extensions: ['.mdx'],
+  extensions: ['.mdx']
 })
 
 initializeMonacoMDX(monaco)
 
 const fileTree = /** @type {HTMLElement} */ (document.querySelector('#files'))
-monaco.editor.onDidCreateModel(model => {
+monaco.editor.onDidCreateModel((model) => {
   const path = model.uri.path
   if (!path.startsWith('/node_modules')) {
     const anchor = document.createElement('a')
@@ -81,14 +90,14 @@ function createFile(path, value) {
 if (import.meta.webpackContext) {
   const typesContext = import.meta.webpackContext('../../node_modules', {
     regExp:
-      /\/(csstype\/index|@types\/(prop-types\/index|react\/(global|index|jsx-runtime)|scheduler\/tracing))\.d\.ts/,
+      /\/(csstype\/index|@types\/(prop-types\/index|react\/(global|index|jsx-runtime)|scheduler\/tracing))\.d\.ts/
   })
 
   for (const key of typesContext.keys()) {
     monaco.editor.createModel(
       typesContext(key),
       undefined,
-      monaco.Uri.joinPath(rootUri, 'node_modules', key.replace('@types/', '')),
+      monaco.Uri.joinPath(rootUri, 'node_modules', key.replace('@types/', ''))
     )
   }
 }
@@ -112,10 +121,12 @@ function getModel() {
     if (model.uri.path === hash) {
       return model
     }
+
     if (model.uri.path.endsWith('.mdx')) {
       mdxModel = model
     }
   }
+
   return /** @type {monaco.editor.ITextModel} */ (mdxModel)
 }
 
@@ -130,8 +141,8 @@ const editor = monaco.editor.create(element, {
   automaticLayout: true,
   model: initialModel,
   readOnly: initialModel.uri.path.startsWith('/node_modules'),
-  suggest: { showWords: false },
-  unicodeHighlight: { ambiguousCharacters: false },
+  suggest: {showWords: false},
+  unicodeHighlight: {ambiguousCharacters: false}
 })
 
 /**
@@ -142,14 +153,17 @@ function updateMarkers(resource) {
   if (!problems) {
     return
   }
-  const markers = monaco.editor.getModelMarkers({ resource })
+
+  const markers = monaco.editor.getModelMarkers({resource})
   while (problems.lastChild) {
     problems.lastChild.remove()
   }
+
   for (const marker of markers) {
     if (marker.severity === monaco.MarkerSeverity.Hint) {
       continue
     }
+
     const wrapper = document.createElement('div')
     wrapper.setAttribute('role', 'button')
     const codicon = document.createElement('div')
@@ -159,7 +173,7 @@ function updateMarkers(resource) {
       'codicon',
       marker.severity === monaco.MarkerSeverity.Warning
         ? 'codicon-warning'
-        : 'codicon-error',
+        : 'codicon-error'
     )
     text.classList.add('problem-text')
     text.textContent = marker.message
@@ -167,7 +181,7 @@ function updateMarkers(resource) {
     wrapper.addEventListener('click', () => {
       editor.setPosition({
         lineNumber: marker.startLineNumber,
-        column: marker.startColumn,
+        column: marker.startColumn
       })
       editor.focus()
     })
@@ -175,10 +189,10 @@ function updateMarkers(resource) {
   }
 }
 
-editor.onDidChangeModel(({ newModelUrl }) => {
+editor.onDidChangeModel(({newModelUrl}) => {
   if (newModelUrl) {
     editor.updateOptions({
-      readOnly: newModelUrl.path.startsWith('/node_modules'),
+      readOnly: newModelUrl.path.startsWith('/node_modules')
     })
     updateMarkers(newModelUrl)
   }

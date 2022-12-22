@@ -1,7 +1,7 @@
-import { pathToFileURL } from 'node:url'
+import {pathToFileURL} from 'node:url'
 
-import { TextDocuments } from 'vscode-languageserver'
-import { TextDocument } from 'vscode-languageserver-textdocument'
+import {TextDocuments} from 'vscode-languageserver'
+import {TextDocument} from 'vscode-languageserver-textdocument'
 
 /**
  * The global text documents manager.

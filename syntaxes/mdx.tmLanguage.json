@@ -7,6 +7,9 @@
     },
     {
       "include": "#markdown"
+    },
+    {
+      "include": "#jsx-evaluated-code"
     }
   ],
   "repository": {
@@ -17,6 +20,9 @@
         },
         {
           "include": "#jsx-tag"
+        },
+        {
+          "include": "#jsx-evaluated-code"
         }
       ],
       "repository": {
@@ -39,6 +45,20 @@
             {
               "begin": "^(?=< *([a-zA-Z]\\w*))",
               "end": "(?<=>)",
+              "contentName": "source.js.jsx",
+              "patterns": [
+                {
+                  "include": "source.js.jsx"
+                }
+              ]
+            }
+          ]
+        },
+        "jsx-evaluated-code": {
+          "patterns": [
+            {
+              "begin": "(?!```$){",
+              "end": "}",
               "contentName": "source.js.jsx",
               "patterns": [
                 {

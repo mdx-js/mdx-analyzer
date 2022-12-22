@@ -1,4 +1,4 @@
-export interface AvatarProps {
+export type AvatarProps = {
   /**
    * The avatar of the user to display.
    */
@@ -13,13 +13,10 @@ export interface AvatarProps {
 /**
  * Render a user avatar.
  */
-export function Avatar({ avatar, name }: AvatarProps) {
+export function Avatar({avatar, name}: AvatarProps) {
   return (
     <figure className="avatar">
-      <img
-        alt={name}
-        src={avatar}
-      />
+      <img alt={name} src={avatar} />
     </figure>
   )
 }

@@ -3,14 +3,14 @@
  * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
  */
 
-import { spawn } from 'node:child_process'
+import {spawn} from 'node:child_process'
 import fs from 'node:fs/promises'
 
 import {
   createProtocolConnection,
   DidOpenTextDocumentNotification,
   IPCMessageReader,
-  IPCMessageWriter,
+  IPCMessageWriter
 } from 'vscode-languageserver/node.js'
 
 const TEST_TIMEOUT = 3e3
@@ -24,11 +24,11 @@ const TEST_TIMEOUT = 3e3
 export function createConnection() {
   const proc = spawn('mdx-language-server', ['--node-ipc'], {
     cwd: new URL('..', import.meta.url),
-    stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
+    stdio: ['inherit', 'inherit', 'inherit', 'ipc']
   })
   const connection = createProtocolConnection(
     new IPCMessageReader(proc),
-    new IPCMessageWriter(proc),
+    new IPCMessageWriter(proc)
   )
 
   const timeout = setTimeout(() => {
@@ -69,11 +69,11 @@ export async function openTextDocument(connection, fileName) {
     languageId: 'mdx',
     text,
     uri,
-    version: 1,
+    version: 1
   }
 
   connection.sendNotification(DidOpenTextDocumentNotification.type, {
-    textDocument,
+    textDocument
   })
 
   return textDocument

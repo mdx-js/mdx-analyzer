@@ -15,14 +15,14 @@
 
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
-import { unified } from 'unified'
+import {unified} from 'unified'
 
-import { toDiagnostic } from './error.js'
-import { getMarkdownDefinitionAtPosition } from './markdown.js'
-import { bindAll } from './object.js'
-import { getFoldingRegions } from './outline.js'
-import { fakeMdxPath } from './path.js'
-import { mdxToJsx, unistPositionToTextSpan } from './utils.js'
+import {toDiagnostic} from './error.js'
+import {getMarkdownDefinitionAtPosition} from './markdown.js'
+import {bindAll} from './object.js'
+import {getFoldingRegions} from './outline.js'
+import {fakeMdxPath} from './path.js'
+import {mdxToJsx, unistPositionToTextSpan} from './utils.js'
 
 /**
  * @param {string} fileName
@@ -52,6 +52,7 @@ function patchNavigationBarItem(fileName, snapshot, item) {
   for (const span of item.spans) {
     patchTextSpan(fileName, snapshot, span)
   }
+
   for (const child of item.childItems) {
     patchNavigationBarItem(fileName, snapshot, child)
   }
@@ -87,17 +88,18 @@ export function createMDXLanguageService(ts, host, plugins) {
     // Always allow JS for type checking.
     allowJs: true,
     // This internal TypeScript property lets TypeScript load `.mdx` files.
-    allowNonTsExtensions: true,
+    allowNonTsExtensions: true
   })
 
-  internalHost.getScriptKind = fileName => {
+  internalHost.getScriptKind = (fileName) => {
     if (isMdx(fileName)) {
       return ts.ScriptKind.JSX
     }
+
     return host.getScriptKind?.(fileName) ?? ts.ScriptKind.JS
   }
 
-  internalHost.getScriptSnapshot = fileName => {
+  internalHost.getScriptSnapshot = (fileName) => {
     if (!isMdx(fileName)) {
       return host.getScriptSnapshot(fileName)
     }
@@ -120,20 +122,23 @@ export function createMDXLanguageService(ts, host, plugins) {
       scriptSnapshots.delete(fileName)
       scriptVersions.delete(fileName)
     }
+
     scriptSnapshots.set(fileName, newSnapshot)
     return newSnapshot
   }
 
-  internalHost.getScriptVersion = fileName => {
+  internalHost.getScriptVersion = (fileName) => {
     const externalVersion = host.getScriptVersion(fileName)
     if (!isMdx(fileName)) {
       return externalVersion
     }
+
     const internalVersion = scriptVersions.get(fileName)
     if (externalVersion !== internalVersion) {
       scriptSnapshots.delete(fileName)
       scriptVersions.set(fileName, externalVersion)
     }
+
     return externalVersion
   }
 
@@ -142,25 +147,25 @@ export function createMDXLanguageService(ts, host, plugins) {
     containingFile,
     _reusedNames,
     redirectedReference,
-    options,
+    options
   ) =>
-    moduleNames.map(moduleName => {
+    moduleNames.map((moduleName) => {
       const resolvedModule = ts.resolveModuleName(
         moduleName,
         containingFile,
         options,
         {
           ...internalHost,
-          readFile: fileName => host.readFile(fakeMdxPath(fileName)),
-          fileExists: fileName => host.fileExists(fakeMdxPath(fileName)),
+          readFile: (fileName) => host.readFile(fakeMdxPath(fileName)),
+          fileExists: (fileName) => host.fileExists(fakeMdxPath(fileName))
         },
         undefined,
-        redirectedReference,
+        redirectedReference
       ).resolvedModule
 
       if (resolvedModule) {
         resolvedModule.resolvedFileName = fakeMdxPath(
-          resolvedModule.resolvedFileName,
+          resolvedModule.resolvedFileName
         )
       }
 
@@ -177,6 +182,7 @@ export function createMDXLanguageService(ts, host, plugins) {
     if (!isMdx(fileName)) {
       return
     }
+
     const snapshot = scriptSnapshots.get(fileName)
     const externalVersion = host.getScriptVersion(fileName)
     const internalVersion = scriptVersions.get(fileName)
@@ -197,6 +203,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       scriptSnapshots.delete(fileName)
       scriptVersions.delete(fileName)
     }
+
     scriptSnapshots.set(fileName, newSnapshot)
     scriptVersions.set(fileName, externalVersion)
     return newSnapshot
@@ -216,14 +223,14 @@ export function createMDXLanguageService(ts, host, plugins) {
 
       if (documentSpan.originalFileName) {
         const originalSnapshot = scriptSnapshots.get(
-          documentSpan.originalFileName,
+          documentSpan.originalFileName
         )
 
         if (documentSpan.originalContextSpan) {
           patchTextSpan(
             documentSpan.originalFileName,
             originalSnapshot,
-            documentSpan.originalContextSpan,
+            documentSpan.originalContextSpan
           )
         }
 
@@ -231,7 +238,7 @@ export function createMDXLanguageService(ts, host, plugins) {
           patchTextSpan(
             documentSpan.originalFileName,
             originalSnapshot,
-            documentSpan.originalTextSpan,
+            documentSpan.originalTextSpan
           )
         }
       }
@@ -253,7 +260,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       return
     }
 
-    if (diagnostic.start != null) {
+    if (diagnostic.start !== undefined) {
       diagnostic.start = snapshot.getRealPosition(diagnostic.start)
     }
   }
@@ -281,6 +288,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       if (isMdx(fileName)) {
         throw new Error('commentSelection isn’t supported for MDX files.')
       }
+
       return ls.commentSelection(fileName, textRange)
     },
 
@@ -305,7 +313,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       position,
       findInStrings,
       findInComments,
-      providePrefixAndSuffixTextForRename,
+      providePrefixAndSuffixTextForRename
     ) {
       const snapshot = syncSnapshot(fileName)
       const locations = ls.findRenameLocations(
@@ -313,7 +321,7 @@ export function createMDXLanguageService(ts, host, plugins) {
         snapshot?.getShadowPosition(position) ?? position,
         findInStrings,
         findInComments,
-        providePrefixAndSuffixTextForRename,
+        providePrefixAndSuffixTextForRename
       )
 
       if (locations) {
@@ -324,7 +332,7 @@ export function createMDXLanguageService(ts, host, plugins) {
             patchTextSpan(
               location.fileName,
               locationSnapshot,
-              location.contextSpan,
+              location.contextSpan
             )
           }
         }
@@ -340,7 +348,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       positionOrRange,
       preferences,
       triggerReason,
-      kind,
+      kind
     ) {
       if (!isMdx(fileName)) {
         return ls.getApplicableRefactors(
@@ -348,7 +356,7 @@ export function createMDXLanguageService(ts, host, plugins) {
           positionOrRange,
           preferences,
           triggerReason,
-          kind,
+          kind
         )
       }
 
@@ -388,7 +396,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       end,
       errorCodes,
       formatOptions,
-      preferences,
+      preferences
     ) {
       if (!isMdx(fileName)) {
         return ls.getCodeFixesAtPosition(
@@ -397,7 +405,7 @@ export function createMDXLanguageService(ts, host, plugins) {
           end,
           errorCodes,
           formatOptions,
-          preferences,
+          preferences
         )
       }
 
@@ -420,7 +428,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       formatOptions,
       source,
       preferences,
-      data,
+      data
     ) {
       const snapshot = syncSnapshot(fileName)
       return ls.getCompletionEntryDetails(
@@ -430,7 +438,7 @@ export function createMDXLanguageService(ts, host, plugins) {
         formatOptions,
         source,
         preferences,
-        data,
+        data
       )
     },
 
@@ -448,7 +456,7 @@ export function createMDXLanguageService(ts, host, plugins) {
         fileName,
         snapshot?.getShadowPosition(position) ?? position,
         options,
-        formattingSettings,
+        formattingSettings
       )
       if (!isMdx(fileName) || !snapshot || !completionInfo) {
         return completionInfo
@@ -458,9 +466,10 @@ export function createMDXLanguageService(ts, host, plugins) {
         patchTextSpan(
           fileName,
           snapshot,
-          completionInfo.optionalReplacementSpan,
+          completionInfo.optionalReplacementSpan
         )
       }
+
       if (completionInfo.entries) {
         for (const entry of completionInfo.entries) {
           if (entry.replacementSpan) {
@@ -485,7 +494,7 @@ export function createMDXLanguageService(ts, host, plugins) {
 
       const definition = ls.getDefinitionAtPosition(
         fileName,
-        snapshot?.getShadowPosition(position) ?? position,
+        snapshot?.getShadowPosition(position) ?? position
       )
 
       if (definition) {
@@ -505,8 +514,8 @@ export function createMDXLanguageService(ts, host, plugins) {
               kind: ts.ScriptElementKind.linkName,
               name: fileName,
               containerKind: ts.ScriptElementKind.linkName,
-              containerName: fileName,
-            },
+              containerName: fileName
+            }
           ]
         }
       }
@@ -534,14 +543,14 @@ export function createMDXLanguageService(ts, host, plugins) {
       oldFilePath,
       newFilePath,
       formatOptions,
-      preferences,
+      preferences
     ) {
       if (!isMdx(newFilePath)) {
         return ls.getEditsForFileRename(
           oldFilePath,
           newFilePath,
           formatOptions,
-          preferences,
+          preferences
         )
       }
 
@@ -555,7 +564,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       positionOrRange,
       refactorName,
       actionName,
-      preferences,
+      preferences
     ) {
       if (!isMdx(fileName)) {
         return ls.getEditsForRefactor(
@@ -564,7 +573,7 @@ export function createMDXLanguageService(ts, host, plugins) {
           positionOrRange,
           refactorName,
           actionName,
-          preferences,
+          preferences
         )
       }
 
@@ -585,7 +594,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error(
-        'getEncodedSemanticClassifications is not supported for MDX files',
+        'getEncodedSemanticClassifications is not supported for MDX files'
       )
     },
 
@@ -595,7 +604,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error(
-        'getEncodedSyntacticClassifications is not supported for MDX files',
+        'getEncodedSyntacticClassifications is not supported for MDX files'
       )
     },
 
@@ -613,12 +622,12 @@ export function createMDXLanguageService(ts, host, plugins) {
           fileName,
           position,
           key,
-          options,
+          options
         )
       }
 
       throw new Error(
-        'getFormattingEditsAfterKeystroke is not supported for MDX files',
+        'getFormattingEditsAfterKeystroke is not supported for MDX files'
       )
     },
 
@@ -628,7 +637,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error(
-        'getFormattingEditsForDocument is not supported for MDX files',
+        'getFormattingEditsForDocument is not supported for MDX files'
       )
     },
 
@@ -638,7 +647,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error(
-        'getFormattingEditsForRange is not supported for MDX files',
+        'getFormattingEditsForRange is not supported for MDX files'
       )
     },
 
@@ -648,7 +657,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error(
-        'getImplementationAtPosition is not supported for MDX files',
+        'getImplementationAtPosition is not supported for MDX files'
       )
     },
 
@@ -666,7 +675,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error(
-        'getJsxClosingTagAtPosition is not supported for MDX files',
+        'getJsxClosingTagAtPosition is not supported for MDX files'
       )
     },
 
@@ -684,7 +693,7 @@ export function createMDXLanguageService(ts, host, plugins) {
           searchValue,
           maxResultCount,
           fileName,
-          excludeDtsFiles,
+          excludeDtsFiles
         )
       }
 
@@ -697,7 +706,7 @@ export function createMDXLanguageService(ts, host, plugins) {
 
       if (isMdx(fileName)) {
         navigationBarItems = navigationBarItems.filter(
-          item => item.text !== 'MDXContent',
+          (item) => item.text !== 'MDXContent'
         )
       }
 
@@ -751,7 +760,7 @@ export function createMDXLanguageService(ts, host, plugins) {
 
       const quickInfo = ls.getQuickInfoAtPosition(
         fileName,
-        snapshot?.getShadowPosition(position) ?? position,
+        snapshot?.getShadowPosition(position) ?? position
       )
 
       if (quickInfo) {
@@ -771,24 +780,25 @@ export function createMDXLanguageService(ts, host, plugins) {
 
       /** @type {import('typescript').SymbolDisplayPart[]} */
       const displayParts = [
-        { text: '[', kind: 'punctuation' },
-        { text: node.identifier, kind: 'aliasName' },
-        { text: ']', kind: 'punctuation' },
-        { text: ':', kind: 'punctuation' },
-        { text: ' ', kind: 'space' },
-        { text: node.url, kind: 'aliasName' },
+        {text: '[', kind: 'punctuation'},
+        {text: node.identifier, kind: 'aliasName'},
+        {text: ']', kind: 'punctuation'},
+        {text: ':', kind: 'punctuation'},
+        {text: ' ', kind: 'space'},
+        {text: node.url, kind: 'aliasName'}
       ]
       if (node.title) {
         displayParts.push(
-          { text: ' ', kind: 'space' },
-          { text: JSON.stringify(node.title), kind: 'stringLiteral' },
+          {text: ' ', kind: 'space'},
+          {text: JSON.stringify(node.title), kind: 'stringLiteral'}
         )
       }
+
       return {
         kind: ts.ScriptElementKind.linkName,
         kindModifiers: 'asd',
         textSpan: unistPositionToTextSpan(node.position),
-        displayParts,
+        displayParts
       }
     },
 
@@ -796,7 +806,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       const snapshot = syncSnapshot(fileName)
       const referenceEntries = ls.getReferencesAtPosition(
         fileName,
-        snapshot?.getShadowPosition(position) ?? position,
+        snapshot?.getShadowPosition(position) ?? position
       )
 
       if (referenceEntries) {
@@ -811,7 +821,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       const info = ls.getRenameInfo(
         fileName,
         snapshot?.getShadowPosition(position) ?? position,
-        options,
+        options
       )
 
       if (info.canRename) {
@@ -824,7 +834,7 @@ export function createMDXLanguageService(ts, host, plugins) {
     getSemanticClassifications(fileName, span) {
       if (isMdx(fileName)) {
         throw new Error(
-          'getSemanticClassifications is not supported for MDX files',
+          'getSemanticClassifications is not supported for MDX files'
         )
       }
 
@@ -864,7 +874,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error(
-        'getSpanOfEnclosingComment is not supported for MDX files',
+        'getSpanOfEnclosingComment is not supported for MDX files'
       )
     },
 
@@ -885,7 +895,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error(
-        'getSyntacticClassifications is not supported for MDX files',
+        'getSyntacticClassifications is not supported for MDX files'
       )
     },
 
@@ -894,6 +904,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       if (snapshot?.error) {
         return toDiagnostic(ts, snapshot.error)
       }
+
       const diagnostics = ls.getSyntacticDiagnostics(fileName)
 
       patchDiagnosticsWithLocation(diagnostics)
@@ -914,7 +925,7 @@ export function createMDXLanguageService(ts, host, plugins) {
 
       const definition = ls.getDefinitionAtPosition(
         fileName,
-        snapshot?.getShadowPosition(position) ?? position,
+        snapshot?.getShadowPosition(position) ?? position
       )
 
       if (definition) {
@@ -929,12 +940,12 @@ export function createMDXLanguageService(ts, host, plugins) {
         return ls.isValidBraceCompletionAtPosition(
           fileName,
           position,
-          openingBrace,
+          openingBrace
         )
       }
 
       throw new Error(
-        'isValidBraceCompletionAtPosition is not supported for MDX files',
+        'isValidBraceCompletionAtPosition is not supported for MDX files'
       )
     },
 
@@ -960,7 +971,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error(
-        'provideCallHierarchyIncomingCalls is not supported for MDX files',
+        'provideCallHierarchyIncomingCalls is not supported for MDX files'
       )
     },
 
@@ -970,7 +981,7 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error(
-        'provideCallHierarchyOutgoingCalls is not supported for MDX files',
+        'provideCallHierarchyOutgoingCalls is not supported for MDX files'
       )
     },
 
@@ -1004,6 +1015,6 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       throw new Error('uncommentSelection is not supported for MDX files')
-    },
+    }
   }
 }

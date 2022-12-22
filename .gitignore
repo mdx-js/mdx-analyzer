@@ -1,6 +1,7 @@
 *.log
+*.tgz
 *.tsbuildinfo
-.*cache
-/.vscode-test
-node_modules
-/out/
+*.vsix
+.vscode-test/
+node_modules/
+out/

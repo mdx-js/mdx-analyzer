@@ -10,5 +10,6 @@ export function fakeMdxPath(fileName) {
   if (fileName.endsWith(`.mdx${postfix}`)) {
     return fileName.slice(0, -postfix.length)
   }
+
   return fileName
 }

@@ -15,7 +15,7 @@ import {
   createDocumentationString,
   displayPartsToString,
   tagToString,
-  textSpanToRange,
+  textSpanToRange
 } from './convert.js'
 
 /**
@@ -41,7 +41,7 @@ export function createCompletionItemProvider(monaco) {
         position.lineNumber,
         wordInfo.startColumn,
         position.lineNumber,
-        wordInfo.endColumn,
+        wordInfo.endColumn
       )
 
       if (model.isDisposed()) {
@@ -56,7 +56,7 @@ export function createCompletionItemProvider(monaco) {
         return
       }
 
-      const suggestions = info.entries.map(entry => {
+      const suggestions = info.entries.map((entry) => {
         const range = entry.replacementSpan
           ? textSpanToRange(model, entry.replacementSpan)
           : wordRange
@@ -74,17 +74,17 @@ export function createCompletionItemProvider(monaco) {
           insertText: entry.name,
           sortText: entry.sortText,
           kind: convertScriptElementKind(monaco, entry.kind),
-          tags,
+          tags
         }
       })
 
       return {
-        suggestions,
+        suggestions
       }
     },
 
     async resolveCompletionItem(item) {
-      const { label, offset, uri } = /** @type {any} */ (item)
+      const {label, offset, uri} = /** @type {any} */ (item)
 
       const worker = await getWorker(monaco, uri)
 
@@ -102,10 +102,10 @@ export function createCompletionItemProvider(monaco) {
         kind: convertScriptElementKind(monaco, details.kind),
         detail: displayPartsToString(details.displayParts),
         documentation: {
-          value: createDocumentationString(details),
-        },
+          value: createDocumentationString(details)
+        }
       }
-    },
+    }
   }
 }
 
@@ -121,7 +121,7 @@ export function createHoverProvider(monaco) {
       /** @type {ts.QuickInfo | undefined} */
       const info = await worker.getQuickInfoAtPosition(
         String(model.uri),
-        model.getOffsetAt(position),
+        model.getOffsetAt(position)
       )
 
       if (!info) {
@@ -130,7 +130,7 @@ export function createHoverProvider(monaco) {
 
       const documentation = displayPartsToString(info.documentation)
       const tags = info.tags
-        ? info.tags.map(tag => tagToString(tag)).join('  \n\n')
+        ? info.tags.map((tag) => tagToString(tag)).join('  \n\n')
         : ''
       const contents = displayPartsToString(info.displayParts)
 
@@ -138,14 +138,14 @@ export function createHoverProvider(monaco) {
         range: textSpanToRange(model, info.textSpan),
         contents: [
           {
-            value: '```typescript\n' + contents + '\n```\n',
+            value: '```typescript\n' + contents + '\n```\n'
           },
           {
-            value: documentation + (tags ? '\n\n' + tags : ''),
-          },
-        ],
+            value: documentation + (tags ? '\n\n' + tags : '')
+          }
+        ]
       }
-    },
+    }
   }
 }
 
@@ -174,12 +174,13 @@ export function createDefinitionProvider(monaco) {
         if (refModel) {
           result.push({
             uri,
-            range: textSpanToRange(model, entry.textSpan),
+            range: textSpanToRange(model, entry.textSpan)
           })
         }
       }
+
       return result
-    },
+    }
   }
 }
 
@@ -197,7 +198,7 @@ export function createMarkerDataProvider(monaco) {
       const diagnostics = await Promise.all([
         worker.getSemanticDiagnostics(uri),
         worker.getSuggestionDiagnostics(uri),
-        worker.getSyntacticDiagnostics(uri),
+        worker.getSyntacticDiagnostics(uri)
       ])
 
       if (model.isDisposed()) {
@@ -206,8 +207,8 @@ export function createMarkerDataProvider(monaco) {
 
       return diagnostics
         .flat()
-        .map(diagnostic => convertDiagnostics(monaco, model, diagnostic))
-    },
+        .map((diagnostic) => convertDiagnostics(monaco, model, diagnostic))
+    }
   }
 }
 
@@ -242,11 +243,12 @@ export function createReferenceProvider(monaco) {
         if (refModel) {
           result.push({
             uri: refModel.uri,
-            range: textSpanToRange(refModel, entry.textSpan),
+            range: textSpanToRange(refModel, entry.textSpan)
           })
         }
       }
+
       return result
-    },
+    }
   }
 }

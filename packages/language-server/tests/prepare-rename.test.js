@@ -2,11 +2,11 @@
  * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
  */
 import assert from 'node:assert'
-import { afterEach, beforeEach, test } from 'node:test'
+import {afterEach, beforeEach, test} from 'node:test'
 
-import { InitializeRequest, PrepareRenameRequest } from 'vscode-languageserver'
+import {InitializeRequest, PrepareRenameRequest} from 'vscode-languageserver'
 
-import { createConnection, openTextDocument } from './utils.js'
+import {createConnection, openTextDocument} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -23,18 +23,18 @@ test('handle prepare rename request of variable', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
     rootUri: null,
-    capabilities: {},
+    capabilities: {}
   })
 
-  const { uri } = await openTextDocument(connection, 'node16/a.mdx')
+  const {uri} = await openTextDocument(connection, 'node16/a.mdx')
   const result = await connection.sendRequest(PrepareRenameRequest.type, {
-    position: { line: 4, character: 3 },
-    textDocument: { uri },
+    position: {line: 4, character: 3},
+    textDocument: {uri}
   })
 
   assert.deepStrictEqual(result, {
-    start: { line: 4, character: 2 },
-    end: { line: 4, character: 3 },
+    start: {line: 4, character: 2},
+    end: {line: 4, character: 3}
   })
 })
 
@@ -42,13 +42,13 @@ test('handle unknown rename request', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
     rootUri: null,
-    capabilities: {},
+    capabilities: {}
   })
 
-  const { uri } = await openTextDocument(connection, 'node16/a.mdx')
+  const {uri} = await openTextDocument(connection, 'node16/a.mdx')
   const result = await connection.sendRequest(PrepareRenameRequest.type, {
-    position: { line: 0, character: 1 },
-    textDocument: { uri },
+    position: {line: 0, character: 1},
+    textDocument: {uri}
   })
 
   assert.deepStrictEqual(result, null)

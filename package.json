@@ -9,43 +9,8 @@
   "repository": "https://github.com/mdx-js/vscode-mdx.git",
   "author": "JounQin",
   "publisher": "unifiedjs",
-  "donate": {
-    "recipients": [
-      {
-        "name": "unts",
-        "platform": "opencollective",
-        "address": "https://opencollective.com/unts",
-        "weight": 60
-      },
-      {
-        "name": "rxts",
-        "platform": "opencollective",
-        "address": "https://opencollective.com/rxts",
-        "weight": 20
-      },
-      {
-        "name": "1stG",
-        "email": "i@1stg.me",
-        "weight": 20,
-        "platforms": [
-          {
-            "platform": "opencollective",
-            "address": "https://opencollective.com/1stG"
-          },
-          {
-            "platform": "patreon",
-            "address": "https://www.patreon.com/1stG"
-          }
-        ]
-      }
-    ]
-  },
-  "funding": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/unified"
-  },
   "sponsor": {
-    "url": "https://github.com/mdx-js/vscode-mdx?sponsor=1"
+    "url": "https://opencollective.com/unified"
   },
   "license": "MIT",
   "private": true,
@@ -53,7 +18,6 @@
     "demo",
     "packages/*"
   ],
-  "packageManager": "yarn@1.22.19",
   "engines": {
     "vscode": ">=1.0.0"
   },
@@ -65,24 +29,25 @@
   ],
   "scripts": {
     "build": "esbuild @mdx-js/language-client @mdx-js/language-server --bundle --platform=node --target=node16 --external:vscode --external:typescript --outdir=out --sourcemap=inline",
-    "lint": "eslint . --cache -f friendly",
-    "prepare": "patch-package && simple-git-hooks && yarn-deduplicate --strategy fewer || exit 0",
+    "lint": "xo",
     "start": "yarn workspace @mdx-js/monaco-demo run start",
     "vscode:prepublish": "yarn build --minify"
   },
   "devDependencies": {
-    "@1stg/common-config": "^7.1.1",
     "@changesets/changelog-github": "^0.4.6",
     "@changesets/cli": "^2.24.4",
-    "@types/react": "^18.0.20",
+    "@types/react": "^18.0.0",
     "esbuild": "^0.15.0",
-    "patch-package": "^6.4.7",
-    "react": "^18.2.0",
+    "ovsx": "^0.7.0",
+    "react": "^18.0.0",
+    "remark-cli": "^11.0.0",
+    "remark-preset-wooorm": "^9.0.0",
     "typescript": "^4.8.4",
-    "yarn-deduplicate": "^5.0.2"
+    "vsce": "^2.0.0",
+    "xo": "^0.53.0"
   },
   "resolutions": {
-    "prettier": "^2.7.1"
+    "prettier": "^2.8.0"
   },
   "icon": "assets/mdx.png",
   "activationEvents": [
@@ -159,5 +124,29 @@
       }
     ]
   },
-  "qna": "https://github.com/orgs/mdx-js/discussions"
+  "qna": "https://github.com/orgs/mdx-js/discussions",
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "semi": false,
+    "trailingComma": "none"
+  },
+  "remarkConfig": {
+    "plugins": [
+      "remark-preset-wooorm",
+      [
+        "remark-lint-no-html",
+        false
+      ]
+    ]
+  },
+  "xo": {
+    "prettier": true,
+    "rules": {
+      "max-params": "off",
+      "no-undef": "off"
+    }
+  }
 }

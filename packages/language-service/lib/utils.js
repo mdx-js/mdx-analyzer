@@ -31,7 +31,7 @@
  * @typedef {MDXShadow & IScriptSnapshot} MDXSnapshot
  */
 
-import { visit } from 'unist-util-visit'
+import {visit} from 'unist-util-visit'
 
 const componentStart = `
 /**
@@ -79,7 +79,7 @@ function compareRanges(a, b) {
 function findFirstOffset(node) {
   for (const child of node.children) {
     const start = child.position?.start?.offset
-    if (start != null) {
+    if (start !== undefined) {
       return start
     }
   }
@@ -92,7 +92,7 @@ function findFirstOffset(node) {
 function findLastOffset(node) {
   for (let index = node.children.length - 1; index >= 0; index--) {
     const end = node.children[index].position?.end?.offset
-    if (end != null) {
+    if (end !== undefined) {
       return end
     }
   }
@@ -133,17 +133,16 @@ export function mdxToJsx(mdx, processor) {
     ast = processor.parse(mdx)
   } catch (error) {
     return {
-      // eslint-disable-next-line no-empty-function
       dispose() {},
       ast: processor.parse(fallback),
       error,
-      // eslint-disable-next-line unicorn/no-useless-undefined
+
       getChangeRange: () => undefined,
       getText: (start = 0, end = fallback.length) => fallback.slice(start, end),
       getLength: () => fallback.length,
-      // eslint-disable-next-line unicorn/no-useless-undefined
+
       getShadowPosition: () => undefined,
-      getRealPosition: () => 0,
+      getRealPosition: () => 0
     }
   }
 
@@ -157,24 +156,26 @@ export function mdxToJsx(mdx, processor) {
     /**
      * @param {Node} node
      */
-    node => {
+    (node) => {
       const start = node.position?.start?.offset
       const end = node.position?.end?.offset
 
-      if (start == null || end == null) {
+      if (start === undefined || end === undefined) {
         return
       }
 
       switch (node.type) {
-        case 'mdxjsEsm':
+        case 'mdxjsEsm': {
           esmPositions.push([start, end])
           break
+        }
+
         case 'mdxJsxFlowElement': {
           const element = /** @type {Parent} */ (node)
 
           const firstOffset = findFirstOffset(element)
           const lastOffset = findLastOffset(element)
-          if (firstOffset == null || lastOffset == null) {
+          if (firstOffset === undefined || lastOffset === undefined) {
             jsxPositions.push([start, end])
             break
           }
@@ -182,15 +183,22 @@ export function mdxToJsx(mdx, processor) {
           jsxPositions.push([start, firstOffset], [lastOffset, end])
           break
         }
+
         case 'mdxFlowExpression':
-        case 'mdxTextExpression':
+        case 'mdxTextExpression': {
           jsxPositions.push([start, end])
           if (/** @type {Program} */ (node.data?.estree)?.body.length === 0) {
             esmPositions.push([start + 1, end - 1])
           }
+
           break
+        }
+
+        default: {
+          break
+        }
       }
-    },
+    }
   )
 
   esmPositions.sort(compareRanges)
@@ -216,9 +224,9 @@ export function mdxToJsx(mdx, processor) {
 
   return {
     ast,
-    // eslint-disable-next-line no-empty-function
+
     dispose() {},
-    // eslint-disable-next-line unicorn/no-useless-undefined
+
     getChangeRange: () => undefined,
     getText: (start = 0, end = js.length) => js.slice(start, end),
     getLength: () => js.length,
@@ -226,6 +234,7 @@ export function mdxToJsx(mdx, processor) {
       if (shouldShow(esmPositions, position)) {
         return position
       }
+
       if (shouldShow(jsxPositions, position)) {
         return esmShadow.length + componentStart.length + position
       }
@@ -234,17 +243,20 @@ export function mdxToJsx(mdx, processor) {
       if (shadowPosition <= esmShadow.length) {
         return shadowPosition
       }
+
       if (shadowPosition <= esmShadow.length + componentStart.length) {
         return 0
       }
+
       if (
         shadowPosition <=
         esmShadow.length + componentStart.length + jsxShadow.length
       ) {
         return shadowPosition - esmShadow.length - componentStart.length
       }
+
       return 0
-    },
+    }
   }
 }
 
@@ -259,6 +271,6 @@ export function unistPositionToTextSpan(position) {
     start: /** @type {number} */ (position.start.offset),
     length:
       /** @type {number} */ (position.end.offset) -
-      /** @type {number} */ (position.start.offset),
+      /** @type {number} */ (position.start.offset)
   }
 }

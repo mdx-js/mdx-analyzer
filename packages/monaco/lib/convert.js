@@ -18,33 +18,53 @@
 export function convertScriptElementKind(monaco, kind) {
   switch (kind) {
     case 'primitive type':
-    case 'keyword':
+    case 'keyword': {
       return monaco.languages.CompletionItemKind.Keyword
+    }
+
     case 'var':
-    case 'local var':
+    case 'local var': {
       return monaco.languages.CompletionItemKind.Variable
+    }
+
     case 'property':
     case 'getter':
-    case 'setter':
+    case 'setter': {
       return monaco.languages.CompletionItemKind.Field
+    }
+
     case 'function':
     case 'method':
     case 'construct':
     case 'call':
-    case 'index':
+    case 'index': {
       return monaco.languages.CompletionItemKind.Function
-    case 'enum':
+    }
+
+    case 'enum': {
       return monaco.languages.CompletionItemKind.Enum
-    case 'module':
+    }
+
+    case 'module': {
       return monaco.languages.CompletionItemKind.Module
-    case 'class':
+    }
+
+    case 'class': {
       return monaco.languages.CompletionItemKind.Class
-    case 'interface':
+    }
+
+    case 'interface': {
       return monaco.languages.CompletionItemKind.Interface
-    case 'warning':
+    }
+
+    case 'warning': {
       return monaco.languages.CompletionItemKind.File
+    }
+
+    default: {
+      return monaco.languages.CompletionItemKind.Property
+    }
   }
-  return monaco.languages.CompletionItemKind.Property
 }
 
 /**
@@ -53,8 +73,9 @@ export function convertScriptElementKind(monaco, kind) {
  */
 export function displayPartsToString(displayParts) {
   if (displayParts) {
-    return displayParts.map(displayPart => displayPart.text).join('')
+    return displayParts.map((displayPart) => displayPart.text).join('')
   }
+
   return ''
 }
 
@@ -69,6 +90,7 @@ export function createDocumentationString(details) {
       documentationString += `\n\n${tagToString(tag)}`
     }
   }
+
   return documentationString
 }
 
@@ -79,14 +101,15 @@ export function createDocumentationString(details) {
 export function tagToString(tag) {
   let tagLabel = `*@${tag.name}*`
   if (tag.name === 'param' && tag.text) {
-    const [paramName, ...rest] = tag.text
-    tagLabel += `\`${paramName.text}\``
-    if (rest.length > 0) tagLabel += ` — ${rest.map(r => r.text).join(' ')}`
+    const [parameterName, ...rest] = tag.text
+    tagLabel += `\`${parameterName.text}\``
+    if (rest.length > 0) tagLabel += ` — ${rest.map((r) => r.text).join(' ')}`
   } else if (Array.isArray(tag.text)) {
-    tagLabel += ` — ${tag.text.map(r => r.text).join(' ')}`
+    tagLabel += ` — ${tag.text.map((r) => r.text).join(' ')}`
   } else if (tag.text) {
     tagLabel += ` — ${tag.text}`
   }
+
   return tagLabel
 }
 
@@ -98,9 +121,9 @@ export function tagToString(tag) {
 export function textSpanToRange(model, span) {
   const p1 = model.getPositionAt(span.start)
   const p2 = model.getPositionAt(span.start + span.length)
-  const { lineNumber: startLineNumber, column: startColumn } = p1
-  const { lineNumber: endLineNumber, column: endColumn } = p2
-  return { startLineNumber, startColumn, endLineNumber, endColumn }
+  const {lineNumber: startLineNumber, column: startColumn} = p1
+  const {lineNumber: endLineNumber, column: endColumn} = p2
+  return {startLineNumber, startColumn, endLineNumber, endColumn}
 }
 
 /**
@@ -113,9 +136,11 @@ function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
   if (typeof diag === 'string') {
     return diag
   }
+
   if (diag === undefined) {
     return ''
   }
+
   let result = ''
   if (indent) {
     result += newLine
@@ -124,6 +149,7 @@ function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
       result += '  '
     }
   }
+
   result += diag.messageText
   indent++
   if (diag.next) {
@@ -131,6 +157,7 @@ function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
       result += flattenDiagnosticMessageText(kid, newLine, indent)
     }
   }
+
   return result
 }
 
@@ -148,19 +175,20 @@ function convertRelatedInformation(model, relatedInformation) {
   const result = []
   for (const info of relatedInformation) {
     const relatedResource = model
-    // if (info.file) {
+    // If (info.file) {
     //   relatedResource = this._libFiles.getOrCreateModel(info.file.fileName);
     // }
 
     if (!relatedResource) {
       continue
     }
+
     const infoStart = info.start || 0
     // eslint-disable-next-line unicorn/explicit-length-check
     const infoLength = info.length || 1
-    const { lineNumber: startLineNumber, column: startColumn } =
+    const {lineNumber: startLineNumber, column: startColumn} =
       relatedResource.getPositionAt(infoStart)
-    const { lineNumber: endLineNumber, column: endColumn } =
+    const {lineNumber: endLineNumber, column: endColumn} =
       relatedResource.getPositionAt(infoStart + infoLength)
 
     result.push({
@@ -169,9 +197,10 @@ function convertRelatedInformation(model, relatedInformation) {
       startColumn,
       endLineNumber,
       endColumn,
-      message: flattenDiagnosticMessageText(info.messageText, '\n'),
+      message: flattenDiagnosticMessageText(info.messageText, '\n')
     })
   }
+
   return result
 }
 
@@ -182,14 +211,22 @@ function convertRelatedInformation(model, relatedInformation) {
  */
 function tsDiagnosticCategoryToMarkerSeverity(monaco, category) {
   switch (category) {
-    case 0:
+    case 0: {
       return monaco.MarkerSeverity.Warning
-    case 1:
+    }
+
+    case 1: {
       return monaco.MarkerSeverity.Error
-    case 2:
+    }
+
+    case 2: {
       return monaco.MarkerSeverity.Hint
+    }
+
+    default: {
+      return monaco.MarkerSeverity.Info
+    }
   }
-  return monaco.MarkerSeverity.Info
 }
 
 /**
@@ -202,10 +239,10 @@ export function convertDiagnostics(monaco, model, diag) {
   const diagStart = diag.start || 0
   // eslint-disable-next-line unicorn/explicit-length-check
   const diagLength = diag.length || 1
-  const { lineNumber: startLineNumber, column: startColumn } =
+  const {lineNumber: startLineNumber, column: startColumn} =
     model.getPositionAt(diagStart)
-  const { lineNumber: endLineNumber, column: endColumn } = model.getPositionAt(
-    diagStart + diagLength,
+  const {lineNumber: endLineNumber, column: endColumn} = model.getPositionAt(
+    diagStart + diagLength
   )
 
   /** @type {MarkerTag[]} */
@@ -213,6 +250,7 @@ export function convertDiagnostics(monaco, model, diag) {
   if (diag.reportsUnnecessary) {
     tags.push(monaco.MarkerTag.Unnecessary)
   }
+
   if (diag.reportsDeprecated) {
     tags.push(monaco.MarkerTag.Deprecated)
   }
@@ -228,7 +266,7 @@ export function convertDiagnostics(monaco, model, diag) {
     tags,
     relatedInformation: convertRelatedInformation(
       model,
-      diag.relatedInformation,
-    ),
+      diag.relatedInformation
+    )
   }
 }

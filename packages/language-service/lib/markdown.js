@@ -5,7 +5,7 @@
  * @typedef {import('unist').Position} Position
  */
 
-import { visit } from 'unist-util-visit'
+import {visit} from 'unist-util-visit'
 
 /**
  * Get the definition link of a markdown AST at a given position.
@@ -26,11 +26,11 @@ export function getMarkdownDefinitionAtPosition(ast, position) {
     /**
      * @param {Definition | LinkReference} node
      */
-    node => {
+    (node) => {
       const start = node.position?.start.offset
       const end = node.position?.end.offset
 
-      if (start == null || end == null) {
+      if (start === undefined || end === undefined) {
         return
       }
 
@@ -41,7 +41,7 @@ export function getMarkdownDefinitionAtPosition(ast, position) {
       } else if (!definitions.has(node.identifier)) {
         definitions.set(node.identifier, node)
       }
-    },
+    }
   )
 
   if (!reference) {

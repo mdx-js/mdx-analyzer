@@ -1,1 +1,1 @@
-export { createMDXLanguageService } from './lib/index.js'
+export {createMDXLanguageService} from './lib/index.js'

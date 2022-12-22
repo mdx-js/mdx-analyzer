@@ -1,11 +1,11 @@
-import { registerMarkerDataProvider } from 'monaco-marker-data-provider'
+import {registerMarkerDataProvider} from 'monaco-marker-data-provider'
 
 import {
   createCompletionItemProvider,
   createDefinitionProvider,
   createHoverProvider,
   createMarkerDataProvider,
-  createReferenceProvider,
+  createReferenceProvider
 } from './lib/language-features.js'
 
 /**
@@ -18,18 +18,18 @@ export function initializeMonacoMDX(monaco) {
   const disposables = [
     monaco.languages.registerCompletionItemProvider(
       'mdx',
-      createCompletionItemProvider(monaco),
+      createCompletionItemProvider(monaco)
     ),
     monaco.languages.registerDefinitionProvider(
       'mdx',
-      createDefinitionProvider(monaco),
+      createDefinitionProvider(monaco)
     ),
     monaco.languages.registerHoverProvider('mdx', createHoverProvider(monaco)),
     monaco.languages.registerReferenceProvider(
       'mdx',
-      createReferenceProvider(monaco),
+      createReferenceProvider(monaco)
     ),
-    registerMarkerDataProvider(monaco, 'mdx', createMarkerDataProvider(monaco)),
+    registerMarkerDataProvider(monaco, 'mdx', createMarkerDataProvider(monaco))
   ]
 
   return {
@@ -37,6 +37,6 @@ export function initializeMonacoMDX(monaco) {
       for (const disposable of disposables) {
         disposable.dispose()
       }
-    },
+    }
   }
 }

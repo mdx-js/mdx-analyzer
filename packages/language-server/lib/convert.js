@@ -17,7 +17,7 @@
  * @typedef {import('vscode-languageserver-textdocument').TextDocument} TextDocument
  */
 
-import { pathToFileURL } from 'node:url'
+import {pathToFileURL} from 'node:url'
 
 import {
   CompletionItemKind,
@@ -26,10 +26,10 @@ import {
   DocumentSymbol,
   LocationLink,
   Range,
-  SymbolKind,
+  SymbolKind
 } from 'vscode-languageserver'
 
-import { documents } from './documents.js'
+import {documents} from './documents.js'
 
 /**
  * @param {ScriptElementKind} kind
@@ -38,33 +38,53 @@ import { documents } from './documents.js'
 export function convertScriptElementKind(kind) {
   switch (kind) {
     case 'primitive type':
-    case 'keyword':
+    case 'keyword': {
       return CompletionItemKind.Keyword
+    }
+
     case 'var':
-    case 'local var':
+    case 'local var': {
       return CompletionItemKind.Variable
+    }
+
     case 'property':
     case 'getter':
-    case 'setter':
+    case 'setter': {
       return CompletionItemKind.Field
+    }
+
     case 'function':
     case 'method':
     case 'construct':
     case 'call':
-    case 'index':
+    case 'index': {
       return CompletionItemKind.Function
-    case 'enum':
+    }
+
+    case 'enum': {
       return CompletionItemKind.Enum
-    case 'module':
+    }
+
+    case 'module': {
       return CompletionItemKind.Module
-    case 'class':
+    }
+
+    case 'class': {
       return CompletionItemKind.Class
-    case 'interface':
+    }
+
+    case 'interface': {
       return CompletionItemKind.Interface
-    case 'warning':
+    }
+
+    case 'warning': {
       return CompletionItemKind.File
+    }
+
+    default: {
+      return CompletionItemKind.Property
+    }
   }
-  return CompletionItemKind.Property
 }
 
 /**
@@ -75,24 +95,38 @@ export function convertScriptElementKindToSymbolKind(kind) {
   switch (kind) {
     case 'property':
     case 'getter':
-    case 'setter':
+    case 'setter': {
       return SymbolKind.Property
+    }
+
     case 'function':
     case 'method':
     case 'construct':
     case 'call':
-    case 'index':
+    case 'index': {
       return SymbolKind.Function
-    case 'enum':
+    }
+
+    case 'enum': {
       return SymbolKind.Enum
-    case 'module':
+    }
+
+    case 'module': {
       return SymbolKind.Module
-    case 'class':
+    }
+
+    case 'class': {
       return SymbolKind.Class
-    case 'interface':
+    }
+
+    case 'interface': {
       return SymbolKind.Interface
+    }
+
+    default: {
+      return SymbolKind.Variable
+    }
   }
-  return SymbolKind.Variable
 }
 
 /**
@@ -107,6 +141,7 @@ export function createDocumentationString(ts, details) {
       documentationString += `\n\n${tagToString(tag)}`
     }
   }
+
   return documentationString
 }
 
@@ -117,14 +152,15 @@ export function createDocumentationString(ts, details) {
 function tagToString(tag) {
   let tagLabel = `*@${tag.name}*`
   if (tag.name === 'param' && tag.text) {
-    const [paramName, ...rest] = tag.text
-    tagLabel += `\`${paramName.text}\``
-    if (rest.length > 0) tagLabel += ` — ${rest.map(r => r.text).join(' ')}`
+    const [parameterName, ...rest] = tag.text
+    tagLabel += `\`${parameterName.text}\``
+    if (rest.length > 0) tagLabel += ` — ${rest.map((r) => r.text).join(' ')}`
   } else if (Array.isArray(tag.text)) {
-    tagLabel += ` — ${tag.text.map(r => r.text).join(' ')}`
+    tagLabel += ` — ${tag.text.map((r) => r.text).join(' ')}`
   } else if (tag.text) {
     tagLabel += ` — ${tag.text}`
   }
+
   return tagLabel
 }
 
@@ -146,14 +182,22 @@ export function textSpanToRange(doc, span) {
  */
 function tsDiagnosticCategoryToMarkerSeverity(ts, category) {
   switch (category) {
-    case ts.DiagnosticCategory.Warning:
+    case ts.DiagnosticCategory.Warning: {
       return DiagnosticSeverity.Warning
-    case ts.DiagnosticCategory.Error:
+    }
+
+    case ts.DiagnosticCategory.Error: {
       return DiagnosticSeverity.Error
-    case ts.DiagnosticCategory.Suggestion:
+    }
+
+    case ts.DiagnosticCategory.Suggestion: {
       return DiagnosticSeverity.Hint
+    }
+
+    default: {
+      return DiagnosticSeverity.Information
+    }
   }
-  return DiagnosticSeverity.Information
 }
 
 /**
@@ -166,9 +210,11 @@ function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
   if (typeof diag === 'string') {
     return diag
   }
+
   if (diag === undefined) {
     return ''
   }
+
   let result = ''
   if (indent) {
     result += newLine
@@ -177,6 +223,7 @@ function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
       result += '  '
     }
   }
+
   result += diag.messageText
   indent++
   if (diag.next) {
@@ -184,6 +231,7 @@ function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
       result += flattenDiagnosticMessageText(kid, newLine, indent)
     }
   }
+
   return result
 }
 
@@ -214,17 +262,18 @@ function convertRelatedInformation(relatedInformation) {
     const infoLength = info.length || 1
     const range = Range.create(
       related.positionAt(infoStart),
-      related.positionAt(infoStart + infoLength),
+      related.positionAt(infoStart + infoLength)
     )
 
     result.push({
       location: {
         range,
-        uri: related.uri,
+        uri: related.uri
       },
-      message: flattenDiagnosticMessageText(info.messageText, '\n'),
+      message: flattenDiagnosticMessageText(info.messageText, '\n')
     })
   }
+
   return result
 }
 
@@ -240,7 +289,7 @@ export function convertDiagnostics(ts, doc, diag) {
   const diagLength = diag.length || 1
   const range = Range.create(
     doc.positionAt(diagStart),
-    doc.positionAt(diagStart + diagLength),
+    doc.positionAt(diagStart + diagLength)
   )
 
   /** @type {DiagnosticTag[]} */
@@ -248,6 +297,7 @@ export function convertDiagnostics(ts, doc, diag) {
   if (diag.reportsUnnecessary) {
     tags.push(DiagnosticTag.Unnecessary)
   }
+
   if (diag.reportsDeprecated) {
     tags.push(DiagnosticTag.Deprecated)
   }
@@ -258,7 +308,7 @@ export function convertDiagnostics(ts, doc, diag) {
     range,
     relatedInformation: convertRelatedInformation(diag.relatedInformation),
     severity: tsDiagnosticCategoryToMarkerSeverity(ts, diag.category),
-    tags,
+    tags
   }
 }
 
@@ -283,11 +333,12 @@ export function definitionInfoToLocationLinks(info) {
         LocationLink.create(
           url,
           textSpanToRange(entryDoc, entry.textSpan),
-          textSpanToRange(entryDoc, entry.textSpan),
-        ),
+          textSpanToRange(entryDoc, entry.textSpan)
+        )
       )
     }
   }
+
   return locationLinks
 }
 
@@ -300,15 +351,15 @@ export function definitionInfoToLocationLinks(info) {
  */
 export function convertNavigationBarItems(doc, items) {
   return items
-    .filter(item => item.kind !== 'module')
-    .map(item => {
+    .filter((item) => item.kind !== 'module')
+    .map((item) => {
       return DocumentSymbol.create(
         item.text,
         undefined,
         convertScriptElementKindToSymbolKind(item.kind),
         textSpanToRange(doc, item.spans[0]),
         textSpanToRange(doc, item.spans[0]),
-        convertNavigationBarItems(doc, item.childItems),
+        convertNavigationBarItems(doc, item.childItems)
       )
     })
 }

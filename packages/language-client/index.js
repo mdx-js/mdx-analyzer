@@ -1,4 +1,4 @@
-import { LanguageClient, TransportKind } from 'vscode-languageclient/node.js'
+import {LanguageClient, TransportKind} from 'vscode-languageclient/node.js'
 
 /**
  * @type {LanguageClient}
@@ -14,24 +14,24 @@ export async function activate(context) {
    */
   const run = {
     module: context.asAbsolutePath('out/language-server.js'),
-    transport: TransportKind.ipc,
+    transport: TransportKind.ipc
   }
 
   client = new LanguageClient(
     'MDX',
     {
       run,
-      debug: { ...run, options: { execArgv: ['--inspect=6009', '--nolazy'] } },
+      debug: {...run, options: {execArgv: ['--inspect=6009', '--nolazy']}}
     },
     {
       documentSelector: [
-        { scheme: 'file', language: 'mdx' },
-        { scheme: 'file', language: 'typescript' },
-        { scheme: 'file', language: 'typescriptreact' },
-        { scheme: 'file', language: 'javascript' },
-        { scheme: 'file', language: 'javascriptreact' },
-      ],
-    },
+        {scheme: 'file', language: 'mdx'},
+        {scheme: 'file', language: 'typescript'},
+        {scheme: 'file', language: 'typescriptreact'},
+        {scheme: 'file', language: 'javascript'},
+        {scheme: 'file', language: 'javascriptreact'}
+      ]
+    }
   )
 
   await client.start()

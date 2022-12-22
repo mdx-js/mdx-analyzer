@@ -13,9 +13,11 @@ function isVFileMessage(object) {
   if (typeof object !== 'object') {
     return false
   }
+
   if (!object) {
     return false
   }
+
   const message = /** @type {VFileMessage | Record<string, unknown>} */ (object)
   return typeof message.message === 'string'
 }
@@ -36,6 +38,7 @@ export function toDiagnostic(ts, error) {
     length = (error.position?.end?.offset ?? start) - start
     messageText = error.reason
   }
+
   return [
     {
       category: ts.DiagnosticCategory.Error,
@@ -45,7 +48,7 @@ export function toDiagnostic(ts, error) {
       // @ts-expect-error We don’t use file.
       file: undefined,
       start,
-      length,
-    },
+      length
+    }
   ]
 }

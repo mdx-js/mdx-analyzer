@@ -4,7 +4,7 @@
  * @typedef {import('vscode-languageserver-textdocument').TextDocument} TextDocument
  */
 
-import { fileURLToPath } from 'node:url'
+import {fileURLToPath} from 'node:url'
 
 import ts from 'typescript'
 import {
@@ -13,7 +13,7 @@ import {
   MarkupKind,
   ProposedFeatures,
   TextDocumentSyncKind,
-  TextEdit,
+  TextEdit
 } from 'vscode-languageserver/node.js'
 
 import {
@@ -22,10 +22,10 @@ import {
   convertScriptElementKind,
   createDocumentationString,
   definitionInfoToLocationLinks,
-  textSpanToRange,
+  textSpanToRange
 } from './lib/convert.js'
-import { documents, getDocByFileName } from './lib/documents.js'
-import { getOrCreateLanguageService } from './lib/language-service-manager.js'
+import {documents, getDocByFileName} from './lib/documents.js'
+import {getOrCreateLanguageService} from './lib/language-service-manager.js'
 
 const connection = createConnection(ProposedFeatures.all)
 
@@ -34,38 +34,38 @@ connection.onInitialize(() => {
     capabilities: {
       completionProvider: {
         completionItem: {
-          labelDetailsSupport: true,
+          labelDetailsSupport: true
         },
-        resolveProvider: true,
+        resolveProvider: true
       },
       definitionProvider: true,
-      documentSymbolProvider: { label: 'MDX' },
+      documentSymbolProvider: {label: 'MDX'},
       foldingRangeProvider: true,
       hoverProvider: true,
       referencesProvider: true,
       renameProvider: {
-        prepareProvider: true,
+        prepareProvider: true
       },
       textDocumentSync: TextDocumentSyncKind.Full,
-      typeDefinitionProvider: true,
-    },
+      typeDefinitionProvider: true
+    }
   }
 })
 
-connection.onCompletion(params => {
-  const doc = documents.get(params.textDocument.uri)
+connection.onCompletion((parameters) => {
+  const doc = documents.get(parameters.textDocument.uri)
 
   if (!doc) {
     return []
   }
 
-  const offset = doc.offsetAt(params.position)
+  const offset = doc.offsetAt(parameters.position)
   const ls = getOrCreateLanguageService(ts, doc.uri)
   const info = ls.getCompletionsAtPosition(fileURLToPath(doc.uri), offset, {
-    triggerKind: params.context?.triggerKind,
+    triggerKind: parameters.context?.triggerKind,
     triggerCharacter: /** @type {ts.CompletionsTriggerCharacter} */ (
-      params.context?.triggerCharacter
-    ),
+      parameters.context?.triggerCharacter
+    )
   })
 
   if (!info) {
@@ -74,12 +74,12 @@ connection.onCompletion(params => {
 
   return {
     isIncomplete: Boolean(info.isIncomplete),
-    items: info.entries.map(entry => ({
+    items: info.entries.map((entry) => ({
       data: {
         data: entry.data,
         offset,
         source: entry.source,
-        uri: doc.uri,
+        uri: doc.uri
       },
       insertText: entry.name,
       kind: convertScriptElementKind(entry.kind),
@@ -88,49 +88,49 @@ connection.onCompletion(params => {
       source: entry.source,
       tags: entry.kindModifiers?.includes('deprecated')
         ? [CompletionItemTag.Deprecated]
-        : [],
-    })),
+        : []
+    }))
   }
 })
 
-connection.onCompletionResolve(params => {
-  const { data, offset, source, uri } = params.data
+connection.onCompletionResolve((parameters) => {
+  const {data, offset, source, uri} = parameters.data
 
   const doc = documents.get(uri)
 
   if (!doc) {
-    return params
+    return parameters
   }
 
   const ls = getOrCreateLanguageService(ts, uri)
   const details = ls.getCompletionEntryDetails(
     fileURLToPath(uri),
     offset,
-    params.label,
+    parameters.label,
     undefined,
     source,
     undefined,
-    data,
+    data
   )
 
   return {
-    ...params,
+    ...parameters,
     detail: details?.displayParts
       ? ts.displayPartsToString(details.displayParts)
       : undefined,
     documentation: details
       ? {
           kind: MarkupKind.Markdown,
-          value: createDocumentationString(ts, details),
+          value: createDocumentationString(ts, details)
         }
       : undefined,
     kind: details?.kind ? convertScriptElementKind(details.kind) : undefined,
-    label: details?.name ?? params.label,
+    label: details?.name ?? parameters.label
   }
 })
 
-connection.onDefinition(params => {
-  const doc = documents.get(params.textDocument.uri)
+connection.onDefinition((parameters) => {
+  const doc = documents.get(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -139,14 +139,14 @@ connection.onDefinition(params => {
   const ls = getOrCreateLanguageService(ts, doc.uri)
   const entries = ls.getDefinitionAtPosition(
     fileURLToPath(doc.uri),
-    doc.offsetAt(params.position),
+    doc.offsetAt(parameters.position)
   )
 
   return definitionInfoToLocationLinks(entries)
 })
 
-connection.onTypeDefinition(params => {
-  const doc = documents.get(params.textDocument.uri)
+connection.onTypeDefinition((parameters) => {
+  const doc = documents.get(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -155,14 +155,14 @@ connection.onTypeDefinition(params => {
   const ls = getOrCreateLanguageService(ts, doc.uri)
   const entries = ls.getTypeDefinitionAtPosition(
     fileURLToPath(doc.uri),
-    doc.offsetAt(params.position),
+    doc.offsetAt(parameters.position)
   )
 
   return definitionInfoToLocationLinks(entries)
 })
 
-connection.onDocumentSymbol(params => {
-  const doc = documents.get(params.textDocument.uri)
+connection.onDocumentSymbol((parameters) => {
+  const doc = documents.get(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -174,8 +174,8 @@ connection.onDocumentSymbol(params => {
   return convertNavigationBarItems(doc, navigationBarItems)
 })
 
-connection.onFoldingRanges(params => {
-  const doc = documents.get(params.textDocument.uri)
+connection.onFoldingRanges((parameters) => {
+  const doc = documents.get(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -184,7 +184,7 @@ connection.onFoldingRanges(params => {
   const ls = getOrCreateLanguageService(ts, doc.uri)
   const outlineSpans = ls.getOutliningSpans(fileURLToPath(doc.uri))
 
-  return outlineSpans.map(span => {
+  return outlineSpans.map((span) => {
     const start = doc.positionAt(span.textSpan.start)
     const end = doc.positionAt(span.textSpan.start + span.textSpan.length)
 
@@ -192,13 +192,13 @@ connection.onFoldingRanges(params => {
       endCharacter: end.character,
       endLine: end.line,
       startCharacter: start.character,
-      startLine: start.line,
+      startLine: start.line
     }
   })
 })
 
-connection.onHover(params => {
-  const doc = documents.get(params.textDocument.uri)
+connection.onHover((parameters) => {
+  const doc = documents.get(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -207,7 +207,7 @@ connection.onHover(params => {
   const ls = getOrCreateLanguageService(ts, doc.uri)
   const info = ls.getQuickInfoAtPosition(
     fileURLToPath(doc.uri),
-    doc.offsetAt(params.position),
+    doc.offsetAt(parameters.position)
   )
 
   if (!info) {
@@ -224,13 +224,13 @@ connection.onHover(params => {
         '```typescript\n' +
         contents +
         '\n```\n' +
-        createDocumentationString(ts, info),
-    },
+        createDocumentationString(ts, info)
+    }
   }
 })
 
-connection.onReferences(params => {
-  const doc = documents.get(params.textDocument.uri)
+connection.onReferences((parameters) => {
+  const doc = documents.get(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -239,27 +239,27 @@ connection.onReferences(params => {
   const ls = getOrCreateLanguageService(ts, doc.uri)
   const entries = ls.getReferencesAtPosition(
     fileURLToPath(doc.uri),
-    doc.offsetAt(params.position),
+    doc.offsetAt(parameters.position)
   )
 
-  return entries?.map(entry => ({
+  return entries?.map((entry) => ({
     uri: entry.fileName,
-    range: textSpanToRange(doc, entry.textSpan),
+    range: textSpanToRange(doc, entry.textSpan)
   }))
 })
 
-connection.onPrepareRename(params => {
-  const doc = documents.get(params.textDocument.uri)
+connection.onPrepareRename((parameters) => {
+  const doc = documents.get(parameters.textDocument.uri)
 
   if (!doc) {
     return
   }
 
   const fileName = fileURLToPath(doc.uri)
-  const position = doc.offsetAt(params.position)
+  const position = doc.offsetAt(parameters.position)
   const ls = getOrCreateLanguageService(ts, doc.uri)
   const renameInfo = ls.getRenameInfo(fileName, position, {
-    allowRenameOfImportPath: false,
+    allowRenameOfImportPath: false
   })
 
   if (renameInfo.canRename) {
@@ -267,15 +267,15 @@ connection.onPrepareRename(params => {
   }
 })
 
-connection.onRenameRequest(params => {
-  const doc = documents.get(params.textDocument.uri)
+connection.onRenameRequest((parameters) => {
+  const doc = documents.get(parameters.textDocument.uri)
 
   if (!doc) {
     return
   }
 
   const fileName = fileURLToPath(doc.uri)
-  const position = doc.offsetAt(params.position)
+  const position = doc.offsetAt(parameters.position)
   const ls = getOrCreateLanguageService(ts, doc.uri)
   const locations = ls.findRenameLocations(fileName, position, false, false)
 
@@ -290,37 +290,42 @@ connection.onRenameRequest(params => {
     if (!doc) {
       continue
     }
+
     changes[doc.uri] ||= []
     const textEdits = changes[doc.uri]
     textEdits.push(
-      TextEdit.replace(textSpanToRange(doc, location.textSpan), params.newName),
+      TextEdit.replace(
+        textSpanToRange(doc, location.textSpan),
+        parameters.newName
+      )
     )
   }
-  return { changes }
+
+  return {changes}
 })
 
-documents.onDidClose(event => {
-  connection.sendDiagnostics({ uri: event.document.uri, diagnostics: [] })
+documents.onDidClose((event) => {
+  connection.sendDiagnostics({uri: event.document.uri, diagnostics: []})
 })
 
 /**
  * @param {TextDocumentChangeEvent} event
  */
 function checkDiagnostics(event) {
-  const { uri } = event.document
+  const {uri} = event.document
   const path = fileURLToPath(uri)
   const ls = getOrCreateLanguageService(ts, uri)
   const diagnostics = [
     ...ls.getSemanticDiagnostics(path),
     ...ls.getSuggestionDiagnostics(path),
-    ...ls.getSyntacticDiagnostics(path),
+    ...ls.getSyntacticDiagnostics(path)
   ]
 
   connection.sendDiagnostics({
     uri,
-    diagnostics: diagnostics.map(diag =>
-      convertDiagnostics(ts, event.document, diag),
-    ),
+    diagnostics: diagnostics.map((diag) =>
+      convertDiagnostics(ts, event.document, diag)
+    )
   })
 }
 

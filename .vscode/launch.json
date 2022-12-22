@@ -27,10 +27,7 @@
       "presentation": {
         "hidden": true
       },
-      "skipFiles": [
-        "<node_internals>/**",
-        "**/node_modules/vscode-*/**"
-      ]
+      "skipFiles": ["<node_internals>/**", "**/node_modules/vscode-*/**"]
     }
   ],
   "compounds": [

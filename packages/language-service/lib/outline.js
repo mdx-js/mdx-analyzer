@@ -7,9 +7,9 @@
  * @typedef {import('unist').Position} Position
  */
 
-import { visit } from 'unist-util-visit'
+import {visit} from 'unist-util-visit'
 
-import { unistPositionToTextSpan } from './utils.js'
+import {unistPositionToTextSpan} from './utils.js'
 
 /**
  * Create outline spans based on a markdown AST.
@@ -22,14 +22,14 @@ export function getFoldingRegions(ts, ast) {
   /** @type {OutliningSpan[]} */
   const sections = []
 
-  visit(ast, node => {
+  visit(ast, (node) => {
     if (node.position && (node.type === 'code' || node.type === 'blockquote')) {
       sections.push({
         textSpan: unistPositionToTextSpan(node.position),
         hintSpan: unistPositionToTextSpan(node.position),
         bannerText: node.type,
         autoCollapse: false,
-        kind: ts.OutliningSpanKind.Region,
+        kind: ts.OutliningSpanKind.Region
       })
     }
 
@@ -43,7 +43,7 @@ export function getFoldingRegions(ts, ast) {
     for (const child of node.children) {
       const end = child.position?.end?.offset
 
-      if (end == null) {
+      if (end === undefined) {
         continue
       }
 
@@ -52,16 +52,17 @@ export function getFoldingRegions(ts, ast) {
         for (const done of scope.splice(index)) {
           sections.push(done)
         }
+
         scope[index] = {
           textSpan: unistPositionToTextSpan(
-            /** @type {Position} */ (child.position),
+            /** @type {Position} */ (child.position)
           ),
           hintSpan: unistPositionToTextSpan(
-            /** @type {Position} */ (child.position),
+            /** @type {Position} */ (child.position)
           ),
           bannerText: 'Heading ' + child.depth,
           autoCollapse: false,
-          kind: ts.OutliningSpanKind.Region,
+          kind: ts.OutliningSpanKind.Region
         }
       }
 

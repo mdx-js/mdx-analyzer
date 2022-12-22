@@ -18,7 +18,7 @@
  * @typedef {new (ctx: IWorkerContext, options: Options) => TypeScriptWorker} TypeScriptWorkerClass
  */
 
-import { createMDXLanguageService } from '@mdx-js/language-service'
+import {createMDXLanguageService} from '@mdx-js/language-service'
 
 /**
  * @param {TypeScriptWorkerClass} TypeScriptWorker
@@ -31,4 +31,5 @@ function worker(TypeScriptWorker) {
 }
 
 // @ts-expect-error This is missing in the Monaco type definitions.
+
 self.customTSWorkerFactory = worker

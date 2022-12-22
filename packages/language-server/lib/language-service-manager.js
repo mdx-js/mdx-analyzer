@@ -4,18 +4,18 @@
  * @typedef {import('typescript').LanguageService} LanguageService
  */
 
-import { fileURLToPath, pathToFileURL } from 'node:url'
+import {fileURLToPath, pathToFileURL} from 'node:url'
 
-import { createMDXLanguageService } from '@mdx-js/language-service'
+import {createMDXLanguageService} from '@mdx-js/language-service'
 
-import { getDocByFileName } from './documents.js'
+import {getDocByFileName} from './documents.js'
 
 /**
  * @param {ts} ts
  * @returns {(fileName: string) => IScriptSnapshot | undefined} XXX
  */
 function createGetScriptSnapshot(ts) {
-  return fileName => {
+  return (fileName) => {
     const doc = getDocByFileName(fileName)
 
     if (doc) {
@@ -55,13 +55,13 @@ function getDefaultLanguageService(ts) {
         lib: ['lib.es2020.full.d.ts'],
         module: ts.ModuleKind.Node16,
         moduleResolution: ts.ModuleResolutionKind.NodeJs,
-        target: ts.ScriptTarget.Latest,
+        target: ts.ScriptTarget.Latest
       }),
       getDefaultLibFileName: ts.getDefaultLibFilePath,
       getScriptSnapshot: createGetScriptSnapshot(ts),
       getScriptVersion,
       getScriptFileNames: () => [],
-      useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames,
+      useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames
     })
   }
 
@@ -88,31 +88,30 @@ export function getOrCreateLanguageService(ts, uri) {
   }
 
   const jsonText = ts.sys.readFile(configPath)
-  if (jsonText == null) {
+  if (jsonText === undefined) {
     return getDefaultLanguageService(ts)
   }
 
-  const { config, error } = ts.parseConfigFileTextToJson(configPath, jsonText)
+  const {config, error} = ts.parseConfigFileTextToJson(configPath, jsonText)
   if (error || !config) {
     return getDefaultLanguageService(ts)
   }
 
-  const { fileNames, options, projectReferences } =
-    ts.parseJsonConfigFileContent(
-      config,
-      ts.sys,
-      fileURLToPath(new URL('.', pathToFileURL(configPath))),
-      ts.getDefaultCompilerOptions(),
-      'tsconfig.json',
-      undefined,
-      [
-        {
-          extension: '.mdx',
-          isMixedContent: true,
-          scriptKind: ts.ScriptKind.JSX,
-        },
-      ],
-    )
+  const {fileNames, options, projectReferences} = ts.parseJsonConfigFileContent(
+    config,
+    ts.sys,
+    fileURLToPath(new URL('.', pathToFileURL(configPath))),
+    ts.getDefaultCompilerOptions(),
+    'tsconfig.json',
+    undefined,
+    [
+      {
+        extension: '.mdx',
+        isMixedContent: true,
+        scriptKind: ts.ScriptKind.JSX
+      }
+    ]
+  )
 
   ls = createMDXLanguageService(ts, {
     ...ts.sys,
@@ -122,7 +121,7 @@ export function getOrCreateLanguageService(ts, uri) {
     getScriptFileNames: () => fileNames,
     getScriptSnapshot: createGetScriptSnapshot(ts),
     getScriptVersion,
-    useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames,
+    useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames
   })
   cache.set(configPath, ls)
   return ls

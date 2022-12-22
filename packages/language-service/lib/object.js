@@ -16,9 +16,11 @@ export function bindAll(object) {
       if (k === 'constructor') {
         continue
       }
+
       if (k in copy) {
         continue
       }
+
       const value = object[k]
       if (typeof value === 'function') {
         copy[k] = value.bind(object)
@@ -26,7 +28,9 @@ export function bindAll(object) {
         copy[k] = value
       }
     }
+
     proto = Object.getPrototypeOf(proto)
   }
+
   return copy
 }

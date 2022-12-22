@@ -2,15 +2,15 @@
  * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
  */
 import assert from 'node:assert'
-import { afterEach, beforeEach, test } from 'node:test'
+import {afterEach, beforeEach, test} from 'node:test'
 
 import {
   DocumentSymbolRequest,
   InitializeRequest,
-  SymbolKind,
+  SymbolKind
 } from 'vscode-languageserver'
 
-import { createConnection, openTextDocument } from './utils.js'
+import {createConnection, openTextDocument} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -27,12 +27,12 @@ test('resolve document symbols', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
     rootUri: null,
-    capabilities: {},
+    capabilities: {}
   })
 
-  const { uri } = await openTextDocument(connection, 'node16/mixed.mdx')
+  const {uri} = await openTextDocument(connection, 'node16/mixed.mdx')
   const result = await connection.sendRequest(DocumentSymbolRequest.type, {
-    textDocument: { uri },
+    textDocument: {uri}
   })
 
   assert.deepStrictEqual(result, [
@@ -41,13 +41,13 @@ test('resolve document symbols', async () => {
       kind: SymbolKind.Function,
       name: 'exportedFunction',
       range: {
-        end: { line: 9, character: 1 },
-        start: { line: 4, character: 0 },
+        end: {line: 9, character: 1},
+        start: {line: 4, character: 0}
       },
       selectionRange: {
-        end: { line: 9, character: 1 },
-        start: { line: 4, character: 0 },
-      },
-    },
+        end: {line: 9, character: 1},
+        start: {line: 4, character: 0}
+      }
+    }
   ])
 })

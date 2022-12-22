@@ -8,7 +8,7 @@
     {
       "include": "#markdown"
     },
-    { 
+    {
       "include": "#jsx-evaluated-code"
     }
   ],
@@ -61,7 +61,7 @@
               "end": "}",
               "contentName": "source.js.jsx",
               "patterns": [
-                { 
+                {
                   "include": "source.js.jsx"
                 }
               ]

@@ -17,7 +17,8 @@
   "files": [
     "*.d.ts",
     "*.js",
-    "lib"
+    "lib",
+    "!playwright.config.*"
   ],
   "keywords": [
     "intellisense",
@@ -43,5 +44,8 @@
     "monaco-marker-data-provider": "^1.0.0",
     "monaco-worker-manager": "^2.0.0"
   },
-  "sideEffects": false
+  "devDependencies": {
+    "@playwright/test": "^1.0.0",
+    "playwright-monaco": "^1.0.0"
+  }
 }

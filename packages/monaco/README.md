@@ -128,6 +128,12 @@ This project has a [code of conduct][].
 By interacting with this repository, organization, or community you agree to
 abide by its terms.
 
+## See also
+
+*   [monaco-tailwindcss](https://monaco-tailwindcss.js.org)
+*   [monaco-unified](https://monaco-unified.js.org)
+*   [monaco-yaml](https://monaco-yaml.js.org)
+
 ## License
 
 [MIT][] © [Remco Haszing][author]

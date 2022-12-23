@@ -37,7 +37,7 @@
     "@changesets/changelog-github": "^0.4.0",
     "@changesets/cli": "^2.0.0",
     "@types/react": "^18.0.0",
-    "esbuild": "^0.15.0",
+    "esbuild": "^0.16.0",
     "ovsx": "^0.7.0",
     "prettier": "^2.0.0",
     "react": "^18.0.0",

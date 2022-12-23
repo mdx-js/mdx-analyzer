@@ -47,14 +47,20 @@ window.MonacoEnvironment = {
   }
 }
 
+monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+  enableSchemaRequest: true,
+  schemas: [
+    {
+      fileMatch: ['tsconfig.json'],
+      uri: 'https://json.schemastore.org/tsconfig.json'
+    }
+  ]
+})
+
 monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   checkJs: true,
   jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
   moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs
-})
-
-monaco.languages.typescript.typescriptDefaults.setWorkerOptions({
-  customWorkerPath: './mdx.override.js'
 })
 
 monaco.languages.register({

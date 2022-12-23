@@ -3,10 +3,13 @@
  * @typedef {import('monaco-editor').languages.CompletionItemProvider} CompletionItemProvider
  * @typedef {import('monaco-editor').languages.DefinitionProvider} DefinitionProvider
  * @typedef {import('monaco-editor').languages.HoverProvider} HoverProvider
- * @typedef {import('monaco-editor').languages.ReferenceProvider} ReferenceProvider
  * @typedef {import('monaco-editor').languages.Location} Location
+ * @typedef {import('monaco-editor').languages.ReferenceProvider} ReferenceProvider
+ * @typedef {import('monaco-editor').languages.typescript.TypeScriptWorker} TypeScriptWorker
  * @typedef {import('monaco-editor').Uri} Uri
  * @typedef {import('monaco-marker-data-provider').MarkerDataProvider} MarkerDataProvider
+ *
+ * @typedef {(...resources: Uri[]) => Promise<TypeScriptWorker>} GetWorker
  */
 
 import {
@@ -20,21 +23,13 @@ import {
 
 /**
  * @param {Monaco} monaco
- * @param {Uri} uri
- */
-async function getWorker(monaco, uri) {
-  const worker = await monaco.languages.typescript.getTypeScriptWorker()
-  return worker(uri)
-}
-
-/**
- * @param {Monaco} monaco
+ * @param {GetWorker} getWorker
  * @returns {CompletionItemProvider} A completion item provider for MDX documents.
  */
-export function createCompletionItemProvider(monaco) {
+export function createCompletionItemProvider(monaco, getWorker) {
   return {
     async provideCompletionItems(model, position) {
-      const worker = await getWorker(monaco, model.uri)
+      const worker = await getWorker(model.uri)
       const offset = model.getOffsetAt(position)
       const wordInfo = model.getWordUntilPosition(position)
       const wordRange = new monaco.Range(
@@ -86,7 +81,7 @@ export function createCompletionItemProvider(monaco) {
     async resolveCompletionItem(item) {
       const {label, offset, uri} = /** @type {any} */ (item)
 
-      const worker = await getWorker(monaco, uri)
+      const worker = await getWorker(uri)
 
       const details = /** @type {ts.CompletionEntryDetails | undefined} */ (
         await worker.getCompletionEntryDetails(String(uri), offset, label)
@@ -111,12 +106,13 @@ export function createCompletionItemProvider(monaco) {
 
 /**
  * @param {Monaco} monaco
+ * @param {GetWorker} getWorker
  * @returns {HoverProvider} A hover provider for MDX documents.
  */
-export function createHoverProvider(monaco) {
+export function createHoverProvider(monaco, getWorker) {
   return {
     async provideHover(model, position) {
-      const worker = await getWorker(monaco, model.uri)
+      const worker = await getWorker(model.uri)
 
       /** @type {ts.QuickInfo | undefined} */
       const info = await worker.getQuickInfoAtPosition(
@@ -151,12 +147,13 @@ export function createHoverProvider(monaco) {
 
 /**
  * @param {Monaco} monaco
+ * @param {GetWorker} getWorker
  * @returns {DefinitionProvider} A link provider for MDX documents.
  */
-export function createDefinitionProvider(monaco) {
+export function createDefinitionProvider(monaco, getWorker) {
   return {
     async provideDefinition(model, position) {
-      const worker = await getWorker(monaco, model.uri)
+      const worker = await getWorker(model.uri)
 
       const offset = model.getOffsetAt(position)
       const entries = /** @type {ts.ReferenceEntry[] | undefined} */ (
@@ -186,14 +183,15 @@ export function createDefinitionProvider(monaco) {
 
 /**
  * @param {Monaco} monaco
+ * @param {GetWorker} getWorker
  * @returns {MarkerDataProvider} A reference provider for MDX documents.
  */
-export function createMarkerDataProvider(monaco) {
+export function createMarkerDataProvider(monaco, getWorker) {
   return {
     owner: 'mdx',
 
     async provideMarkerData(model) {
-      const worker = await getWorker(monaco, model.uri)
+      const worker = await getWorker(model.uri)
       const uri = String(model.uri)
       const diagnostics = await Promise.all([
         worker.getSemanticDiagnostics(uri),
@@ -214,12 +212,13 @@ export function createMarkerDataProvider(monaco) {
 
 /**
  * @param {Monaco} monaco
+ * @param {GetWorker} getWorker
  * @returns {ReferenceProvider} A reference provider for MDX documents.
  */
-export function createReferenceProvider(monaco) {
+export function createReferenceProvider(monaco, getWorker) {
   return {
     async provideReferences(model, position) {
-      const worker = await getWorker(monaco, model.uri)
+      const worker = await getWorker(model.uri)
       const resource = model.uri
       const offset = model.getOffsetAt(position)
 

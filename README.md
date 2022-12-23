@@ -1,17 +1,10 @@
 # [Visual Studio Code](https://code.visualstudio.com) extension for [MDX][]
 
 [![GitHub Actions](https://github.com/mdx-js/vscode-mdx/workflows/CI/badge.svg)](https://github.com/mdx-js/vscode-mdx/actions/workflows/ci.yml)
-[![GitHub release](https://img.shields.io/github/release/mdx-js/vscode-mdx)](https://github.com/mdx-js/vscode-mdx/releases)
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
 [![Open VSX Version](https://img.shields.io/open-vsx/v/unifiedjs/vscode-mdx)](https://open-vsx.org/extension/unifiedjs/vscode-mdx)
 [![Open VSX Downloads](https://img.shields.io/open-vsx/dt/unifiedjs/vscode-mdx)](https://open-vsx.org/extension/unifiedjs/vscode-mdx)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/mdx-js/vscode-mdx.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/mdx-js/vscode-mdx/context:javascript)
-
-[![Conventional Commits](https://img.shields.io/badge/conventional%20commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
-[![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![changesets](https://img.shields.io/badge/maintained%20with-changesets-176de3.svg)](https://github.com/changesets/changesets)
 
 Adds language support for [MDX][].
 

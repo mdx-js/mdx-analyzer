@@ -3,7 +3,6 @@
  */
 import assert from 'node:assert'
 import {afterEach, beforeEach, test} from 'node:test'
-
 import {InitializeRequest, RenameRequest} from 'vscode-languageserver'
 
 import {createConnection, fixtureUri, openTextDocument} from './utils.js'
@@ -34,6 +33,7 @@ test('handle rename request of variable for opened references', async () => {
     textDocument: {uri}
   })
 
+  console.dir(result, {depth: Number.POSITIVE_INFINITY})
   assert.deepStrictEqual(result, {
     changes: {
       [fixtureUri('node16/a.mdx')]: [
@@ -49,6 +49,19 @@ test('handle rename request of variable for opened references', async () => {
           range: {
             start: {line: 4, character: 2},
             end: {line: 4, character: 3}
+          }
+        },
+        {
+          newText: 'renamed',
+          range: {
+            end: {
+              character: 2,
+              line: 11
+            },
+            start: {
+              character: 1,
+              line: 11
+            }
           }
         }
       ],

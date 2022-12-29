@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/Septh/tmlanguage/master/tmLanguage.schema.json",
+  "$schema": "https://raw.githubusercontent.com/Septh/tmlanguage/HEAD/tmLanguage.schema.json",
   "name": "Markdown React",
   "patterns": [
     {

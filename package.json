@@ -23,7 +23,8 @@
     "Markdown React"
   ],
   "scripts": {
-    "lint": "xo"
+    "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+    "test": "npm run format"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.0",

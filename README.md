@@ -1,6 +1,6 @@
 # [Visual Studio Code](https://code.visualstudio.com) extension for [MDX][]
 
-[![GitHub Actions](https://github.com/mdx-js/vscode-mdx/workflows/CI/badge.svg)](https://github.com/mdx-js/vscode-mdx/actions/workflows/ci.yml)
+[![GitHub Actions](https://github.com/mdx-js/vscode-mdx/workflows/main/badge.svg)](https://github.com/mdx-js/vscode-mdx/actions/workflows/main.yml)
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
 [![Open VSX Version](https://img.shields.io/open-vsx/v/unifiedjs/vscode-mdx)](https://open-vsx.org/extension/unifiedjs/vscode-mdx)

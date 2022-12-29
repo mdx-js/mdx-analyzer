@@ -29,7 +29,8 @@
   ],
   "scripts": {
     "build": "esbuild @mdx-js/language-client @mdx-js/language-server --bundle --platform=node --target=node16 --external:vscode --external:typescript --outdir=out --sourcemap=inline",
-    "lint": "xo",
+    "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+    "test": "npm run build && npm run format",
     "start": "yarn workspace @mdx-js/monaco-demo run start",
     "vscode:prepublish": "yarn build --minify"
   },

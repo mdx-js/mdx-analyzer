@@ -9,19 +9,6 @@ import {
 } from './lib/language-features.js'
 
 /**
- * @param {string} languageId
- */
-function shouldSynchronize(languageId) {
-  return (
-    languageId === 'mdx' ||
-    languageId === 'javascript' ||
-    languageId === 'javascriptreact' ||
-    languageId === 'typescript' ||
-    languageId === 'typescriptreact'
-  )
-}
-
-/**
  * Initialize MDX intellisense for MDX.
  *
  * @param {typeof import('monaco-editor')} monaco The Monaco editor module.

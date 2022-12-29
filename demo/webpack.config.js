@@ -1,9 +1,9 @@
-// import {fileURLToPath} from 'node:url'
+// Import {fileURLToPath} from 'node:url'
 
 import HtmlWebPackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
-// const projectRoot = new URL('../', import.meta.url)
+// Const projectRoot = new URL('../', import.meta.url)
 // const nodeModules = new URL('node_modules/', projectRoot)
 
 /**
@@ -20,7 +20,7 @@ const config = {
   },
   resolve: {
     conditionNames: ['worker']
-    // alias: {
+    // Alias: {
     //   'decode-named-character-reference': fileURLToPath(
     //     new URL('decode-named-character-reference/index.js', nodeModules)
     //   )

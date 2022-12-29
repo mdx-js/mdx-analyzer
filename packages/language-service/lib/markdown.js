@@ -20,29 +20,25 @@ export function getMarkdownDefinitionAtPosition(ast, position) {
   /** @type {Map<string, Definition>} */
   const definitions = new Map()
 
-  visit(
-    ast,
-    ['definition', 'linkReference'],
-    /**
-     * @param {Definition | LinkReference} node
-     */
-    (node) => {
-      const start = node.position?.start.offset
-      const end = node.position?.end.offset
+  visit(ast, (node) => {
+    const start = node.position?.start.offset
+    const end = node.position?.end.offset
 
-      if (start === undefined || end === undefined) {
-        return
-      }
-
-      if (node.type === 'linkReference') {
-        if (position >= start && position <= end) {
-          reference = node
-        }
-      } else if (!definitions.has(node.identifier)) {
-        definitions.set(node.identifier, node)
-      }
+    if (start === undefined || end === undefined) {
+      return
     }
-  )
+
+    if (node.type === 'linkReference') {
+      if (position >= start && position <= end) {
+        reference = node
+      }
+    } else if (
+      node.type === 'definition' &&
+      !definitions.has(node.identifier)
+    ) {
+      definitions.set(node.identifier, node)
+    }
+  })
 
   if (!reference) {
     return

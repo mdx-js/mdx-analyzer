@@ -29,7 +29,8 @@
     "unified"
   ],
   "scripts": {
-    "prepack": "tsc --build --clean && tsc --build"
+    "prepack": "tsc --build --clean && tsc --build",
+    "test-api": "playwright test"
   },
   "peerDependencies": {
     "monaco-editor": ">=0.34.0"

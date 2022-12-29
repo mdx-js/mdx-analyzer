@@ -7,13 +7,9 @@
  * @typedef {import('unist').Node} Node
  * @typedef {import('unist').Parent} Parent
  * @typedef {import('unist').Position} Position
- */
-
-/**
+ *
  * @typedef {[start: number, end: number]} OffsetRange
- */
-
-/**
+ *
  * @typedef {object} MDXShadow
  * @property {(start?: number, end?: number) => string} getText
  * Same as {@link IScriptSnapshot.getText}, except omitting start and end, returns the entire text.
@@ -25,9 +21,7 @@
  * This is defined if a parsing error has occurred.
  * @property {Root} ast
  * The markdown AST (mdast).
- */
-
-/**
+ *
  * @typedef {MDXShadow & IScriptSnapshot} MDXSnapshot
  */
 

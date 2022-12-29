@@ -17,7 +17,6 @@
     "mdx-language-server": "./index.js"
   },
   "files": [
-    "*.d.ts",
     "*.js",
     "lib"
   ],
@@ -29,6 +28,9 @@
     "typescript",
     "unified"
   ],
+  "scripts": {
+    "test-api": "node --test"
+  },
   "dependencies": {
     "@mdx-js/language-service": "0.0.0",
     "vscode-languageserver": "^8.0.0",

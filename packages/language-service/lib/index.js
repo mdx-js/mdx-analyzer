@@ -33,6 +33,18 @@ function isMdx(fileName) {
 }
 
 /**
+ * Assert that a file isn’t MDX.
+ *
+ * @param {string} fileName The file name to check.
+ * @param {string} fn The name of the function.
+ */
+function assertNotMdx(fileName, fn) {
+  if (isMdx(fileName)) {
+    throw new Error(`${fn} is not supported for MDX files`)
+  }
+}
+
+/**
  * @param {string} fileName
  * @param {MDXSnapshot | undefined} snapshot
  * @param {TextSpan} textSpan
@@ -275,9 +287,10 @@ export function createMDXLanguageService(ts, host, plugins) {
   }
 
   return {
-    applyCodeActionCommand(...args) {
-      // @ts-expect-error XXX
-      return ls.applyCodeActionCommand(...args)
+    applyCodeActionCommand(fileNameOrAction, formatSettignsOrAction) {
+      // @ts-expect-error The deprecated function signature prevents proper type
+      // safety.
+      return ls.applyCodeActionCommand(fileNameOrAction, formatSettignsOrAction)
     },
 
     cleanupSemanticCache() {
@@ -285,10 +298,7 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     commentSelection(fileName, textRange) {
-      if (isMdx(fileName)) {
-        throw new Error('commentSelection isn’t supported for MDX files.')
-      }
-
+      assertNotMdx(fileName, 'commentSelection')
       return ls.commentSelection(fileName, textRange)
     },
 
@@ -339,8 +349,6 @@ export function createMDXLanguageService(ts, host, plugins) {
       }
 
       return locations
-
-      // XXX
     },
 
     getApplicableRefactors(
@@ -350,18 +358,14 @@ export function createMDXLanguageService(ts, host, plugins) {
       triggerReason,
       kind
     ) {
-      if (!isMdx(fileName)) {
-        return ls.getApplicableRefactors(
-          fileName,
-          positionOrRange,
-          preferences,
-          triggerReason,
-          kind
-        )
-      }
-
-      // XXX
-      return []
+      assertNotMdx(fileName, 'getApplicableRefactors')
+      return ls.getApplicableRefactors(
+        fileName,
+        positionOrRange,
+        preferences,
+        triggerReason,
+        kind
+      )
     },
 
     getBraceMatchingAtPosition(fileName, position) {
@@ -398,19 +402,15 @@ export function createMDXLanguageService(ts, host, plugins) {
       formatOptions,
       preferences
     ) {
-      if (!isMdx(fileName)) {
-        return ls.getCodeFixesAtPosition(
-          fileName,
-          start,
-          end,
-          errorCodes,
-          formatOptions,
-          preferences
-        )
-      }
-
-      // XXX
-      return []
+      assertNotMdx(fileName, 'getCodeFixesAtPosition')
+      return ls.getCodeFixesAtPosition(
+        fileName,
+        start,
+        end,
+        errorCodes,
+        formatOptions,
+        preferences
+      )
     },
 
     getCombinedCodeFix(scope, fixId, formatOptions, preferences) {
@@ -443,11 +443,8 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getCompletionEntrySymbol(fileName, position, name, source) {
-      if (!isMdx(fileName)) {
-        return ls.getCompletionEntrySymbol(fileName, position, name, source)
-      }
-
-      // XXX
+      assertNotMdx(fileName, 'getCompletionEntrySymbol')
+      return ls.getCompletionEntrySymbol(fileName, position, name, source)
     },
 
     getCompletionsAtPosition(fileName, position, options, formattingSettings) {
@@ -482,11 +479,8 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getDefinitionAndBoundSpan(fileName, position) {
-      if (!isMdx(fileName)) {
-        return ls.getDefinitionAndBoundSpan(fileName, position)
-      }
-
-      // XXX
+      assertNotMdx(fileName, 'getDefinitionAndBoundSpan')
+      return ls.getDefinitionAndBoundSpan(fileName, position)
     },
 
     getDefinitionAtPosition(fileName, position) {
@@ -524,19 +518,13 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getDocCommentTemplateAtPosition(fileName, position, options) {
-      if (!isMdx(fileName)) {
-        return ls.getDocCommentTemplateAtPosition(fileName, position, options)
-      }
-
-      // XXX
+      assertNotMdx(fileName, 'getDocCommentTemplateAtPosition')
+      return ls.getDocCommentTemplateAtPosition(fileName, position, options)
     },
 
     getDocumentHighlights(fileName, position, filesToSearch) {
-      if (!isMdx(fileName)) {
-        return ls.getDocumentHighlights(fileName, position, filesToSearch)
-      }
-
-      // XXX
+      assertNotMdx(fileName, 'getDocumentHighlights')
+      return ls.getDocumentHighlights(fileName, position, filesToSearch)
     },
 
     getEditsForFileRename(
@@ -545,17 +533,13 @@ export function createMDXLanguageService(ts, host, plugins) {
       formatOptions,
       preferences
     ) {
-      if (!isMdx(newFilePath)) {
-        return ls.getEditsForFileRename(
-          oldFilePath,
-          newFilePath,
-          formatOptions,
-          preferences
-        )
-      }
-
-      // XXX
-      return []
+      assertNotMdx(newFilePath, 'getEditsForRefactor')
+      return ls.getEditsForFileRename(
+        oldFilePath,
+        newFilePath,
+        formatOptions,
+        preferences
+      )
     },
 
     getEditsForRefactor(
@@ -566,138 +550,88 @@ export function createMDXLanguageService(ts, host, plugins) {
       actionName,
       preferences
     ) {
-      if (!isMdx(fileName)) {
-        return ls.getEditsForRefactor(
-          fileName,
-          formatOptions,
-          positionOrRange,
-          refactorName,
-          actionName,
-          preferences
-        )
-      }
-
-      // XXX
+      assertNotMdx(fileName, 'getEditsForRefactor')
+      return ls.getEditsForRefactor(
+        fileName,
+        formatOptions,
+        positionOrRange,
+        refactorName,
+        actionName,
+        preferences
+      )
     },
 
     getEmitOutput(fileName, emitOnlyDtsFiles, forceDtsEmit) {
-      if (!isMdx(fileName)) {
-        return ls.getEmitOutput(fileName, emitOnlyDtsFiles, forceDtsEmit)
-      }
-
-      throw new Error('getEmitOutput is not supported for MDX files')
+      assertNotMdx(fileName, 'getEmitOutput')
+      return ls.getEmitOutput(fileName, emitOnlyDtsFiles, forceDtsEmit)
     },
 
     getEncodedSemanticClassifications(fileName, span, format) {
-      if (!isMdx(fileName)) {
-        return ls.getEncodedSemanticClassifications(fileName, span, format)
-      }
-
-      throw new Error(
-        'getEncodedSemanticClassifications is not supported for MDX files'
-      )
+      assertNotMdx(fileName, 'getEncodedSemanticClassifications')
+      return ls.getEncodedSemanticClassifications(fileName, span, format)
     },
 
     getEncodedSyntacticClassifications(fileName, span) {
-      if (!isMdx(fileName)) {
-        return ls.getEncodedSyntacticClassifications(fileName, span)
-      }
-
-      throw new Error(
-        'getEncodedSyntacticClassifications is not supported for MDX files'
-      )
+      assertNotMdx(fileName, 'getEncodedSyntacticClassifications')
+      return ls.getEncodedSyntacticClassifications(fileName, span)
     },
 
     getFileReferences(fileName) {
-      if (!isMdx(fileName)) {
-        return ls.getFileReferences(fileName)
-      }
-
-      throw new Error('getFileReferences is not supported for MDX files')
+      assertNotMdx(fileName, 'getFileReferences')
+      return ls.getFileReferences(fileName)
     },
 
     getFormattingEditsAfterKeystroke(fileName, position, key, options) {
-      if (!isMdx(fileName)) {
-        return ls.getFormattingEditsAfterKeystroke(
-          fileName,
-          position,
-          key,
-          options
-        )
-      }
-
-      throw new Error(
-        'getFormattingEditsAfterKeystroke is not supported for MDX files'
+      assertNotMdx(fileName, 'getFormattingEditsAfterKeystroke')
+      return ls.getFormattingEditsAfterKeystroke(
+        fileName,
+        position,
+        key,
+        options
       )
     },
 
     getFormattingEditsForDocument(fileName, options) {
-      if (!isMdx(fileName)) {
-        return ls.getFormattingEditsForDocument(fileName, options)
-      }
-
-      throw new Error(
-        'getFormattingEditsForDocument is not supported for MDX files'
-      )
+      assertNotMdx(fileName, 'getFormattingEditsForDocument')
+      return ls.getFormattingEditsForDocument(fileName, options)
     },
 
     getFormattingEditsForRange(fileName, start, end, options) {
-      if (!isMdx(fileName)) {
-        return ls.getFormattingEditsForRange(fileName, start, end, options)
-      }
-
-      throw new Error(
-        'getFormattingEditsForRange is not supported for MDX files'
-      )
+      assertNotMdx(fileName, 'getFormattingEditsForRange')
+      return ls.getFormattingEditsForRange(fileName, start, end, options)
     },
 
     getImplementationAtPosition(fileName, position) {
-      if (!isMdx(fileName)) {
-        return ls.getImplementationAtPosition(fileName, position)
-      }
-
-      throw new Error(
-        'getImplementationAtPosition is not supported for MDX files'
-      )
+      assertNotMdx(fileName, 'getImplementationAtPosition')
+      return ls.getImplementationAtPosition(fileName, position)
     },
 
     getIndentationAtPosition(fileName, position, options) {
-      if (!isMdx(fileName)) {
-        return ls.getIndentationAtPosition(fileName, position, options)
-      }
-
-      throw new Error('getIndentationAtPosition is not supported for MDX files')
+      assertNotMdx(fileName, 'getIndentationAtPosition')
+      return ls.getIndentationAtPosition(fileName, position, options)
     },
 
     getJsxClosingTagAtPosition(fileName, position) {
-      if (!isMdx(fileName)) {
-        return ls.getJsxClosingTagAtPosition(fileName, position)
-      }
-
-      throw new Error(
-        'getJsxClosingTagAtPosition is not supported for MDX files'
-      )
+      assertNotMdx(fileName, 'getJsxClosingTagAtPosition')
+      return ls.getJsxClosingTagAtPosition(fileName, position)
     },
 
     getNameOrDottedNameSpan(fileName, startPos, endPos) {
-      if (!isMdx(fileName)) {
-        return ls.getNameOrDottedNameSpan(fileName, startPos, endPos)
-      }
-
-      throw new Error('getNameOrDottedNameSpan is not supported for MDX files')
+      assertNotMdx(fileName, 'getNameOrDottedNameSpan')
+      return ls.getNameOrDottedNameSpan(fileName, startPos, endPos)
     },
 
     getNavigateToItems(searchValue, maxResultCount, fileName, excludeDtsFiles) {
-      if (fileName && !isMdx(fileName)) {
-        return ls.getNavigateToItems(
-          searchValue,
-          maxResultCount,
-          fileName,
-          excludeDtsFiles
-        )
+      if (fileName) {
+        assertNotMdx(fileName, 'getNavigateToItems')
       }
 
-      throw new Error('getNavigateToItems is not supported for MDX files')
+      return ls.getNavigateToItems(
+        searchValue,
+        maxResultCount,
+        fileName,
+        excludeDtsFiles
+      )
     },
 
     getNavigationBarItems(fileName) {
@@ -720,19 +654,13 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getNavigationTree(fileName) {
-      if (!isMdx(fileName)) {
-        return ls.getNavigationTree(fileName)
-      }
-
-      throw new Error('getNavigationTree is not supported for MDX files')
+      assertNotMdx(fileName, 'getNavigationTree')
+      return ls.getNavigationTree(fileName)
     },
 
     getOccurrencesAtPosition(fileName, position) {
-      if (!isMdx(fileName)) {
-        return ls.getOccurrencesAtPosition(fileName, position)
-      }
-
-      throw new Error('getOccurrencesAtPosition is not supported for MDX files')
+      assertNotMdx(fileName, 'getOccurrencesAtPosition')
+      return ls.getOccurrencesAtPosition(fileName, position)
     },
 
     getOutliningSpans(fileName) {
@@ -832,12 +760,7 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getSemanticClassifications(fileName, span) {
-      if (isMdx(fileName)) {
-        throw new Error(
-          'getSemanticClassifications is not supported for MDX files'
-        )
-      }
-
+      assertNotMdx(fileName, 'getSemanticClassifications')
       return ls.getSemanticClassifications(fileName, span)
     },
 
@@ -853,29 +776,18 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getSignatureHelpItems(fileName, position, options) {
-      if (!isMdx(fileName)) {
-        return ls.getSignatureHelpItems(fileName, position, options)
-      }
-
-      throw new Error('getSignatureHelpItems is not supported for MDX files')
+      assertNotMdx(fileName, 'getSignatureHelpItems')
+      return ls.getSignatureHelpItems(fileName, position, options)
     },
 
     getSmartSelectionRange(fileName, position) {
-      if (!isMdx(fileName)) {
-        return ls.getSmartSelectionRange(fileName, position)
-      }
-
-      throw new Error('getSmartSelectionRange is not supported for MDX files')
+      assertNotMdx(fileName, 'getSmartSelectionRange')
+      return ls.getSmartSelectionRange(fileName, position)
     },
 
     getSpanOfEnclosingComment(fileName, position, onlyMultiLine) {
-      if (!isMdx(fileName)) {
-        return ls.getSpanOfEnclosingComment(fileName, position, onlyMultiLine)
-      }
-
-      throw new Error(
-        'getSpanOfEnclosingComment is not supported for MDX files'
-      )
+      assertNotMdx(fileName, 'getSpanOfEnclosingComment')
+      return ls.getSpanOfEnclosingComment(fileName, position, onlyMultiLine)
     },
 
     getSuggestionDiagnostics(fileName) {
@@ -890,13 +802,8 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getSyntacticClassifications(fileName, span) {
-      if (!isMdx(fileName)) {
-        return ls.getSyntacticClassifications(fileName, span)
-      }
-
-      throw new Error(
-        'getSyntacticClassifications is not supported for MDX files'
-      )
+      assertNotMdx(fileName, 'getSyntacticClassifications')
+      return ls.getSyntacticClassifications(fileName, span)
     },
 
     getSyntacticDiagnostics(fileName) {
@@ -913,11 +820,8 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     getTodoComments(fileName, descriptors) {
-      if (!isMdx(fileName)) {
-        return ls.getTodoComments(fileName, descriptors)
-      }
-
-      throw new Error('getTodoComments is not supported for MDX files')
+      assertNotMdx(fileName, 'getTodoComments')
+      return ls.getTodoComments(fileName, descriptors)
     },
 
     getTypeDefinitionAtPosition(fileName, position) {
@@ -936,85 +840,52 @@ export function createMDXLanguageService(ts, host, plugins) {
     },
 
     isValidBraceCompletionAtPosition(fileName, position, openingBrace) {
-      if (!isMdx(fileName)) {
-        return ls.isValidBraceCompletionAtPosition(
-          fileName,
-          position,
-          openingBrace
-        )
-      }
-
-      throw new Error(
-        'isValidBraceCompletionAtPosition is not supported for MDX files'
+      assertNotMdx(fileName, 'isValidBraceCompletionAtPosition')
+      return ls.isValidBraceCompletionAtPosition(
+        fileName,
+        position,
+        openingBrace
       )
     },
 
     organizeImports(args, formatOptions, preferences) {
-      if (!isMdx(args.fileName)) {
-        return ls.organizeImports(args, formatOptions, preferences)
-      }
-
-      throw new Error('organizeImports is not supported for MDX files')
+      assertNotMdx(args.fileName, 'organizeImports')
+      return ls.organizeImports(args, formatOptions, preferences)
     },
 
     prepareCallHierarchy(fileName, position) {
-      if (!isMdx(fileName)) {
-        return ls.prepareCallHierarchy(fileName, position)
-      }
-
-      throw new Error('prepareCallHierarchy is not supported for MDX files')
+      assertNotMdx(fileName, 'prepareCallHierarchy')
+      return ls.prepareCallHierarchy(fileName, position)
     },
 
     provideCallHierarchyIncomingCalls(fileName, position) {
-      if (!isMdx(fileName)) {
-        return ls.provideCallHierarchyIncomingCalls(fileName, position)
-      }
-
-      throw new Error(
-        'provideCallHierarchyIncomingCalls is not supported for MDX files'
-      )
+      assertNotMdx(fileName, 'provideCallHierarchyIncomingCalls')
+      return ls.provideCallHierarchyIncomingCalls(fileName, position)
     },
 
     provideCallHierarchyOutgoingCalls(fileName, position) {
-      if (!isMdx(fileName)) {
-        return ls.provideCallHierarchyOutgoingCalls(fileName, position)
-      }
-
-      throw new Error(
-        'provideCallHierarchyOutgoingCalls is not supported for MDX files'
-      )
+      assertNotMdx(fileName, 'provideCallHierarchyOutgoingCalls')
+      return ls.provideCallHierarchyOutgoingCalls(fileName, position)
     },
 
     provideInlayHints(fileName, span, preferences) {
-      if (!isMdx(fileName)) {
-        return ls.provideInlayHints(fileName, span, preferences)
-      }
-
-      throw new Error('provideInlayHints is not supported for MDX files')
+      assertNotMdx(fileName, 'provideInlayHints')
+      return ls.provideInlayHints(fileName, span, preferences)
     },
 
     toggleLineComment(fileName, textRange) {
-      if (!isMdx(fileName)) {
-        return ls.toggleLineComment(fileName, textRange)
-      }
-
-      throw new Error('toggleLineComment is not supported for MDX files')
+      assertNotMdx(fileName, 'toggleLineComment')
+      return ls.toggleLineComment(fileName, textRange)
     },
 
     toggleMultilineComment(fileName, textRange) {
-      if (!isMdx(fileName)) {
-        return ls.toggleMultilineComment(fileName, textRange)
-      }
-
-      throw new Error('toggleMultilineComment is not supported for MDX files')
+      assertNotMdx(fileName, 'toggleMultilineComment')
+      return ls.toggleMultilineComment(fileName, textRange)
     },
 
     uncommentSelection(fileName, textRange) {
-      if (!isMdx(fileName)) {
-        return ls.uncommentSelection(fileName, textRange)
-      }
-
-      throw new Error('uncommentSelection is not supported for MDX files')
+      assertNotMdx(fileName, 'uncommentSelection')
+      return ls.uncommentSelection(fileName, textRange)
     }
   }
 }

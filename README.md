@@ -1,6 +1,6 @@
 # [Visual Studio Code](https://code.visualstudio.com) extension for [MDX][]
 
-[![GitHub Actions](https://github.com/mdx-js/vscode-mdx/workflows/CI/badge.svg)](https://github.com/mdx-js/vscode-mdx/actions/workflows/ci.yml)
+[![GitHub Actions](https://github.com/mdx-js/vscode-mdx/workflows/main/badge.svg)](https://github.com/mdx-js/vscode-mdx/actions/workflows/main.yml)
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
 [![Open VSX Version](https://img.shields.io/open-vsx/v/unifiedjs/vscode-mdx)](https://open-vsx.org/extension/unifiedjs/vscode-mdx)
@@ -177,10 +177,17 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 [MIT][] © [JounQin][]@[1stG.me][]
 
 [1stg.me]: https://www.1stg.me
+
 [eslint-plugin-mdx]: https://github.com/mdx-js/eslint-mdx
+
 [jounqin]: https://GitHub.com/JounQin
+
 [mdx]: https://github.com/mdx-js/mdx
+
 [mit]: http://opensource.org/licenses/MIT
+
 [remark]: https://github.com/remarkjs/remark
+
 [remark-lint]: https://github.com/remarkjs/remark-lint
+
 [sponsor]: https://mdxjs.com/community/sponsor/

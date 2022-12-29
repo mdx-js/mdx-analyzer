@@ -56,6 +56,18 @@
     "onLanguage:typescript"
   ],
   "contributes": {
+    "configuration": [
+      {
+        "title": "MDX",
+        "properties": {
+          "mdx.experimentalLanguageServer": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enable experimental intellisense support for MDX files."
+          }
+        }
+      }
+    ],
     "languages": [
       {
         "id": "mdx",

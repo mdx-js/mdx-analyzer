@@ -1,4 +1,5 @@
-import {LanguageClient, TransportKind} from 'vscode-languageclient/node.js'
+import {workspace} from 'vscode'
+import {LanguageClient} from 'vscode-languageclient/node.js'
 
 /**
  * @type {LanguageClient}
@@ -9,19 +10,17 @@ let client
  * @param {import('vscode').ExtensionContext} context
  */
 export async function activate(context) {
-  /**
-   * @type {import('vscode-languageclient/node.js').NodeModule}
-   */
-  const run = {
-    module: context.asAbsolutePath('out/language-server.js'),
-    transport: TransportKind.ipc
+  if (!workspace.getConfiguration('mdx').get('experimentalLanguageServer')) {
+    return
   }
+
+  const module = context.asAbsolutePath('out/language-server.js')
 
   client = new LanguageClient(
     'MDX',
     {
-      run,
-      debug: {...run, options: {execArgv: ['--inspect=6009', '--nolazy']}}
+      run: {module},
+      debug: {module, options: {execArgv: ['--inspect=6009', '--nolazy']}}
     },
     {
       documentSelector: [

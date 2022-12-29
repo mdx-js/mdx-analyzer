@@ -12,6 +12,13 @@ Adds language support for [MDX][].
 
 You can install this extension from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx).
 
+## Settings
+
+This extension provises the following settings:
+
+*   `mdx.experimentalLanguageServer`: Enable experimental intellisense support
+    for MDX files.  (`boolean`, default: false)
+
 ## Integration With [VS Code ESLint](https://github.com/microsoft/vscode-eslint)
 
 1.  First of all, you need to enable [eslint-plugin-mdx][] which makes it

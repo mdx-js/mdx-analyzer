@@ -31,7 +31,8 @@ const componentStart = `
 /**
  * Render the MDX contents.
  *
- * @param {MDXContentProps} props The props that have been passed to the MDX component.
+ * @param {MDXContentProps} props
+ *   The props that have been passed to the MDX component.
  */
 export default function MDXContent(props) {
   return <>

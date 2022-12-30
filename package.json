@@ -30,7 +30,7 @@
   "scripts": {
     "build": "esbuild @mdx-js/language-client @mdx-js/language-server --bundle --platform=node --target=node16 --external:vscode --external:typescript --outdir=out --sourcemap=inline",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
-    "start": "yarn workspace @mdx-js/monaco-demo run start",
+    "start": "npm --workspace @mdx-js/monaco-demo run start",
     "test-api": "npm run test-api --workspaces --if-present",
     "test": "npm run build && npm run format && npm run test-api",
     "vscode:prepublish": "npm run build -- --minify"

@@ -47,16 +47,6 @@ window.MonacoEnvironment = {
   }
 }
 
-monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-  enableSchemaRequest: true,
-  schemas: [
-    {
-      fileMatch: ['tsconfig.json'],
-      uri: 'https://json.schemastore.org/tsconfig.json'
-    }
-  ]
-})
-
 monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   checkJs: true,
   jsx: monaco.languages.typescript.JsxEmit.ReactJSX,
@@ -109,7 +99,9 @@ if (import.meta.webpackContext) {
 }
 
 if (import.meta.webpackContext) {
-  const demoContext = import.meta.webpackContext('../../fixtures/demo')
+  const demoContext = import.meta.webpackContext('../../fixtures/demo', {
+    regExp: /\.([jt]sx?|mdx)$/
+  })
   for (const key of demoContext.keys().sort()) {
     createFile(key, demoContext(key))
   }

@@ -1,10 +1,5 @@
-// Import {fileURLToPath} from 'node:url'
-
 import HtmlWebPackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-
-// Const projectRoot = new URL('../', import.meta.url)
-// const nodeModules = new URL('node_modules/', projectRoot)
 
 /**
  * @type {import('webpack').Configuration}
@@ -12,19 +7,9 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 const config = {
   devtool: 'source-map',
   mode: 'development',
-  entry: {
-    main: './src/index.js'
-    // 'mdx.override': fileURLToPath(
-    //   new URL('@mdx-js/monaco/mdx.override.js', nodeModules)
-    // )
-  },
+  entry: './src/index.js',
   resolve: {
     conditionNames: ['worker']
-    // Alias: {
-    //   'decode-named-character-reference': fileURLToPath(
-    //     new URL('decode-named-character-reference/index.js', nodeModules)
-    //   )
-    // }
   },
   module: {
     exprContextRegExp: /$^/,

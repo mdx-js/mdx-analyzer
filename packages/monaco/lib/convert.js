@@ -175,9 +175,6 @@ function convertRelatedInformation(model, relatedInformation) {
   const result = []
   for (const info of relatedInformation) {
     const relatedResource = model
-    // If (info.file) {
-    //   relatedResource = this._libFiles.getOrCreateModel(info.file.fileName);
-    // }
 
     if (!relatedResource) {
       continue

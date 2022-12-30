@@ -1,7 +1,7 @@
 /**
  * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
  */
-import assert from 'node:assert'
+import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 
 import {
@@ -35,7 +35,7 @@ test('resolve document symbols', async () => {
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, [
+  assert.deepEqual(result, [
     {
       children: [],
       kind: SymbolKind.Function,

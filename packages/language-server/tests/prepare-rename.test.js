@@ -1,7 +1,7 @@
 /**
  * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
  */
-import assert from 'node:assert'
+import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 
 import {InitializeRequest, PrepareRenameRequest} from 'vscode-languageserver'
@@ -32,7 +32,7 @@ test('handle prepare rename request of variable', async () => {
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, {
+  assert.deepEqual(result, {
     start: {line: 4, character: 2},
     end: {line: 4, character: 3}
   })
@@ -51,5 +51,5 @@ test('handle unknown rename request', async () => {
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, null)
+  assert.deepEqual(result, null)
 })

@@ -1,7 +1,7 @@
 /**
  * @typedef {import('vscode-languageserver-protocol').ProtocolConnection} ProtocolConnection
  */
-import assert from 'node:assert'
+import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 
 import {InitializeRequest} from 'vscode-languageserver-protocol'
@@ -28,7 +28,7 @@ test('initialize', async () => {
       capabilities: {}
     }
   )
-  assert.deepStrictEqual(initializeResponse, {
+  assert.deepEqual(initializeResponse, {
     capabilities: {
       completionProvider: {
         completionItem: {labelDetailsSupport: true},

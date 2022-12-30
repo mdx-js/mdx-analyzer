@@ -1,7 +1,7 @@
 /**
  * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
  */
-import assert from 'node:assert'
+import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 
 import {DefinitionRequest, InitializeRequest} from 'vscode-languageserver'
@@ -32,7 +32,7 @@ test('resolve file-local definitions in ESM', async () => {
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, [
+  assert.deepEqual(result, [
     {
       targetRange: {
         start: {line: 1, character: 16},
@@ -61,7 +61,7 @@ test('resolve cross-file definitions in ESM if the other file was previously ope
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, [
+  assert.deepEqual(result, [
     {
       targetRange: {
         start: {line: 1, character: 16},
@@ -92,7 +92,7 @@ test(
       textDocument: {uri}
     })
 
-    assert.deepStrictEqual(result, [
+    assert.deepEqual(result, [
       {
         targetRange: {
           start: {line: 1, character: 16},
@@ -121,7 +121,7 @@ test('resolve markdown link references', async () => {
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, [
+  assert.deepEqual(result, [
     {
       targetRange: {
         start: {line: 2, character: 0},

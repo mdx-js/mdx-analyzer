@@ -1,7 +1,7 @@
 /**
  * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
  */
-import assert from 'node:assert'
+import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 import {InitializeRequest, RenameRequest} from 'vscode-languageserver'
 
@@ -34,7 +34,7 @@ test('handle rename request of variable for opened references', async () => {
   })
 
   console.dir(result, {depth: Number.POSITIVE_INFINITY})
-  assert.deepStrictEqual(result, {
+  assert.deepEqual(result, {
     changes: {
       [fixtureUri('node16/a.mdx')]: [
         {

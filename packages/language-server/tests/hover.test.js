@@ -1,7 +1,7 @@
 /**
  * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
  */
-import assert from 'node:assert'
+import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 
 import {HoverRequest, InitializeRequest} from 'vscode-languageserver'
@@ -32,7 +32,7 @@ test('resolve hover in ESM', async () => {
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, {
+  assert.deepEqual(result, {
     contents: {
       kind: 'markdown',
       value: '```typescript\nfunction a(): void\n```\nDescription of `a`'
@@ -58,7 +58,7 @@ test('resolve import hover in ESM if the other file was previously opened', asyn
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, {
+  assert.deepEqual(result, {
     contents: {
       kind: 'markdown',
       value:
@@ -84,7 +84,7 @@ test('resolve import hover in ESM if the other file is unopened', async () => {
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, {
+  assert.deepEqual(result, {
     contents: {
       kind: 'markdown',
       value:
@@ -110,7 +110,7 @@ test('resolve import hover in JSX expressions', async () => {
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, {
+  assert.deepEqual(result, {
     contents: {
       kind: 'markdown',
       value: '```typescript\nfunction a(): void\n```\nDescription of `a`'
@@ -135,7 +135,7 @@ test('resolve import hover in JSX elements', async () => {
     textDocument: {uri}
   })
 
-  assert.deepStrictEqual(result, {
+  assert.deepEqual(result, {
     contents: {
       kind: 'markdown',
       value: '```typescript\nfunction Component(): JSX.Element\n```\n'

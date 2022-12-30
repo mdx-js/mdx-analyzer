@@ -8,7 +8,7 @@ some markdown specific features.
 
 ## When should I use this?
 
-You can use this package if you want to enhance your editor with intellisense
+You can use this package if you want to enhance your editor with IntelliSense
 for [MDX][] files.
 Some editors can consume this package directly, others need a plugin in order to
 consume this package.
@@ -19,7 +19,7 @@ This package is not published yet.
 
 ## Use
 
-Usage of this package depends on your editor integration.
+How to use this package depends on your editor integration.
 
 This package provides the CLI `mdx-language-server`.
 Because this is based on [`vscode-languageserver`][vscode-languageserver], the
@@ -46,9 +46,9 @@ For example:
 
 ```mdx
 {/**
-  * @type {object} Props
+  * @typedef Props
   * @property {string} name
-  * Who to greet.
+  *   Who to greet.
   */}
 
 # Hello {props.name}

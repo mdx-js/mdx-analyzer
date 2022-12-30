@@ -16,7 +16,7 @@ You can install this extension from the [Marketplace](https://marketplace.visual
 
 This extension provides the following settings:
 
-*   `mdx.experimentalLanguageServer`: Enable experimental intellisense support
+*   `mdx.experimentalLanguageServer`: Enable experimental IntelliSense support
     for MDX files.  (`boolean`, default: false)
 
 ## Integration With [VS Code ESLint](https://github.com/microsoft/vscode-eslint)

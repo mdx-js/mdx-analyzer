@@ -63,7 +63,7 @@
           "mdx.experimentalLanguageServer": {
             "type": "boolean",
             "default": false,
-            "description": "Enable experimental intellisense support for MDX files."
+            "description": "Enable experimental IntelliSense support for MDX files."
           }
         }
       }

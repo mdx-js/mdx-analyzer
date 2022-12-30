@@ -97,7 +97,7 @@ function findLastOffset(node) {
  *
  * MDX can be categorized in 3 types of content:
  *
- * 1. Markdown content; This is not relevant when offering TypeScript based intellisense.
+ * 1. Markdown content; This is not relevant when offering TypeScript based IntelliSense.
  * 2. ESM content; This includes JavaScript imports and exports. When MDX is compiled, this content
  *    is moved to the top-level scope.
  * 3. JSX content; This includes JSX elements and expressions. When MDX is compiled, this content is

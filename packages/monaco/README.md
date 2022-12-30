@@ -2,13 +2,13 @@
 
 ## What is this?
 
-This package intellisense for [MDX][] in [Monaco editor][].
-This package provides intellisense based on [TypeScript][], as well as some
+This package IntelliSense for [MDX][] in [Monaco editor][].
+This package provides IntelliSense based on [TypeScript][], as well as some
 markdown specific features.
 
 ## When should I use this?
 
-You can use this package if you want to integrate intellisense for [MDX][] files
+You can use this package if you want to integrate IntelliSense for [MDX][] files
 in a browser.
 
 ## Install
@@ -57,7 +57,7 @@ window.MonacoEnvironment = {
   },
 }
 
-// Initialize the MDX intellisense
+// Initialize the MDX IntelliSense
 initializeMonacoMdx(monaco)
 
 // Create a model
@@ -115,8 +115,8 @@ This package is fully typed with [TypeScript][]
 
 ## Security
 
-This package provides intellisense for [MDX][] models.
-Some intellisense features modify your model content, for example suggestions
+This package provides IntelliSense for [MDX][] models.
+Some IntelliSense features modify your model content, for example suggestions
 and automatic refactors.
 
 ## Contribute

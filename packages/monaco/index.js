@@ -9,7 +9,7 @@ import {
 } from './lib/language-features.js'
 
 /**
- * Initialize MDX intellisense for MDX.
+ * Initialize MDX IntelliSense for MDX.
  *
  * @param {typeof import('monaco-editor')} monaco The Monaco editor module.
  * @returns {import('monaco-editor').IDisposable} A disposable.

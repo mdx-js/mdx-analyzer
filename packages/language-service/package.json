@@ -2,7 +2,7 @@
   "name": "@mdx-js/language-service",
   "version": "0.0.0",
   "type": "module",
-  "description": "MDX intellisense in Monaco editor",
+  "description": "MDX IntelliSense in Monaco editor",
   "repository": {
     "type": "git",
     "url": "https://github.com/mdx-js/vscode-mdx.git",
@@ -20,7 +20,7 @@
     "lib"
   ],
   "keywords": [
-    "intellisense",
+    "IntelliSense",
     "mdx",
     "monaco",
     "monaco-editor",

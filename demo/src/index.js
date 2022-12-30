@@ -1,6 +1,6 @@
 import './index.css'
 
-import {initializeMonacoMDX} from '@mdx-js/monaco'
+import {initializeMonacoMdx} from '@mdx-js/monaco'
 import * as monaco from 'monaco-editor'
 
 window.MonacoEnvironment = {
@@ -68,7 +68,7 @@ monaco.languages.register({
   extensions: ['.mdx']
 })
 
-initializeMonacoMDX(monaco)
+initializeMonacoMdx(monaco)
 
 const fileTree = /** @type {HTMLElement} */ (document.querySelector('#files'))
 monaco.editor.onDidCreateModel((model) => {

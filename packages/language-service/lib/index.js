@@ -76,7 +76,7 @@ function patchNavigationBarItem(fileName, snapshot, item) {
  * @param {PluggableList} [plugins]
  * @returns {LanguageService} XXX
  */
-export function createMDXLanguageService(ts, host, plugins) {
+export function createMdxLanguageService(ts, host, plugins) {
   const processor = unified().use(remarkParse).use(remarkMdx)
   if (plugins) {
     processor.use(plugins)

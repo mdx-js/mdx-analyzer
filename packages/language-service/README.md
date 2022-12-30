@@ -22,10 +22,10 @@ your use case in a [discussion][].
 
 ## API
 
-This package exports the identifier `createMDXLanguageService`.
+This package exports the identifier `createMdxLanguageService`.
 There is no default export.
 
-### `createMDXLanguageService(ts, host[, plugins])`
+### `createMdxLanguageService(ts, host[, plugins])`
 
 Create a [TypeScript][] language service that can handle [MDX][].
 

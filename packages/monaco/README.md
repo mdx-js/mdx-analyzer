@@ -18,7 +18,7 @@ This package is not published yet.
 ## Use
 
 ```js
-import { initializeMonacoMDX } from '@mdx-js/monaco'
+import { initializeMonacoMdx } from '@mdx-js/monaco'
 import * as monaco from 'monaco-editor'
 
 // Register the worker
@@ -58,7 +58,7 @@ window.MonacoEnvironment = {
 }
 
 // Initialize the MDX intellisense
-initializeMonacoMDX(monaco)
+initializeMonacoMdx(monaco)
 
 // Create a model
 const content = `

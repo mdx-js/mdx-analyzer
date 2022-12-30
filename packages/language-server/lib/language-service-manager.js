@@ -6,7 +6,7 @@
 
 import {fileURLToPath, pathToFileURL} from 'node:url'
 
-import {createMDXLanguageService} from '@mdx-js/language-service'
+import {createMdxLanguageService} from '@mdx-js/language-service'
 
 import {getDocByFileName} from './documents.js'
 
@@ -49,7 +49,7 @@ let defaultLanguageService
  */
 function getDefaultLanguageService(ts) {
   if (!defaultLanguageService) {
-    defaultLanguageService = createMDXLanguageService(ts, {
+    defaultLanguageService = createMdxLanguageService(ts, {
       ...ts.sys,
       getCompilationSettings: () => ({
         lib: ['lib.es2020.full.d.ts'],
@@ -113,7 +113,7 @@ export function getOrCreateLanguageService(ts, uri) {
     ]
   )
 
-  ls = createMDXLanguageService(ts, {
+  ls = createMdxLanguageService(ts, {
     ...ts.sys,
     getCompilationSettings: () => options,
     getDefaultLibFileName: ts.getDefaultLibFilePath,

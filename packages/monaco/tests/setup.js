@@ -1,4 +1,4 @@
-import {initializeMonacoMDX} from '@mdx-js/monaco'
+import {initializeMonacoMdx} from '@mdx-js/monaco'
 import {monaco} from 'playwright-monaco'
 
 monaco.languages.register({
@@ -6,4 +6,4 @@ monaco.languages.register({
   extensions: ['.mdx']
 })
 
-initializeMonacoMDX(monaco)
+initializeMonacoMdx(monaco)

@@ -14,7 +14,7 @@
  * @typedef {new (ctx: IWorkerContext, createData: CreateData) => TypeScriptWorker} TypeScriptWorkerClass
  */
 
-import {createMDXLanguageService} from '@mdx-js/language-service'
+import {createMdxLanguageService} from '@mdx-js/language-service'
 // @ts-expect-error This module is untyped.
 import {initialize} from 'monaco-editor/esm/vs/editor/editor.worker.js'
 // @ts-expect-error This module is untyped.
@@ -26,7 +26,7 @@ import {create} from 'monaco-editor/esm/vs/language/typescript/ts.worker.js'
  */
 function worker(TypeScriptWorker) {
   return class MDXWorker extends TypeScriptWorker {
-    _languageService = createMDXLanguageService(ts, this)
+    _languageService = createMdxLanguageService(ts, this)
   }
 }
 

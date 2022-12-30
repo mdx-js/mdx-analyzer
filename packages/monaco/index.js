@@ -14,7 +14,7 @@ import {
  * @param {typeof import('monaco-editor')} monaco The Monaco editor module.
  * @returns {import('monaco-editor').IDisposable} A disposable.
  */
-export function initializeMonacoMDX(monaco) {
+export function initializeMonacoMdx(monaco) {
   const worker =
     /** @type {import('monaco-editor').editor.MonacoWebWorker<import('monaco-editor').languages.typescript.TypeScriptWorker>} */ (
       monaco.editor.createWebWorker({

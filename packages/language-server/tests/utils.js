@@ -13,7 +13,7 @@ import {
   IPCMessageWriter
 } from 'vscode-languageserver/node.js'
 
-const TEST_TIMEOUT = 3e3
+const TEST_TIMEOUT = 10e3
 
 /**
  * @returns {ProtocolConnection}

@@ -3,7 +3,7 @@
 ## What is this?
 
 This package provides a [language server][lsp] for [MDX][].
-The language server provides intellisense based on [TypeScript][], as well as
+The language server provides IntelliSense based on [TypeScript][], as well as
 some markdown specific features.
 
 ## When should I use this?

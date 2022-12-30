@@ -297,10 +297,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       ls.cleanupSemanticCache()
     },
 
-    commentSelection(fileName, textRange) {
-      assertNotMdx(fileName, 'commentSelection')
-      return ls.commentSelection(fileName, textRange)
-    },
+    commentSelection: notImplemented('commentSelection'),
 
     dispose() {
       ls.dispose()
@@ -351,22 +348,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       return locations
     },
 
-    getApplicableRefactors(
-      fileName,
-      positionOrRange,
-      preferences,
-      triggerReason,
-      kind
-    ) {
-      assertNotMdx(fileName, 'getApplicableRefactors')
-      return ls.getApplicableRefactors(
-        fileName,
-        positionOrRange,
-        preferences,
-        triggerReason,
-        kind
-      )
-    },
+    getApplicableRefactors: notImplemented('getApplicableRefactors'),
 
     getBraceMatchingAtPosition(fileName, position) {
       const snapshot = syncSnapshot(fileName)
@@ -394,26 +376,10 @@ export function createMdxLanguageService(ts, host, plugins) {
       return textSpan
     },
 
-    getCodeFixesAtPosition(
-      fileName,
-      start,
-      end,
-      errorCodes,
-      formatOptions,
-      preferences
-    ) {
-      assertNotMdx(fileName, 'getCodeFixesAtPosition')
-      return ls.getCodeFixesAtPosition(
-        fileName,
-        start,
-        end,
-        errorCodes,
-        formatOptions,
-        preferences
-      )
-    },
+    getCodeFixesAtPosition: notImplemented('getCodeFixesAtPosition'),
 
     getCombinedCodeFix(scope, fixId, formatOptions, preferences) {
+      assertNotMdx(scope.fileName, 'getCombinedCodeFix')
       return ls.getCombinedCodeFix(scope, fixId, formatOptions, preferences)
     },
 
@@ -442,10 +408,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       )
     },
 
-    getCompletionEntrySymbol(fileName, position, name, source) {
-      assertNotMdx(fileName, 'getCompletionEntrySymbol')
-      return ls.getCompletionEntrySymbol(fileName, position, name, source)
-    },
+    getCompletionEntrySymbol: notImplemented('getCompletionEntrySymbol'),
 
     getCompletionsAtPosition(fileName, position, options, formattingSettings) {
       const snapshot = syncSnapshot(fileName)
@@ -478,10 +441,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       return completionInfo
     },
 
-    getDefinitionAndBoundSpan(fileName, position) {
-      assertNotMdx(fileName, 'getDefinitionAndBoundSpan')
-      return ls.getDefinitionAndBoundSpan(fileName, position)
-    },
+    getDefinitionAndBoundSpan: notImplemented('getDefinitionAndBoundSpan'),
 
     getDefinitionAtPosition(fileName, position) {
       const snapshot = syncSnapshot(fileName)
@@ -517,15 +477,10 @@ export function createMdxLanguageService(ts, host, plugins) {
       return definition
     },
 
-    getDocCommentTemplateAtPosition(fileName, position, options) {
-      assertNotMdx(fileName, 'getDocCommentTemplateAtPosition')
-      return ls.getDocCommentTemplateAtPosition(fileName, position, options)
-    },
-
-    getDocumentHighlights(fileName, position, filesToSearch) {
-      assertNotMdx(fileName, 'getDocumentHighlights')
-      return ls.getDocumentHighlights(fileName, position, filesToSearch)
-    },
+    getDocCommentTemplateAtPosition: notImplemented(
+      'getDocCommentTemplateAtPosition'
+    ),
+    getDocumentHighlights: notImplemented('getDocumentHighlights'),
 
     getEditsForFileRename(
       oldFilePath,
@@ -542,84 +497,26 @@ export function createMdxLanguageService(ts, host, plugins) {
       )
     },
 
-    getEditsForRefactor(
-      fileName,
-      formatOptions,
-      positionOrRange,
-      refactorName,
-      actionName,
-      preferences
-    ) {
-      assertNotMdx(fileName, 'getEditsForRefactor')
-      return ls.getEditsForRefactor(
-        fileName,
-        formatOptions,
-        positionOrRange,
-        refactorName,
-        actionName,
-        preferences
-      )
-    },
-
-    getEmitOutput(fileName, emitOnlyDtsFiles, forceDtsEmit) {
-      assertNotMdx(fileName, 'getEmitOutput')
-      return ls.getEmitOutput(fileName, emitOnlyDtsFiles, forceDtsEmit)
-    },
-
-    getEncodedSemanticClassifications(fileName, span, format) {
-      assertNotMdx(fileName, 'getEncodedSemanticClassifications')
-      return ls.getEncodedSemanticClassifications(fileName, span, format)
-    },
-
-    getEncodedSyntacticClassifications(fileName, span) {
-      assertNotMdx(fileName, 'getEncodedSyntacticClassifications')
-      return ls.getEncodedSyntacticClassifications(fileName, span)
-    },
-
-    getFileReferences(fileName) {
-      assertNotMdx(fileName, 'getFileReferences')
-      return ls.getFileReferences(fileName)
-    },
-
-    getFormattingEditsAfterKeystroke(fileName, position, key, options) {
-      assertNotMdx(fileName, 'getFormattingEditsAfterKeystroke')
-      return ls.getFormattingEditsAfterKeystroke(
-        fileName,
-        position,
-        key,
-        options
-      )
-    },
-
-    getFormattingEditsForDocument(fileName, options) {
-      assertNotMdx(fileName, 'getFormattingEditsForDocument')
-      return ls.getFormattingEditsForDocument(fileName, options)
-    },
-
-    getFormattingEditsForRange(fileName, start, end, options) {
-      assertNotMdx(fileName, 'getFormattingEditsForRange')
-      return ls.getFormattingEditsForRange(fileName, start, end, options)
-    },
-
-    getImplementationAtPosition(fileName, position) {
-      assertNotMdx(fileName, 'getImplementationAtPosition')
-      return ls.getImplementationAtPosition(fileName, position)
-    },
-
-    getIndentationAtPosition(fileName, position, options) {
-      assertNotMdx(fileName, 'getIndentationAtPosition')
-      return ls.getIndentationAtPosition(fileName, position, options)
-    },
-
-    getJsxClosingTagAtPosition(fileName, position) {
-      assertNotMdx(fileName, 'getJsxClosingTagAtPosition')
-      return ls.getJsxClosingTagAtPosition(fileName, position)
-    },
-
-    getNameOrDottedNameSpan(fileName, startPos, endPos) {
-      assertNotMdx(fileName, 'getNameOrDottedNameSpan')
-      return ls.getNameOrDottedNameSpan(fileName, startPos, endPos)
-    },
+    getEditsForRefactor: notImplemented('getEditsForRefactor'),
+    getEmitOutput: notImplemented('getEmitOutput'),
+    getEncodedSemanticClassifications: notImplemented(
+      'getEncodedSemanticClassifications'
+    ),
+    getEncodedSyntacticClassifications: notImplemented(
+      'getEncodedSyntacticClassifications'
+    ),
+    getFileReferences: notImplemented('getFileReferences'),
+    getFormattingEditsAfterKeystroke: notImplemented(
+      'getFormattingEditsAfterKeystroke'
+    ),
+    getFormattingEditsForDocument: notImplemented(
+      'getFormattingEditsForDocument'
+    ),
+    getFormattingEditsForRange: notImplemented('getFormattingEditsForRange'),
+    getImplementationAtPosition: notImplemented('getImplementationAtPosition'),
+    getIndentationAtPosition: notImplemented('getIndentationAtPosition'),
+    getJsxClosingTagAtPosition: notImplemented('getJsxClosingTagAtPosition'),
+    getNameOrDottedNameSpan: notImplemented('getNameOrDottedNameSpan'),
 
     getNavigateToItems(searchValue, maxResultCount, fileName, excludeDtsFiles) {
       if (fileName) {
@@ -653,15 +550,8 @@ export function createMdxLanguageService(ts, host, plugins) {
       return navigationBarItems
     },
 
-    getNavigationTree(fileName) {
-      assertNotMdx(fileName, 'getNavigationTree')
-      return ls.getNavigationTree(fileName)
-    },
-
-    getOccurrencesAtPosition(fileName, position) {
-      assertNotMdx(fileName, 'getOccurrencesAtPosition')
-      return ls.getOccurrencesAtPosition(fileName, position)
-    },
+    getNavigationTree: notImplemented('getNavigationTree'),
+    getOccurrencesAtPosition: notImplemented('getOccurrencesAtPosition'),
 
     getOutliningSpans(fileName) {
       const snapshot = syncSnapshot(fileName)
@@ -759,10 +649,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       return info
     },
 
-    getSemanticClassifications(fileName, span) {
-      assertNotMdx(fileName, 'getSemanticClassifications')
-      return ls.getSemanticClassifications(fileName, span)
-    },
+    getSemanticClassifications: notImplemented('getSemanticClassifications'),
 
     getSemanticDiagnostics(fileName) {
       syncSnapshot(fileName)
@@ -775,20 +662,9 @@ export function createMdxLanguageService(ts, host, plugins) {
       return diagnostics
     },
 
-    getSignatureHelpItems(fileName, position, options) {
-      assertNotMdx(fileName, 'getSignatureHelpItems')
-      return ls.getSignatureHelpItems(fileName, position, options)
-    },
-
-    getSmartSelectionRange(fileName, position) {
-      assertNotMdx(fileName, 'getSmartSelectionRange')
-      return ls.getSmartSelectionRange(fileName, position)
-    },
-
-    getSpanOfEnclosingComment(fileName, position, onlyMultiLine) {
-      assertNotMdx(fileName, 'getSpanOfEnclosingComment')
-      return ls.getSpanOfEnclosingComment(fileName, position, onlyMultiLine)
-    },
+    getSignatureHelpItems: notImplemented('getSignatureHelpItems'),
+    getSmartSelectionRange: notImplemented('getSmartSelectionRange'),
+    getSpanOfEnclosingComment: notImplemented('getSpanOfEnclosingComment'),
 
     getSuggestionDiagnostics(fileName) {
       syncSnapshot(fileName)
@@ -801,10 +677,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       return diagnostics
     },
 
-    getSyntacticClassifications(fileName, span) {
-      assertNotMdx(fileName, 'getSyntacticClassifications')
-      return ls.getSyntacticClassifications(fileName, span)
-    },
+    getSyntacticClassifications: notImplemented('getSyntacticClassifications'),
 
     getSyntacticDiagnostics(fileName) {
       const snapshot = syncSnapshot(fileName)
@@ -819,10 +692,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       return diagnostics
     },
 
-    getTodoComments(fileName, descriptors) {
-      assertNotMdx(fileName, 'getTodoComments')
-      return ls.getTodoComments(fileName, descriptors)
-    },
+    getTodoComments: notImplemented('getTodoComments'),
 
     getTypeDefinitionAtPosition(fileName, position) {
       const snapshot = syncSnapshot(fileName)
@@ -839,53 +709,39 @@ export function createMdxLanguageService(ts, host, plugins) {
       return definition
     },
 
-    isValidBraceCompletionAtPosition(fileName, position, openingBrace) {
-      assertNotMdx(fileName, 'isValidBraceCompletionAtPosition')
-      return ls.isValidBraceCompletionAtPosition(
-        fileName,
-        position,
-        openingBrace
-      )
-    },
+    isValidBraceCompletionAtPosition: notImplemented(
+      'isValidBraceCompletionAtPosition'
+    ),
 
     organizeImports(args, formatOptions, preferences) {
       assertNotMdx(args.fileName, 'organizeImports')
       return ls.organizeImports(args, formatOptions, preferences)
     },
 
-    prepareCallHierarchy(fileName, position) {
-      assertNotMdx(fileName, 'prepareCallHierarchy')
-      return ls.prepareCallHierarchy(fileName, position)
-    },
+    prepareCallHierarchy: notImplemented('prepareCallHierarchy'),
+    provideCallHierarchyIncomingCalls: notImplemented(
+      'provideCallHierarchyIncomingCalls'
+    ),
+    provideCallHierarchyOutgoingCalls: notImplemented(
+      'provideCallHierarchyOutgoingCalls'
+    ),
+    provideInlayHints: notImplemented('provideInlayHints'),
+    toggleLineComment: notImplemented('toggleLineComment'),
+    toggleMultilineComment: notImplemented('toggleMultilineComment'),
+    uncommentSelection: notImplemented('uncommentSelection')
+  }
 
-    provideCallHierarchyIncomingCalls(fileName, position) {
-      assertNotMdx(fileName, 'provideCallHierarchyIncomingCalls')
-      return ls.provideCallHierarchyIncomingCalls(fileName, position)
-    },
-
-    provideCallHierarchyOutgoingCalls(fileName, position) {
-      assertNotMdx(fileName, 'provideCallHierarchyOutgoingCalls')
-      return ls.provideCallHierarchyOutgoingCalls(fileName, position)
-    },
-
-    provideInlayHints(fileName, span, preferences) {
-      assertNotMdx(fileName, 'provideInlayHints')
-      return ls.provideInlayHints(fileName, span, preferences)
-    },
-
-    toggleLineComment(fileName, textRange) {
-      assertNotMdx(fileName, 'toggleLineComment')
-      return ls.toggleLineComment(fileName, textRange)
-    },
-
-    toggleMultilineComment(fileName, textRange) {
-      assertNotMdx(fileName, 'toggleMultilineComment')
-      return ls.toggleMultilineComment(fileName, textRange)
-    },
-
-    uncommentSelection(fileName, textRange) {
-      assertNotMdx(fileName, 'uncommentSelection')
-      return ls.uncommentSelection(fileName, textRange)
+  /**
+   * @template {keyof LanguageService} T
+   * @param {T} name
+   * @returns {LanguageService[T]}
+   */
+  function notImplemented(name) {
+    // @ts-expect-error
+    return (fileName, ...args) => {
+      assertNotMdx(fileName, name)
+      // @ts-expect-error
+      return ls[name](fileName, ...args)
     }
   }
 }

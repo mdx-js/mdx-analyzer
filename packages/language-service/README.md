@@ -29,7 +29,7 @@ There is no default export.
 
 Create a [TypeScript][] language service that can handle [MDX][].
 
-#### Options
+#### Parameters
 
 *   `ts`: The TypeScript module.
 *   `host`: The TypeScript language service host.

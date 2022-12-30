@@ -28,7 +28,7 @@
     "Markdown React"
   ],
   "scripts": {
-    "build": "esbuild @mdx-js/language-client @mdx-js/language-server --bundle --platform=node --target=node16 --external:vscode --external:typescript --outdir=out --sourcemap=inline",
+    "build": "esbuild @mdx-js/language-client @mdx-js/language-server --bundle --platform=node --target=node16 --external:vscode --outdir=out --sourcemap=inline",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "start": "npm --workspace @mdx-js/monaco-demo run start",
     "test-api": "npm run test-api --workspaces --if-present",

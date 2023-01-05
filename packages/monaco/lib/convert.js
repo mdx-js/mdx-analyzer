@@ -6,13 +6,21 @@
  * @typedef {import('monaco-editor').languages.typescript.Diagnostic} Diagnostic
  * @typedef {import('monaco-editor').languages.typescript.DiagnosticRelatedInformation} DiagnosticRelatedInformation
  * @typedef {import('monaco-editor').languages.CompletionItemKind} CompletionItemKind
+ * @typedef {import('monaco-editor').IRange} IRange
  * @typedef {import('monaco-editor').MarkerSeverity} MarkerSeverity
  * @typedef {import('monaco-editor').MarkerTag} MarkerTag
+ * @typedef {import('typescript').CompletionEntryDetails} CompletionEntryDetails
+ * @typedef {import('typescript').DiagnosticCategory} DiagnosticCategory
+ * @typedef {import('typescript').DiagnosticMessageChain} DiagnosticMessageChain
+ * @typedef {import('typescript').JSDocTagInfo} JSDocTagInfo
+ * @typedef {import('typescript').ScriptElementKind} ScriptElementKind
+ * @typedef {import('typescript').SymbolDisplayPart} SymbolDisplayPart
+ * @typedef {import('typescript').TextSpan} TextSpan
  */
 
 /**
  * @param {Monaco} monaco
- * @param {ts.ScriptElementKind} kind
+ * @param {ScriptElementKind} kind
  * @returns {CompletionItemKind} The matching Monaco completion item kind.
  */
 export function convertScriptElementKind(monaco, kind) {
@@ -68,7 +76,7 @@ export function convertScriptElementKind(monaco, kind) {
 }
 
 /**
- * @param {ts.SymbolDisplayPart[] | undefined} displayParts
+ * @param {SymbolDisplayPart[] | undefined} displayParts
  * @returns {string} XXX
  */
 export function displayPartsToString(displayParts) {
@@ -80,7 +88,7 @@ export function displayPartsToString(displayParts) {
 }
 
 /**
- * @param {ts.CompletionEntryDetails} details
+ * @param {CompletionEntryDetails} details
  * @returns {string} XXX
  */
 export function createDocumentationString(details) {
@@ -95,7 +103,7 @@ export function createDocumentationString(details) {
 }
 
 /**
- * @param {ts.JSDocTagInfo} tag
+ * @param {JSDocTagInfo} tag
  * @returns {string} XXX
  */
 export function tagToString(tag) {
@@ -114,9 +122,9 @@ export function tagToString(tag) {
 }
 
 /**
- * @param {import('monaco-editor').editor.ITextModel} model
- * @param {ts.TextSpan} span
- * @returns {import('monaco-editor').IRange} XXX
+ * @param {ITextModel} model
+ * @param {TextSpan} span
+ * @returns {IRange} XXX
  */
 export function textSpanToRange(model, span) {
   const p1 = model.getPositionAt(span.start)
@@ -127,7 +135,7 @@ export function textSpanToRange(model, span) {
 }
 
 /**
- * @param {string | ts.DiagnosticMessageChain | undefined} diag
+ * @param {string | DiagnosticMessageChain | undefined} diag
  * @param {string} newLine
  * @param {number} [indent]
  * @returns {string} A flattened diagnostic text.
@@ -203,7 +211,7 @@ function convertRelatedInformation(model, relatedInformation) {
 
 /**
  * @param {Monaco} monaco
- * @param {ts.DiagnosticCategory} category
+ * @param {DiagnosticCategory} category
  * @returns {MarkerSeverity} TypeScript diagnostic severity as Monaco marker severity.
  */
 function tsDiagnosticCategoryToMarkerSeverity(monaco, category) {

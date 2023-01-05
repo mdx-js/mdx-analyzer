@@ -29,6 +29,7 @@
     "unified"
   ],
   "scripts": {
+    "build": "tsc",
     "test-api": "node --test"
   },
   "dependencies": {

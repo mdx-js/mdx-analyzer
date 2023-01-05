@@ -29,7 +29,8 @@
     "unified"
   ],
   "scripts": {
-    "prepack": "tsc --build --clean && tsc --build",
+    "build": "tsc --build --clean && tsc --build",
+    "prepack": "npm run build",
     "test-api": "playwright test"
   },
   "peerDependencies": {

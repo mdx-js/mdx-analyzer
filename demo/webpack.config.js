@@ -6,7 +6,6 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
  */
 const config = {
   devtool: 'source-map',
-  mode: 'development',
   entry: './src/index.js',
   resolve: {
     conditionNames: ['worker']

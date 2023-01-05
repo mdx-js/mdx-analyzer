@@ -32,7 +32,7 @@
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "start": "npm --workspace @mdx-js/monaco-demo run start",
     "test-api": "npm run test-api --workspaces --if-present",
-    "test": "npm run build && npm run format && npm run test-api",
+    "test": "npm run build && npm --workspaces run build && npm run format && npm run test-api",
     "vscode:prepublish": "npm run build -- --minify"
   },
   "devDependencies": {

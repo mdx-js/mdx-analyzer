@@ -8,6 +8,10 @@
  * @typedef {import('monaco-editor').languages.typescript.TypeScriptWorker} TypeScriptWorker
  * @typedef {import('monaco-editor').Uri} Uri
  * @typedef {import('monaco-marker-data-provider').MarkerDataProvider} MarkerDataProvider
+ * @typedef {import('typescript').CompletionEntryDetails} CompletionEntryDetails
+ * @typedef {import('typescript').CompletionInfo} CompletionInfo
+ * @typedef {import('typescript').QuickInfo} QuickInfo
+ * @typedef {import('typescript').ReferenceEntry} ReferenceEntry
  *
  * @typedef {(...resources: Uri[]) => Promise<TypeScriptWorker>} GetWorker
  */
@@ -43,7 +47,7 @@ export function createCompletionItemProvider(monaco, getWorker) {
         return
       }
 
-      const info = /** @type {ts.CompletionInfo | undefined} */ (
+      const info = /** @type {CompletionInfo | undefined} */ (
         await worker.getCompletionsAtPosition(String(model.uri), offset)
       )
 
@@ -83,7 +87,7 @@ export function createCompletionItemProvider(monaco, getWorker) {
 
       const worker = await getWorker(uri)
 
-      const details = /** @type {ts.CompletionEntryDetails | undefined} */ (
+      const details = /** @type {CompletionEntryDetails | undefined} */ (
         await worker.getCompletionEntryDetails(String(uri), offset, label)
       )
 
@@ -114,7 +118,7 @@ export function createHoverProvider(monaco, getWorker) {
     async provideHover(model, position) {
       const worker = await getWorker(model.uri)
 
-      /** @type {ts.QuickInfo | undefined} */
+      /** @type {QuickInfo | undefined} */
       const info = await worker.getQuickInfoAtPosition(
         String(model.uri),
         model.getOffsetAt(position)
@@ -156,7 +160,7 @@ export function createDefinitionProvider(monaco, getWorker) {
       const worker = await getWorker(model.uri)
 
       const offset = model.getOffsetAt(position)
-      const entries = /** @type {ts.ReferenceEntry[] | undefined} */ (
+      const entries = /** @type {ReferenceEntry[] | undefined} */ (
         await worker.getDefinitionAtPosition(String(model.uri), offset)
       )
       if (!entries?.length) {
@@ -226,7 +230,7 @@ export function createReferenceProvider(monaco, getWorker) {
         return
       }
 
-      const entries = /** @type {ts.ReferenceEntry[] | undefined} */ (
+      const entries = /** @type {ReferenceEntry[] | undefined} */ (
         await worker.getReferencesAtPosition(resource.toString(), offset)
       )
 

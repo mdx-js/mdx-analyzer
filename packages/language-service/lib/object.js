@@ -1,7 +1,7 @@
 /**
  * Create a shallow copy of the original object, but bind all functions to the original object.
  *
- * @template T The type of the object.
+ * @template {object} T The type of the object.
  * @param {T} object The object to copy.
  * @returns {T} The shallow copy.
  */

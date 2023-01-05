@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "webpack serve"
+    "build": "tsc",
+    "start": "webpack serve --mode development"
   },
   "dependencies": {
     "@mdx-js/monaco": "*",

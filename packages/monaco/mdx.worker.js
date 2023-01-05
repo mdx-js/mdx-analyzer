@@ -2,8 +2,9 @@
  * @typedef {import('monaco-editor').languages.typescript.CompilerOptions} CompilerOptions
  * @typedef {import('monaco-editor').languages.typescript.IExtraLibs} IExtraLibs
  * @typedef {import('monaco-editor').languages.typescript.InlayHintsOptions} InlayHintsOptions
- * @typedef {import('monaco-editor').languages.typescript.TypeScriptWorker & ts.LanguageServiceHost} TypeScriptWorker
+ * @typedef {import('monaco-editor').languages.typescript.TypeScriptWorker} TypeScriptWorker
  * @typedef {import('monaco-editor').worker.IWorkerContext} IWorkerContext
+ * @typedef {import('typescript').LanguageServiceHost} LanguageServiceHost
  *
  * @typedef {object} CreateData
  * @property {CompilerOptions} compilerOptions The TypeScript compiler options configured by the user.
@@ -11,7 +12,8 @@
  * @property {IExtraLibs} extraLibs Additional libraries to load.
  * @property {InlayHintsOptions} inlayHintsOptions The TypeScript inlay hints options.
  *
- * @typedef {new (ctx: IWorkerContext, createData: CreateData) => TypeScriptWorker} TypeScriptWorkerClass
+ * @typedef {TypeScriptWorker & LanguageServiceHost} MDXWorker
+ * @typedef {new (ctx: IWorkerContext, createData: CreateData) => MDXWorker} TypeScriptWorkerClass
  */
 
 import {createMdxLanguageService} from '@mdx-js/language-service'
@@ -26,7 +28,11 @@ import {create} from 'monaco-editor/esm/vs/language/typescript/ts.worker.js'
  */
 function worker(TypeScriptWorker) {
   return class MDXWorker extends TypeScriptWorker {
-    _languageService = createMdxLanguageService(ts, this)
+    _languageService = createMdxLanguageService(
+      // @ts-expect-error This is globally defined in the worker.
+      ts,
+      this
+    )
   }
 }
 
@@ -42,7 +48,7 @@ self.onmessage = () => {
     /**
      * @param {IWorkerContext} ctx
      * @param {CreateData} createData
-     * @returns {TypeScriptWorker} The MDX TypeScript worker.
+     * @returns {MDXWorker} The MDX TypeScript worker.
      */
     (ctx, createData) => create(ctx, {...createData, customWorkerPath: true})
   )

@@ -3,5 +3,6 @@
 *.tsbuildinfo
 *.vsix
 .vscode-test/
+dist/
 node_modules/
 out/

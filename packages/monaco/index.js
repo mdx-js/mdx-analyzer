@@ -21,7 +21,7 @@ export function initializeMonacoMdx(monaco) {
         moduleId: '@mdx-js/monaco',
         label: 'mdx',
         keepIdleModels: true,
-        createData: /** @type {import('./mdx.override.js').CreateData} */ ({
+        createData: /** @type {import('./mdx.worker.js').CreateData} */ ({
           compilerOptions: {},
           extraLibs: {},
           inlayHintsOptions: {}

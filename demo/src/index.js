@@ -4,7 +4,7 @@ import {initializeMonacoMdx} from '@mdx-js/monaco'
 import * as monaco from 'monaco-editor'
 
 window.MonacoEnvironment = {
-  getWorker(_workerId, label) {
+  getWorker(workerId, label) {
     switch (label) {
       case 'editorWorkerService': {
         return new Worker(

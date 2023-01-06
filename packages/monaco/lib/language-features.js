@@ -33,7 +33,7 @@ import {
  * @param {GetWorker} getWorker
  *   A function to get the MDX web worker.
  * @returns {CompletionItemProvider}
- *  A completion item provider for MDX documents.
+ *   A completion item provider for MDX documents.
  */
 export function createCompletionItemProvider(monaco, getWorker) {
   return {

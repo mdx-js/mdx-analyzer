@@ -4,6 +4,7 @@
  * @typedef {import('vscode-languageserver-textdocument').TextDocument} TextDocument
  */
 
+import process from 'node:process'
 import {fileURLToPath} from 'node:url'
 
 import ts from 'typescript'
@@ -26,6 +27,8 @@ import {
 } from './lib/convert.js'
 import {documents, getDocByFileName} from './lib/documents.js'
 import {getOrCreateLanguageService} from './lib/language-service-manager.js'
+
+process.title = 'mdx-language-server'
 
 const connection = createConnection(ProposedFeatures.all)
 

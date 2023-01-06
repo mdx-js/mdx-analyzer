@@ -32,8 +32,12 @@ import {
 import {documents} from './documents.js'
 
 /**
+ * Convert a TypeScript script element kind to a Monaco completion kind.
+ *
  * @param {ScriptElementKind} kind
- * @returns {CompletionItemKind} The matching Monaco completion item kind.
+ *   The TypeScript script element kind to convert
+ * @returns {CompletionItemKind}
+ *   The matching Monaco completion item kind.
  */
 export function convertScriptElementKind(kind) {
   switch (kind) {
@@ -88,8 +92,12 @@ export function convertScriptElementKind(kind) {
 }
 
 /**
+ * Convert a TypeScript script element kind to a Monaco symbol.
+ *
  * @param {ScriptElementKind} kind
- * @returns {SymbolKind} The matching Monaco completion item kind.
+ *   The TypeScript script element kind to convert
+ * @returns {SymbolKind}
+ *   The matching Monaco symbol kind.
  */
 export function convertScriptElementKindToSymbolKind(kind) {
   switch (kind) {
@@ -130,9 +138,14 @@ export function convertScriptElementKindToSymbolKind(kind) {
 }
 
 /**
+ * Create a markdown documentation string from TypeScript details.
+ *
  * @param {ts} ts
+ *   The TypeScript module to use.
  * @param {CompletionEntryDetails | QuickInfo} details
- * @returns {string} XXX
+ *   The details to represent.
+ * @returns {string}
+ *   The details represented as a markdown string.
  */
 export function createDocumentationString(ts, details) {
   let documentationString = ts.displayPartsToString(details.documentation)
@@ -146,15 +159,21 @@ export function createDocumentationString(ts, details) {
 }
 
 /**
+ * Represent a TypeScript JSDoc tag as a string.
+ *
  * @param {JSDocTagInfo} tag
- * @returns {string} XXX
+ *   The JSDoc tag to represent.
+ * @returns {string}
+ *   A representation of the JSDoc tag.
  */
 function tagToString(tag) {
   let tagLabel = `*@${tag.name}*`
   if (tag.name === 'param' && tag.text) {
     const [parameterName, ...rest] = tag.text
     tagLabel += `\`${parameterName.text}\``
-    if (rest.length > 0) tagLabel += ` — ${rest.map((r) => r.text).join(' ')}`
+    if (rest.length > 0) {
+      tagLabel += ` — ${rest.map((r) => r.text).join(' ')}`
+    }
   } else if (Array.isArray(tag.text)) {
     tagLabel += ` — ${tag.text.map((r) => r.text).join(' ')}`
   } else if (tag.text) {
@@ -165,9 +184,14 @@ function tagToString(tag) {
 }
 
 /**
+ * Convert a text span to a LSP range that matches the given document.
+ *
  * @param {TextDocument} doc
+ *   The document to which the text span applies.
  * @param {TextSpan} span
- * @returns {Range} XXX
+ *   The TypeScript text span to convert.
+ * @returns {Range}
+ *   The text span as an LSP range.
  */
 export function textSpanToRange(doc, span) {
   const p1 = doc.positionAt(span.start)
@@ -176,9 +200,14 @@ export function textSpanToRange(doc, span) {
 }
 
 /**
+ * Convert a TypeScript diagnostic category to an LSP severity.
+ *
  * @param {ts} ts
+ *   The TypeScript module to use.
  * @param {DiagnosticCategory} category
- * @returns {DiagnosticSeverity} TypeScript diagnostic severity as Monaco marker severity.
+ *   The TypeScript diagnostic category to convert.
+ * @returns {DiagnosticSeverity}
+ *   THe TypeScript diagnostic severity as LSP diagnostic severity.
  */
 function tsDiagnosticCategoryToMarkerSeverity(ts, category) {
   switch (category) {
@@ -201,12 +230,15 @@ function tsDiagnosticCategoryToMarkerSeverity(ts, category) {
 }
 
 /**
+ * Flatten a TypeScript diagnostic message chain into a string representation.
  * @param {string | DiagnosticMessageChain | undefined} diag
- * @param {string} newLine
+ *   The diagnostic to represent.
  * @param {number} [indent]
- * @returns {string} A flattened diagnostic text.
+ *   The indentation to use.
+ * @returns {string}
+ *   A flattened diagnostic text.
  */
-function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
+function flattenDiagnosticMessageText(diag, indent = 0) {
   if (typeof diag === 'string') {
     return diag
   }
@@ -217,18 +249,14 @@ function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
 
   let result = ''
   if (indent) {
-    result += newLine
-
-    for (let i = 0; i < indent; i++) {
-      result += '  '
-    }
+    result += `\n${'  '.repeat(indent)}`
   }
 
   result += diag.messageText
   indent++
   if (diag.next) {
     for (const kid of diag.next) {
-      result += flattenDiagnosticMessageText(kid, newLine, indent)
+      result += flattenDiagnosticMessageText(kid, indent)
     }
   }
 
@@ -236,8 +264,12 @@ function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
 }
 
 /**
+ * Convert TypeScript diagnostic related information to LSP related information.
+ *
  * @param {DiagnosticRelatedInformation[]} [relatedInformation]
- * @returns {LspDiagnosticRelatedInformation[]} TypeScript diagnostic related information as Monaco related information.
+ *   The TypeScript related information to convert.
+ * @returns {LspDiagnosticRelatedInformation[]}
+ *   TypeScript diagnostic related information as Monaco related information.
  */
 function convertRelatedInformation(relatedInformation) {
   if (!relatedInformation) {
@@ -270,7 +302,7 @@ function convertRelatedInformation(relatedInformation) {
         range,
         uri: related.uri
       },
-      message: flattenDiagnosticMessageText(info.messageText, '\n')
+      message: flattenDiagnosticMessageText(info.messageText)
     })
   }
 
@@ -278,10 +310,16 @@ function convertRelatedInformation(relatedInformation) {
 }
 
 /**
+ * Convert a TypeScript dignostic to a LSP diagnostic.
+ *
  * @param {ts} ts
+ *   The TypeScript module to use.
  * @param {TextDocument} doc
+ *   The text document to which the diagnostic applies.
  * @param {Diagnostic} diag
- * @returns {LspDiagnostic} The TypeScript diagnostic converted to Monaco marker data.
+ *   The TypeScript diagnostic to convert.
+ * @returns {LspDiagnostic}
+ *   The TypeScript diagnostic converted to an LSP diagnostic.
  */
 export function convertDiagnostics(ts, doc, diag) {
   const diagStart = diag.start || 0
@@ -304,7 +342,7 @@ export function convertDiagnostics(ts, doc, diag) {
 
   return {
     code: `ts${diag.code}`,
-    message: flattenDiagnosticMessageText(diag.messageText, '\n'),
+    message: flattenDiagnosticMessageText(diag.messageText),
     range,
     relatedInformation: convertRelatedInformation(diag.relatedInformation),
     severity: tsDiagnosticCategoryToMarkerSeverity(ts, diag.category),
@@ -316,7 +354,9 @@ export function convertDiagnostics(ts, doc, diag) {
  * Convert TypeScript definition info to location links.
  *
  * @param {readonly DefinitionInfo[] | undefined} info
- * @returns {LocationLink[] | undefined} The location links
+ *   The TypeScript definition info to convert.
+ * @returns {LocationLink[] | undefined}
+ *   The definition info represented as LSP location links.
  */
 export function definitionInfoToLocationLinks(info) {
   if (!info) {
@@ -346,8 +386,11 @@ export function definitionInfoToLocationLinks(info) {
  * Convert TypeScript navigation bar items to location links.
  *
  * @param {TextDocument} doc
+ *   The text document to which the navigation bar items apply.
  * @param {NavigationBarItem[]} items
- * @returns {DocumentSymbol[]} The navigation bar items as document symvols
+ *   The navigation bar items to convert.
+ * @returns {DocumentSymbol[]}
+ *   The navigation bar items as document symvols
  */
 export function convertNavigationBarItems(doc, items) {
   return items

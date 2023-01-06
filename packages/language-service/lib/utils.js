@@ -12,15 +12,16 @@
  *
  * @typedef {object} MDXShadow
  * @property {(start?: number, end?: number) => string} getText
- * Same as {@link IScriptSnapshot.getText}, except omitting start and end, returns the entire text.
+ *   Same as {@link IScriptSnapshot.getText}, except omitting start and end,
+ *   returns the entire text.
  * @property {(position: number) => number | undefined} getShadowPosition
- * Map a position from the real MDX document to the JSX shadow document.
+ *   Map a position from the real MDX document to the JSX shadow document.
  * @property {(shadowPosition: number) => number} getRealPosition
- * Map a position from the shadow document to the real MDX document.
+ *   Map a position from the shadow document to the real MDX document.
  * @property {unknown} [error]
- * This is defined if a parsing error has occurred.
+ *   This is defined if a parsing error has occurred.
  * @property {Root} ast
- * The markdown AST (mdast).
+ *   The markdown AST (mdast).
  *
  * @typedef {MDXShadow & IScriptSnapshot} MDXSnapshot
  */
@@ -118,7 +119,9 @@ function findLastOffset(node) {
  *
  * @see https://code.visualstudio.com/api/language-extensions/embedded-languages#language-services-sample
  * @param {string} mdx
+ *   The MDX code.
  * @param {Processor} processor
+ *   The unified processor to use.
  * @returns {MDXSnapshot} JavaScript code that matches the MDX code, but shadowed.
  */
 export function mdxToJsx(mdx, processor) {
@@ -258,8 +261,10 @@ export function mdxToJsx(mdx, processor) {
 /**
  * Represent a unist position as a TypeScript text span.
  *
- * @param {Position} position The unist position to represent.
- * @returns {TextSpan} The input position as a text span.
+ * @param {Position} position
+ *   The unist position to represent.
+ * @returns {TextSpan}
+ *   The input position as a text span.
  */
 export function unistPositionToTextSpan(position) {
   return {

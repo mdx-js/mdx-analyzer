@@ -1,3 +1,10 @@
+/***
+ * @typedef {import('monaco-editor')} Monaco
+ * @typedef {import('monaco-editor').IDisposable} IDisposable
+ * @typedef {import('monaco-editor').Uri} Uri
+ * @typedef {import('monaco-editor').editor.ITextModel} ITextModel
+ */
+
 import {registerMarkerDataProvider} from 'monaco-marker-data-provider'
 
 import {
@@ -11,8 +18,10 @@ import {
 /**
  * Initialize MDX IntelliSense for MDX.
  *
- * @param {typeof import('monaco-editor')} monaco The Monaco editor module.
- * @returns {import('monaco-editor').IDisposable} A disposable.
+ * @param {Monaco} monaco
+ *   The Monaco editor module.
+ * @returns {IDisposable}
+ *   A disposable.
  */
 export function initializeMonacoMdx(monaco) {
   const worker =
@@ -30,14 +39,14 @@ export function initializeMonacoMdx(monaco) {
     )
 
   /**
-   * @param {import('monaco-editor').Uri[]} resources
+   * @param {Uri[]} resources
    */
   const getProxy = (...resources) => worker.withSyncedResources(resources)
 
   /**
    * Synchronize all MDX, JavaScript, and TypeScript files with the web worker.
    *
-   * @param {import('monaco-editor').editor.ITextModel} model
+   * @param {ITextModel} model
    */
   const synchronize = (model) => {
     const languageId = model.getLanguageId()

@@ -26,9 +26,14 @@ import {
 } from './convert.js'
 
 /**
+ * Create a completion item provider for MDX documents.
+ *
  * @param {Monaco} monaco
+ *   The Monaco editor module to use.
  * @param {GetWorker} getWorker
- * @returns {CompletionItemProvider} A completion item provider for MDX documents.
+ *   A function to get the MDX web worker.
+ * @returns {CompletionItemProvider}
+ *  A completion item provider for MDX documents.
  */
 export function createCompletionItemProvider(monaco, getWorker) {
   return {
@@ -109,9 +114,14 @@ export function createCompletionItemProvider(monaco, getWorker) {
 }
 
 /**
+ * Create a hover provider for MDX documents.
+ *
  * @param {Monaco} monaco
+ *   The Monaco editor module to use.
  * @param {GetWorker} getWorker
- * @returns {HoverProvider} A hover provider for MDX documents.
+ *   A function to get the MDX web worker.
+ * @returns {HoverProvider}
+ *   A hover provider for MDX documents.
  */
 export function createHoverProvider(monaco, getWorker) {
   return {
@@ -150,9 +160,14 @@ export function createHoverProvider(monaco, getWorker) {
 }
 
 /**
+ * Create a link provider for MDX documents.
+ *
  * @param {Monaco} monaco
+ *   The Monaco editor module to use.
  * @param {GetWorker} getWorker
- * @returns {DefinitionProvider} A link provider for MDX documents.
+ *   A function to get the MDX web worker.
+ * @returns {DefinitionProvider}
+ *   A link provider for MDX documents.
  */
 export function createDefinitionProvider(monaco, getWorker) {
   return {
@@ -186,9 +201,14 @@ export function createDefinitionProvider(monaco, getWorker) {
 }
 
 /**
+ * Create a marker data provider for MDX documents.
+ *
  * @param {Monaco} monaco
+ *   The Monaco editor module to use.
  * @param {GetWorker} getWorker
- * @returns {MarkerDataProvider} A reference provider for MDX documents.
+ *   A function to get the MDX web worker.
+ * @returns {MarkerDataProvider}
+ *   A marker data provider for MDX documents.
  */
 export function createMarkerDataProvider(monaco, getWorker) {
   return {
@@ -215,9 +235,14 @@ export function createMarkerDataProvider(monaco, getWorker) {
 }
 
 /**
+ * Create a reference provider for MDX documents.
+ *
  * @param {Monaco} monaco
+ *   The Monaco editor module to use.
  * @param {GetWorker} getWorker
- * @returns {ReferenceProvider} A reference provider for MDX documents.
+ *   A function to get the MDX web worker.
+ * @returns {ReferenceProvider}
+ *   A reference provider for MDX documents.
  */
 export function createReferenceProvider(monaco, getWorker) {
   return {

@@ -25,8 +25,12 @@ import {fakeMdxPath} from './path.js'
 import {mdxToJsx, unistPositionToTextSpan} from './utils.js'
 
 /**
+ * Check whether a file is an MDX file based on its file name.
+ *
  * @param {string} fileName
- * @returns {fileName is `${string}.mdx`} Whether or not the filename contains MDX.
+ *   The file name to check.
+ * @returns {fileName is `${string}.mdx`}
+ *   Whether or not the filename contains MDX.
  */
 function isMdx(fileName) {
   return fileName.endsWith('.mdx')
@@ -35,8 +39,10 @@ function isMdx(fileName) {
 /**
  * Assert that a file isn’t MDX.
  *
- * @param {string} fileName The file name to check.
- * @param {string} fn The name of the function.
+ * @param {string} fileName
+ *   The file name to check.
+ * @param {string} fn
+ *   The name of the function.
  */
 function assertNotMdx(fileName, fn) {
   if (isMdx(fileName)) {
@@ -45,9 +51,14 @@ function assertNotMdx(fileName, fn) {
 }
 
 /**
+ * Correct the MDX position of a text span for MDX files.
+ *
  * @param {string} fileName
+ *   The file name of the snapshot the text span belongs in.
  * @param {MDXSnapshot | undefined} snapshot
+ *   The MDX TypeScript snapshot that belongs to the file name.
  * @param {TextSpan} textSpan
+ *   The text span to correct.
  */
 function patchTextSpan(fileName, snapshot, textSpan) {
   if (snapshot && isMdx(fileName)) {
@@ -56,9 +67,14 @@ function patchTextSpan(fileName, snapshot, textSpan) {
 }
 
 /**
+ * Correct the text spans in an MDX file.
+ *
  * @param {string} fileName
+ *   The file name of the snapshot the text span belongs in.
  * @param {MDXSnapshot} snapshot
+ *   The MDX TypeScript snapshot that belongs to the file name.
  * @param {NavigationBarItem} item
+ *   The navigation bar item to patch.
  */
 function patchNavigationBarItem(fileName, snapshot, item) {
   for (const span of item.spans) {
@@ -71,10 +87,29 @@ function patchNavigationBarItem(fileName, snapshot, item) {
 }
 
 /**
+ * Create an MDX language service.
+ *
+ * The MDX language service wraps a TypeScript language service, but it can also
+ * handle MDX files.
+ *
+ * Most implementations work as follows:
+ *
+ * 1. Convert MDX code to JavaScript.
+ * 2. Let TypeScript process the JavaScript.
+ * 3. Convert any positional info back to its original location.
+ *
+ * In addition it supports some markdown features.
+ *
  * @param {import('typescript')} ts
+ *   The TypeScript module to use for creating the TypeScript language service.
  * @param {LanguageServiceHost} host
+ *   The TypeScript language service host. See
+ *   https://github.com/microsoft/TypeScript/wiki/Using-the-Language-Service-API#language-service-host
  * @param {PluggableList} [plugins]
- * @returns {LanguageService} XXX
+ *   A list of remark plugins. Only syntax parser plugins are supported. For
+ *   example `remark-frontmatter`, but not `remark-mdx-frontmatter`
+ * @returns {LanguageService}
+ *   A TypeScript language service that can also handle MDX files.
  */
 export function createMdxLanguageService(ts, host, plugins) {
   const processor = unified().use(remarkParse).use(remarkMdx)
@@ -732,9 +767,19 @@ export function createMdxLanguageService(ts, host, plugins) {
   }
 
   /**
+   * Mark a method as not implemented for MDX files.
+   *
+   * This returns a function that can process JavaScript or TypeScript files,
+   * but will throw an error if given an MDX file.
+   *
+   * This only works for calls that take a file name as their first argument.
+   *
    * @template {keyof LanguageService} T
+   *   The name of the method.
    * @param {T} name
+   *   The name of the method.
    * @returns {LanguageService[T]}
+   *   A function that wraps the original language service method.
    */
   function notImplemented(name) {
     // @ts-expect-error

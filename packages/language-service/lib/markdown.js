@@ -10,9 +10,12 @@ import {visit} from 'unist-util-visit'
 /**
  * Get the definition link of a markdown AST at a given position.
  *
- * @param {Root} ast The markdown AST.
- * @param {number} position The position to get the definition for.
- * @returns {Definition | undefined} The position at which the definition can be found.
+ * @param {Root} ast
+ *   The markdown AST.
+ * @param {number} position
+ *   The position to get the definition for.
+ * @returns {Definition | undefined}
+ *   The position at which the definition can be found.
  */
 export function getMarkdownDefinitionAtPosition(ast, position) {
   /** @type {LinkReference | undefined} */

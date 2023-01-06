@@ -13,8 +13,10 @@ export const documents = new TextDocuments(TextDocument)
  *
  * Documents are stored using a file URL. This function allows to do a lookup by file name instead.
  *
- * @param {string } fileName The file name to lookup.
- * @returns {TextDocument | undefined} The text document that matches the filename.
+ * @param {string } fileName
+ *   The file name to lookup.
+ * @returns {TextDocument | undefined}
+ *   The text document that matches the filename.
  */
 export function getDocByFileName(fileName) {
   return documents.get(String(pathToFileURL(fileName)))

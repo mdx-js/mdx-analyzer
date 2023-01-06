@@ -19,9 +19,14 @@
  */
 
 /**
+ * Convert a TypeScript script element kind to a Monaco completion item kind.
+ *
  * @param {Monaco} monaco
+ *   The Monaco editor module to use.
  * @param {ScriptElementKind} kind
- * @returns {CompletionItemKind} The matching Monaco completion item kind.
+ *   The TypeScript script element kind tp convert.
+ * @returns {CompletionItemKind}
+ *   The matching Monaco completion item kind.
  */
 export function convertScriptElementKind(monaco, kind) {
   switch (kind) {
@@ -76,8 +81,12 @@ export function convertScriptElementKind(monaco, kind) {
 }
 
 /**
+ * Convert TypeScript symbol display parts to a string.
+ *
  * @param {SymbolDisplayPart[] | undefined} displayParts
- * @returns {string} XXX
+ *   The display parts to convert.
+ * @returns {string}
+ *   A string representation of the symbol display parts.
  */
 export function displayPartsToString(displayParts) {
   if (displayParts) {
@@ -88,8 +97,12 @@ export function displayPartsToString(displayParts) {
 }
 
 /**
+ * Create a markdown documentation string
+ *
  * @param {CompletionEntryDetails} details
- * @returns {string} XXX
+ *   The details to represent.
+ * @returns {string}
+ *   The details represented as a markdown string.
  */
 export function createDocumentationString(details) {
   let documentationString = displayPartsToString(details.documentation)
@@ -103,8 +116,12 @@ export function createDocumentationString(details) {
 }
 
 /**
+ * Represent a TypeScript JSDoc tag as a string.
+ *
  * @param {JSDocTagInfo} tag
- * @returns {string} XXX
+ *   The JSDoc tag to represent.
+ * @returns {string}
+ *   A representation of the JSDoc tag.
  */
 export function tagToString(tag) {
   let tagLabel = `*@${tag.name}*`
@@ -122,9 +139,14 @@ export function tagToString(tag) {
 }
 
 /**
+ * Convert a text span to a Monaco range that matches the given model.
+ *
  * @param {ITextModel} model
+ *   The Monaco model to which the text span applies.
  * @param {TextSpan} span
- * @returns {IRange} XXX
+ *   The TypeScript text span to convert.
+ * @returns {IRange}
+ *   The text span as a Monaco range.
  */
 export function textSpanToRange(model, span) {
   const p1 = model.getPositionAt(span.start)
@@ -135,12 +157,15 @@ export function textSpanToRange(model, span) {
 }
 
 /**
+ * Flatten a TypeScript diagnostic message chain into a string representation.
  * @param {string | DiagnosticMessageChain | undefined} diag
- * @param {string} newLine
+ *   The diagnostic to represent.
  * @param {number} [indent]
- * @returns {string} A flattened diagnostic text.
+ *   The indentation to use.
+ * @returns {string}
+ *   A flattened diagnostic text.
  */
-function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
+function flattenDiagnosticMessageText(diag, indent = 0) {
   if (typeof diag === 'string') {
     return diag
   }
@@ -151,18 +176,14 @@ function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
 
   let result = ''
   if (indent) {
-    result += newLine
-
-    for (let i = 0; i < indent; i++) {
-      result += '  '
-    }
+    result += `\n${'  '.repeat(indent)}`
   }
 
   result += diag.messageText
   indent++
   if (diag.next) {
     for (const kid of diag.next) {
-      result += flattenDiagnosticMessageText(kid, newLine, indent)
+      result += flattenDiagnosticMessageText(kid, indent)
     }
   }
 
@@ -170,9 +191,15 @@ function flattenDiagnosticMessageText(diag, newLine, indent = 0) {
 }
 
 /**
+ * Convert TypeScript diagnostic related information to Monaco related
+ * information.
+ *
  * @param {ITextModel} model
+ *   The Monaco model the information is related to.
  * @param {DiagnosticRelatedInformation[]} [relatedInformation]
- * @returns {IRelatedInformation[]} TypeScript diagnostic related information as Monaco related information.
+ *   The TypeScript related information to convert.
+ * @returns {IRelatedInformation[]}
+ *   TypeScript diagnostic related information as Monaco related information.
  */
 function convertRelatedInformation(model, relatedInformation) {
   if (!relatedInformation) {
@@ -202,7 +229,7 @@ function convertRelatedInformation(model, relatedInformation) {
       startColumn,
       endLineNumber,
       endColumn,
-      message: flattenDiagnosticMessageText(info.messageText, '\n')
+      message: flattenDiagnosticMessageText(info.messageText)
     })
   }
 
@@ -210,9 +237,14 @@ function convertRelatedInformation(model, relatedInformation) {
 }
 
 /**
+ * Convert a TypeScript diagnostic category to a Monaco diagnostic severity.
+ *
  * @param {Monaco} monaco
+ *   The Monaco editor module.
  * @param {DiagnosticCategory} category
- * @returns {MarkerSeverity} TypeScript diagnostic severity as Monaco marker severity.
+ *   The TypeScript diagnostic category to convert.
+ * @returns {MarkerSeverity}
+ *   TypeScript diagnostic severity as Monaco marker severity.
  */
 function tsDiagnosticCategoryToMarkerSeverity(monaco, category) {
   switch (category) {
@@ -235,10 +267,16 @@ function tsDiagnosticCategoryToMarkerSeverity(monaco, category) {
 }
 
 /**
+ * Convert a TypeScript dignostic to a Monaco editor diagnostic.
+ *
  * @param {Monaco} monaco
+ *   The Monaco editor module to use.
  * @param {ITextModel} model
+ *   The Monaco editor model to which the diagnostic applies.
  * @param {Diagnostic} diag
- * @returns {IMarkerData} The TypeScript diagnostic converted to Monaco marker data.
+ *   The TypeScript diagnostic to convert.
+ * @returns {IMarkerData}
+ *   The TypeScript diagnostic converted to Monaco marker data.
  */
 export function convertDiagnostics(monaco, model, diag) {
   const diagStart = diag.start || 0
@@ -266,7 +304,7 @@ export function convertDiagnostics(monaco, model, diag) {
     startColumn,
     endLineNumber,
     endColumn,
-    message: flattenDiagnosticMessageText(diag.messageText, '\n'),
+    message: flattenDiagnosticMessageText(diag.messageText),
     code: diag.code.toString(),
     tags,
     relatedInformation: convertRelatedInformation(

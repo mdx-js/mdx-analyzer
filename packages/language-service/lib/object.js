@@ -1,9 +1,12 @@
 /**
  * Create a shallow copy of the original object, but bind all functions to the original object.
  *
- * @template {object} T The type of the object.
- * @param {T} object The object to copy.
- * @returns {T} The shallow copy.
+ * @template {object} T
+ *   The type of the object.
+ * @param {T} object
+ *   The object to copy.
+ * @returns {T}
+ *   The shallow copy.
  */
 export function bindAll(object) {
   /** @type {T} */

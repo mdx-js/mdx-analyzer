@@ -1,3 +1,7 @@
+/**
+ * @typedef {import('vscode').ExtensionContext} ExtensionContext
+ */
+
 import {workspace} from 'vscode'
 import {LanguageClient} from 'vscode-languageclient/node.js'
 
@@ -7,7 +11,10 @@ import {LanguageClient} from 'vscode-languageclient/node.js'
 let client
 
 /**
- * @param {import('vscode').ExtensionContext} context
+ * Activate the extension.
+ *
+ * @param {ExtensionContext} context
+ *   The extension context as given by VSCode.
  */
 export async function activate(context) {
   if (!workspace.getConfiguration('mdx').get('experimentalLanguageServer')) {
@@ -36,6 +43,9 @@ export async function activate(context) {
   await client.start()
 }
 
+/**
+ * Deactivate the extension.
+ */
 export async function deactivate() {
   if (client) {
     await client.stop()

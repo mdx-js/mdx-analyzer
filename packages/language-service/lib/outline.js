@@ -15,8 +15,11 @@ import {unistPositionToTextSpan} from './utils.js'
  * Create outline spans based on a markdown AST.
  *
  * @param {typeof import('typescript')} ts
+ *   The TypeScript module to use.
  * @param {Root} ast
- * @returns {OutliningSpan[]} The outline spans that represent Markdown sections
+ *   The markdown AST to get outline spans for.
+ * @returns {OutliningSpan[]}
+ *   The outline spans that represent Markdown sections
  */
 export function getFoldingRegions(ts, ast) {
   /** @type {OutliningSpan[]} */

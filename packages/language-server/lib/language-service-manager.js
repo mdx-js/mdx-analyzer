@@ -11,8 +11,11 @@ import {createMdxLanguageService} from '@mdx-js/language-service'
 import {getDocByFileName} from './documents.js'
 
 /**
+ * Create a function for getting a script snapshot based on a TypeScript module.
  * @param {ts} ts
- * @returns {(fileName: string) => IScriptSnapshot | undefined} XXX
+ *   The TypeScript module to use.
+ * @returns {(fileName: string) => IScriptSnapshot | undefined}
+ *   A function for getting a Script snapshot.
  */
 function createGetScriptSnapshot(ts) {
   return (fileName) => {
@@ -31,8 +34,18 @@ function createGetScriptSnapshot(ts) {
 }
 
 /**
+ * Get the current script version of a file.
+ *
+ * If a file has previously been opened, it will be available in the document
+ * registry. This will increment the version for every edit made.
+ *
+ * If a file isn’t available in the document registry, version 0 will be
+ * returned.
+ *
  * @param {string} fileName
- * @returns {string} The script version
+ *   The file name to get the version for.
+ * @returns {string}
+ *   The script version.
  */
 function getScriptVersion(fileName) {
   const doc = getDocByFileName(fileName)
@@ -44,8 +57,17 @@ function getScriptVersion(fileName) {
 let defaultLanguageService
 
 /**
+ * Get the default language service.
+ *
+ * The default language service be used when a file is opened outside of a
+ * TypeScript project. (No `tsconfig.json` is found.)
+ *
+ * The default language service is created once if needed, then reused.
+ *
  * @param {ts} ts
- * @returns {LanguageService} XXX
+ *   The TypeScript module to use.
+ * @returns {LanguageService}
+ *   The defaul language service.
  */
 function getDefaultLanguageService(ts) {
   if (!defaultLanguageService) {
@@ -72,9 +94,17 @@ function getDefaultLanguageService(ts) {
 const cache = new Map()
 
 /**
+ * Get or create a language service for the given file URI.
+ *
+ * The language service is cached per TypeScript project. A TypeScript project
+ * is defined by a `tsconfig.json` file.
+ *
  * @param {ts} ts
+ *   The TypeScript module to use.
  * @param {string} uri
- * @returns {LanguageService} XXX
+ *   The file URI for which to get the language service.
+ * @returns {LanguageService}
+ *   A cached TypeScript language service.
  */
 export function getOrCreateLanguageService(ts, uri) {
   const configPath = ts.findConfigFile(fileURLToPath(uri), ts.sys.fileExists)

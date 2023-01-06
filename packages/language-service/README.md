@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This package implements the logic needed to provide [MDX][] intellisense.
+This package implements the logic needed to provide [MDX][] IntelliSense.
 This is done by wrapping the [TypeScript][] language service.
 
 ## When should I use this?
@@ -48,8 +48,8 @@ external use.
 
 ## Security
 
-This package provides intellisense for [MDX][] files.
-Some intellisense features modify your source code, for example suggestions and
+This package provides IntelliSense for [MDX][] files.
+Some IntelliSense features modify your source code, for example suggestions and
 automatic refactors.
 It is recommended to keep your source code under version control.
 

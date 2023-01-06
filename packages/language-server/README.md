@@ -67,8 +67,8 @@ It should work anywhere where LSP 3.6.0 or later is implemented.
 
 ## Security
 
-This package provides intellisense for [MDX][] files.
-Some intellisense features modify your source code, for example suggestions and
+This package provides IntelliSense for [MDX][] files.
+Some IntelliSense features modify your source code, for example suggestions and
 automatic refactors.
 It is recommended to keep your source code under version control.
 

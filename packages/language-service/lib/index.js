@@ -139,28 +139,46 @@ export function createMdxLanguageService(ts, host, plugins) {
   })
 
   internalHost.getScriptKind = (fileName) => {
+    // Tell TypeScript to treat MDX files as JSX (not JS nor TSX).
     if (isMdx(fileName)) {
       return ts.ScriptKind.JSX
     }
 
+    // Internally TypeScript defaults to JS, so we mimic that here.
     return host.getScriptKind?.(fileName) ?? ts.ScriptKind.JS
   }
 
+  // `getScriptSnapshot` and `getScriptVersion` handle file synchronization in
+  // the TypeScript language service and play closely together. Before every
+  // method invocation, the language service synchronizes files. At first, it
+  // checks the snapshot version. If this is unchanged, it uses the existing
+  // snapshot. Otherwise it will request a new snapshot.
+  //
+  // The MDX language service hooks into this mechanism to handle conversion of
+  // MDX files to JSX, which TypeScript can handle.
   internalHost.getScriptSnapshot = (fileName) => {
+    // For non-MDX files, there’s no need to perform any MDX specific
+    // synchronization.
     if (!isMdx(fileName)) {
       return host.getScriptSnapshot(fileName)
     }
 
     const snapshot = scriptSnapshots.get(fileName)
+    // `getScriptVersion` below deletes the snapshot if the version is outdated.
+    // So if the snapshot exists at this point, this means it’s ok to return
+    // as-is.
     if (snapshot) {
       return snapshot
     }
 
+    // If there is am existing snapshot, we need to synchronize from the host.
     const externalSnapshot = host.getScriptSnapshot(fileName)
     if (!externalSnapshot) {
       return
     }
 
+    // Here we use the snapshot from the original host. Since this has MDX
+    // content, we need to convert it to JSX.
     const length = externalSnapshot.getLength()
     const mdx = externalSnapshot.getText(0, length)
     const newSnapshot = mdxToJsx(mdx, processor)
@@ -170,17 +188,22 @@ export function createMdxLanguageService(ts, host, plugins) {
       scriptVersions.delete(fileName)
     }
 
+    // It’s cached, so we only need to convert the MDX to JSX once.
     scriptSnapshots.set(fileName, newSnapshot)
     return newSnapshot
   }
 
   internalHost.getScriptVersion = (fileName) => {
     const externalVersion = host.getScriptVersion(fileName)
+    // Since we’re only interested in processing MDX files, we can just forward
+    // non-MDX snapshot versions.
     if (!isMdx(fileName)) {
       return externalVersion
     }
 
     const internalVersion = scriptVersions.get(fileName)
+    // If the external version is different from the internal, this means the
+    // file was updates, so we need to clear the cached snapshot.
     if (externalVersion !== internalVersion) {
       scriptSnapshots.delete(fileName)
       scriptVersions.set(fileName, externalVersion)
@@ -189,6 +212,8 @@ export function createMdxLanguageService(ts, host, plugins) {
     return externalVersion
   }
 
+  // When resolving an MDX file, TypeScript will try to resolve a file with the
+  // `.jsx` file extension. Here we make sure to work around that.
   internalHost.resolveModuleNames = (
     moduleNames,
     containingFile,
@@ -222,14 +247,25 @@ export function createMdxLanguageService(ts, host, plugins) {
   const ls = ts.createLanguageService(internalHost)
 
   /**
+   * Synchronize a snapshot with the external host.
+   *
+   * This function should be called first in every language service method
+   * pverride.
+   *
    * @param {string} fileName
-   * @returns {MDXSnapshot | undefined} The synchronized MDX snapshot.
+   *   The file name to synchronize.
+   * @returns {MDXSnapshot | undefined}
+   *   The synchronized MDX snapshot.
    */
   function syncSnapshot(fileName) {
+    // If it’s not an MDX file, there’s nothing to do.
     if (!isMdx(fileName)) {
       return
     }
 
+    // If the internal and external snapshot versions are the same, and a
+    // snapshot is present, this means it’s up-to-date, so there’s no need to
+    // sychronize.
     const snapshot = scriptSnapshots.get(fileName)
     const externalVersion = host.getScriptVersion(fileName)
     const internalVersion = scriptVersions.get(fileName)
@@ -237,11 +273,14 @@ export function createMdxLanguageService(ts, host, plugins) {
       return snapshot
     }
 
+    // If there is am existing snapshot, we need to synchronize from the host.
     const externalSnapshot = host.getScriptSnapshot(fileName)
     if (!externalSnapshot) {
       return
     }
 
+    // Here we use the snapshot from the original host. Since this has MDX
+    // content, we need to convert it to JSX.
     const length = externalSnapshot.getLength()
     const mdx = externalSnapshot.getText(0, length)
     const newSnapshot = mdxToJsx(mdx, processor)
@@ -251,6 +290,8 @@ export function createMdxLanguageService(ts, host, plugins) {
       scriptVersions.delete(fileName)
     }
 
+    // It’s cached, so we only need to convert the MDX to JSX once.  Also the
+    // version is cached for later comparison.
     scriptSnapshots.set(fileName, newSnapshot)
     scriptVersions.set(fileName, externalVersion)
     return newSnapshot

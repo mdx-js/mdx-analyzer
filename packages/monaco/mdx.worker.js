@@ -1,3 +1,4 @@
+/* global ts */
 /**
  * @typedef {import('monaco-editor').languages.typescript.CompilerOptions} CompilerOptions
  * @typedef {import('monaco-editor').languages.typescript.IExtraLibs} IExtraLibs

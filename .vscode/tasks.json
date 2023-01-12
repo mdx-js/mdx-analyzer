@@ -4,7 +4,7 @@
     {
       "type": "shell",
       "command": "npm",
-      "args": ["run", "build", "--", "--sourcemap"],
+      "args": ["run", "build:debug"],
       "label": "build",
       "presentation": {
         "clear": true,

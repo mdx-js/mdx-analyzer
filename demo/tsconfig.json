@@ -1,0 +1,14 @@
+{
+  "exclude": ["dist"],
+  "compilerOptions": {
+    "checkJs": true,
+    "module": "node16",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "paths": {
+      "@mdx-js/language-service": ["../packages/language-service/index.js"],
+      "@mdx-js/monaco": ["../packages/monaco/index.js"]
+    }
+  }
+}

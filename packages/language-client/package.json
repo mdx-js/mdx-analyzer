@@ -1,0 +1,13 @@
+{
+  "name": "@mdx-js/language-client",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.0.0",
+    "vscode-languageclient": "^8.0.0"
+  }
+}

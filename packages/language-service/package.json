@@ -1,0 +1,40 @@
+{
+  "name": "@mdx-js/language-service",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "MDX IntelliSense in Monaco editor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdx-js/vscode-mdx.git",
+    "directory": "packages/language-service"
+  },
+  "homepage": "https://mdxjs.com",
+  "bugs": "https://github.com/mdx-js/vscode-mdx/issues",
+  "author": "Remco Haszing <remcohaszing@gmail.com>",
+  "funding": "https://opencollective.com/unified",
+  "license": "MIT",
+  "exports": "./index.js",
+  "files": [
+    "*.d.ts",
+    "*.js",
+    "lib"
+  ],
+  "keywords": [
+    "IntelliSense",
+    "mdx",
+    "monaco",
+    "monaco-editor",
+    "typescript",
+    "unified"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "remark-mdx": "^2.0.0",
+    "remark-parse": "^10.0.0",
+    "unified": "^10.0.0",
+    "unist-util-visit": "^4.0.0"
+  },
+  "sideEffects": false
+}

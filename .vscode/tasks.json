@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build:debug"],
+      "label": "build",
+      "presentation": {
+        "clear": true,
+        "echo": true
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

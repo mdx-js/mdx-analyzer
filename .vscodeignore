@@ -4,5 +4,7 @@
 *.map
 *.ts
 *.tsbuildinfo
-node_modules
-test
+demo/
+fixtures/
+node_modules/
+packages/

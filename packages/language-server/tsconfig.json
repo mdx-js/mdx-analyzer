@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "module": "node16",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "paths": {
+      "@mdx-js/language-service": ["../language-service/index.js"]
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "name": "@mdx-js/monaco",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "MDX IntelliSense in Monaco editor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdx-js/vscode-mdx.git",
+    "directory": "packages/monaco"
+  },
+  "homepage": "https://mdxjs.com",
+  "bugs": "https://github.com/mdx-js/vscode-mdx/issues",
+  "author": "Remco Haszing <remcohaszing@gmail.com>",
+  "funding": "https://opencollective.com/unified",
+  "license": "MIT",
+  "main": "./index.js",
+  "files": [
+    "*.d.ts",
+    "*.js",
+    "lib",
+    "!playwright.config.*"
+  ],
+  "keywords": [
+    "IntelliSense",
+    "mdx",
+    "monaco",
+    "monaco-editor",
+    "typescript",
+    "unified"
+  ],
+  "scripts": {
+    "build": "tsc --build --clean && tsc --build",
+    "prepack": "npm run build",
+    "test-api": "playwright test"
+  },
+  "peerDependencies": {
+    "monaco-editor": ">=0.34.0"
+  },
+  "peerDependenciesMeta": {
+    "monaco-editor": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@mdx-js/language-service": "0.0.0",
+    "monaco-marker-data-provider": "^1.0.0",
+    "monaco-worker-manager": "^2.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.0.0",
+    "playwright-monaco": "^1.0.0"
+  }
+}

@@ -1,0 +1,14 @@
+{/** Description of `a` */}
+export function a() {}
+
+export function a2() {
+  a()
+}
+
+export function Component() {
+  return <div />
+}
+
+{a()}
+
+<Component />

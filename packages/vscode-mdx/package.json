@@ -42,6 +42,13 @@
     "copy-libs": "cpy '../../node_modules/typescript/lib/lib.*.d.ts' out/",
     "vscode:prepublish": "npm run copy-libs && npm run build -- --minify"
   },
+  "devDependencies": {
+    "@vscode/vsce": "^2.0.0",
+    "cpy-cli": "^4.0.0",
+    "esbuild": "^0.16.0",
+    "ovsx": "^0.8.0",
+    "vscode-languageclient": "^8.0.0"
+  },
   "contributes": {
     "configuration": [
       {

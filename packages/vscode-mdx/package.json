@@ -6,7 +6,9 @@
   "categories": [
     "Programming Languages"
   ],
-  "repository": "https://github.com/mdx-js/vscode-mdx.git",
+  "repository": {
+    "url": "https://github.com/mdx-js/vscode-mdx.git"
+  },
   "qna": "https://github.com/orgs/mdx-js/discussions",
   "author": "JounQin",
   "publisher": "unifiedjs",

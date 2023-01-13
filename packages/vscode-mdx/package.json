@@ -43,6 +43,7 @@
     "vscode:prepublish": "npm run copy-libs && npm run build -- --minify"
   },
   "devDependencies": {
+    "@types/vscode": "^1.0.0",
     "@vscode/vsce": "^2.0.0",
     "cpy-cli": "^4.0.0",
     "esbuild": "^0.16.0",

@@ -8,7 +8,7 @@ In JSX, you can include JS expressions within tags, like:
 
 ```mdx
 <Component>
-  {doSomething(‘a’, 7)}
+  {doSomething('a', 7)}
 </Component>
 ```
 

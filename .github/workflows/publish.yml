@@ -19,7 +19,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - run: npx vsce package
+      - run: npx --workspace vscode-mdx vsce package --out "$PWD"
 
       - name: ovsx publish
         run: npx ovsx publish --packagePath *.vsix

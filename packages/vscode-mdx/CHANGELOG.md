@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.1.0
+
+### Minor Changes
+
+- [#226](https://github.com/mdx-js/vscode-mdx/pull/226) [`0fdf371`](https://github.com/mdx-js/vscode-mdx/commit/0fdf3716f45615aa3ebbacb5f2f4d49029bbbecf) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add experimental IntelliSense
+
+  To enable IntelliSense, set `mdx.experimentalLanguageServer` to `true` in your
+  VSCode settings.
+  You can verify it’s enabled by interacting with the JavaScript parts on an MDX
+  document, for example by hovering an import or variable
+
+- [#222](https://github.com/mdx-js/vscode-mdx/pull/222) [`d2eb7a7`](https://github.com/mdx-js/vscode-mdx/commit/d2eb7a7cf23cb0f7b435d6f0b71c21f10ed93ad6) Thanks [@KeyboardSounds](https://github.com/KeyboardSounds)! - Support for highlighting JSX evaluated expressions
+
+  In JSX, you can include JS expressions within tags, like:
+
+  ```mdx
+  <Component>{doSomething('a', 7)}</Component>
+  ```
+
+  This PR adds syntax highlighting for those expressions by adding a new pattern
+  in the `tmLanguage.json`.
+
 ## 1.0.3
 
 ### Patch Changes

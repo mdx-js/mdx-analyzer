@@ -12,7 +12,7 @@
       "runtimeExecutable": "${execPath}",
       "args": [
         "--profile-temp",
-        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-mdx",
         "${workspaceFolder}/fixtures/fixtures.code-workspace"
       ],
       "presentation": {

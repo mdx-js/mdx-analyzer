@@ -175,6 +175,10 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 </tr>
 </table>
 
+## Changelog
+
+Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.md).
+
 ## License
 
 [MIT][] © [JounQin][]@[1stG.me][]

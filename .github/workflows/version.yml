@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: ${{matrix.node}}
       - run: npm install
       - uses: changesets/action@v1
         with:
@@ -24,4 +24,4 @@ jobs:
           commit: 'chore: release vscode-mdx'
           title: 'chore: release vscode-mdx'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

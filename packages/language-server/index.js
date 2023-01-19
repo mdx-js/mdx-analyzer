@@ -25,7 +25,7 @@ import {
   definitionInfoToLocationLinks,
   textSpanToRange
 } from './lib/convert.js'
-import {documents, getDocByFileName} from './lib/documents.js'
+import {documents, getDocByFileName, getMdxDoc} from './lib/documents.js'
 import {getOrCreateLanguageService} from './lib/language-service-manager.js'
 
 process.title = 'mdx-language-server'
@@ -56,10 +56,10 @@ connection.onInitialize(() => {
 })
 
 connection.onCompletion((parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
-    return []
+    return
   }
 
   const offset = doc.offsetAt(parameters.position)
@@ -72,7 +72,7 @@ connection.onCompletion((parameters) => {
   })
 
   if (!info) {
-    return []
+    return
   }
 
   return {
@@ -99,7 +99,7 @@ connection.onCompletion((parameters) => {
 connection.onCompletionResolve((parameters) => {
   const {data, offset, source, uri} = parameters.data
 
-  const doc = documents.get(uri)
+  const doc = getMdxDoc(uri)
 
   if (!doc) {
     return parameters
@@ -133,7 +133,7 @@ connection.onCompletionResolve((parameters) => {
 })
 
 connection.onDefinition((parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -149,7 +149,7 @@ connection.onDefinition((parameters) => {
 })
 
 connection.onTypeDefinition((parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -165,7 +165,7 @@ connection.onTypeDefinition((parameters) => {
 })
 
 connection.onDocumentSymbol((parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -178,7 +178,7 @@ connection.onDocumentSymbol((parameters) => {
 })
 
 connection.onFoldingRanges((parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -201,7 +201,7 @@ connection.onFoldingRanges((parameters) => {
 })
 
 connection.onHover((parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -233,7 +233,7 @@ connection.onHover((parameters) => {
 })
 
 connection.onReferences((parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -252,7 +252,7 @@ connection.onReferences((parameters) => {
 })
 
 connection.onPrepareRename((parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -271,7 +271,7 @@ connection.onPrepareRename((parameters) => {
 })
 
 connection.onRenameRequest((parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return

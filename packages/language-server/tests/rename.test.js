@@ -33,7 +33,6 @@ test('handle rename request of variable for opened references', async () => {
     textDocument: {uri}
   })
 
-  console.dir(result, {depth: Number.POSITIVE_INFINITY})
   assert.deepEqual(result, {
     changes: {
       [fixtureUri('node16/a.mdx')]: [
@@ -76,4 +75,38 @@ test('handle rename request of variable for opened references', async () => {
       ]
     }
   })
+})
+
+test('ignore non-existent mdx files', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const {uri} = await openTextDocument(connection, 'node16/non-existent.mdx')
+  const result = await connection.sendRequest(RenameRequest.type, {
+    newName: 'renamed',
+    position: {line: 7, character: 15},
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, null)
+})
+
+test('ignore non-mdx files', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const {uri} = await openTextDocument(connection, 'node16/component.tsx')
+  const result = await connection.sendRequest(RenameRequest.type, {
+    newName: 'renamed',
+    position: {line: 7, character: 15},
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, null)
 })

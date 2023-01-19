@@ -51,3 +51,33 @@ test('resolve document symbols', async () => {
     }
   ])
 })
+
+test('ignore non-existent mdx files', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const {uri} = await openTextDocument(connection, 'node16/non-existent.mdx')
+  const result = await connection.sendRequest(DocumentSymbolRequest.type, {
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, null)
+})
+
+test('ignore non-mdx files', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const {uri} = await openTextDocument(connection, 'node16/component.tsx')
+  const result = await connection.sendRequest(DocumentSymbolRequest.type, {
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, null)
+})

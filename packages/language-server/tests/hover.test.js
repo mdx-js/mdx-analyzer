@@ -6,7 +6,7 @@ import {afterEach, beforeEach, test} from 'node:test'
 
 import {HoverRequest, InitializeRequest} from 'vscode-languageserver'
 
-import {createConnection, openTextDocument} from './utils.js'
+import {createConnection, fixtureUri, openTextDocument} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -145,4 +145,36 @@ test('resolve import hover in JSX elements', async () => {
       end: {line: 13, character: 10}
     }
   })
+})
+
+test('ignore non-existent mdx files', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const uri = fixtureUri('node16/non-existent.mdx')
+  const result = await connection.sendRequest(HoverRequest.type, {
+    position: {line: 7, character: 15},
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, null)
+})
+
+test('ignore non-mdx files', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const {uri} = await openTextDocument(connection, 'node16/component.tsx')
+  const result = await connection.sendRequest(HoverRequest.type, {
+    position: {line: 9, character: 15},
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, null)
 })

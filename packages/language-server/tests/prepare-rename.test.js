@@ -6,7 +6,7 @@ import {afterEach, beforeEach, test} from 'node:test'
 
 import {InitializeRequest, PrepareRenameRequest} from 'vscode-languageserver'
 
-import {createConnection, openTextDocument} from './utils.js'
+import {createConnection, fixtureUri, openTextDocument} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -48,6 +48,38 @@ test('handle unknown rename request', async () => {
   const {uri} = await openTextDocument(connection, 'node16/a.mdx')
   const result = await connection.sendRequest(PrepareRenameRequest.type, {
     position: {line: 0, character: 1},
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, null)
+})
+
+test('ignore non-existent mdx files', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const uri = fixtureUri('node16/non-existent.mdx')
+  const result = await connection.sendRequest(PrepareRenameRequest.type, {
+    position: {line: 7, character: 15},
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, null)
+})
+
+test('ignore non-mdx files', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const {uri} = await openTextDocument(connection, 'node16/component.tsx')
+  const result = await connection.sendRequest(PrepareRenameRequest.type, {
+    position: {line: 9, character: 15},
     textDocument: {uri}
   })
 

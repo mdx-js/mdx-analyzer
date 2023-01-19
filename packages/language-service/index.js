@@ -1,1 +1,1 @@
-export {createMdxLanguageService} from './lib/index.js'
+export {createMdxLanguageService, isMdx} from './lib/index.js'

@@ -1,4 +1,7 @@
 {
+  "settings": {
+    "mdx.experimentalLanguageServer": true
+  },
   "folders": [
     {
       "path": "demo"

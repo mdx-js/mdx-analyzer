@@ -6,7 +6,7 @@ import {afterEach, beforeEach, test} from 'node:test'
 
 import {InitializeRequest, PrepareRenameRequest} from 'vscode-languageserver'
 
-import {createConnection, openTextDocument} from './utils.js'
+import {createConnection, fixtureUri, openTextDocument} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -61,7 +61,7 @@ test('ignore non-existent mdx files', async () => {
     capabilities: {}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/non-existent.mdx')
+  const uri = fixtureUri('node16/non-existent.mdx')
   const result = await connection.sendRequest(PrepareRenameRequest.type, {
     position: {line: 7, character: 15},
     textDocument: {uri}

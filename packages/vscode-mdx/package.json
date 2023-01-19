@@ -76,7 +76,7 @@
         "extensions": [
           ".mdx"
         ],
-        "configuration": "./language-configuration.jsonc"
+        "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [

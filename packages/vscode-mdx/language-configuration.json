@@ -2,13 +2,11 @@
   "comments": {
     "blockComment": ["{/*", "*/}"]
   },
-  // symbols used as brackets
   "brackets": [
     ["{", "}"],
     ["[", "]"],
     ["(", ")"]
   ],
-  // symbols that are auto closed when typing
   "autoClosingPairs": [
     ["{", "}"],
     ["[", "]"],
@@ -40,7 +38,6 @@
       "notIn": ["string", "comment"]
     }
   ],
-  // symbols that that can be used to surround a selection
   "surroundingPairs": [
     ["{", "}"],
     ["[", "]"],

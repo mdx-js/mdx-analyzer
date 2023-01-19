@@ -21,14 +21,9 @@ export async function activate(context) {
     return
   }
 
-  const module = context.asAbsolutePath('out/language-server.js')
-
   client = new LanguageClient(
     'MDX',
-    {
-      run: {module},
-      debug: {module, options: {execArgv: ['--inspect=6009', '--nolazy']}}
-    },
+    {module: context.asAbsolutePath('out/language-server.js')},
     {
       documentSelector: [
         {scheme: 'file', language: 'mdx'},

@@ -11,35 +11,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-
-      - name: Install Dependencies
-        run: npm install
-
+      - run: npm install
       - run: npx --workspace vscode-mdx vsce package --out "$PWD"
-
-      - name: ovsx publish
-        run: npx ovsx publish --packagePath *.vsix
+      - run: npx ovsx publish --packagePath *.vsix
         env:
-          OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
-
-      - name: vsce publish
-        run: npx vsce publish --packagePath *.vsix
+          OVSX_PAT: ${{secrets.OPEN_VSX_TOKEN}}
+      - run: npx vsce publish --packagePath *.vsix
         env:
-          VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
-
+          VSCE_PAT: ${{secrets.VSCE_TOKEN}}
       - uses: actions/upload-artifact@v3
         with:
           name: vscode-mdx.vsix
-          path: ${{ steps.ovsx_publish.outputs.vsixPath }}
-
-      - name: upload vsix to release
-        uses: svenstaro/upload-release-action@v2
+          path: ${{steps.ovsx_publish.outputs.vsixPath}}
+      - uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ steps.ovsx_publish.outputs.vsixPath }}
+          file: ${{steps.ovsx_publish.outputs.vsixPath}}
           asset_name: vscode-mdx.vsix
-          tag: ${{ github.ref }}
+          tag: ${{github.ref}}

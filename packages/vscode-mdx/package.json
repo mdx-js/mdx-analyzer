@@ -76,6 +76,12 @@
         "configuration": "./language-configuration.jsonc"
       }
     ],
+    "jsonValidation": [
+      {
+        "fileMatch": "tsconfig.json",
+        "url": "./tsconfig.schema.json"
+      }
+    ],
     "grammars": [
       {
         "language": "mdx",

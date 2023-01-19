@@ -104,7 +104,7 @@ test('ignore non-mdx files', async () => {
   const {uri} = await openTextDocument(connection, 'node16/component.tsx')
   const result = await connection.sendRequest(RenameRequest.type, {
     newName: 'renamed',
-    position: {line: 7, character: 15},
+    position: {line: 9, character: 15},
     textDocument: {uri}
   })
 

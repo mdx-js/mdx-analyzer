@@ -133,7 +133,7 @@ connection.onCompletionResolve(async (parameters) => {
 })
 
 connection.onDefinition(async (parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -149,7 +149,7 @@ connection.onDefinition(async (parameters) => {
 })
 
 connection.onTypeDefinition(async (parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -165,7 +165,7 @@ connection.onTypeDefinition(async (parameters) => {
 })
 
 connection.onDocumentSymbol(async (parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -178,7 +178,7 @@ connection.onDocumentSymbol(async (parameters) => {
 })
 
 connection.onFoldingRanges(async (parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -201,7 +201,7 @@ connection.onFoldingRanges(async (parameters) => {
 })
 
 connection.onHover(async (parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -233,7 +233,7 @@ connection.onHover(async (parameters) => {
 })
 
 connection.onReferences(async (parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -252,7 +252,7 @@ connection.onReferences(async (parameters) => {
 })
 
 connection.onPrepareRename(async (parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
@@ -271,7 +271,7 @@ connection.onPrepareRename(async (parameters) => {
 })
 
 connection.onRenameRequest(async (parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return

@@ -32,7 +32,7 @@ import {mdxToJsx, unistPositionToTextSpan} from './utils.js'
  * @returns {fileName is `${string}.mdx`}
  *   Whether or not the filename contains MDX.
  */
-function isMdx(fileName) {
+export function isMdx(fileName) {
   return fileName.endsWith('.mdx')
 }
 

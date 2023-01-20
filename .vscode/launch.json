@@ -1,7 +1,3 @@
-// A launch configuration that compiles the extension and then opens it inside a new window
-// Use IntelliSense to learn about possible attributes.
-// Hover to view descriptions of existing attributes.
-// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 {
   "version": "0.2.0",
   "configurations": [
@@ -10,32 +6,14 @@
       "type": "extensionHost",
       "request": "launch",
       "runtimeExecutable": "${execPath}",
+      "autoAttachChildProcesses": true,
       "args": [
         "--profile-temp",
         "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-mdx",
         "${workspaceFolder}/fixtures/fixtures.code-workspace"
       ],
-      "presentation": {
-        "hidden": true
-      }
-    },
-    {
-      "name": "Debug language server",
-      "type": "node",
-      "request": "attach",
-      "port": 6009,
-      "presentation": {
-        "hidden": true
-      },
-      "skipFiles": ["<node_internals>/**", "**/node_modules/vscode-*/**"]
-    }
-  ],
-  "compounds": [
-    {
-      "preLaunchTask": "build",
-      "name": "Extension + Language server",
-      "configurations": ["Run Extension", "Debug language server"],
-      "stopAll": true
+      "skipFiles": ["<node_internals>/**", "**/node_modules/vscode-*/**"],
+      "preLaunchTask": "build"
     }
   ]
 }

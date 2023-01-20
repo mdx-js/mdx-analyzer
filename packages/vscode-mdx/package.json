@@ -30,8 +30,11 @@
   ],
   "icon": "assets/mdx.png",
   "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
     "onLanguage:mdx",
-    "onLanguage:typescript"
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact"
   ],
   "vsce": {
     "dependencies": false
@@ -73,7 +76,7 @@
         "extensions": [
           ".mdx"
         ],
-        "configuration": "./language-configuration.jsonc"
+        "configuration": "./language-configuration.json"
       }
     ],
     "jsonValidation": [

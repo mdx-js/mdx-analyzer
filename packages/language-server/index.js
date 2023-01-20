@@ -25,7 +25,7 @@ import {
   definitionInfoToLocationLinks,
   textSpanToRange
 } from './lib/convert.js'
-import {documents, getDocByFileName} from './lib/documents.js'
+import {documents, getDocByFileName, getMdxDoc} from './lib/documents.js'
 import {getOrCreateLanguageService} from './lib/language-service-manager.js'
 
 process.title = 'mdx-language-server'
@@ -56,10 +56,10 @@ connection.onInitialize(() => {
 })
 
 connection.onCompletion(async (parameters) => {
-  const doc = documents.get(parameters.textDocument.uri)
+  const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
-    return []
+    return
   }
 
   const offset = doc.offsetAt(parameters.position)
@@ -72,7 +72,7 @@ connection.onCompletion(async (parameters) => {
   })
 
   if (!info) {
-    return []
+    return
   }
 
   return {
@@ -99,7 +99,7 @@ connection.onCompletion(async (parameters) => {
 connection.onCompletionResolve(async (parameters) => {
   const {data, offset, source, uri} = parameters.data
 
-  const doc = documents.get(uri)
+  const doc = getMdxDoc(uri)
 
   if (!doc) {
     return parameters

@@ -10,25 +10,18 @@ jobs:
     name: Version
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
-
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Create Release Pull Request
-        id: changesets
-        uses: changesets/action@v1
+          node-version: ${{matrix.node}}
+      - run: npm install
+      - uses: changesets/action@v1
         with:
           publish: git push --follow-tags
           commit: 'chore: release vscode-mdx'
           title: 'chore: release vscode-mdx'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

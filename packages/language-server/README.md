@@ -61,7 +61,7 @@ Plugins can be defined in an array of strings or string / options tuples.
 These plugins can be defined in `tsconfig.json` and will be resolve relative to
 that file.
 
-For example, to support [frontmatter][] and [GFM][]:
+For example, to support [frontmatter][] with YAML and TOML and [GFM][]:
 
 ```jsonc
 {

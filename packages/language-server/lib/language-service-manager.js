@@ -76,6 +76,7 @@ function getDefaultLanguageService(ts) {
     defaultLanguageService = createMdxLanguageService(ts, {
       ...ts.sys,
       getCompilationSettings: () => ({
+        allowJs: true,
         lib: ['lib.es2020.full.d.ts'],
         module: ts.ModuleKind.Node16,
         moduleResolution: ts.ModuleResolutionKind.NodeJs,
@@ -119,7 +120,7 @@ async function createLanguageService(ts, configPath) {
     config,
     ts.sys,
     fileURLToPath(new URL('.', pathToFileURL(configPath))),
-    ts.getDefaultCompilerOptions(),
+    {...ts.getDefaultCompilerOptions(), allowJs: true},
     'tsconfig.json',
     undefined,
     [

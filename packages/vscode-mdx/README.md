@@ -19,6 +19,34 @@ This extension provides the following settings:
 *   `mdx.experimentalLanguageServer`: Enable experimental IntelliSense support
     for MDX files.  (`boolean`, default: false)
 
+## Plugins
+
+This extension supports remark syntax plugins.
+Plugins can be defined in an array of strings or string / options tuples.
+These plugins can be defined in `tsconfig.json` and will be resolve relative to
+that file.
+
+For example, to support [frontmatter][] with YAML and TOML and [GFM][]:
+
+```jsonc
+{
+  "compilerOptions": {
+    // …
+  },
+  "mdx": {
+    "plugins": [
+      [
+        "remark-frontmatter",
+        ["toml", "yaml"]
+      ],
+      "remark-gfm"
+    ]
+  }
+}
+```
+
+For a more complete list, see [remark plugins][].
+
 ## Integration With [VS Code ESLint](https://github.com/microsoft/vscode-eslint)
 
 1.  First of all, you need to enable [eslint-plugin-mdx][] which makes it
@@ -187,6 +215,10 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [eslint-plugin-mdx]: https://github.com/mdx-js/eslint-mdx
 
+[frontmatter]: https://github.com/remarkjs/remark-frontmatter
+
+[gfm]: https://github.com/remarkjs/remark-gfm
+
 [jounqin]: https://GitHub.com/JounQin
 
 [mdx]: https://github.com/mdx-js/mdx
@@ -196,5 +228,7 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 [remark]: https://github.com/remarkjs/remark
 
 [remark-lint]: https://github.com/remarkjs/remark-lint
+
+[remark plugins]: https://github.com/remarkjs/remark/blob/main/doc/plugins.md
 
 [sponsor]: https://mdxjs.com/community/sponsor/

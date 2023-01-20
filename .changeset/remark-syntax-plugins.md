@@ -4,13 +4,12 @@ vscode-mdx: minor
 
 Support remark syntax plugins.
 
-Syntax plugins can be added by adding an `mdx` section in your `tsconfig.json`
-file.
-This is then parsed following the same format as `unified-engine`
-[configuration][].
+This extension supports remark syntax plugins.
+Plugins can be defined in an array of strings or string / options tuples.
+These plugins can be defined in `tsconfig.json` and will be resolve relative to
+that file.
 
-For example, to support [frontmatter][] and [GFM][], add the following section
-to `tsconfig.json`:
+For example, to support [frontmatter][] with YAML and TOML and [GFM][]:
 
 ```jsonc
 {
@@ -19,14 +18,15 @@ to `tsconfig.json`:
   },
   "mdx": {
     "plugins": [
-      "remark-frontmatter",
+      [
+        "remark-frontmatter",
+        ["toml", "yaml"]
+      ],
       "remark-gfm"
     ]
   }
 }
 ```
-
-[configuration]: https://github.com/unifiedjs/unified-engine/blob/main/doc/configure.md
 
 [frontmatter]: https://github.com/remarkjs/remark-frontmatter
 

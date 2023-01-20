@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "checkJs": true,
     "jsx": "react-jsx",
     "lib": ["dom", "es2020"],
     "module": "node16",

@@ -1,6 +1,7 @@
 /**
  * @typedef {import('vscode-languageserver').TextDocumentItem} TextDocumentItem
  * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
+ * @typedef {import('vscode-languageserver').PublishDiagnosticsParams} PublishDiagnosticsParams
  */
 
 import {spawn} from 'node:child_process'
@@ -10,7 +11,8 @@ import {
   createProtocolConnection,
   DidOpenTextDocumentNotification,
   IPCMessageReader,
-  IPCMessageWriter
+  IPCMessageWriter,
+  PublishDiagnosticsNotification
 } from 'vscode-languageserver/node.js'
 
 const TEST_TIMEOUT = 10e3
@@ -77,4 +79,14 @@ export async function openTextDocument(connection, fileName) {
   })
 
   return textDocument
+}
+
+/**
+ * @param {ProtocolConnection} connection
+ * @returns {Promise<PublishDiagnosticsParams>}
+ */
+export function waitForDiagnostics(connection) {
+  return new Promise((resolve) => {
+    connection.onNotification(PublishDiagnosticsNotification.type, resolve)
+  })
 }

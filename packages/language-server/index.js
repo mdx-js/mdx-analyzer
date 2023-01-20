@@ -55,7 +55,7 @@ connection.onInitialize(() => {
   }
 })
 
-connection.onCompletion((parameters) => {
+connection.onCompletion(async (parameters) => {
   const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
@@ -63,7 +63,7 @@ connection.onCompletion((parameters) => {
   }
 
   const offset = doc.offsetAt(parameters.position)
-  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const ls = await getOrCreateLanguageService(ts, doc.uri)
   const info = ls.getCompletionsAtPosition(fileURLToPath(doc.uri), offset, {
     triggerKind: parameters.context?.triggerKind,
     triggerCharacter: /** @type {ts.CompletionsTriggerCharacter} */ (
@@ -96,7 +96,7 @@ connection.onCompletion((parameters) => {
   }
 })
 
-connection.onCompletionResolve((parameters) => {
+connection.onCompletionResolve(async (parameters) => {
   const {data, offset, source, uri} = parameters.data
 
   const doc = getMdxDoc(uri)
@@ -105,7 +105,7 @@ connection.onCompletionResolve((parameters) => {
     return parameters
   }
 
-  const ls = getOrCreateLanguageService(ts, uri)
+  const ls = await getOrCreateLanguageService(ts, uri)
   const details = ls.getCompletionEntryDetails(
     fileURLToPath(uri),
     offset,
@@ -132,14 +132,14 @@ connection.onCompletionResolve((parameters) => {
   }
 })
 
-connection.onDefinition((parameters) => {
+connection.onDefinition(async (parameters) => {
   const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
   }
 
-  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const ls = await getOrCreateLanguageService(ts, doc.uri)
   const entries = ls.getDefinitionAtPosition(
     fileURLToPath(doc.uri),
     doc.offsetAt(parameters.position)
@@ -148,14 +148,14 @@ connection.onDefinition((parameters) => {
   return definitionInfoToLocationLinks(entries)
 })
 
-connection.onTypeDefinition((parameters) => {
+connection.onTypeDefinition(async (parameters) => {
   const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
   }
 
-  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const ls = await getOrCreateLanguageService(ts, doc.uri)
   const entries = ls.getTypeDefinitionAtPosition(
     fileURLToPath(doc.uri),
     doc.offsetAt(parameters.position)
@@ -164,27 +164,27 @@ connection.onTypeDefinition((parameters) => {
   return definitionInfoToLocationLinks(entries)
 })
 
-connection.onDocumentSymbol((parameters) => {
+connection.onDocumentSymbol(async (parameters) => {
   const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
   }
 
-  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const ls = await getOrCreateLanguageService(ts, doc.uri)
   const navigationBarItems = ls.getNavigationBarItems(fileURLToPath(doc.uri))
 
   return convertNavigationBarItems(doc, navigationBarItems)
 })
 
-connection.onFoldingRanges((parameters) => {
+connection.onFoldingRanges(async (parameters) => {
   const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
   }
 
-  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const ls = await getOrCreateLanguageService(ts, doc.uri)
   const outlineSpans = ls.getOutliningSpans(fileURLToPath(doc.uri))
 
   return outlineSpans.map((span) => {
@@ -200,14 +200,14 @@ connection.onFoldingRanges((parameters) => {
   })
 })
 
-connection.onHover((parameters) => {
+connection.onHover(async (parameters) => {
   const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
   }
 
-  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const ls = await getOrCreateLanguageService(ts, doc.uri)
   const info = ls.getQuickInfoAtPosition(
     fileURLToPath(doc.uri),
     doc.offsetAt(parameters.position)
@@ -232,14 +232,14 @@ connection.onHover((parameters) => {
   }
 })
 
-connection.onReferences((parameters) => {
+connection.onReferences(async (parameters) => {
   const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
     return
   }
 
-  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const ls = await getOrCreateLanguageService(ts, doc.uri)
   const entries = ls.getReferencesAtPosition(
     fileURLToPath(doc.uri),
     doc.offsetAt(parameters.position)
@@ -251,7 +251,7 @@ connection.onReferences((parameters) => {
   }))
 })
 
-connection.onPrepareRename((parameters) => {
+connection.onPrepareRename(async (parameters) => {
   const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
@@ -260,7 +260,7 @@ connection.onPrepareRename((parameters) => {
 
   const fileName = fileURLToPath(doc.uri)
   const position = doc.offsetAt(parameters.position)
-  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const ls = await getOrCreateLanguageService(ts, doc.uri)
   const renameInfo = ls.getRenameInfo(fileName, position, {
     allowRenameOfImportPath: false
   })
@@ -270,7 +270,7 @@ connection.onPrepareRename((parameters) => {
   }
 })
 
-connection.onRenameRequest((parameters) => {
+connection.onRenameRequest(async (parameters) => {
   const doc = getMdxDoc(parameters.textDocument.uri)
 
   if (!doc) {
@@ -279,7 +279,7 @@ connection.onRenameRequest((parameters) => {
 
   const fileName = fileURLToPath(doc.uri)
   const position = doc.offsetAt(parameters.position)
-  const ls = getOrCreateLanguageService(ts, doc.uri)
+  const ls = await getOrCreateLanguageService(ts, doc.uri)
   const locations = ls.findRenameLocations(fileName, position, false, false)
 
   if (!locations?.length) {
@@ -314,10 +314,10 @@ documents.onDidClose((event) => {
 /**
  * @param {TextDocumentChangeEvent} event
  */
-function checkDiagnostics(event) {
+async function checkDiagnostics(event) {
   const {uri} = event.document
   const path = fileURLToPath(uri)
-  const ls = getOrCreateLanguageService(ts, uri)
+  const ls = await getOrCreateLanguageService(ts, uri)
   const diagnostics = [
     ...ls.getSemanticDiagnostics(path),
     ...ls.getSuggestionDiagnostics(path),

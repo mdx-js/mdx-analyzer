@@ -54,6 +54,34 @@ For example:
 # Hello {props.name}
 ```
 
+## Plugins
+
+This extension supports remark syntax plugins.
+Plugins can be defined in an array of strings or string / options tuples.
+These plugins can be defined in `tsconfig.json` and will be resolved relative to
+that file.
+
+For example, to support [frontmatter][] with YAML and TOML and [GFM][]:
+
+```jsonc
+{
+  "compilerOptions": {
+    // …
+  },
+  "mdx": {
+    "plugins": [
+      [
+        "remark-frontmatter",
+        ["toml", "yaml"]
+      ],
+      "remark-gfm"
+    ]
+  }
+}
+```
+
+For a more complete list, see [remark plugins][].
+
 ## Compatibility
 
 Projects maintained by the unified collective are compatible with all maintained
@@ -91,6 +119,10 @@ abide by its terms.
 
 [contribute]: https://mdxjs.com/community/contribute/
 
+[frontmatter]: https://github.com/remarkjs/remark-frontmatter
+
+[gfm]: https://github.com/remarkjs/remark-gfm
+
 [jsdoc]: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
 
 [lsp]: https://microsoft.github.io/language-server-protocol
@@ -98,6 +130,8 @@ abide by its terms.
 [mdx]: https://mdxjs.com
 
 [mit]: LICENSE
+
+[remark plugins]: https://github.com/remarkjs/remark/blob/main/doc/plugins.md
 
 [support]: https://mdxjs.com/community/support/
 

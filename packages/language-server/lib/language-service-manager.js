@@ -4,10 +4,12 @@
  * @typedef {import('typescript').LanguageService} LanguageService
  */
 
+import path from 'node:path'
 import {fileURLToPath, pathToFileURL} from 'node:url'
 
 import {createMdxLanguageService} from '@mdx-js/language-service'
 
+import {loadPlugins} from './configuration.js'
 import {getDocByFileName} from './documents.js'
 
 /**
@@ -90,33 +92,17 @@ function getDefaultLanguageService(ts) {
   return defaultLanguageService
 }
 
-/** @type {Map<string, LanguageService>} */
-const cache = new Map()
-
 /**
- * Get or create a language service for the given file URI.
- *
- * The language service is cached per TypeScript project. A TypeScript project
- * is defined by a `tsconfig.json` file.
+ * Create a language service for the given file URI.
  *
  * @param {ts} ts
  *   The TypeScript module to use.
- * @param {string} uri
- *   The file URI for which to get the language service.
- * @returns {LanguageService}
- *   A cached TypeScript language service.
+ * @param {string} configPath
+ *   The path to the TypeScript configuration file.
+ * @returns {Promise<LanguageService>}
+ *   An MDX language service.
  */
-export function getOrCreateLanguageService(ts, uri) {
-  const configPath = ts.findConfigFile(fileURLToPath(uri), ts.sys.fileExists)
-  if (!configPath) {
-    return getDefaultLanguageService(ts)
-  }
-
-  let ls = cache.get(configPath)
-  if (ls) {
-    return ls
-  }
-
+async function createLanguageService(ts, configPath) {
   const jsonText = ts.sys.readFile(configPath)
   if (jsonText === undefined) {
     return getDefaultLanguageService(ts)
@@ -126,6 +112,8 @@ export function getOrCreateLanguageService(ts, uri) {
   if (error || !config) {
     return getDefaultLanguageService(ts)
   }
+
+  const plugins = await loadPlugins(path.dirname(configPath), config.mdx)
 
   const {fileNames, options, projectReferences} = ts.parseJsonConfigFileContent(
     config,
@@ -143,16 +131,50 @@ export function getOrCreateLanguageService(ts, uri) {
     ]
   )
 
-  ls = createMdxLanguageService(ts, {
-    ...ts.sys,
-    getCompilationSettings: () => options,
-    getDefaultLibFileName: ts.getDefaultLibFilePath,
-    getProjectReferences: () => projectReferences,
-    getScriptFileNames: () => fileNames,
-    getScriptSnapshot: createGetScriptSnapshot(ts),
-    getScriptVersion,
-    useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames
-  })
-  cache.set(configPath, ls)
-  return ls
+  return createMdxLanguageService(
+    ts,
+    {
+      ...ts.sys,
+      getCompilationSettings: () => options,
+      getDefaultLibFileName: ts.getDefaultLibFilePath,
+      getProjectReferences: () => projectReferences,
+      getScriptFileNames: () => fileNames,
+      getScriptSnapshot: createGetScriptSnapshot(ts),
+      getScriptVersion,
+      useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames
+    },
+    plugins
+  )
+}
+
+/** @type {Map<string, Promise<LanguageService>>} */
+const cache = new Map()
+
+/**
+ * Get or create a language service for the given file URI.
+ *
+ * The language service is cached per TypeScript project. A TypeScript project
+ * is defined by a `tsconfig.json` file.
+ *
+ * @param {ts} ts
+ *   The TypeScript module to use.
+ * @param {string} uri
+ *   The file URI for which to get the language service.
+ * @returns {LanguageService | Promise<LanguageService>}
+ *   A cached MDX language service.
+ */
+export function getOrCreateLanguageService(ts, uri) {
+  const configPath = ts.findConfigFile(fileURLToPath(uri), ts.sys.fileExists)
+  if (!configPath) {
+    return getDefaultLanguageService(ts)
+  }
+
+  // It’s important this caching logic is synchronous. This is why we cache the
+  // promise, not the value.
+  let promise = cache.get(configPath)
+  if (!promise) {
+    promise = createLanguageService(ts, configPath)
+    cache.set(configPath, promise)
+  }
+  return promise
 }

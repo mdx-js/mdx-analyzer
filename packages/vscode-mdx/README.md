@@ -23,7 +23,7 @@ This extension provides the following settings:
 
 This extension supports remark syntax plugins.
 Plugins can be defined in an array of strings or string / options tuples.
-These plugins can be defined in `tsconfig.json` and will be resolve relative to
+These plugins can be defined in `tsconfig.json` and will be resolved relative to
 that file.
 
 For example, to support [frontmatter][] with YAML and TOML and [GFM][]:

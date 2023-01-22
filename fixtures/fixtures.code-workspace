@@ -3,11 +3,9 @@
     "mdx.experimentalLanguageServer": true
   },
   "folders": [
-    {
-      "path": "demo"
-    },
-    {
-      "path": "node16"
-    }
+    {"path": "demo"},
+    {"path": "frontmatter"},
+    {"path": "no-tsconfig"},
+    {"path": "node16"}
   ]
 }

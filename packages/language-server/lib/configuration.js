@@ -28,7 +28,7 @@ export async function loadPlugins(cwd, config) {
     return
   }
 
-  let pluginConfig = config.plugins
+  const pluginConfig = config.plugins
 
   if (typeof pluginConfig !== 'object') {
     return
@@ -45,7 +45,9 @@ export async function loadPlugins(cwd, config) {
   /** @type {Promise<Pluggable>[]} */
   const plugins = []
   for (const maybeTuple of pluginArray) {
-    const [name, ...options] = /** @type {unknown[]} */ ([]).concat(maybeTuple)
+    const [name, ...options] = Array.isArray(maybeTuple)
+      ? maybeTuple
+      : [maybeTuple]
 
     if (typeof name !== 'string') {
       continue
@@ -57,5 +59,6 @@ export async function loadPlugins(cwd, config) {
       )
     )
   }
+
   return Promise.all(plugins)
 }

@@ -1,7 +1,10 @@
 /**
  * @typedef {import('typescript')} ts
+ * @typedef {import('typescript').CompilerOptions} CompilerOptions
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
  * @typedef {import('typescript').LanguageService} LanguageService
+ * @typedef {import('typescript').LanguageServiceHost} LanguageServiceHost
+ * @typedef {import('typescript').ProjectReference} ProjectReference
  */
 
 import path from 'node:path'
@@ -10,7 +13,7 @@ import {fileURLToPath, pathToFileURL} from 'node:url'
 import {createMdxLanguageService} from '@mdx-js/language-service'
 
 import {loadPlugins} from './configuration.js'
-import {getDocByFileName} from './documents.js'
+import {documents, getDocByFileName} from './documents.js'
 
 /**
  * Create a function for getting a script snapshot based on a TypeScript module.
@@ -36,6 +39,16 @@ function createGetScriptSnapshot(ts) {
 }
 
 /**
+ * Get a list of the file paths of all open documents.
+ *
+ * @returns {string[]}
+ *   The list of open documents.
+ */
+function getScriptFileNames() {
+  return documents.keys().map((uri) => fileURLToPath(uri))
+}
+
+/**
  * Get the current script version of a file.
  *
  * If a file has previously been opened, it will be available in the document
@@ -55,6 +68,31 @@ function getScriptVersion(fileName) {
   return doc ? String(doc.version) : '0'
 }
 
+/**
+ * Create a language service host that works with the language server.
+ *
+ * @param {ts} ts
+ *   The TypeScript module to use.
+ * @param {CompilerOptions} options
+ *   The compiler options to use.
+ * @param {readonly ProjectReference[]} [references]
+ *   The compiler options to use.
+ * @returns {LanguageServiceHost}
+ *   A language service host that works with the language server.
+ */
+function createLanguageServiceHost(ts, options, references) {
+  return {
+    ...ts.sys,
+    getCompilationSettings: () => options,
+    getDefaultLibFileName: ts.getDefaultLibFilePath,
+    getProjectReferences: () => references,
+    getScriptSnapshot: createGetScriptSnapshot(ts),
+    getScriptVersion,
+    getScriptFileNames,
+    useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames
+  }
+}
+
 /** @type {LanguageService} */
 let defaultLanguageService
 
@@ -69,25 +107,20 @@ let defaultLanguageService
  * @param {ts} ts
  *   The TypeScript module to use.
  * @returns {LanguageService}
- *   The defaul language service.
+ *   The default language service.
  */
 function getDefaultLanguageService(ts) {
   if (!defaultLanguageService) {
-    defaultLanguageService = createMdxLanguageService(ts, {
-      ...ts.sys,
-      getCompilationSettings: () => ({
+    defaultLanguageService = createMdxLanguageService(
+      ts,
+      createLanguageServiceHost(ts, {
         allowJs: true,
         lib: ['lib.es2020.full.d.ts'],
         module: ts.ModuleKind.Node16,
         moduleResolution: ts.ModuleResolutionKind.NodeJs,
         target: ts.ScriptTarget.Latest
-      }),
-      getDefaultLibFileName: ts.getDefaultLibFilePath,
-      getScriptSnapshot: createGetScriptSnapshot(ts),
-      getScriptVersion,
-      getScriptFileNames: () => [],
-      useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames
-    })
+      })
+    )
   }
 
   return defaultLanguageService
@@ -116,7 +149,7 @@ async function createLanguageService(ts, configPath) {
 
   const plugins = await loadPlugins(path.dirname(configPath), config.mdx)
 
-  const {fileNames, options, projectReferences} = ts.parseJsonConfigFileContent(
+  const {options, projectReferences} = ts.parseJsonConfigFileContent(
     config,
     ts.sys,
     fileURLToPath(new URL('.', pathToFileURL(configPath))),
@@ -134,16 +167,7 @@ async function createLanguageService(ts, configPath) {
 
   return createMdxLanguageService(
     ts,
-    {
-      ...ts.sys,
-      getCompilationSettings: () => options,
-      getDefaultLibFileName: ts.getDefaultLibFilePath,
-      getProjectReferences: () => projectReferences,
-      getScriptFileNames: () => fileNames,
-      getScriptSnapshot: createGetScriptSnapshot(ts),
-      getScriptVersion,
-      useCaseSensitiveFileNames: () => ts.sys.useCaseSensitiveFileNames
-    },
+    createLanguageServiceHost(ts, options, projectReferences),
     plugins
   )
 }
@@ -177,5 +201,6 @@ export function getOrCreateLanguageService(ts, uri) {
     promise = createLanguageService(ts, configPath)
     cache.set(configPath, promise)
   }
+
   return promise
 }

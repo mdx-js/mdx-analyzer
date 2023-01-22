@@ -23,7 +23,7 @@ afterEach(() => {
   connection.dispose()
 })
 
-test('frontmatter', async () => {
+test('no tsconfig exists', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
     rootUri: null,
@@ -33,7 +33,7 @@ test('frontmatter', async () => {
   const diagnosticsPromise = waitForDiagnostics(connection)
   const textDocument = await openTextDocument(
     connection,
-    'frontmatter/frontmatter.mdx'
+    'no-tsconfig/readme.mdx'
   )
   const diagnostics = await diagnosticsPromise
 

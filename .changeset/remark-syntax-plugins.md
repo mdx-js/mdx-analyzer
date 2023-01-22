@@ -9,7 +9,9 @@ Plugins can be defined in an array of strings or string / options tuples.
 These plugins can be defined in `tsconfig.json` and will be resolved relative to
 that file.
 
-For example, to support [frontmatter][] with YAML and TOML and [GFM][]:
+For example, to support
+[frontmatter](https://github.com/remarkjs/remark-frontmatter) with YAML and TOML
+and [GFM](https://github.com/remarkjs/remark-gfm):
 
 ```jsonc
 {
@@ -27,7 +29,3 @@ For example, to support [frontmatter][] with YAML and TOML and [GFM][]:
   }
 }
 ```
-
-[frontmatter]: https://github.com/remarkjs/remark-frontmatter
-
-[gfm]: https://github.com/remarkjs/remark-gfm

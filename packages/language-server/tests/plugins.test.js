@@ -30,14 +30,14 @@ test('frontmatter', async () => {
     capabilities: {}
   })
 
-  const diagnosticsParamsPromise = waitForDiagnostics(connection)
+  const diagnosticsPromise = waitForDiagnostics(connection)
   const textDocument = await openTextDocument(
     connection,
     'frontmatter/frontmatter.mdx'
   )
-  const diagnosticsParams = await diagnosticsParamsPromise
+  const diagnostics = await diagnosticsPromise
 
-  assert.deepEqual(diagnosticsParams, {
+  assert.deepEqual(diagnostics, {
     diagnostics: [],
     uri: textDocument.uri
   })

@@ -45,7 +45,7 @@ function createGetScriptSnapshot(ts) {
  *   The list of open documents.
  */
 function getScriptFileNames() {
-  return documents.keys().map(fileURLToPath)
+  return documents.keys().map((uri) => fileURLToPath(uri))
 }
 
 /**
@@ -201,5 +201,6 @@ export function getOrCreateLanguageService(ts, uri) {
     promise = createLanguageService(ts, configPath)
     cache.set(configPath, promise)
   }
+
   return promise
 }

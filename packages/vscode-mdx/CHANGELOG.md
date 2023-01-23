@@ -1,5 +1,53 @@
 # Changelog
 
+## 1.2.0
+
+### Minor Changes
+
+- [#272](https://github.com/mdx-js/vscode-mdx/pull/272) [`4aad7ef`](https://github.com/mdx-js/vscode-mdx/commit/4aad7ef6ff16ab8e4695dcff344ebd3b1739f6bf) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support remark syntax plugins.
+
+  This extension supports remark syntax plugins.
+  Plugins can be defined in an array of strings or string / options tuples.
+  These plugins can be defined in `tsconfig.json` and will be resolved relative to
+  that file.
+
+  For example, to support
+  [frontmatter](https://github.com/remarkjs/remark-frontmatter) with YAML and TOML
+  and [GFM](https://github.com/remarkjs/remark-gfm):
+
+  ```jsonc
+  {
+    "compilerOptions": {
+      // …
+    },
+    "mdx": {
+      "plugins": [["remark-frontmatter", ["toml", "yaml"]], "remark-gfm"]
+    }
+  }
+  ```
+
+- [#285](https://github.com/mdx-js/vscode-mdx/pull/285) [`31966db`](https://github.com/mdx-js/vscode-mdx/commit/31966db0eb65f7ac723357ffbb17d9e8d08ea5e3) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Rename the `Markdown React` language to `MDX`.
+
+### Patch Changes
+
+- [#279](https://github.com/mdx-js/vscode-mdx/pull/279) [`2a8b266`](https://github.com/mdx-js/vscode-mdx/commit/2a8b266fe3b1a8a6b982a4a92ab26a147d5b3552) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix a crash of neither `allowJs` not `checkJs` is true in `tsconfig.json`.
+
+- [#281](https://github.com/mdx-js/vscode-mdx/pull/281) [`b0bc3a1`](https://github.com/mdx-js/vscode-mdx/commit/b0bc3a1feb1509730447c021e841a60be05d0d39) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix a crash that occurs if:
+
+  - no `tsconfig.json` exists.
+  - `tsconfig.json` specifies `includes`, but doesn’t include the MDX file.
+  - `tsconfig.json` specifies `excludes` and excludes the MDX file.
+  - a new file is created.
+  - a file is renamed.
+
+- [#273](https://github.com/mdx-js/vscode-mdx/pull/273) [`ed9382e`](https://github.com/mdx-js/vscode-mdx/commit/ed9382e19ec6337f113d3e9350a94edfc113c57b) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Previously the MDX language server handled TypeScript IntelliSense for
+  JavaScript and TypeScript files as well.
+  This led to duplicate IntelliSense results in the editor if people have also
+  enabled TypeScript IntelliSense.
+
+  These files are still synchronized with the MDX language server, because they
+  are needed for context, but they no longer yield results when interacted with.
+
 ## 1.1.0
 
 ### Minor Changes

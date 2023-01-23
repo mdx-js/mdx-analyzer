@@ -1,6 +1,6 @@
 {
-  "$schema": "https://raw.githubusercontent.com/Septh/tmlanguage/master/tmLanguage.schema.json",
-  "name": "Markdown React",
+  "$schema": "https://raw.githubusercontent.com/Septh/tmlanguage/master/tmlanguage.json",
+  "name": "MDX",
   "patterns": [
     {
       "include": "#jsx"

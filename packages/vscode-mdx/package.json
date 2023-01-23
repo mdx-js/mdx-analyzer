@@ -25,8 +25,7 @@
   "main": "out/extension.js",
   "keywords": [
     "mdx",
-    "Markdown",
-    "Markdown React"
+    "markdown"
   ],
   "icon": "assets/mdx.png",
   "activationEvents": [
@@ -70,7 +69,6 @@
       {
         "id": "mdx",
         "aliases": [
-          "Markdown React",
           "MDX"
         ],
         "extensions": [

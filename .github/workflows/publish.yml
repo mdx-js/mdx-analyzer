@@ -1,9 +1,12 @@
 name: Publish
 
 on:
-  release:
-    types:
-      - published
+  push:
+    tags:
+      - v*.*.*
+
+permissions:
+  contents: write
 
 jobs:
   publish:
@@ -26,9 +29,8 @@ jobs:
         with:
           name: vscode-mdx.vsix
           path: ${{steps.ovsx_publish.outputs.vsixPath}}
-      - uses: svenstaro/upload-release-action@v2
+      - uses: softprops/action-gh-release@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{steps.ovsx_publish.outputs.vsixPath}}
-          asset_name: vscode-mdx.vsix
-          tag: ${{github.ref}}
+          body_path: ${{github.workspace}}/packages/vscode-mdx/CHANGELOG.md
+          files: |
+            *.vsix

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1
+
+### Patch Changes
+
+- [#286](https://github.com/mdx-js/vscode-mdx/pull/286) [`eb774d0`](https://github.com/mdx-js/vscode-mdx/commit/eb774d08a2b4b59dbcc839b1df6d0b42831a35c5) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix an issue causing false positive diagnostics in non-MDX files.
+
 ## 1.2.0
 
 ### Minor Changes

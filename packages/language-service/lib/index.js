@@ -144,8 +144,11 @@ export function createMdxLanguageService(ts, host, plugins) {
       return ts.ScriptKind.JSX
     }
 
-    // Internally TypeScript defaults to JS, so we mimic that here.
-    return host.getScriptKind?.(fileName) ?? ts.ScriptKind.JS
+    // ScriptKind.Unknown tells TypeScript to resolve it internally.
+    // https://github.com/microsoft/TypeScript/blob/v4.9.4/src/compiler/utilities.ts#L6968
+    // Note that ScriptKind.Unknown is 0, so it’s falsy.
+    // https://github.com/microsoft/TypeScript/blob/v4.9.4/src/compiler/types.ts#L6750
+    return host.getScriptKind?.(fileName) ?? ts.ScriptKind.Unknown
   }
 
   // `getScriptSnapshot` and `getScriptVersion` handle file synchronization in

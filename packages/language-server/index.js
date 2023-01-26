@@ -7,6 +7,7 @@
 import process from 'node:process'
 import {fileURLToPath} from 'node:url'
 
+import {isMdx} from '@mdx-js/language-service'
 import ts from 'typescript'
 import {
   createConnection,
@@ -316,6 +317,11 @@ documents.onDidClose((event) => {
  */
 async function checkDiagnostics(event) {
   const {uri} = event.document
+
+  if (!isMdx(uri)) {
+    return
+  }
+
   const path = fileURLToPath(uri)
   const ls = await getOrCreateLanguageService(ts, uri)
   const diagnostics = [

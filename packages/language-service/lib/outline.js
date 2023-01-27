@@ -40,7 +40,7 @@ export function getFoldingRegions(ts, ast) {
       return
     }
 
-    /** @type {OutliningSpan[]} */
+    /** @type {(OutliningSpan | undefined)[]} */
     const scope = []
 
     for (const child of node.children) {
@@ -53,7 +53,9 @@ export function getFoldingRegions(ts, ast) {
       if (child.type === 'heading') {
         const index = child.depth - 1
         for (const done of scope.splice(index)) {
-          sections.push(done)
+          if (done) {
+            sections.push(done)
+          }
         }
 
         scope[index] = {
@@ -70,11 +72,17 @@ export function getFoldingRegions(ts, ast) {
       }
 
       for (const section of scope) {
-        section.textSpan.length = end - section.textSpan.start
+        if (section) {
+          section.textSpan.length = end - section.textSpan.start
+        }
       }
     }
 
-    sections.push(...scope)
+    for (const section of scope) {
+      if (section) {
+        sections.push(section)
+      }
+    }
   })
 
   return sections

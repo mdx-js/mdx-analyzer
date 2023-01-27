@@ -8,6 +8,7 @@
  * @typedef {import('typescript').DiagnosticRelatedInformation} DiagnosticRelatedInformation
  * @typedef {import('typescript').JSDocTagInfo} JSDocTagInfo
  * @typedef {import('typescript').NavigationBarItem} NavigationBarItem
+ * @typedef {import('typescript').OutliningSpanKind} OutliningSpanKind
  * @typedef {import('typescript').QuickInfo} QuickInfo
  * @typedef {import('typescript').SymbolDisplayPart} SymbolDisplayPart
  * @typedef {import('typescript').ScriptElementKind} ScriptElementKind
@@ -24,6 +25,7 @@ import {
   DiagnosticSeverity,
   DiagnosticTag,
   DocumentSymbol,
+  FoldingRangeKind,
   LocationLink,
   Range,
   SymbolKind
@@ -405,4 +407,26 @@ export function convertNavigationBarItems(doc, items) {
         convertNavigationBarItems(doc, item.childItems)
       )
     })
+}
+
+/**
+ * Convert a TypeScript outlining span kind to a LSP folding range kind.
+ *
+ * @param {ts} ts
+ *   The TypeScript module to use.
+ * @param {OutliningSpanKind} kind
+ *   The TypeScript outlining span kind to convert.
+ * @returns {FoldingRangeKind}
+ *   The kind as an LSP folding range kind.
+ */
+export function convertOutliningSpanKind(ts, kind) {
+  if (kind === ts.OutliningSpanKind.Comment) {
+    return FoldingRangeKind.Comment
+  }
+
+  if (kind === ts.OutliningSpanKind.Imports) {
+    return FoldingRangeKind.Imports
+  }
+
+  return FoldingRangeKind.Region
 }

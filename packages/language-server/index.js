@@ -21,6 +21,7 @@ import {
 import {
   convertDiagnostics,
   convertNavigationBarItems,
+  convertOutliningSpanKind,
   convertScriptElementKind,
   createDocumentationString,
   definitionInfoToLocationLinks,
@@ -193,6 +194,7 @@ connection.onFoldingRanges(async (parameters) => {
     const end = doc.positionAt(span.textSpan.start + span.textSpan.length)
 
     return {
+      kind: convertOutliningSpanKind(ts, span.kind),
       endCharacter: end.character,
       endLine: end.line,
       startCharacter: start.character,

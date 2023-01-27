@@ -54,7 +54,7 @@ test('resolve folding ranges', async () => {
       startLine: 11
     },
     {
-      endCharacter: 31,
+      endCharacter: 30,
       endLine: 10,
       kind: 'comment',
       startCharacter: 0,

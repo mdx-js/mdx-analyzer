@@ -8,6 +8,7 @@ import {InitializeRequest} from 'vscode-languageserver'
 
 import {
   createConnection,
+  fixtureUri,
   openTextDocument,
   waitForDiagnostics
 } from './utils.js'
@@ -55,7 +56,7 @@ test('type errors', async () => {
                 end: {line: 12, character: 2},
                 start: {line: 11, character: 4}
               },
-              uri: 'file:///home/remco/Projects/vscode-mdx/fixtures/node16/type-errors.mdx'
+              uri: fixtureUri('node16/type-errors.mdx')
             },
             message: "'count' is declared here."
           }
@@ -78,7 +79,7 @@ test('type errors', async () => {
                 start: {line: 11, character: 4},
                 end: {line: 12, character: 2}
               },
-              uri: 'file:///home/remco/Projects/vscode-mdx/fixtures/node16/type-errors.mdx'
+              uri: fixtureUri('node16/type-errors.mdx')
             },
             message: "'count' is declared here."
           }

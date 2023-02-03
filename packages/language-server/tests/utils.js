@@ -15,8 +15,6 @@ import {
   PublishDiagnosticsNotification
 } from 'vscode-languageserver/node.js'
 
-const TEST_TIMEOUT = 10e3
-
 /**
  * @returns {ProtocolConnection}
  * The protocol connection for the MDX language server.
@@ -33,15 +31,9 @@ export function createConnection() {
     new IPCMessageWriter(proc)
   )
 
-  const timeout = setTimeout(() => {
-    connection.dispose()
-  }, TEST_TIMEOUT)
-
   connection.listen()
   connection.onDispose(() => {
-    clearTimeout(timeout)
     proc.kill()
-    connection.end()
   })
 
   return connection

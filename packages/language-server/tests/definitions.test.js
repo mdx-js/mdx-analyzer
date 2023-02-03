@@ -76,37 +76,33 @@ test('resolve cross-file definitions in ESM if the other file was previously ope
   ])
 })
 
-test(
-  'resolve cross-file definitions in ESM if the other file is unopened',
-  {skip: true},
-  async () => {
-    await connection.sendRequest(InitializeRequest.type, {
-      processId: null,
-      rootUri: null,
-      capabilities: {}
-    })
+test('resolve cross-file definitions in ESM if the other file is unopened', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
 
-    const {uri} = await openTextDocument(connection, 'node16/b.mdx')
-    const result = await connection.sendRequest(DefinitionRequest.type, {
-      position: {line: 0, character: 10},
-      textDocument: {uri}
-    })
+  const {uri} = await openTextDocument(connection, 'node16/b.mdx')
+  const result = await connection.sendRequest(DefinitionRequest.type, {
+    position: {line: 0, character: 10},
+    textDocument: {uri}
+  })
 
-    assert.deepEqual(result, [
-      {
-        targetRange: {
-          start: {line: 1, character: 16},
-          end: {line: 1, character: 17}
-        },
-        targetSelectionRange: {
-          start: {line: 1, character: 16},
-          end: {line: 1, character: 17}
-        },
-        targetUri: fixtureUri('node16/a.mdx')
-      }
-    ])
-  }
-)
+  assert.deepEqual(result, [
+    {
+      targetRange: {
+        start: {line: 1, character: 16},
+        end: {line: 1, character: 17}
+      },
+      targetSelectionRange: {
+        start: {line: 1, character: 16},
+        end: {line: 1, character: 17}
+      },
+      targetUri: fixtureUri('node16/a.mdx')
+    }
+  ])
+})
 
 test('resolve markdown link references', async () => {
   await connection.sendRequest(InitializeRequest.type, {

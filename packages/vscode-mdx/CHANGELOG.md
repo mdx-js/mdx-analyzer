@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.2
+
+### Patch Changes
+
+- [#290](https://github.com/mdx-js/vscode-mdx/pull/290) [`1cfcf96`](https://github.com/mdx-js/vscode-mdx/commit/1cfcf9662f0c95f8d86dbd076ffd077fedce8cce) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix error when requesting folding ranges.
+
+- [#294](https://github.com/mdx-js/vscode-mdx/pull/294) [`1f885bc`](https://github.com/mdx-js/vscode-mdx/commit/1f885bcd3bcedcd2a38784fb5518cfc31cdd30a0) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Resolve definitions referencing unopened files.
+
 ## 1.2.1
 
 ### Patch Changes

@@ -1,5 +1,6 @@
 {
   "settings": {
+    "git.openRepositoryInParentFolders": "never",
     "mdx.experimentalLanguageServer": true
   },
   "folders": [

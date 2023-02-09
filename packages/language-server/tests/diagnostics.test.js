@@ -8,6 +8,7 @@ import {InitializeRequest} from 'vscode-languageserver'
 
 import {
   createConnection,
+  fixtureUri,
   openTextDocument,
   waitForDiagnostics
 } from './utils.js'
@@ -48,7 +49,18 @@ test('type errors', async () => {
           start: {line: 6, character: 15},
           end: {line: 6, character: 21}
         },
-        relatedInformation: [],
+        relatedInformation: [
+          {
+            location: {
+              range: {
+                end: {line: 12, character: 2},
+                start: {line: 11, character: 4}
+              },
+              uri: fixtureUri('node16/type-errors.mdx')
+            },
+            message: "'count' is declared here."
+          }
+        ],
         severity: 4,
         tags: []
       },
@@ -57,10 +69,21 @@ test('type errors', async () => {
         message:
           "Property 'counter' may not exist on type 'Props'. Did you mean 'count'?",
         range: {
-          end: {line: 14, character: 58},
-          start: {line: 14, character: 51}
+          start: {line: 14, character: 51},
+          end: {line: 14, character: 58}
         },
-        relatedInformation: [],
+        relatedInformation: [
+          {
+            location: {
+              range: {
+                start: {line: 11, character: 4},
+                end: {line: 12, character: 2}
+              },
+              uri: fixtureUri('node16/type-errors.mdx')
+            },
+            message: "'count' is declared here."
+          }
+        ],
         severity: 4,
         tags: []
       }

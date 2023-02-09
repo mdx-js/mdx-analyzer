@@ -13,7 +13,11 @@ import {fileURLToPath, pathToFileURL} from 'node:url'
 import {createMdxLanguageService} from '@mdx-js/language-service'
 
 import {loadPlugins} from './configuration.js'
-import {documents, getDocByFileName} from './documents.js'
+import {
+  documents,
+  getDocByFileName,
+  getOrReadDocByFileName
+} from './documents.js'
 
 /**
  * Create a function for getting a script snapshot based on a TypeScript module.
@@ -24,16 +28,10 @@ import {documents, getDocByFileName} from './documents.js'
  */
 function createGetScriptSnapshot(ts) {
   return (fileName) => {
-    const doc = getDocByFileName(fileName)
+    const doc = getOrReadDocByFileName(fileName)
 
     if (doc) {
       return ts.ScriptSnapshot.fromString(doc.getText())
-    }
-
-    const text = ts.sys.readFile(fileName)
-
-    if (text) {
-      return ts.ScriptSnapshot.fromString(text)
     }
   }
 }

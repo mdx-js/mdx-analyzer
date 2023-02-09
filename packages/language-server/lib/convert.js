@@ -18,8 +18,6 @@
  * @typedef {import('vscode-languageserver-textdocument').TextDocument} TextDocument
  */
 
-import {pathToFileURL} from 'node:url'
-
 import {
   CompletionItemKind,
   DiagnosticSeverity,
@@ -31,7 +29,7 @@ import {
   SymbolKind
 } from 'vscode-languageserver'
 
-import {documents} from './documents.js'
+import {getOrReadDocByFileName} from './documents.js'
 
 /**
  * Convert a TypeScript script element kind to a Monaco completion kind.
@@ -285,7 +283,7 @@ function convertRelatedInformation(relatedInformation) {
       continue
     }
 
-    const related = documents.get(info.file.fileName)
+    const related = getOrReadDocByFileName(info.file.fileName)
 
     if (!related) {
       continue
@@ -368,12 +366,11 @@ export function definitionInfoToLocationLinks(info) {
   /** @type {LocationLink[]} */
   const locationLinks = []
   for (const entry of info) {
-    const url = String(pathToFileURL(entry.fileName))
-    const entryDoc = documents.get(url)
+    const entryDoc = getOrReadDocByFileName(entry.fileName)
     if (entryDoc) {
       locationLinks.push(
         LocationLink.create(
-          url,
+          entryDoc.uri,
           textSpanToRange(entryDoc, entry.textSpan),
           textSpanToRange(entryDoc, entry.textSpan)
         )

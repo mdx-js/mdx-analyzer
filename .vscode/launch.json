@@ -8,7 +8,11 @@
       "runtimeExecutable": "${execPath}",
       "autoAttachChildProcesses": true,
       "args": [
+        "--disable-updates",
+        "--disable-workspace-trust",
         "--profile-temp",
+        "--skip-release-notes",
+        "--skip-welcome",
         "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-mdx",
         "${workspaceFolder}/fixtures/fixtures.code-workspace"
       ],

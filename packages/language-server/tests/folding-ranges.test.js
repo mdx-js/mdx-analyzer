@@ -40,6 +40,13 @@ test('resolve folding ranges', async () => {
       startLine: 2
     },
     {
+      endCharacter: 11,
+      endLine: 45,
+      kind: 'region',
+      startCharacter: 0,
+      startLine: 6
+    },
+    {
       endCharacter: 1,
       endLine: 15,
       kind: 'region',
@@ -54,32 +61,11 @@ test('resolve folding ranges', async () => {
       startLine: 11
     },
     {
-      endCharacter: 30,
-      endLine: 10,
-      kind: 'comment',
-      startCharacter: 0,
-      startLine: 0
-    },
-    {
-      endCharacter: 0,
-      endLine: 46,
+      endCharacter: 38,
+      endLine: 31,
       kind: 'region',
       startCharacter: 0,
-      startLine: 0
-    },
-    {
-      endCharacter: 0,
-      endLine: 46,
-      kind: 'region',
-      startCharacter: 0,
-      startLine: 0
-    },
-    {
-      endCharacter: 6,
-      endLine: 3,
-      kind: 'comment',
-      startCharacter: 0,
-      startLine: 0
+      startLine: 17
     },
     {
       endCharacter: 9,
@@ -87,13 +73,6 @@ test('resolve folding ranges', async () => {
       kind: 'region',
       startCharacter: 0,
       startLine: 21
-    },
-    {
-      endCharacter: 38,
-      endLine: 31,
-      kind: 'region',
-      startCharacter: 0,
-      startLine: 17
     },
     {
       endCharacter: 38,
@@ -108,13 +87,6 @@ test('resolve folding ranges', async () => {
       kind: 'region',
       startCharacter: 0,
       startLine: 29
-    },
-    {
-      endCharacter: 11,
-      endLine: 45,
-      kind: 'region',
-      startCharacter: 0,
-      startLine: 6
     },
     {
       endCharacter: 11,

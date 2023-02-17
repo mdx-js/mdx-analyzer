@@ -16,7 +16,7 @@
  *   returns the entire text.
  * @property {(position: number) => number | undefined} getShadowPosition
  *   Map a position from the real MDX document to the JSX shadow document.
- * @property {(shadowPosition: number) => number} getRealPosition
+ * @property {(shadowPosition: number) => number | undefined} getRealPosition
  *   Map a position from the shadow document to the real MDX document.
  * @property {unknown} [error]
  *   This is defined if a parsing error has occurred.
@@ -140,7 +140,7 @@ export function mdxToJsx(mdx, processor) {
       getLength: () => fallback.length,
 
       getShadowPosition: () => undefined,
-      getRealPosition: () => 0
+      getRealPosition: () => undefined
     }
   }
 
@@ -243,7 +243,7 @@ export function mdxToJsx(mdx, processor) {
       }
 
       if (shadowPosition <= esmShadow.length + componentStart.length) {
-        return 0
+        return
       }
 
       if (
@@ -252,8 +252,6 @@ export function mdxToJsx(mdx, processor) {
       ) {
         return shadowPosition - esmShadow.length - componentStart.length
       }
-
-      return 0
     }
   }
 }

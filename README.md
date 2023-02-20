@@ -85,6 +85,10 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 </tr>
 </table>
 
+## Contributing
+
+See the `CONTRIBUTING.md` in the `packages` subdirectories that have it.
+
 ## License
 
 [MIT][] © [JounQin][]@[1stG.me][]

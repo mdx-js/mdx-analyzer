@@ -132,6 +132,22 @@ test('resolve markdown link references', async () => {
   ])
 })
 
+test('does not resolve shadow content', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const {uri} = await openTextDocument(connection, 'node16/undefined-props.mdx')
+  const result = await connection.sendRequest(DefinitionRequest.type, {
+    position: {line: 0, character: 37},
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, [])
+})
+
 test('ignore non-existent mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,

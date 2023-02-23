@@ -44,7 +44,8 @@
   "dependencies": {
     "@mdx-js/language-service": "0.0.0",
     "monaco-marker-data-provider": "^1.0.0",
-    "monaco-worker-manager": "^2.0.0"
+    "monaco-worker-manager": "^2.0.0",
+    "unified": "^10.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.0.0",

@@ -82,6 +82,44 @@ const element = document.getElementById('editor')
 const editor = monaco.editor.create(element, { model })
 ```
 
+By default no plugins included.
+To support plugins, you have to create your own worker.
+Then, instead of referencing `@mdx-js/monaco/mdx.worker.js` in the
+`MonacoEnvironment`, reference your own cusotmized worker.
+
+For example, to support [frontmatter][] and [GFM][], create a file named
+`mdx.worker.js` with the following content:
+
+```js
+import {configure} from '@mdx-js/monaco/mdx.worker.js'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkGfm from 'remark-gfm'
+
+configure({
+  plugins: [remarkFrontmatter, remarkGfm]
+})
+```
+
+And make the following change in your `MonacoEnvironment`:
+
+```diff
+  import { initializeMonacoMdx } from '@mdx-js/monaco'
+  import * as monaco from 'monaco-editor'
+
+  // Register the worker
+  window.MonacoEnvironment = {
+    getWorker(_workerId, label) {
+      switch (label) {
+        // …
+        case 'mdx':
+-         return new Worker(new URL('@mdx-js/monaco/mdx.worker.js', import.meta.url))
++         return new Worker(new URL('./mdx.worker.js', import.meta.url))
+        // …
+      }
+    }
+  }
+```
+
 ## Examples
 
 A [demo][] is available.
@@ -145,6 +183,10 @@ abide by its terms.
 [contribute]: https://mdxjs.com/community/contribute
 
 [demo]: https://github.com/mdx-js/vscode-mdx/tree/HEAD/demo
+
+[frontmatter]: https://github.com/remarkjs/remark-frontmatter
+
+[gfm]: https://github.com/remarkjs/remark-gfm
 
 [jsdoc]: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
 

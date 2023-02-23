@@ -36,9 +36,7 @@ window.MonacoEnvironment = {
       }
 
       case 'mdx': {
-        return new Worker(
-          new URL('@mdx-js/monaco/mdx.worker.js', import.meta.url)
-        )
+        return new Worker(new URL('mdx.worker.js', import.meta.url))
       }
 
       default: {

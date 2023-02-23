@@ -1,0 +1,21 @@
+name: demo
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npx --workspace demo webpack --mode production
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: demo/dist
+      - uses: actions/deploy-pages@v1
+        id: deployment

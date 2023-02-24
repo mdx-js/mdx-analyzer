@@ -1,3 +1,4 @@
+*.d.ts
 *.log
 *.tgz
 *.tsbuildinfo

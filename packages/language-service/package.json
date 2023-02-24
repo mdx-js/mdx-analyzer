@@ -28,7 +28,8 @@
     "unified"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "remark-mdx": "^2.0.0",

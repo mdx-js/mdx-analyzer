@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "checkJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "module": "node16",
-    "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
     "paths": {

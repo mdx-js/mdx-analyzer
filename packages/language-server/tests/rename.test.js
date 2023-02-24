@@ -77,6 +77,23 @@ test('handle rename request of variable for opened references', async () => {
   })
 })
 
+test('handle undefined rename request', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const {uri} = await openTextDocument(connection, 'node16/undefined-props.mdx')
+  const result = await connection.sendRequest(RenameRequest.type, {
+    newName: 'renamed',
+    position: {line: 4, character: 3},
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, null)
+})
+
 test('ignore non-existent mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,

@@ -54,6 +54,22 @@ test('handle unknown rename request', async () => {
   assert.deepEqual(result, null)
 })
 
+test('handle undefined prepare rename request', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const {uri} = await openTextDocument(connection, 'node16/undefined-props.mdx')
+  const result = await connection.sendRequest(PrepareRenameRequest.type, {
+    position: {line: 0, character: 35},
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, null)
+})
+
 test('ignore non-existent mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,

@@ -7,6 +7,7 @@
  * @typedef {import('typescript').LanguageService} LanguageService
  * @typedef {import('typescript').LanguageServiceHost} LanguageServiceHost
  * @typedef {import('typescript').NavigationBarItem} NavigationBarItem
+ * @typedef {import('typescript').RenameLocation} RenameLocation
  * @typedef {import('typescript').SymbolDisplayPart} SymbolDisplayPart
  * @typedef {import('typescript').TextSpan} TextSpan
  * @typedef {import('unified').PluggableList} PluggableList
@@ -53,37 +54,47 @@ function assertNotMdx(fileName, fn) {
 /**
  * Correct the MDX position of a text span for MDX files.
  *
- * @param {string} fileName
- *   The file name of the snapshot the text span belongs in.
- * @param {MDXSnapshot | undefined} snapshot
- *   The MDX TypeScript snapshot that belongs to the file name.
- * @param {TextSpan} textSpan
+ * @param {MDXSnapshot} snapshot
+ *   The MDX TypeScript snapshot the text span belongs in.
+ * @param {TextSpan | undefined} textSpan
  *   The text span to correct.
+ * @returns {boolean}
+ *   True if the original text span represents a real location in the document,
+ *   otherwise false. If it’s false, the text span should be removed from the
+ *   results.
  */
-function patchTextSpan(fileName, snapshot, textSpan) {
-  if (snapshot && isMdx(fileName)) {
-    textSpan.start = snapshot.getRealPosition(textSpan.start)
+function patchTextSpan(snapshot, textSpan) {
+  if (!textSpan) {
+    return false
   }
+
+  const realStart = snapshot.getRealPosition(textSpan.start)
+  if (realStart === undefined) {
+    return false
+  }
+
+  textSpan.start = realStart
+  return true
 }
 
 /**
  * Correct the text spans in an MDX file.
  *
- * @param {string} fileName
- *   The file name of the snapshot the text span belongs in.
  * @param {MDXSnapshot} snapshot
  *   The MDX TypeScript snapshot that belongs to the file name.
- * @param {NavigationBarItem} item
- *   The navigation bar item to patch.
+ * @param {NavigationBarItem[]} items
+ *   The navigation bar items to patch.
  */
-function patchNavigationBarItem(fileName, snapshot, item) {
-  for (const span of item.spans) {
-    patchTextSpan(fileName, snapshot, span)
-  }
+function patchNavigationBarItem(snapshot, items) {
+  return items.filter((item) => {
+    item.spans = item.spans.filter((span) => patchTextSpan(snapshot, span))
+    if (item.spans.length === 0) {
+      return false
+    }
 
-  for (const child of item.childItems) {
-    patchNavigationBarItem(fileName, snapshot, child)
-  }
+    item.childItems = patchNavigationBarItem(snapshot, item.childItems)
+    return true
+  })
 }
 
 /**
@@ -166,34 +177,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       return host.getScriptSnapshot(fileName)
     }
 
-    const snapshot = scriptSnapshots.get(fileName)
-    // `getScriptVersion` below deletes the snapshot if the version is outdated.
-    // So if the snapshot exists at this point, this means it’s ok to return
-    // as-is.
-    if (snapshot) {
-      return snapshot
-    }
-
-    // If there is am existing snapshot, we need to synchronize from the host.
-    const externalSnapshot = host.getScriptSnapshot(fileName)
-    if (!externalSnapshot) {
-      return
-    }
-
-    // Here we use the snapshot from the original host. Since this has MDX
-    // content, we need to convert it to JSX.
-    const length = externalSnapshot.getLength()
-    const mdx = externalSnapshot.getText(0, length)
-    const newSnapshot = mdxToJsx(mdx, processor)
-    newSnapshot.dispose = () => {
-      externalSnapshot.dispose?.()
-      scriptSnapshots.delete(fileName)
-      scriptVersions.delete(fileName)
-    }
-
-    // It’s cached, so we only need to convert the MDX to JSX once.
-    scriptSnapshots.set(fileName, newSnapshot)
-    return newSnapshot
+    return getMdxSnapshot(fileName)
   }
 
   internalHost.getScriptVersion = (fileName) => {
@@ -250,6 +234,41 @@ export function createMdxLanguageService(ts, host, plugins) {
   const ls = ts.createLanguageService(internalHost)
 
   /**
+   * @param {string} fileName
+   * @returns {MDXSnapshot | undefined}
+   */
+  function getMdxSnapshot(fileName) {
+    const snapshot = scriptSnapshots.get(fileName)
+    // `getScriptVersion` below deletes the snapshot if the version is outdated.
+    // So if the snapshot exists at this point, this means it’s ok to return
+    // as-is.
+    if (snapshot) {
+      return snapshot
+    }
+
+    // If there is am existing snapshot, we need to synchronize from the host.
+    const externalSnapshot = host.getScriptSnapshot(fileName)
+    if (!externalSnapshot) {
+      return
+    }
+
+    // Here we use the snapshot from the original host. Since this has MDX
+    // content, we need to convert it to JSX.
+    const length = externalSnapshot.getLength()
+    const mdx = externalSnapshot.getText(0, length)
+    const newSnapshot = mdxToJsx(mdx, processor)
+    newSnapshot.dispose = () => {
+      externalSnapshot.dispose?.()
+      scriptSnapshots.delete(fileName)
+      scriptVersions.delete(fileName)
+    }
+
+    // It’s cached, so we only need to convert the MDX to JSX once.
+    scriptSnapshots.set(fileName, newSnapshot)
+    return newSnapshot
+  }
+
+  /**
    * Synchronize a snapshot with the external host.
    *
    * This function should be called first in every language service method
@@ -269,7 +288,7 @@ export function createMdxLanguageService(ts, host, plugins) {
     // If the internal and external snapshot versions are the same, and a
     // snapshot is present, this means it’s up-to-date, so there’s no need to
     // sychronize.
-    const snapshot = scriptSnapshots.get(fileName)
+    const snapshot = getMdxSnapshot(fileName)
     const externalVersion = host.getScriptVersion(fileName)
     const internalVersion = scriptVersions.get(fileName)
     if (internalVersion === externalVersion && snapshot) {
@@ -301,39 +320,54 @@ export function createMdxLanguageService(ts, host, plugins) {
   }
 
   /**
-   * @param {readonly DocumentSpan[]} documentSpans
+   * @template {DocumentSpan} T
+   * @param {readonly T[]} documentSpans
+   * @returns {T[]}
    */
   function patchDocumentSpans(documentSpans) {
+    /** @type {T[]} */
+    const result = []
     for (const documentSpan of documentSpans) {
-      const snapshot = scriptSnapshots.get(documentSpan.fileName)
-      patchTextSpan(documentSpan.fileName, snapshot, documentSpan.textSpan)
-
-      if (documentSpan.contextSpan) {
-        patchTextSpan(documentSpan.fileName, snapshot, documentSpan.contextSpan)
-      }
-
-      if (documentSpan.originalFileName) {
-        const originalSnapshot = scriptSnapshots.get(
-          documentSpan.originalFileName
-        )
-
-        if (documentSpan.originalContextSpan) {
-          patchTextSpan(
-            documentSpan.originalFileName,
-            originalSnapshot,
-            documentSpan.originalContextSpan
-          )
+      if (isMdx(documentSpan.fileName)) {
+        const snapshot = getMdxSnapshot(documentSpan.fileName)
+        if (!snapshot) {
+          // This should never occur
+          continue
         }
 
-        if (documentSpan.originalTextSpan) {
-          patchTextSpan(
-            documentSpan.originalFileName,
-            originalSnapshot,
-            documentSpan.originalTextSpan
-          )
+        if (!patchTextSpan(snapshot, documentSpan.textSpan)) {
+          continue
+        }
+
+        if (!patchTextSpan(snapshot, documentSpan.contextSpan)) {
+          delete documentSpan.contextSpan
+        }
+      }
+
+      result.push(documentSpan)
+
+      if (
+        !documentSpan.originalFileName ||
+        !isMdx(documentSpan.originalFileName)
+      ) {
+        continue
+      }
+
+      const originalSnapshot = getMdxSnapshot(documentSpan.originalFileName)
+      if (originalSnapshot) {
+        if (
+          !patchTextSpan(originalSnapshot, documentSpan.originalContextSpan)
+        ) {
+          delete documentSpan.originalContextSpan
+        }
+
+        if (!patchTextSpan(originalSnapshot, documentSpan.originalTextSpan)) {
+          delete documentSpan.originalTextSpan
         }
       }
     }
+
+    return result
   }
 
   /**
@@ -345,7 +379,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       return
     }
 
-    const snapshot = scriptSnapshots.get(fileName)
+    const snapshot = getMdxSnapshot(fileName)
 
     if (!snapshot) {
       return
@@ -410,18 +444,30 @@ export function createMdxLanguageService(ts, host, plugins) {
         providePrefixAndSuffixTextForRename
       )
 
-      if (locations) {
-        for (const location of locations) {
-          const locationSnapshot = scriptSnapshots.get(location.fileName)
-          patchTextSpan(location.fileName, locationSnapshot, location.textSpan)
-          if (location.contextSpan) {
-            patchTextSpan(
-              location.fileName,
-              locationSnapshot,
-              location.contextSpan
-            )
+      if (!locations) {
+        return
+      }
+
+      /** @type {RenameLocation[]} */
+      const result = []
+      for (const location of locations) {
+        if (isMdx(location.fileName)) {
+          const locationSnapshot = getMdxSnapshot(location.fileName)
+          if (!locationSnapshot) {
+            // This should never occur!
+            continue
+          }
+
+          if (!patchTextSpan(locationSnapshot, location.textSpan)) {
+            continue
+          }
+
+          if (!patchTextSpan(locationSnapshot, location.contextSpan)) {
+            delete location.contextSpan
           }
         }
+
+        result.push(location)
       }
 
       return locations
@@ -431,13 +477,16 @@ export function createMdxLanguageService(ts, host, plugins) {
 
     getBraceMatchingAtPosition(fileName, position) {
       const snapshot = syncSnapshot(fileName)
-      const textSpans = ls.getBraceMatchingAtPosition(fileName, position)
+      const textSpans = ls.getBraceMatchingAtPosition(
+        fileName,
+        snapshot?.getShadowPosition(position) ?? position
+      )
 
-      for (const textSpan of textSpans) {
-        patchTextSpan(fileName, snapshot, textSpan)
+      if (!snapshot) {
+        return textSpans
       }
 
-      return textSpans
+      return textSpans.filter((textSpan) => patchTextSpan(snapshot, textSpan))
     },
 
     getBreakpointStatementAtPosition(fileName, position) {
@@ -449,7 +498,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       }
 
       if (snapshot) {
-        patchTextSpan(fileName, snapshot, textSpan)
+        patchTextSpan(snapshot, textSpan)
       }
 
       return textSpan
@@ -497,22 +546,21 @@ export function createMdxLanguageService(ts, host, plugins) {
         options,
         formattingSettings
       )
-      if (!isMdx(fileName) || !snapshot || !completionInfo) {
-        return completionInfo
+
+      if (!completionInfo) {
+        return
       }
 
-      if (completionInfo.optionalReplacementSpan) {
-        patchTextSpan(
-          fileName,
-          snapshot,
-          completionInfo.optionalReplacementSpan
-        )
-      }
+      if (snapshot) {
+        if (!patchTextSpan(snapshot, completionInfo.optionalReplacementSpan)) {
+          delete completionInfo.optionalReplacementSpan
+        }
 
-      if (completionInfo.entries) {
-        for (const entry of completionInfo.entries) {
-          if (entry.replacementSpan) {
-            patchTextSpan(fileName, snapshot, entry.replacementSpan)
+        if (completionInfo.entries) {
+          for (const entry of completionInfo.entries) {
+            if (!patchTextSpan(snapshot, entry.replacementSpan)) {
+              delete entry.replacementSpan
+            }
           }
         }
       }
@@ -525,13 +573,13 @@ export function createMdxLanguageService(ts, host, plugins) {
     getDefinitionAtPosition(fileName, position) {
       const snapshot = syncSnapshot(fileName)
 
-      const definition = ls.getDefinitionAtPosition(
+      let definition = ls.getDefinitionAtPosition(
         fileName,
         snapshot?.getShadowPosition(position) ?? position
       )
 
       if (definition) {
-        patchDocumentSpans(definition)
+        definition = patchDocumentSpans(definition)
       }
 
       if (snapshot) {
@@ -612,18 +660,10 @@ export function createMdxLanguageService(ts, host, plugins) {
 
     getNavigationBarItems(fileName) {
       const snapshot = syncSnapshot(fileName)
-      let navigationBarItems = ls.getNavigationBarItems(fileName)
-
-      if (isMdx(fileName)) {
-        navigationBarItems = navigationBarItems.filter(
-          (item) => item.text !== 'MDXContent'
-        )
-      }
+      const navigationBarItems = ls.getNavigationBarItems(fileName)
 
       if (snapshot) {
-        for (const item of navigationBarItems) {
-          patchNavigationBarItem(fileName, snapshot, item)
-        }
+        return patchNavigationBarItem(snapshot, navigationBarItems)
       }
 
       return navigationBarItems
@@ -636,16 +676,29 @@ export function createMdxLanguageService(ts, host, plugins) {
       const snapshot = syncSnapshot(fileName)
       const outliningSpans = ls.getOutliningSpans(fileName)
 
+      if (!snapshot) {
+        return outliningSpans
+      }
+
+      const results = getFoldingRegions(ts, snapshot.ast)
       for (const span of outliningSpans) {
-        patchTextSpan(fileName, snapshot, span.hintSpan)
-        patchTextSpan(fileName, snapshot, span.textSpan)
+        if (!patchTextSpan(snapshot, span.textSpan)) {
+          continue
+        }
+
+        if (!patchTextSpan(snapshot, span.hintSpan)) {
+          continue
+        }
+
+        results.push(span)
       }
 
-      if (snapshot) {
-        outliningSpans.push(...getFoldingRegions(ts, snapshot.ast))
-      }
-
-      return outliningSpans
+      return results.sort(
+        (a, b) =>
+          a.textSpan.start - b.textSpan.start ||
+          a.textSpan.length - b.textSpan.length ||
+          a.kind.localeCompare(b.kind)
+      )
     },
 
     getProgram() {
@@ -660,13 +713,12 @@ export function createMdxLanguageService(ts, host, plugins) {
         snapshot?.getShadowPosition(position) ?? position
       )
 
-      if (quickInfo) {
-        patchTextSpan(fileName, snapshot, quickInfo.textSpan)
+      if (!snapshot) {
         return quickInfo
       }
 
-      if (!snapshot) {
-        return
+      if (quickInfo && patchTextSpan(snapshot, quickInfo.textSpan)) {
+        return quickInfo
       }
 
       const node = getMarkdownDefinitionAtPosition(snapshot.ast, position)
@@ -675,7 +727,7 @@ export function createMdxLanguageService(ts, host, plugins) {
         return
       }
 
-      /** @type {import('typescript').SymbolDisplayPart[]} */
+      /** @type {SymbolDisplayPart[]} */
       const displayParts = [
         {text: '[', kind: 'punctuation'},
         {text: node.identifier, kind: 'aliasName'},
@@ -721,8 +773,16 @@ export function createMdxLanguageService(ts, host, plugins) {
         options
       )
 
-      if (info.canRename) {
-        patchTextSpan(fileName, snapshot, info.triggerSpan)
+      if (snapshot && info.canRename) {
+        if (patchTextSpan(snapshot, info.triggerSpan)) {
+          return info
+        }
+
+        return {
+          canRename: false,
+          localizedErrorMessage:
+            'Could not map the rename info to the MDX source'
+        }
       }
 
       return info
@@ -782,10 +842,8 @@ export function createMdxLanguageService(ts, host, plugins) {
       )
 
       if (definition) {
-        patchDocumentSpans(definition)
+        return patchDocumentSpans(definition)
       }
-
-      return definition
     },
 
     isValidBraceCompletionAtPosition: notImplemented(

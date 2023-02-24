@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.3
+
+### Patch Changes
+
+- [#300](https://github.com/mdx-js/vscode-mdx/pull/300) [`e691483`](https://github.com/mdx-js/vscode-mdx/commit/e691483cd14bf368606b8e8d47504ed3b1f16b8b) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Trim positions that can’t be mapped to the original MDX source code.
+
+- [#302](https://github.com/mdx-js/vscode-mdx/pull/302) [`c406d37`](https://github.com/mdx-js/vscode-mdx/commit/c406d37faf11fb8f1ea7a9b72043ec376267cc74) Thanks [@TomasHubelbauer](https://github.com/TomasHubelbauer)! - Remove backtick auto-completion to prevent doubling up backticks in inline code spans and code blocks
+
 ## 1.2.2
 
 ### Patch Changes

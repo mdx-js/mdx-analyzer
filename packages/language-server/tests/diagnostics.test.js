@@ -90,3 +90,23 @@ test('type errors', async () => {
     ]
   })
 })
+
+test('does not resolve shadow content', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const diagnosticsPromise = waitForDiagnostics(connection)
+  const textDocument = await openTextDocument(
+    connection,
+    'node16/link-reference.mdx'
+  )
+  const diagnostics = await diagnosticsPromise
+
+  assert.deepEqual(diagnostics, {
+    uri: textDocument.uri,
+    diagnostics: []
+  })
+})

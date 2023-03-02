@@ -1,9 +1,6 @@
 /**
- * @typedef {import('mdast').Root} Root
  * @typedef {import('typescript').Diagnostic} Diagnostic
- * @typedef {import('typescript').DiagnosticWithLocation} DiagnosticWithLocation
  * @typedef {import('typescript').DocumentSpan} DocumentSpan
- * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
  * @typedef {import('typescript').LanguageService} LanguageService
  * @typedef {import('typescript').LanguageServiceHost} LanguageServiceHost
  * @typedef {import('typescript').NavigationBarItem} NavigationBarItem
@@ -371,32 +368,37 @@ export function createMdxLanguageService(ts, host, plugins) {
   }
 
   /**
-   * @param {Diagnostic} diagnostic
+   * @template {Diagnostic} T
+   * @param {readonly T[]} diagnostics
+   * @returns {T[]}
    */
-  function patchDiagnostic(diagnostic) {
-    const fileName = diagnostic.file?.fileName
-    if (!fileName || !isMdx(fileName)) {
-      return
-    }
+  function patchDiagnostics(diagnostics) {
+    /** @type {T[]} */
+    const result = []
 
-    const snapshot = getMdxSnapshot(fileName)
-
-    if (!snapshot) {
-      return
-    }
-
-    if (diagnostic.start !== undefined) {
-      diagnostic.start = snapshot.getRealPosition(diagnostic.start)
-    }
-  }
-
-  /**
-   * @param {DiagnosticWithLocation[]} diagnostics
-   */
-  function patchDiagnosticsWithLocation(diagnostics) {
     for (const diagnostic of diagnostics) {
-      patchDiagnostic(diagnostic)
+      const fileName = diagnostic.file?.fileName
+      if (!fileName || !isMdx(fileName)) {
+        result.push(diagnostic)
+        continue
+      }
+
+      const snapshot = getMdxSnapshot(fileName)
+
+      if (!snapshot) {
+        continue
+      }
+
+      if (diagnostic.start === undefined) {
+        result.push(diagnostic)
+      }
+
+      if (patchTextSpan(snapshot, /** @type {TextSpan} */ (diagnostic))) {
+        result.push(diagnostic)
+      }
     }
+
+    return result
   }
 
   return {
@@ -794,11 +796,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       syncSnapshot(fileName)
       const diagnostics = ls.getSemanticDiagnostics(fileName)
 
-      for (const diagnostic of diagnostics) {
-        patchDiagnostic(diagnostic)
-      }
-
-      return diagnostics
+      return patchDiagnostics(diagnostics)
     },
 
     getSignatureHelpItems: notImplemented('getSignatureHelpItems'),
@@ -809,11 +807,7 @@ export function createMdxLanguageService(ts, host, plugins) {
       syncSnapshot(fileName)
       const diagnostics = ls.getSuggestionDiagnostics(fileName)
 
-      for (const diagnostic of diagnostics) {
-        patchDiagnostic(diagnostic)
-      }
-
-      return diagnostics
+      return patchDiagnostics(diagnostics)
     },
 
     getSyntacticClassifications: notImplemented('getSyntacticClassifications'),
@@ -826,9 +820,7 @@ export function createMdxLanguageService(ts, host, plugins) {
 
       const diagnostics = ls.getSyntacticDiagnostics(fileName)
 
-      patchDiagnosticsWithLocation(diagnostics)
-
-      return diagnostics
+      return patchDiagnostics(diagnostics)
     },
 
     getTodoComments: notImplemented('getTodoComments'),

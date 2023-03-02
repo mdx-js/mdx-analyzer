@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.4
+
+### Patch Changes
+
+- [#306](https://github.com/mdx-js/vscode-mdx/pull/306) [`59798ff`](https://github.com/mdx-js/vscode-mdx/commit/59798ffae6832805f534d0f7f02091e8bdbe72cf) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Trim positions that can’t be mapped to the original MDX source code from diagnostics.
+
 ## 1.2.3
 
 ### Patch Changes

@@ -61,7 +61,13 @@ monaco.languages.register({
 })
 
 // This is where we actually configure the MDX integration.
-initializeMonacoMdx(monaco)
+initializeMonacoMdx(monaco, {
+  createData: {
+    compilerOptions: {
+      checkJs: true
+    }
+  }
+})
 
 // Synchronize the file tree on the left with the Monaco models. Files from
 // node_modules are hidden, but can be navigated to.

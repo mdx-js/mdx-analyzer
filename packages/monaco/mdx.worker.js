@@ -11,8 +11,6 @@
  * @typedef {object} CreateData
  * @property {CompilerOptions} compilerOptions
  *   The TypeScript compiler options configured by the user.
- * @property {string} customWorkerPath
- *   The path to a custom worker.
  * @property {IExtraLibs} extraLibs
  *   Additional libraries to load.
  * @property {InlayHintsOptions} inlayHintsOptions

@@ -3,6 +3,13 @@
  * @typedef {import('monaco-editor').IDisposable} IDisposable
  * @typedef {import('monaco-editor').Uri} Uri
  * @typedef {import('monaco-editor').editor.ITextModel} ITextModel
+ * @typedef {import('monaco-editor').editor.MonacoWebWorker<TypeScriptWorker>} MonacoWebWorker
+ * @typedef {import('monaco-editor').languages.typescript.TypeScriptWorker} TypeScriptWorker
+ * @typedef {Partial<import('./mdx.worker.js').CreateData>} CreateData
+ *
+ * @typedef InitializeMonacoMdxOptions
+ * @property {CreateData} createData
+ *   Options to pass to the MDX worker.
  */
 
 import {registerMarkerDataProvider} from 'monaco-marker-data-provider'
@@ -20,23 +27,24 @@ import {
  *
  * @param {Monaco} monaco
  *   The Monaco editor module.
+ * @param {InitializeMonacoMdxOptions} [options]
+ *   Additional options for MDX IntelliSense.
  * @returns {IDisposable}
  *   A disposable.
  */
-export function initializeMonacoMdx(monaco) {
-  const worker =
-    /** @type {import('monaco-editor').editor.MonacoWebWorker<import('monaco-editor').languages.typescript.TypeScriptWorker>} */ (
-      monaco.editor.createWebWorker({
-        moduleId: '@mdx-js/monaco',
-        label: 'mdx',
-        keepIdleModels: true,
-        createData: /** @type {import('./mdx.worker.js').CreateData} */ ({
-          compilerOptions: {},
-          extraLibs: {},
-          inlayHintsOptions: {}
-        })
+export function initializeMonacoMdx(monaco, options) {
+  const worker = /** @type {MonacoWebWorker} */ (
+    monaco.editor.createWebWorker({
+      moduleId: '@mdx-js/monaco',
+      label: 'mdx',
+      keepIdleModels: true,
+      createData: /** @type {CreateData} */ ({
+        compilerOptions: options?.createData?.compilerOptions || {},
+        extraLibs: options?.createData?.extraLibs || {},
+        inlayHintsOptions: options?.createData?.inlayHintsOptions || {}
       })
-    )
+    })
+  )
 
   /**
    * @param {Uri[]} resources

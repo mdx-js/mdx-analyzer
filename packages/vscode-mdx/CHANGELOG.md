@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.5
+
+### Patch Changes
+
+- [#308](https://github.com/mdx-js/vscode-mdx/pull/308) [`991a617`](https://github.com/mdx-js/vscode-mdx/commit/991a6177827837b66460d9f7e2a76626a7461870) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add support for `mdxJsxTextElement`.
+
 ## 1.2.4
 
 ### Patch Changes

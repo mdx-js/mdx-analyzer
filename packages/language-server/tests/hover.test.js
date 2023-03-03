@@ -122,6 +122,35 @@ test('resolve import hover in JSX expressions', async () => {
   })
 })
 
+test('support mdxJsxTextElement', async () => {
+  await connection.sendRequest(InitializeRequest.type, {
+    processId: null,
+    rootUri: null,
+    capabilities: {}
+  })
+
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/mdx-jsx-text-element.mdx'
+  )
+  const result = await connection.sendRequest(HoverRequest.type, {
+    position: {line: 3, character: 5},
+    textDocument: {uri}
+  })
+
+  assert.deepEqual(result, {
+    contents: {
+      kind: 'markdown',
+      value:
+        '```typescript\nfunction Component(): void\n```\nDescription of `Component`'
+    },
+    range: {
+      start: {line: 3, character: 1},
+      end: {line: 3, character: 10}
+    }
+  })
+})
+
 test('resolve import hover in JSX elements', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,

@@ -183,6 +183,7 @@ export function mdxToJsx(mdx, processor) {
         }
 
         case 'mdxFlowExpression':
+        case 'mdxJsxTextElement':
         case 'mdxTextExpression': {
           jsxPositions.push([start, end])
           if (/** @type {Program} */ (node.data?.estree)?.body.length === 0) {

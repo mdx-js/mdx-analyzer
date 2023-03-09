@@ -542,6 +542,11 @@ export function createMdxLanguageService(ts, host, plugins) {
 
     getCompletionsAtPosition(fileName, position, options, formattingSettings) {
       const snapshot = syncSnapshot(fileName)
+
+      if (snapshot && !snapshot.isJavaScript(position)) {
+        return
+      }
+
       const completionInfo = ls.getCompletionsAtPosition(
         fileName,
         snapshot?.getShadowPosition(position) ?? position,

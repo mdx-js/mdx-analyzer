@@ -18,6 +18,8 @@
  *   Map a position from the real MDX document to the JSX shadow document.
  * @property {(shadowPosition: number) => number | undefined} getRealPosition
  *   Map a position from the shadow document to the real MDX document.
+ * @property {(position: number) => boolean} isJavaScript
+ *   Check if a position maps to JavaScript or markdown content.
  * @property {unknown} [error]
  *   This is defined if a parsing error has occurred.
  * @property {Root} ast
@@ -140,7 +142,8 @@ export function mdxToJsx(mdx, processor) {
       getLength: () => fallback.length,
 
       getShadowPosition: () => undefined,
-      getRealPosition: () => undefined
+      getRealPosition: () => undefined,
+      isJavaScript: () => true
     }
   }
 
@@ -253,6 +256,11 @@ export function mdxToJsx(mdx, processor) {
       ) {
         return shadowPosition - esmShadow.length - componentStart.length
       }
+    },
+    isJavaScript(position) {
+      return (
+        shouldShow(esmPositions, position) || shouldShow(jsxPositions, position)
+      )
     }
   }
 }

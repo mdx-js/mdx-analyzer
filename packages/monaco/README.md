@@ -182,7 +182,7 @@ abide by its terms.
 
 [contribute]: https://mdxjs.com/community/contribute
 
-[demo]: https://github.com/mdx-js/vscode-mdx/tree/HEAD/demo
+[demo]: https://github.com/mdx-js/mdx-analyzer/tree/HEAD/demo
 
 [frontmatter]: https://github.com/remarkjs/remark-frontmatter
 

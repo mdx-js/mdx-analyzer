@@ -21,7 +21,7 @@ jobs:
       - uses: changesets/action@v1
         with:
           publish: git push --follow-tags
-          commit: 'chore: release vscode-mdx'
-          title: 'chore: release vscode-mdx'
+          commit: 'chore: release mdx-analyzer'
+          title: 'chore: release mdx-analyzer'
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

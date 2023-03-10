@@ -5,11 +5,11 @@
   "description": "MDX IntelliSense in Monaco editor",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mdx-js/vscode-mdx.git",
+    "url": "https://github.com/mdx-js/mdx-analyzer.git",
     "directory": "packages/monaco"
   },
   "homepage": "https://mdxjs.com",
-  "bugs": "https://github.com/mdx-js/vscode-mdx/issues",
+  "bugs": "https://github.com/mdx-js/mdx-analyzer/issues",
   "author": "Remco Haszing <remcohaszing@gmail.com>",
   "funding": "https://opencollective.com/unified",
   "license": "MIT",

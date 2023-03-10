@@ -4,41 +4,41 @@
 
 ### Patch Changes
 
-- [#308](https://github.com/mdx-js/vscode-mdx/pull/308) [`991a617`](https://github.com/mdx-js/vscode-mdx/commit/991a6177827837b66460d9f7e2a76626a7461870) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add support for `mdxJsxTextElement`.
+- [#308](https://github.com/mdx-js/mdx-analyzer/pull/308) [`991a617`](https://github.com/mdx-js/mdx-analyzer/commit/991a6177827837b66460d9f7e2a76626a7461870) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add support for `mdxJsxTextElement`.
 
 ## 1.2.4
 
 ### Patch Changes
 
-- [#306](https://github.com/mdx-js/vscode-mdx/pull/306) [`59798ff`](https://github.com/mdx-js/vscode-mdx/commit/59798ffae6832805f534d0f7f02091e8bdbe72cf) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Trim positions that can’t be mapped to the original MDX source code from diagnostics.
+- [#306](https://github.com/mdx-js/mdx-analyzer/pull/306) [`59798ff`](https://github.com/mdx-js/mdx-analyzer/commit/59798ffae6832805f534d0f7f02091e8bdbe72cf) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Trim positions that can’t be mapped to the original MDX source code from diagnostics.
 
 ## 1.2.3
 
 ### Patch Changes
 
-- [#300](https://github.com/mdx-js/vscode-mdx/pull/300) [`e691483`](https://github.com/mdx-js/vscode-mdx/commit/e691483cd14bf368606b8e8d47504ed3b1f16b8b) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Trim positions that can’t be mapped to the original MDX source code.
+- [#300](https://github.com/mdx-js/mdx-analyzer/pull/300) [`e691483`](https://github.com/mdx-js/mdx-analyzer/commit/e691483cd14bf368606b8e8d47504ed3b1f16b8b) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Trim positions that can’t be mapped to the original MDX source code.
 
-- [#302](https://github.com/mdx-js/vscode-mdx/pull/302) [`c406d37`](https://github.com/mdx-js/vscode-mdx/commit/c406d37faf11fb8f1ea7a9b72043ec376267cc74) Thanks [@TomasHubelbauer](https://github.com/TomasHubelbauer)! - Remove backtick auto-completion to prevent doubling up backticks in inline code spans and code blocks
+- [#302](https://github.com/mdx-js/mdx-analyzer/pull/302) [`c406d37`](https://github.com/mdx-js/mdx-analyzer/commit/c406d37faf11fb8f1ea7a9b72043ec376267cc74) Thanks [@TomasHubelbauer](https://github.com/TomasHubelbauer)! - Remove backtick auto-completion to prevent doubling up backticks in inline code spans and code blocks
 
 ## 1.2.2
 
 ### Patch Changes
 
-- [#290](https://github.com/mdx-js/vscode-mdx/pull/290) [`1cfcf96`](https://github.com/mdx-js/vscode-mdx/commit/1cfcf9662f0c95f8d86dbd076ffd077fedce8cce) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix error when requesting folding ranges.
+- [#290](https://github.com/mdx-js/mdx-analyzer/pull/290) [`1cfcf96`](https://github.com/mdx-js/mdx-analyzer/commit/1cfcf9662f0c95f8d86dbd076ffd077fedce8cce) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix error when requesting folding ranges.
 
-- [#294](https://github.com/mdx-js/vscode-mdx/pull/294) [`1f885bc`](https://github.com/mdx-js/vscode-mdx/commit/1f885bcd3bcedcd2a38784fb5518cfc31cdd30a0) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Resolve definitions referencing unopened files.
+- [#294](https://github.com/mdx-js/mdx-analyzer/pull/294) [`1f885bc`](https://github.com/mdx-js/mdx-analyzer/commit/1f885bcd3bcedcd2a38784fb5518cfc31cdd30a0) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Resolve definitions referencing unopened files.
 
 ## 1.2.1
 
 ### Patch Changes
 
-- [#286](https://github.com/mdx-js/vscode-mdx/pull/286) [`eb774d0`](https://github.com/mdx-js/vscode-mdx/commit/eb774d08a2b4b59dbcc839b1df6d0b42831a35c5) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix an issue causing false positive diagnostics in non-MDX files.
+- [#286](https://github.com/mdx-js/mdx-analyzer/pull/286) [`eb774d0`](https://github.com/mdx-js/mdx-analyzer/commit/eb774d08a2b4b59dbcc839b1df6d0b42831a35c5) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix an issue causing false positive diagnostics in non-MDX files.
 
 ## 1.2.0
 
 ### Minor Changes
 
-- [#272](https://github.com/mdx-js/vscode-mdx/pull/272) [`4aad7ef`](https://github.com/mdx-js/vscode-mdx/commit/4aad7ef6ff16ab8e4695dcff344ebd3b1739f6bf) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support remark syntax plugins.
+- [#272](https://github.com/mdx-js/mdx-analyzer/pull/272) [`4aad7ef`](https://github.com/mdx-js/mdx-analyzer/commit/4aad7ef6ff16ab8e4695dcff344ebd3b1739f6bf) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support remark syntax plugins.
 
   This extension supports remark syntax plugins.
   Plugins can be defined in an array of strings or string / options tuples.
@@ -60,13 +60,13 @@
   }
   ```
 
-- [#285](https://github.com/mdx-js/vscode-mdx/pull/285) [`31966db`](https://github.com/mdx-js/vscode-mdx/commit/31966db0eb65f7ac723357ffbb17d9e8d08ea5e3) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Rename the `Markdown React` language to `MDX`.
+- [#285](https://github.com/mdx-js/mdx-analyzer/pull/285) [`31966db`](https://github.com/mdx-js/mdx-analyzer/commit/31966db0eb65f7ac723357ffbb17d9e8d08ea5e3) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Rename the `Markdown React` language to `MDX`.
 
 ### Patch Changes
 
-- [#279](https://github.com/mdx-js/vscode-mdx/pull/279) [`2a8b266`](https://github.com/mdx-js/vscode-mdx/commit/2a8b266fe3b1a8a6b982a4a92ab26a147d5b3552) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix a crash of neither `allowJs` not `checkJs` is true in `tsconfig.json`.
+- [#279](https://github.com/mdx-js/mdx-analyzer/pull/279) [`2a8b266`](https://github.com/mdx-js/mdx-analyzer/commit/2a8b266fe3b1a8a6b982a4a92ab26a147d5b3552) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix a crash of neither `allowJs` not `checkJs` is true in `tsconfig.json`.
 
-- [#281](https://github.com/mdx-js/vscode-mdx/pull/281) [`b0bc3a1`](https://github.com/mdx-js/vscode-mdx/commit/b0bc3a1feb1509730447c021e841a60be05d0d39) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix a crash that occurs if:
+- [#281](https://github.com/mdx-js/mdx-analyzer/pull/281) [`b0bc3a1`](https://github.com/mdx-js/mdx-analyzer/commit/b0bc3a1feb1509730447c021e841a60be05d0d39) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix a crash that occurs if:
 
   - no `tsconfig.json` exists.
   - `tsconfig.json` specifies `includes`, but doesn’t include the MDX file.
@@ -74,7 +74,7 @@
   - a new file is created.
   - a file is renamed.
 
-- [#273](https://github.com/mdx-js/vscode-mdx/pull/273) [`ed9382e`](https://github.com/mdx-js/vscode-mdx/commit/ed9382e19ec6337f113d3e9350a94edfc113c57b) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Previously the MDX language server handled TypeScript IntelliSense for
+- [#273](https://github.com/mdx-js/mdx-analyzer/pull/273) [`ed9382e`](https://github.com/mdx-js/mdx-analyzer/commit/ed9382e19ec6337f113d3e9350a94edfc113c57b) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Previously the MDX language server handled TypeScript IntelliSense for
   JavaScript and TypeScript files as well.
   This led to duplicate IntelliSense results in the editor if people have also
   enabled TypeScript IntelliSense.
@@ -86,14 +86,14 @@
 
 ### Minor Changes
 
-- [#226](https://github.com/mdx-js/vscode-mdx/pull/226) [`0fdf371`](https://github.com/mdx-js/vscode-mdx/commit/0fdf3716f45615aa3ebbacb5f2f4d49029bbbecf) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add experimental IntelliSense
+- [#226](https://github.com/mdx-js/mdx-analyzer/pull/226) [`0fdf371`](https://github.com/mdx-js/mdx-analyzer/commit/0fdf3716f45615aa3ebbacb5f2f4d49029bbbecf) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add experimental IntelliSense
 
   To enable IntelliSense, set `mdx.experimentalLanguageServer` to `true` in your
   VSCode settings.
   You can verify it’s enabled by interacting with the JavaScript parts on an MDX
   document, for example by hovering an import or variable
 
-- [#222](https://github.com/mdx-js/vscode-mdx/pull/222) [`d2eb7a7`](https://github.com/mdx-js/vscode-mdx/commit/d2eb7a7cf23cb0f7b435d6f0b71c21f10ed93ad6) Thanks [@KeyboardSounds](https://github.com/KeyboardSounds)! - Support for highlighting JSX evaluated expressions
+- [#222](https://github.com/mdx-js/mdx-analyzer/pull/222) [`d2eb7a7`](https://github.com/mdx-js/mdx-analyzer/commit/d2eb7a7cf23cb0f7b435d6f0b71c21f10ed93ad6) Thanks [@KeyboardSounds](https://github.com/KeyboardSounds)! - Support for highlighting JSX evaluated expressions
 
   In JSX, you can include JS expressions within tags, like:
 
@@ -108,41 +108,41 @@
 
 ### Patch Changes
 
-- [#219](https://github.com/mdx-js/vscode-mdx/pull/219) [`46d91dc`](https://github.com/mdx-js/vscode-mdx/commit/46d91dc43e8c862be089cc4aad34ed2dc4336534) Thanks [@grahampcharles](https://github.com/grahampcharles)! - fix: remove superfluous `embeddedLanguages` setting
+- [#219](https://github.com/mdx-js/mdx-analyzer/pull/219) [`46d91dc`](https://github.com/mdx-js/mdx-analyzer/commit/46d91dc43e8c862be089cc4aad34ed2dc4336534) Thanks [@grahampcharles](https://github.com/grahampcharles)! - fix: remove superfluous `embeddedLanguages` setting
 
 ## 1.0.2
 
 ### Patch Changes
 
-- [#214](https://github.com/mdx-js/vscode-mdx/pull/214) [`4275105`](https://github.com/mdx-js/vscode-mdx/commit/4275105e18d61b231ffcc18b23c7b6e827a35283) Thanks [@remcohaszing](https://github.com/remcohaszing)! - chore: update extension metadata content and README
+- [#214](https://github.com/mdx-js/mdx-analyzer/pull/214) [`4275105`](https://github.com/mdx-js/mdx-analyzer/commit/4275105e18d61b231ffcc18b23c7b6e827a35283) Thanks [@remcohaszing](https://github.com/remcohaszing)! - chore: update extension metadata content and README
 
 ## 1.0.1
 
 ### Patch Changes
 
-- [#212](https://github.com/mdx-js/vscode-mdx/pull/212) [`f73d790`](https://github.com/mdx-js/vscode-mdx/commit/f73d790b52cd70b0c984dd956aece5ef848aaf96) Thanks [@JounQin](https://github.com/JounQin)! - docs: change to use transferred publisher
+- [#212](https://github.com/mdx-js/mdx-analyzer/pull/212) [`f73d790`](https://github.com/mdx-js/mdx-analyzer/commit/f73d790b52cd70b0c984dd956aece5ef848aaf96) Thanks [@JounQin](https://github.com/JounQin)! - docs: change to use transferred publisher
 
 ## 1.0.0
 
 ### Major Changes
 
-- [#207](https://github.com/mdx-js/vscode-mdx/pull/207) [`1181523`](https://github.com/mdx-js/vscode-mdx/commit/1181523ff3178be6de05f8a6684d7f4c452e4cf8) Thanks [@JounQin](https://github.com/JounQin)! - build!: republish under `unifiedjs` org
+- [#207](https://github.com/mdx-js/mdx-analyzer/pull/207) [`1181523`](https://github.com/mdx-js/mdx-analyzer/commit/1181523ff3178be6de05f8a6684d7f4c452e4cf8) Thanks [@JounQin](https://github.com/JounQin)! - build!: republish under `unifiedjs` org
 
 ### Patch Changes
 
-- [#207](https://github.com/mdx-js/vscode-mdx/pull/207) [`1181523`](https://github.com/mdx-js/vscode-mdx/commit/1181523ff3178be6de05f8a6684d7f4c452e4cf8) Thanks [@JounQin](https://github.com/JounQin)! - ci: add publish workflow for releasing on CI automatically
+- [#207](https://github.com/mdx-js/mdx-analyzer/pull/207) [`1181523`](https://github.com/mdx-js/mdx-analyzer/commit/1181523ff3178be6de05f8a6684d7f4c452e4cf8) Thanks [@JounQin](https://github.com/JounQin)! - ci: add publish workflow for releasing on CI automatically
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [0.3.2](https://github.com/mdx-js/vscode-mdx/compare/v0.3.1...v0.3.2) (2022-07-06)
+### [0.3.2](https://github.com/mdx-js/mdx-analyzer/compare/v0.3.1...v0.3.2) (2022-07-06)
 
 ### Bug Fixes
 
-- correct badge links, add donate and funding fields ([ed75936](https://github.com/mdx-js/vscode-mdx/commit/ed759369b94121f54e74d91090a6e42f06b9898e))
+- correct badge links, add donate and funding fields ([ed75936](https://github.com/mdx-js/mdx-analyzer/commit/ed759369b94121f54e74d91090a6e42f06b9898e))
 
-### [0.3.1](https://github.com/mdx-js/vscode-mdx/compare/v0.3.0...v0.3.1) (2022-07-06)
+### [0.3.1](https://github.com/mdx-js/mdx-analyzer/compare/v0.3.0...v0.3.1) (2022-07-06)
 
-## [0.3.0](https://github.com/mdx-js/vscode-mdx/compare/v0.2.3...v0.3.0) (2022-07-06)
+## [0.3.0](https://github.com/mdx-js/mdx-analyzer/compare/v0.2.3...v0.3.0) (2022-07-06)
 
 ### ⚠ BREAKING CHANGES
 
@@ -150,41 +150,41 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-- use mdx v2 comment syntax ([b4a5968](https://github.com/mdx-js/vscode-mdx/commit/b4a5968213d83ccca3dd96d0fd2ce3aaba8ab505))
+- use mdx v2 comment syntax ([b4a5968](https://github.com/mdx-js/mdx-analyzer/commit/b4a5968213d83ccca3dd96d0fd2ce3aaba8ab505))
 
-### [0.2.3](https://github.com/mdx-js/vscode-mdx/compare/v0.2.2...v0.2.3) (2021-03-17)
+### [0.2.3](https://github.com/mdx-js/mdx-analyzer/compare/v0.2.2...v0.2.3) (2021-03-17)
 
-### [0.2.2](https://github.com/mdx-js/vscode-mdx/compare/v0.2.1...v0.2.2) (2020-08-05)
-
-### Bug Fixes
-
-- remove property activationEvents ([744b330](https://github.com/mdx-js/vscode-mdx/commit/744b330660feb9441e2febfcafff091c8d71ae1e))
-
-### [0.2.1](https://github.com/mdx-js/vscode-mdx/compare/v0.2.0...v0.2.1) (2020-08-05)
+### [0.2.2](https://github.com/mdx-js/mdx-analyzer/compare/v0.2.1...v0.2.2) (2020-08-05)
 
 ### Bug Fixes
 
-- it seems git+https can not be recognized ([f723438](https://github.com/mdx-js/vscode-mdx/commit/f723438cb2f1132d1872157ebe1186214a755b97))
+- remove property activationEvents ([744b330](https://github.com/mdx-js/mdx-analyzer/commit/744b330660feb9441e2febfcafff091c8d71ae1e))
 
-## [0.2.0](https://github.com/mdx-js/vscode-mdx/compare/v0.1.4...v0.2.0) (2020-08-05)
+### [0.2.1](https://github.com/mdx-js/mdx-analyzer/compare/v0.2.0...v0.2.1) (2020-08-05)
+
+### Bug Fixes
+
+- it seems git+https can not be recognized ([f723438](https://github.com/mdx-js/mdx-analyzer/commit/f723438cb2f1132d1872157ebe1186214a755b97))
+
+## [0.2.0](https://github.com/mdx-js/mdx-analyzer/compare/v0.1.4...v0.2.0) (2020-08-05)
 
 ### Features
 
-- remove unused lsp codes - close [#140](https://github.com/mdx-js/vscode-mdx/issues/140) ([c1383e1](https://github.com/mdx-js/vscode-mdx/commit/c1383e192a80752e10463f4cc792ba9b305bf842))
+- remove unused lsp codes - close [#140](https://github.com/mdx-js/mdx-analyzer/issues/140) ([c1383e1](https://github.com/mdx-js/mdx-analyzer/commit/c1383e192a80752e10463f4cc792ba9b305bf842))
 
 ### Bug Fixes
 
-- marketplace "repository" link is broken ([#139](https://github.com/mdx-js/vscode-mdx/issues/139)) ([804e0f7](https://github.com/mdx-js/vscode-mdx/commit/804e0f77438eede4685e01f861056c0a082532e4))
+- marketplace "repository" link is broken ([#139](https://github.com/mdx-js/mdx-analyzer/issues/139)) ([804e0f7](https://github.com/mdx-js/mdx-analyzer/commit/804e0f77438eede4685e01f861056c0a082532e4))
 
-### [0.1.4](https://github.com/rx-ts/vscode-mdx/compare/v0.1.3...v0.1.4) (2020-04-09)
+### [0.1.4](https://github.com/mdx-js/mdx-analyzer/compare/v0.1.3...v0.1.4) (2020-04-09)
 
 ### Bug Fixes
 
-- remove deprecated eslint config options - close [#126](https://github.com/rx-ts/vscode-mdx/issues/126) ([06b2818](https://github.com/rx-ts/vscode-mdx/commit/06b281854214353bec3159120b752ae0e37aecba))
+- remove deprecated eslint config options - close [#126](https://github.com/mdx-js/mdx-analyzer/issues/126) ([06b2818](https://github.com/mdx-js/mdx-analyzer/commit/06b281854214353bec3159120b752ae0e37aecba))
 
 ### 0.1.3 (2019-11-18)
 
 ### Features
 
-- first blood, init from vscode examples ([6c9420f](https://github.com/rx-ts/vscode-mdx/commit/6c9420f88f97745c07f34b736b51f27594e3c289))
-- improve basic grammar support ([f998d2a](https://github.com/rx-ts/vscode-mdx/commit/f998d2ad7d5d1d70aeb4ac440656cab0e55bb3ae))
+- first blood, init from vscode examples ([6c9420f](https://github.com/mdx-js/mdx-analyzer/commit/6c9420f88f97745c07f34b736b51f27594e3c289))
+- improve basic grammar support ([f998d2a](https://github.com/mdx-js/mdx-analyzer/commit/f998d2ad7d5d1d70aeb4ac440656cab0e55bb3ae))

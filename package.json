@@ -1,6 +1,6 @@
 {
   "private": true,
-  "repository": "https://github.com/mdx-js/vscode-mdx.git",
+  "repository": "https://github.com/mdx-js/mdx-analyzer.git",
   "workspaces": [
     "demo",
     "packages/*"

@@ -16,8 +16,8 @@ see how it can be integrated in your own project.
 Clone and install this repository.
 
 ```sh
-git clone https://github.com/mdx-js/vscode-mdx.git
-cd vscode-mdx
+git clone https://github.com/mdx-js/mdx-analyzer.git
+cd mdx-analyzer
 npm install
 ```
 

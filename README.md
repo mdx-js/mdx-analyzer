@@ -1,6 +1,6 @@
-# MDX IntelliSense
+# MDX Analyzer
 
-[![GitHub Actions](https://github.com/mdx-js/vscode-mdx/workflows/main/badge.svg)](https://github.com/mdx-js/vscode-mdx/actions/workflows/main.yml)
+[![GitHub Actions](https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg)](https://github.com/mdx-js/mdx-analyzer/actions/workflows/main.yml)
 [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
 [![Open VSX Version](https://img.shields.io/open-vsx/v/unifiedjs/vscode-mdx)](https://open-vsx.org/extension/unifiedjs/vscode-mdx)
@@ -89,13 +89,13 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 
 [MIT][] © [JounQin][]@[1stG.me][]
 
-[`@mdx-js/monaco`]: https://github.com/mdx-js/vscode-mdx/tree/main/packages/monaco
+[`@mdx-js/monaco`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/monaco
 
-[`@mdx-js/language-server`]: https://github.com/mdx-js/vscode-mdx/tree/main/packages/language-server
+[`@mdx-js/language-server`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/language-server
 
-[`@mdx-js/language-service`]: https://github.com/mdx-js/vscode-mdx/tree/main/packages/language-service
+[`@mdx-js/language-service`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/language-service
 
-[`vscode-mdx`]: https://github.com/mdx-js/vscode-mdx/tree/main/packages/vscode-mdx
+[`vscode-mdx`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/vscode-mdx
 
 [1stg.me]: https://www.1stg.me
 

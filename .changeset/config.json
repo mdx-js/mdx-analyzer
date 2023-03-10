@@ -3,7 +3,7 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "mdx-js/vscode-mdx"
+      "repo": "mdx-js/mdx-analyzer"
     }
   ],
   "commit": false,

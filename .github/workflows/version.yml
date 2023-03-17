@@ -16,12 +16,13 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{matrix.node}}
-      - run: npm install
+          node-version: 18
+          registry-url: https://registry.npmjs.org
       - uses: changesets/action@v1
         with:
-          publish: git push --follow-tags
-          commit: 'chore: release vscode-mdx'
-          title: 'chore: release vscode-mdx'
+          publish: ./release.sh
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          OVSX_PAT: ${{secrets.OPEN_VSX_TOKEN}}
+          VSCE_PAT: ${{secrets.VSCE_TOKEN}}

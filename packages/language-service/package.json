@@ -28,7 +28,7 @@
     "unified"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build --clean && tsc --build",
     "prepack": "npm run build"
   },
   "dependencies": {

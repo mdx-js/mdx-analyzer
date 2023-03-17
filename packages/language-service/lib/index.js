@@ -862,6 +862,7 @@ export function createMdxLanguageService(ts, host, plugins) {
     provideInlayHints: notImplemented('provideInlayHints'),
     toggleLineComment: notImplemented('toggleLineComment'),
     toggleMultilineComment: notImplemented('toggleMultilineComment'),
+    getSupportedCodeFixes: notImplemented('getSupportedCodeFixes'),
     uncommentSelection: notImplemented('uncommentSelection')
   }
 

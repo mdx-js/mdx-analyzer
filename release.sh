@@ -1,5 +1,4 @@
 #!/usr/bin/bash
-npm install
 npm pack --pack-destination "$PWD" --workspace @mdx-js/language-service
 npm pack --pack-destination "$PWD" --workspace @mdx-js/language-server
 npm pack --pack-destination "$PWD" --workspace @mdx-js/language-monaco

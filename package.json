@@ -6,7 +6,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm --workspaces run build",
+    "build:monorepo": "cp node_modules/markdown-tm-language/source.mdx.tmLanguage packages/vscode-mdx/syntaxes/",
+    "build:workspaces": "npm --workspaces run build",
+    "build": "npm run build:monorepo && npm run build:workspaces",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "start": "npm --workspace @mdx-js/monaco-demo run start",
     "test-api": "npm run test-api --workspaces --if-present",
@@ -16,6 +18,7 @@
     "@changesets/changelog-github": "^0.4.0",
     "@changesets/cli": "^2.0.0",
     "@types/react": "^18.0.0",
+    "markdown-tm-language": "github:wooorm/markdown-tm-language",
     "prettier": "^2.0.0",
     "react": "^18.0.0",
     "remark-cli": "^11.0.0",

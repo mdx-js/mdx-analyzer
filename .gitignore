@@ -1,4 +1,5 @@
 *.d.ts
+*.d.mts
 *.log
 *.tgz
 *.tsbuildinfo

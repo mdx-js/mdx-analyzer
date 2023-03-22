@@ -1,4 +1,6 @@
 {
+  "include": ["**/**.js"],
+  "exclude": ["coverage/", "node_modules/"],
   "compilerOptions": {
     "checkJs": true,
     "module": "node16",

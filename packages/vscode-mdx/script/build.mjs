@@ -43,10 +43,7 @@ blob = blob.replace(/<dict>/, ($0) => {
 assert(injected, 'expected to find a dict')
 
 await fs.writeFile(
-  new URL(
-    '../packages/vscode-mdx/syntaxes/source.mdx.tmLanguage',
-    import.meta.url
-  ),
+  new URL('../syntaxes/source.mdx.tmLanguage', import.meta.url),
   blob
 )
 

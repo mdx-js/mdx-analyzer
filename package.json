@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "generate": "npm --workspace vscode-mdx run generate",
     "build": "npm --workspaces run build",
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
     "start": "npm --workspace @mdx-js/monaco-demo run start",

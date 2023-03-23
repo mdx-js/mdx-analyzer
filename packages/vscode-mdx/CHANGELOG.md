@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.3.0
+
+### Minor Changes
+
+- [#310](https://github.com/mdx-js/mdx-analyzer/pull/310) [`1585698`](https://github.com/mdx-js/mdx-analyzer/commit/1585698c0a896c7a91c4fb35871bcd2dbc04b213) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Filter TypeScript based completions when writing markdown content.
+
+- [#317](https://github.com/mdx-js/mdx-analyzer/pull/317) [`f1bd49b`](https://github.com/mdx-js/mdx-analyzer/commit/f1bd49b56e934811ff3ecf657b491557b53f820a) Thanks [@wooorm](https://github.com/wooorm)! - Add improved syntax highlighting grammar
+
+  This now pulls in a grammar for from:
+  <https://github.com/wooorm/markdown-tm-language>.
+
+  It fixes a bunch of previous errors and adds real support for MDX.
+  It also supports YAML frontmatter, TOML frontmatter, GFM (autolink
+  literals, footnotes, strikethrough, tables, tasklists), GitHub (gemoji,
+  mentions, references).
+  There’s support for about 20 common embedded grammars in fenced code
+  blocks.
+  Embedded code (in fenced code blocks, or in ESM/expressions) is now
+  marked as being the correct language, which makes comments and such
+  work.
+
+- [#315](https://github.com/mdx-js/mdx-analyzer/pull/315) [`e66b3a9`](https://github.com/mdx-js/mdx-analyzer/commit/e66b3a9ae7360e708f8c963d24d6e4572113d06d) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update to TypeScript 5.
+
+### Patch Changes
+
+- [#314](https://github.com/mdx-js/mdx-analyzer/pull/314) [`252b247`](https://github.com/mdx-js/mdx-analyzer/commit/252b247e4813b6fea331424ccb85ef1df6ea6450) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add backtick to `surroundingPairs`.
+
 ## 1.2.5
 
 ### Patch Changes

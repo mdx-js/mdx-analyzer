@@ -16,8 +16,3 @@ blocks.
 Embedded code (in fenced code blocks, or in ESM/expressions) is now
 marked as being the correct language, which makes comments and such
 work.
-
-Closes GH-183.
-Closes GH-191.
-Closes GH-209.
-Closes GH-221.

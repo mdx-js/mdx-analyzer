@@ -7,7 +7,7 @@
     Once accepted there, it can be pulled into this project (`vscode-mdx`) with
     `script/build.js`, and released.
 
-    Version from SHA: af071d1d73208442c09159d3e44f7ab7527d0073.
+    Version from SHA: 9776f2e73a3c1dac6a70c36255417a0edb388d31.
   -->
   <dict>
     <key>name</key>
@@ -4516,7 +4516,7 @@
             <array>
               <dict>
                 <key>include</key>
-                <string>source.md</string>
+                <string>text.md</string>
               </dict>
               <dict>
                 <key>include</key>
@@ -4579,7 +4579,7 @@
             <array>
               <dict>
                 <key>include</key>
-                <string>source.md</string>
+                <string>text.md</string>
               </dict>
               <dict>
                 <key>include</key>

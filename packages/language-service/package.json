@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/language-service",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "description": "MDX IntelliSense in Monaco editor",
   "repository": {

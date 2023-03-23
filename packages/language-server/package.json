@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/language-server",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "description": "MDX IntelliSense in Monaco editor",
   "repository": {
@@ -33,7 +33,7 @@
     "test-api": "node --test"
   },
   "dependencies": {
-    "@mdx-js/language-service": "0.0.0",
+    "@mdx-js/language-service": "0.1.0",
     "load-plugin": "^5.0.0",
     "typescript": "^5.0.0",
     "vscode-languageserver": "^8.0.0",

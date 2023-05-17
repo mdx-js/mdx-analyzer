@@ -9,9 +9,7 @@
 
 import path from 'node:path'
 import {fileURLToPath, pathToFileURL} from 'node:url'
-
 import {createMdxLanguageService} from '@mdx-js/language-service'
-
 import {loadPlugins} from './configuration.js'
 import {
   documents,

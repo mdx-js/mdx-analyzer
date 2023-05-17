@@ -6,7 +6,6 @@
 
 import process from 'node:process'
 import {fileURLToPath} from 'node:url'
-
 import {isMdx} from '@mdx-js/language-service'
 import ts from 'typescript'
 import {
@@ -17,7 +16,6 @@ import {
   TextDocumentSyncKind,
   TextEdit
 } from 'vscode-languageserver/node.js'
-
 import {
   convertDiagnostics,
   convertNavigationBarItems,

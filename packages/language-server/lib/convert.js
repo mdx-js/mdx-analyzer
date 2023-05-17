@@ -28,7 +28,6 @@ import {
   Range,
   SymbolKind
 } from 'vscode-languageserver'
-
 import {getOrReadDocByFileName} from './documents.js'
 
 /**

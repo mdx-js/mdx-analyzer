@@ -23,7 +23,7 @@
     "remark-frontmatter": "^4.0.0",
     "remark-preset-wooorm": "^9.0.0",
     "typescript": "^5.0.0",
-    "xo": "^0.53.0"
+    "xo": "^0.54.0"
   },
   "prettier": {
     "tabWidth": 2,
@@ -51,6 +51,7 @@
       "node"
     ],
     "rules": {
+      "@typescript-eslint/prefer-nullish-coalescing": "off",
       "max-params": "off"
     }
   }

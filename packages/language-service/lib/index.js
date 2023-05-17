@@ -14,7 +14,6 @@
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import {unified} from 'unified'
-
 import {toDiagnostic} from './error.js'
 import {getMarkdownDefinitionAtPosition} from './markdown.js'
 import {bindAll} from './object.js'

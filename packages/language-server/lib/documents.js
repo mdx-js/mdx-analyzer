@@ -1,6 +1,5 @@
 import fs from 'node:fs'
 import {pathToFileURL} from 'node:url'
-
 import {isMdx} from '@mdx-js/language-service'
 import {TextDocuments} from 'vscode-languageserver'
 import {TextDocument} from 'vscode-languageserver-textdocument'

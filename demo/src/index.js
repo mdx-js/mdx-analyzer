@@ -1,7 +1,6 @@
-import './index.css'
-
 import {initializeMonacoMdx} from '@mdx-js/monaco'
 import * as monaco from 'monaco-editor'
+import './index.css'
 
 // Configure Monaco editor to load workers.
 window.MonacoEnvironment = {

@@ -13,7 +13,6 @@
  */
 
 import {registerMarkerDataProvider} from 'monaco-marker-data-provider'
-
 import {
   createCompletionItemProvider,
   createDefinitionProvider,

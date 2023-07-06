@@ -14,7 +14,6 @@
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import {unified} from 'unified'
-
 import {toDiagnostic} from './error.js'
 import {getMarkdownDefinitionAtPosition} from './markdown.js'
 import {bindAll} from './object.js'
@@ -443,7 +442,7 @@ export function createMdxLanguageService(ts, host, plugins) {
         snapshot?.getShadowPosition(position) ?? position,
         findInStrings,
         findInComments,
-        providePrefixAndSuffixTextForRename
+        /** @type {boolean} */ (providePrefixAndSuffixTextForRename)
       )
 
       if (!locations) {
@@ -650,6 +649,12 @@ export function createMdxLanguageService(ts, host, plugins) {
     getImplementationAtPosition: notImplemented('getImplementationAtPosition'),
     getIndentationAtPosition: notImplemented('getIndentationAtPosition'),
     getJsxClosingTagAtPosition: notImplemented('getJsxClosingTagAtPosition'),
+    getLinkedEditingRangeAtPosition: notImplemented(
+      'getLinkedEditingRangeAtPosition'
+    ),
+    getMoveToRefactoringFileSuggestions: notImplemented(
+      'getMoveToRefactoringFileSuggestions'
+    ),
     getNameOrDottedNameSpan: notImplemented('getNameOrDottedNameSpan'),
 
     getNavigateToItems(searchValue, maxResultCount, fileName, excludeDtsFiles) {
@@ -677,7 +682,6 @@ export function createMdxLanguageService(ts, host, plugins) {
     },
 
     getNavigationTree: notImplemented('getNavigationTree'),
-    getOccurrencesAtPosition: notImplemented('getOccurrencesAtPosition'),
 
     getOutliningSpans(fileName) {
       const snapshot = syncSnapshot(fileName)

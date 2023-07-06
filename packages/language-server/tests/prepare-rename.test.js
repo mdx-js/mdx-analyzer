@@ -3,9 +3,7 @@
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-
 import {InitializeRequest, PrepareRenameRequest} from 'vscode-languageserver'
-
 import {createConnection, fixtureUri, openTextDocument} from './utils.js'
 
 /** @type {ProtocolConnection} */

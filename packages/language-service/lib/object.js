@@ -25,7 +25,10 @@ export function bindAll(object) {
       }
 
       const value = object[k]
-      copy[k] = typeof value === 'function' ? value.bind(object) : value
+      copy[k] =
+        typeof value === 'function'
+          ? /** @type {Function} */ (value).bind(object)
+          : value
     }
 
     proto = Object.getPrototypeOf(proto)

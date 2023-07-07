@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.4.0
+
+### Minor Changes
+
+- [#330](https://github.com/mdx-js/mdx-analyzer/pull/330) [`88d4db4`](https://github.com/mdx-js/mdx-analyzer/commit/88d4db46f7dcb66e0c0897c0c69c35b33fe6db3b) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add MDX file icons
+
+### Patch Changes
+
+- [#328](https://github.com/mdx-js/mdx-analyzer/pull/328) [`2630215`](https://github.com/mdx-js/mdx-analyzer/commit/26302153d58fc059ddb7644da255f87d171f948c) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update MDX grammar
+
 ## 1.3.0
 
 ### Minor Changes

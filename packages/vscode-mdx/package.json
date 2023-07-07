@@ -79,8 +79,8 @@
         ],
         "configuration": "./language-configuration.json",
         "icon": {
-          "dark": "./assets/file-icon-dark.svg",
-          "light": "./assets/file-icon-light.svg"
+          "dark": "./assets/file-icon.svg",
+          "light": "./assets/file-icon.svg"
         }
       }
     ],

@@ -25,6 +25,9 @@
     "typescript": "^5.0.0",
     "xo": "^0.54.0"
   },
+  "overrides": {
+    "@types/unist": "^2.0.0"
+  },
   "prettier": {
     "tabWidth": 2,
     "useTabs": false,

@@ -6,6 +6,9 @@
 
 import {spawn} from 'node:child_process'
 import fs from 'node:fs/promises'
+import {createRequire} from 'node:module'
+import path from 'node:path'
+import {fileURLToPath} from 'node:url'
 import {
   createProtocolConnection,
   DidOpenTextDocumentNotification,
@@ -13,6 +16,13 @@ import {
   IPCMessageWriter,
   PublishDiagnosticsNotification
 } from 'vscode-languageserver/node.js'
+
+const require = createRequire(import.meta.url)
+
+/**
+ * The path to the TypeScript SDK.
+ */
+export const tsdk = path.dirname(require.resolve('typescript'))
 
 /**
  * @returns {ProtocolConnection}
@@ -44,6 +54,14 @@ export function createConnection() {
  */
 export function fixtureUri(fileName) {
   return String(new URL(`../../../fixtures/${fileName}`, import.meta.url))
+}
+
+/**
+ * @param {string} fileName
+ * @returns {string}
+ */
+export function fixturePath(fileName) {
+  return fileURLToPath(fixtureUri(fileName))
 }
 
 /**

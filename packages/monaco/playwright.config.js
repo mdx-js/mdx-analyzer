@@ -9,10 +9,15 @@ import {createServer} from 'playwright-monaco'
  */
 const config = {
   use: {
-    baseURL: await createServer({
-      setup: './tests/setup.js',
-      mdx: './mdx.worker.js'
-    })
+    baseURL: await createServer(
+      {
+        setup: './tests/setup.js',
+        mdx: './mdx.worker.js'
+      },
+      {
+        alias: {path: 'path-browserify'}
+      }
+    )
   }
 }
 

@@ -1,5 +1,6 @@
 import HtmlWebPackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import webpack from 'webpack'
 
 /**
  * @type {import('webpack').Configuration}
@@ -8,7 +9,10 @@ const config = {
   devtool: 'source-map',
   entry: './src/index.js',
   resolve: {
-    conditionNames: ['worker']
+    conditionNames: ['worker'],
+    alias: {
+      path: 'path-browserify'
+    }
   },
   module: {
     exprContextRegExp: /$^/,
@@ -33,6 +37,7 @@ const config = {
     ]
   },
   plugins: [
+    new webpack.IgnorePlugin({resourceRegExp: /perf_hooks/}),
     new HtmlWebPackPlugin(),
     new MiniCssExtractPlugin({filename: '[contenthash].css'})
   ]

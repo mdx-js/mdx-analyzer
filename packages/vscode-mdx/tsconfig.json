@@ -3,6 +3,7 @@
   "exclude": ["coverage/", "node_modules/"],
   "compilerOptions": {
     "checkJs": true,
+    "esModuleInterop": false,
     "module": "node16",
     "noEmit": true,
     "skipLibCheck": true,

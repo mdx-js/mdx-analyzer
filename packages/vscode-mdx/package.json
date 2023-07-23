@@ -40,16 +40,16 @@
   },
   "scripts": {
     "build": "node ./script/build.mjs",
-    "build:debug": "npm run copy-libs && npm run build debug",
-    "copy-libs": "cpy '../../node_modules/typescript/lib/lib.*.d.ts' out/",
+    "build:debug": "npm run build debug",
     "generate": "node --conditions development ./script/generate.mjs",
-    "vscode:prepublish": "npm run copy-libs && npm run build"
+    "vscode:prepublish": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.0.0",
+    "@volar/language-server": "~1.10.0",
+    "@volar/vscode": "^1.0.0",
     "@vscode/vsce": "^2.0.0",
-    "cpy-cli": "^5.0.0",
     "esbuild": "^0.18.0",
     "ovsx": "^0.8.0",
     "undici": "^5.0.0",

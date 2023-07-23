@@ -35,7 +35,9 @@ window.MonacoEnvironment = {
       }
 
       case 'mdx': {
-        return new Worker(new URL('mdx.worker.js', import.meta.url))
+        return new Worker(
+          new URL('@mdx-js/monaco/mdx.worker.js', import.meta.url)
+        )
       }
 
       default: {
@@ -60,13 +62,7 @@ monaco.languages.register({
 })
 
 // This is where we actually configure the MDX integration.
-initializeMonacoMdx(monaco, {
-  createData: {
-    compilerOptions: {
-      checkJs: true
-    }
-  }
-})
+await initializeMonacoMdx(monaco)
 
 // Synchronize the file tree on the left with the Monaco models. Files from
 // node_modules are hidden, but can be navigated to.

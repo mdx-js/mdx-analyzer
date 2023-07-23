@@ -1,1 +1,1 @@
-export {createMdxLanguageService, isMdx} from './lib/index.js'
+export {resolveConfig} from './lib/language-service.js'

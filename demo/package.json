@@ -13,7 +13,7 @@
     "css-loader": "^6.0.0",
     "html-webpack-plugin": "^5.0.0",
     "mini-css-extract-plugin": "^2.0.0",
-    "monaco-editor": "^0.34.0",
+    "monaco-editor": "^0.41.0",
     "remark-frontmatter": "^4.0.0",
     "remark-gfm": "^3.0.0",
     "webpack": "^5.0.0",

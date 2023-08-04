@@ -216,7 +216,6 @@ function convertRelatedInformation(model, relatedInformation) {
     }
 
     const infoStart = info.start || 0
-    // eslint-disable-next-line unicorn/explicit-length-check
     const infoLength = info.length || 1
     const {lineNumber: startLineNumber, column: startColumn} =
       relatedResource.getPositionAt(infoStart)
@@ -280,7 +279,6 @@ function tsDiagnosticCategoryToMarkerSeverity(monaco, category) {
  */
 export function convertDiagnostics(monaco, model, diag) {
   const diagStart = diag.start || 0
-  // eslint-disable-next-line unicorn/explicit-length-check
   const diagLength = diag.length || 1
   const {lineNumber: startLineNumber, column: startColumn} =
     model.getPositionAt(diagStart)

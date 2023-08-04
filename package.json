@@ -17,16 +17,13 @@
     "@changesets/changelog-github": "^0.4.0",
     "@changesets/cli": "^2.0.0",
     "@types/react": "^18.0.0",
-    "prettier": "^2.0.0",
+    "prettier": "^3.0.0",
     "react": "^18.0.0",
     "remark-cli": "^11.0.0",
     "remark-frontmatter": "^4.0.0",
     "remark-preset-wooorm": "^9.0.0",
     "typescript": "^5.0.0",
-    "xo": "^0.54.0"
-  },
-  "overrides": {
-    "@types/unist": "^2.0.0"
+    "xo": "^0.55.0"
   },
   "prettier": {
     "tabWidth": 2,

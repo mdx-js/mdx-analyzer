@@ -289,7 +289,6 @@ function convertRelatedInformation(relatedInformation) {
     }
 
     const infoStart = info.start || 0
-    // eslint-disable-next-line unicorn/explicit-length-check
     const infoLength = info.length || 1
     const range = Range.create(
       related.positionAt(infoStart),
@@ -322,7 +321,6 @@ function convertRelatedInformation(relatedInformation) {
  */
 export function convertDiagnostics(ts, doc, diag) {
   const diagStart = diag.start || 0
-  // eslint-disable-next-line unicorn/explicit-length-check
   const diagLength = diag.length || 1
   const range = Range.create(
     doc.positionAt(diagStart),

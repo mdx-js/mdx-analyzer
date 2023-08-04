@@ -16,6 +16,7 @@
         "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-mdx",
         "${workspaceFolder}/fixtures/fixtures.code-workspace"
       ],
+      "outFiles": ["${workspaceFolder}/packages/vscode-mdx/out/**/*.js"],
       "skipFiles": ["<node_internals>/**", "**/node_modules/vscode-*/**"],
       "preLaunchTask": "build"
     }

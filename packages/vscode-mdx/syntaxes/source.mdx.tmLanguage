@@ -5,7 +5,7 @@
     This file is maintained at <https://github.com/wooorm/markdown-tm-language/blob/main/source.mdx.tmLanguage>.
     To improve it, please create a pull request to the original repository.
     Once accepted there, it can be pulled into this project (`vscode-mdx`) with
-    `script/build.js`, and released.
+    `script/generate.mjs`, and released.
 
     Version from SHA: e14b65157a0b738430309b14b2f025f3bb37526a.
   -->

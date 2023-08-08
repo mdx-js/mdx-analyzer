@@ -39,11 +39,11 @@
     "dependencies": false
   },
   "scripts": {
-    "build": "esbuild extension=./src/extension.js language-server=@mdx-js/language-server --bundle --platform=node --target=node16 --external:vscode --outdir=out",
-    "build:debug": "npm run copy-libs && npm run build -- --sourcemap",
+    "build": "node ./script/build.mjs",
+    "build:debug": "npm run copy-libs && npm run build debug",
     "copy-libs": "cpy '../../node_modules/typescript/lib/lib.*.d.ts' out/",
     "generate": "node --conditions development ./script/generate.mjs",
-    "vscode:prepublish": "npm run copy-libs && npm run build -- --minify"
+    "vscode:prepublish": "npm run copy-libs && npm run build"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

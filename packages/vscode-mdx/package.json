@@ -55,6 +55,10 @@
     "undici": "^5.0.0",
     "vscode-languageclient": "^8.0.0"
   },
+  "galleryBanner": {
+    "color": "#fcb32c",
+    "theme": "light"
+  },
   "contributes": {
     "configuration": [
       {

@@ -1,7 +1,9 @@
 {
   "settings": {
     "git.openRepositoryInParentFolders": "never",
-    "mdx.experimentalLanguageServer": true
+    "mdx.experimentalLanguageServer": true,
+    "mdx.trace.server.verbosity": "compact",
+    "mdx.trace.server.format": "text"
   },
   "folders": [
     {"path": "demo"},

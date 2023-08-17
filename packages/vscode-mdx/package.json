@@ -68,6 +68,24 @@
             "type": "boolean",
             "default": false,
             "description": "Enable experimental IntelliSense support for MDX files."
+          },
+          "mdx.trace.server.verbosity": {
+            "enum": [
+              "off",
+              "messages",
+              "compact",
+              "verbose"
+            ],
+            "default": "off",
+            "description": "Trace MDX language server requests in the output console."
+          },
+          "mdx.trace.server.format": {
+            "enum": [
+              "text",
+              "json"
+            ],
+            "default": "text",
+            "description": "How to format traced MDX language server requests."
           }
         }
       }

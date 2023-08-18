@@ -8,7 +8,7 @@
   "scripts": {
     "generate": "npm --workspace vscode-mdx run generate",
     "build": "npm --workspaces run build",
-    "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
+    "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
     "start": "npm --workspace @mdx-js/monaco-demo run start",
     "test-api": "npm run test-api --workspaces --if-present",
     "test": "npm run build && npm run format && npm run test-api"

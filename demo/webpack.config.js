@@ -23,7 +23,7 @@ const config = {
         type: 'asset/resource'
       },
       {
-        test: /\/fixtures\/demo\//,
+        test: /[\\/]fixtures[\\/]demo[\\/]/,
         type: 'asset/source'
       },
       {

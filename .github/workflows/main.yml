@@ -13,15 +13,11 @@ jobs:
         with:
           node-version: ${{matrix.node}}
       - run: npm install
-      - run: npx playwright install --with-deps
       - run: npm test
     strategy:
       matrix:
         os:
           - ubuntu-latest
-          # We should test on Windows, because the language server deals with
-          # the file system.
-          # Currently blocked by https://github.com/remcohaszing/playwright-monaco/issues/1
-          # - windows-latest
+          - windows-latest
         node:
           - 18

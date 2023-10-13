@@ -7,7 +7,7 @@ This is done by wrapping the [TypeScript][] language service.
 
 ## When should I use this?
 
-This package is intended for use by `@mdx-js/monaco` and `@mdx-js/language-server`.
+This package is intended for use by `@mdx-js/language-server`.
 It’s not intended for external usage.
 
 ## Install

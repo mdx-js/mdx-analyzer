@@ -2,14 +2,12 @@
   "private": true,
   "repository": "https://github.com/mdx-js/mdx-analyzer.git",
   "workspaces": [
-    "demo",
     "packages/*"
   ],
   "scripts": {
     "generate": "npm --workspace vscode-mdx run generate",
     "build": "npm --workspaces run build",
     "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
-    "start": "npm --workspace @mdx-js/monaco-demo run start",
     "test-api": "npm run test-api --workspaces --if-present",
     "test": "npm run build && npm run format && npm run test-api"
   },

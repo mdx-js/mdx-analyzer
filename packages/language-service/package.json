@@ -2,7 +2,7 @@
   "name": "@mdx-js/language-service",
   "version": "0.1.0",
   "type": "module",
-  "description": "MDX IntelliSense in Monaco editor",
+  "description": "MDX Volar support",
   "repository": {
     "type": "git",
     "url": "https://github.com/mdx-js/mdx-analyzer.git",
@@ -22,8 +22,6 @@
   "keywords": [
     "IntelliSense",
     "mdx",
-    "monaco",
-    "monaco-editor",
     "typescript",
     "unified"
   ],

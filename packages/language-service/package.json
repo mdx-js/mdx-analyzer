@@ -40,8 +40,8 @@
     "remark-parse": "^10.0.0",
     "unified": "^10.0.0",
     "unist-util-visit-parents": "^5.0.0",
-    "volar-service-markdown": "0.0.13",
-    "volar-service-typescript": "0.0.13"
+    "volar-service-markdown": "0.0.14",
+    "volar-service-typescript": "0.0.14"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -48,19 +48,7 @@ test('initialize', async () => {
       colorProvider: true,
       completionProvider: {
         resolveProvider: true,
-        triggerCharacters: [
-          '.',
-          '"',
-          "'",
-          '`',
-          '/',
-          '<',
-          '@',
-          '#',
-          ' ',
-          '*',
-          ':'
-        ]
+        triggerCharacters: ['.', '"', "'", '`', '/', '<', '@', '#', ' ', '*']
       },
       definitionProvider: true,
       documentFormattingProvider: true,

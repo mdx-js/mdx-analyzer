@@ -5,7 +5,6 @@
 
 import {create as createMarkdownService} from 'volar-service-markdown'
 import {create as createTypeScriptService} from 'volar-service-typescript'
-import {create as createYamlService} from 'volar-service-yaml'
 import {getLanguageModule} from './language-module.js'
 
 /**
@@ -21,7 +20,6 @@ export function resolveConfig(config, ts, plugins) {
   config.services ||= {}
   config.services.markdown = createMarkdownService()
   config.services.typescript = createTypeScriptService()
-  config.services.yaml = createYamlService({})
 
   return config
 }

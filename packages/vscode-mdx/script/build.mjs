@@ -25,10 +25,8 @@ await build({
     {
       name: 'alias',
       setup({onResolve, resolve}) {
-        onResolve(
-          {filter: /^(vscode-.*|jsonc-parser)$/},
-          ({path, ...options}) =>
-            resolve(require.resolve(path).replace(/\/umd\//, '/esm/'), options)
+        onResolve({filter: /^(jsonc-parser)$/}, ({path, ...options}) =>
+          resolve(require.resolve(path).replace(/\/umd\//, '/esm/'), options)
         )
         onResolve({filter: /\/umd\//}, ({path, ...options}) =>
           resolve(path.replace(/\/umd\//, '/esm/'), options)

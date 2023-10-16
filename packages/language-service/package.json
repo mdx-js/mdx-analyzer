@@ -41,8 +41,7 @@
     "unified": "^10.0.0",
     "unist-util-visit-parents": "^5.0.0",
     "volar-service-markdown": "0.0.13",
-    "volar-service-typescript": "0.0.13",
-    "volar-service-yaml": "0.0.13"
+    "volar-service-typescript": "0.0.13"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -39,6 +39,8 @@
     "remark-gfm": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.0.0",
+    "@types/normalize-path": "^3.0.0",
+    "normalize-path": "^3.0.0"
   }
 }

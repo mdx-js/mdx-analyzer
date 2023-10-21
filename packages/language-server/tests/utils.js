@@ -9,7 +9,6 @@ import fs from 'node:fs/promises'
 import {createRequire} from 'node:module'
 import path from 'node:path'
 import {fileURLToPath} from 'node:url'
-// eslint-disable-next-line import/order
 import {
   createProtocolConnection,
   DidOpenTextDocumentNotification,
@@ -17,6 +16,9 @@ import {
   IPCMessageWriter,
   PublishDiagnosticsNotification
 } from 'vscode-languageserver/node.js'
+import {URI} from 'vscode-uri'
+// eslint-disable-next-line import/order
+import normalizePath from 'normalize-path'
 
 const require = createRequire(import.meta.url)
 const pkgPath = new URL('../package.json', import.meta.url)
@@ -59,7 +61,9 @@ export function createConnection() {
  * @returns {string} The uri that matches the fixture file name.
  */
 export function fixtureUri(fileName) {
-  return String(new URL(`../../../fixtures/${fileName}`, import.meta.url))
+  return String(
+    URI.parse(String(new URL(`../../../fixtures/${fileName}`, import.meta.url)))
+  )
 }
 
 /**
@@ -67,7 +71,7 @@ export function fixtureUri(fileName) {
  * @returns {string}
  */
 export function fixturePath(fileName) {
-  return fileURLToPath(fixtureUri(fileName))
+  return normalizePath(fileURLToPath(fixtureUri(fileName)))
 }
 
 /**
@@ -79,7 +83,7 @@ export function fixturePath(fileName) {
  */
 export async function openTextDocument(connection, fileName) {
   const url = new URL(`../../../fixtures/${fileName}`, import.meta.url)
-  const uri = String(url)
+  const uri = String(URI.parse(String(url)))
   const text = await fs.readFile(url, 'utf8')
   /** @type {TextDocumentItem} */
   const textDocument = {

@@ -9,6 +9,7 @@ import fs from 'node:fs/promises'
 import {createRequire} from 'node:module'
 import path from 'node:path'
 import {fileURLToPath} from 'node:url'
+// eslint-disable-next-line import/order
 import {
   createProtocolConnection,
   DidOpenTextDocumentNotification,
@@ -18,6 +19,11 @@ import {
 } from 'vscode-languageserver/node.js'
 
 const require = createRequire(import.meta.url)
+const pkgPath = new URL('../package.json', import.meta.url)
+const pkgRequire = createRequire(pkgPath)
+const pkg = require('../package.json')
+
+const bin = pkgRequire.resolve(pkg.bin['mdx-language-server'])
 
 /**
  * The path to the TypeScript SDK.
@@ -31,7 +37,7 @@ export const tsdk = path.dirname(require.resolve('typescript'))
  * The language server is launched using the IPC protocol.
  */
 export function createConnection() {
-  const proc = spawn('mdx-language-server', ['--node-ipc'], {
+  const proc = spawn('node', [bin, '--node-ipc'], {
     cwd: new URL('..', import.meta.url),
     stdio: ['inherit', 'inherit', 'inherit', 'ipc']
   })

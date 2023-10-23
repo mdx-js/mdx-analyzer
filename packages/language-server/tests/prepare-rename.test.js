@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 import {InitializeRequest, PrepareRenameRequest} from 'vscode-languageserver'
-import {createConnection, fixtureUri, openTextDocument} from './utils.js'
+import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -20,8 +20,9 @@ afterEach(() => {
 test('handle prepare rename request of variable', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/a.mdx')
@@ -36,43 +37,12 @@ test('handle prepare rename request of variable', async () => {
   })
 })
 
-test('handle unknown rename request', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: null,
-    capabilities: {}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/a.mdx')
-  const result = await connection.sendRequest(PrepareRenameRequest.type, {
-    position: {line: 0, character: 1},
-    textDocument: {uri}
-  })
-
-  assert.deepEqual(result, null)
-})
-
-test('handle undefined prepare rename request', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: null,
-    capabilities: {}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/undefined-props.mdx')
-  const result = await connection.sendRequest(PrepareRenameRequest.type, {
-    position: {line: 0, character: 35},
-    textDocument: {uri}
-  })
-
-  assert.deepEqual(result, null)
-})
-
 test('ignore non-existent mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const uri = fixtureUri('node16/non-existent.mdx')
@@ -87,8 +57,9 @@ test('ignore non-existent mdx files', async () => {
 test('ignore non-mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/component.tsx')

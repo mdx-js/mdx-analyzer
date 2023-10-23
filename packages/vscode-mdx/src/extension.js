@@ -2,7 +2,11 @@
  * @typedef {import('vscode').ExtensionContext} ExtensionContext
  */
 
-import {workspace} from 'vscode'
+import * as path from 'node:path'
+import {DiagnosticModel} from '@volar/language-server'
+import * as languageServerProtocol from '@volar/language-server/protocol.js'
+import {activateAutoInsertion, supportLabsVersion} from '@volar/vscode'
+import {env, workspace} from 'vscode'
 import {LanguageClient} from 'vscode-languageclient/node.js'
 
 /**
@@ -25,17 +29,27 @@ export async function activate(context) {
     'MDX',
     {module: context.asAbsolutePath('out/language-server.js')},
     {
-      documentSelector: [
-        {scheme: 'file', language: 'mdx'},
-        {scheme: 'file', language: 'typescript'},
-        {scheme: 'file', language: 'typescriptreact'},
-        {scheme: 'file', language: 'javascript'},
-        {scheme: 'file', language: 'javascriptreact'}
-      ]
+      documentSelector: [{language: 'mdx'}],
+      initializationOptions: {
+        typescript: {
+          tsdk: path.join(env.appRoot, 'extensions/node_modules/typescript/lib')
+        },
+        diagnosticModel: DiagnosticModel.Pull
+      }
     }
   )
 
   await client.start()
+
+  activateAutoInsertion([client], (document) => document.languageId === 'mdx')
+
+  return {
+    volarLabs: {
+      version: supportLabsVersion,
+      languageClients: [client],
+      languageServerProtocol
+    }
+  }
 }
 
 /**

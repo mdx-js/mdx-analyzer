@@ -15,7 +15,18 @@ consume this package.
 
 ## Install
 
-This package is not published yet.
+This package is [ESM only][esm].
+In Node.js (version 16+), install with [npm][]:
+
+```sh
+npm install remark-rehype
+```
+
+In Deno with [`esm.sh`][esmsh]:
+
+```js
+import remarkRehype from 'https://esm.sh/remark-rehype@11'
+```
 
 ## Use
 
@@ -27,15 +38,9 @@ same transports are supported.
 
 ## Language server features
 
-This language server supports the following features:
-
-*   Markdown definitions
-*   Markdown hover hints
-*   TypeScript completions
-*   TypeScript definitions
-*   TypeScript diagnostics
-*   TypeScript hover hints
-*   TypeScript references
+This language server supports all features supported by
+[`volar-service-markdown`][volar-service-markdown] and
+[`volar-service-typescript`][volar-service-typescript]
 
 [MDX][] doesn’t support TypeScript syntax, but it does support
 [types in JSDoc][jsdoc].
@@ -86,11 +91,11 @@ For a more complete list, see [remark plugins][].
 
 Projects maintained by the unified collective are compatible with all maintained
 versions of Node.js.
-As of now, that is Node.js 14.14+ and 16.0+.
+As of now, that is Node.js and 16.0+.
 Our projects sometimes work with older versions, but this is not guaranteed.
 
-This project uses [`vscode-languageserver`][vscode-languageserver] 7, which
-implements language server protocol 3.17.0.
+This project uses [`vscode-languageserver`][vscode-languageserver] 9, which
+implements language server protocol 3.17.4.
 It should work anywhere where LSP 3.6.0 or later is implemented.
 
 ## Security
@@ -119,6 +124,10 @@ abide by its terms.
 
 [contribute]: https://mdxjs.com/community/contribute/
 
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[esmsh]: https://esm.sh
+
 [frontmatter]: https://github.com/remarkjs/remark-frontmatter
 
 [gfm]: https://github.com/remarkjs/remark-gfm
@@ -131,10 +140,16 @@ abide by its terms.
 
 [mit]: LICENSE
 
+[npm]: https://docs.npmjs.com/cli/install
+
 [remark plugins]: https://github.com/remarkjs/remark/blob/main/doc/plugins.md
 
 [support]: https://mdxjs.com/community/support/
 
 [typescript]: https://typescriptlang.org
+
+[volar-service-markdown]: https://github.com/volarjs/services/tree/master/packages/markdown
+
+[volar-service-typescript]: https://github.com/volarjs/services/tree/master/packages/typescript
 
 [vscode-languageserver]: https://github.com/microsoft/vscode-languageserver-node/tree/main/server

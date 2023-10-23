@@ -7,12 +7,31 @@ This is done by wrapping the [TypeScript][] language service.
 
 ## When should I use this?
 
-This package is intended for use by `@mdx-js/monaco` and `@mdx-js/language-server`.
+This package is intended for use by `@mdx-js/language-server`.
 It’s not intended for external usage.
 
 ## Install
 
-This package is not published yet.
+This package is [ESM only][esm].
+In Node.js (version 16+), install with [npm][]:
+
+```sh
+npm install remark-rehype
+```
+
+In Deno with [`esm.sh`][esmsh]:
+
+```js
+import remarkRehype from 'https://esm.sh/remark-rehype@11'
+```
+
+In browsers with [`esm.sh`][esmsh]:
+
+```html
+<script type="module">
+  import remarkRehype from 'https://esm.sh/remark-rehype@11?bundle'
+</script>
+```
 
 ## Use
 
@@ -22,29 +41,27 @@ your use case in a [discussion][].
 
 ## API
 
-This package exports the identifier `createMdxLanguageService`.
+This package exports the identifier `getLanguageModule`.
 There is no default export.
 
-### `createMdxLanguageService(ts, host[, plugins])`
+### `getLanguageModule(ts[, plugins])`
 
-Create a [TypeScript][] language service that can handle [MDX][].
+Create a [Volar][] language module to support [MDX][].
 
 #### Parameters
 
 *   `ts`: The TypeScript module.
-*   `host`: The TypeScript language service host.
 *   `plugins`: A list of remark syntax plugins.
     Only syntax plugins are supported.
     Transformers are unused.
 
 #### Returns
 
-A [TypeScript][] language service that can handle [MDX][].
+A Volar language service that can handle MDX.
 
 ## Types
 
-This package does not expose [TypeScript][] types, because it’s not intended for
-external use.
+This package is fully typed with [TypeScript][].
 
 ## Security
 
@@ -74,10 +91,18 @@ abide by its terms.
 
 [discussion]: https://github.com/orgs/mdx-js/discussions
 
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[esmsh]: https://esm.sh
+
 [mdx]: https://mdxjs.com
 
 [mit]: LICENSE
 
+[npm]: https://docs.npmjs.com/cli/install
+
 [support]: https://mdxjs.com/community/support/
 
 [typescript]: https://typescriptlang.org
+
+[volar]: https://volarjs.dev

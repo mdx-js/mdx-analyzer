@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 import {HoverRequest, InitializeRequest} from 'vscode-languageserver'
-import {createConnection, fixtureUri, openTextDocument} from './utils.js'
+import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -20,8 +20,9 @@ afterEach(() => {
 test('resolve hover in ESM', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/a.mdx')
@@ -33,7 +34,7 @@ test('resolve hover in ESM', async () => {
   assert.deepEqual(result, {
     contents: {
       kind: 'markdown',
-      value: '```typescript\nfunction a(): void\n```\nDescription of `a`'
+      value: '```typescript\nfunction a(): void\n```\n\nDescription of `a`'
     },
     range: {
       end: {line: 4, character: 3},
@@ -45,8 +46,9 @@ test('resolve hover in ESM', async () => {
 test('resolve import hover in ESM if the other file was previously opened', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   await openTextDocument(connection, 'node16/a.mdx')
@@ -60,7 +62,7 @@ test('resolve import hover in ESM if the other file was previously opened', asyn
     contents: {
       kind: 'markdown',
       value:
-        '```typescript\n(alias) function a(): void\nimport a\n```\nDescription of `a`'
+        '```typescript\n(alias) function a(): void\nimport a\n```\n\nDescription of `a`'
     },
     range: {
       start: {line: 0, character: 9},
@@ -72,8 +74,9 @@ test('resolve import hover in ESM if the other file was previously opened', asyn
 test('resolve import hover in ESM if the other file is unopened', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/b.mdx')
@@ -86,7 +89,7 @@ test('resolve import hover in ESM if the other file is unopened', async () => {
     contents: {
       kind: 'markdown',
       value:
-        '```typescript\n(alias) function a(): void\nimport a\n```\nDescription of `a`'
+        '```typescript\n(alias) function a(): void\nimport a\n```\n\nDescription of `a`'
     },
     range: {
       start: {line: 0, character: 9},
@@ -98,8 +101,9 @@ test('resolve import hover in ESM if the other file is unopened', async () => {
 test('resolve import hover in JSX expressions', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/a.mdx')
@@ -111,7 +115,7 @@ test('resolve import hover in JSX expressions', async () => {
   assert.deepEqual(result, {
     contents: {
       kind: 'markdown',
-      value: '```typescript\nfunction a(): void\n```\nDescription of `a`'
+      value: '```typescript\nfunction a(): void\n```\n\nDescription of `a`'
     },
     range: {
       start: {line: 11, character: 1},
@@ -123,8 +127,9 @@ test('resolve import hover in JSX expressions', async () => {
 test('support mdxJsxTextElement', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(
@@ -140,7 +145,7 @@ test('support mdxJsxTextElement', async () => {
     contents: {
       kind: 'markdown',
       value:
-        '```typescript\nfunction Component(): void\n```\nDescription of `Component`'
+        '```typescript\nfunction Component(): void\n```\n\nDescription of `Component`'
     },
     range: {
       start: {line: 3, character: 1},
@@ -152,8 +157,9 @@ test('support mdxJsxTextElement', async () => {
 test('resolve import hover in JSX elements', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/a.mdx')
@@ -165,7 +171,7 @@ test('resolve import hover in JSX elements', async () => {
   assert.deepEqual(result, {
     contents: {
       kind: 'markdown',
-      value: '```typescript\nfunction Component(): JSX.Element\n```\n'
+      value: '```typescript\nfunction Component(): JSX.Element\n```'
     },
     range: {
       start: {line: 13, character: 1},
@@ -177,8 +183,9 @@ test('resolve import hover in JSX elements', async () => {
 test('ignore non-existent mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const uri = fixtureUri('node16/non-existent.mdx')
@@ -193,8 +200,9 @@ test('ignore non-existent mdx files', async () => {
 test('ignore non-mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/component.tsx')

@@ -6,6 +6,9 @@
 
 import {spawn} from 'node:child_process'
 import fs from 'node:fs/promises'
+import {createRequire} from 'node:module'
+import path from 'node:path'
+import {fileURLToPath} from 'node:url'
 import {
   createProtocolConnection,
   DidOpenTextDocumentNotification,
@@ -13,6 +16,21 @@ import {
   IPCMessageWriter,
   PublishDiagnosticsNotification
 } from 'vscode-languageserver/node.js'
+import {URI} from 'vscode-uri'
+// eslint-disable-next-line import/order
+import normalizePath from 'normalize-path'
+
+const require = createRequire(import.meta.url)
+const pkgPath = new URL('../package.json', import.meta.url)
+const pkgRequire = createRequire(pkgPath)
+const pkg = require('../package.json')
+
+const bin = pkgRequire.resolve(pkg.bin['mdx-language-server'])
+
+/**
+ * The path to the TypeScript SDK.
+ */
+export const tsdk = path.dirname(require.resolve('typescript'))
 
 /**
  * @returns {ProtocolConnection}
@@ -21,7 +39,7 @@ import {
  * The language server is launched using the IPC protocol.
  */
 export function createConnection() {
-  const proc = spawn('mdx-language-server', ['--node-ipc'], {
+  const proc = spawn('node', [bin, '--node-ipc'], {
     cwd: new URL('..', import.meta.url),
     stdio: ['inherit', 'inherit', 'inherit', 'ipc']
   })
@@ -43,7 +61,17 @@ export function createConnection() {
  * @returns {string} The uri that matches the fixture file name.
  */
 export function fixtureUri(fileName) {
-  return String(new URL(`../../../fixtures/${fileName}`, import.meta.url))
+  return String(
+    URI.parse(String(new URL(`../../../fixtures/${fileName}`, import.meta.url)))
+  )
+}
+
+/**
+ * @param {string} fileName
+ * @returns {string}
+ */
+export function fixturePath(fileName) {
+  return normalizePath(fileURLToPath(fixtureUri(fileName)))
 }
 
 /**
@@ -55,7 +83,7 @@ export function fixtureUri(fileName) {
  */
 export async function openTextDocument(connection, fileName) {
   const url = new URL(`../../../fixtures/${fileName}`, import.meta.url)
-  const uri = String(url)
+  const uri = String(URI.parse(String(url)))
   const text = await fs.readFile(url, 'utf8')
   /** @type {TextDocumentItem} */
   const textDocument = {

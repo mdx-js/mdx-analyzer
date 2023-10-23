@@ -3,8 +3,20 @@
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {CompletionRequest, InitializeRequest} from 'vscode-languageserver'
-import {createConnection, fixtureUri, openTextDocument} from './utils.js'
+import {
+  CompletionItemKind,
+  CompletionRequest,
+  CompletionResolveRequest,
+  InitializeRequest,
+  InsertTextFormat
+} from 'vscode-languageserver'
+import {
+  createConnection,
+  fixturePath,
+  fixtureUri,
+  openTextDocument,
+  tsdk
+} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -20,8 +32,9 @@ afterEach(() => {
 test('support completion in ESM', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/completion.mdx')
@@ -32,25 +45,55 @@ test('support completion in ESM', async () => {
 
   assert.ok(result)
   assert.ok('items' in result)
-  const completion = result.items.find((r) => r.insertText === 'Boolean')
+  const completion = result.items.find((r) => r.label === 'Boolean')
   assert.deepEqual(completion, {
+    commitCharacters: ['.', ',', ';', '('],
     data: {
-      offset: 30,
-      uri: fixtureUri('node16/completion.mdx')
+      original: {
+        data: {
+          fileName: fixturePath('node16/completion.mdx.jsx'),
+          offset: 30,
+          originalItem: {name: 'Boolean'},
+          uri: fixtureUri('node16/completion.mdx.jsx')
+        }
+      },
+      serviceId: 'typescript',
+      uri: fixtureUri('node16/completion.mdx'),
+      virtualDocumentUri: fixtureUri('node16/completion.mdx.jsx')
     },
-    insertText: 'Boolean',
+    insertTextFormat: InsertTextFormat.PlainText,
+    kind: CompletionItemKind.Variable,
+    label: 'Boolean',
+    sortText: '15'
+  })
+
+  const resolved = await connection.sendRequest(
+    CompletionResolveRequest.type,
+    completion
+  )
+  assert.deepEqual(resolved, {
+    commitCharacters: ['.', ',', ';', '('],
+    data: {
+      fileName: fixturePath('node16/completion.mdx.jsx'),
+      offset: 30,
+      originalItem: {name: 'Boolean'},
+      uri: fixtureUri('node16/completion.mdx.jsx')
+    },
+    detail: 'interface Boolean\nvar Boolean: BooleanConstructor',
+    documentation: {kind: 'markdown', value: ''},
+    insertTextFormat: 1,
     kind: 6,
     label: 'Boolean',
-    sortText: '15',
-    tags: []
+    sortText: '15'
   })
 })
 
 test('support completion in JSX', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/completion.mdx')
@@ -61,25 +104,55 @@ test('support completion in JSX', async () => {
 
   assert.ok(result)
   assert.ok('items' in result)
-  const completion = result.items.find((r) => r.insertText === 'Boolean')
+  const completion = result.items.find((r) => r.label === 'Boolean')
   assert.deepEqual(completion, {
+    commitCharacters: ['.', ',', ';', '('],
     data: {
-      offset: 77,
-      uri: fixtureUri('node16/completion.mdx')
+      original: {
+        data: {
+          fileName: fixturePath('node16/completion.mdx.jsx'),
+          offset: 77,
+          originalItem: {name: 'Boolean'},
+          uri: fixtureUri('node16/completion.mdx.jsx')
+        }
+      },
+      serviceId: 'typescript',
+      uri: fixtureUri('node16/completion.mdx'),
+      virtualDocumentUri: fixtureUri('node16/completion.mdx.jsx')
     },
-    insertText: 'Boolean',
+    insertTextFormat: InsertTextFormat.PlainText,
+    kind: CompletionItemKind.Variable,
+    label: 'Boolean',
+    sortText: '15'
+  })
+
+  const resolved = await connection.sendRequest(
+    CompletionResolveRequest.type,
+    completion
+  )
+  assert.deepEqual(resolved, {
+    commitCharacters: ['.', ',', ';', '('],
+    data: {
+      fileName: fixturePath('node16/completion.mdx.jsx'),
+      offset: 77,
+      originalItem: {name: 'Boolean'},
+      uri: fixtureUri('node16/completion.mdx.jsx')
+    },
+    detail: 'interface Boolean\nvar Boolean: BooleanConstructor',
+    documentation: {kind: 'markdown', value: ''},
+    insertTextFormat: 1,
     kind: 6,
     label: 'Boolean',
-    sortText: '15',
-    tags: []
+    sortText: '15'
   })
 })
 
 test('ignore completion in markdown content', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/completion.mdx')
@@ -88,5 +161,5 @@ test('ignore completion in markdown content', async () => {
     textDocument: {uri}
   })
 
-  assert.deepEqual(result, null)
+  assert.deepEqual(result, {isIncomplete: false, items: []})
 })

@@ -7,7 +7,9 @@ import {InitializeRequest} from 'vscode-languageserver'
 import {
   createConnection,
   openTextDocument,
-  waitForDiagnostics
+  waitForDiagnostics,
+  tsdk,
+  fixtureUri
 } from './utils.js'
 
 /** @type {ProtocolConnection} */
@@ -24,8 +26,9 @@ afterEach(() => {
 test('no tsconfig exists', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('no-tsconfig'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const diagnosticsPromise = waitForDiagnostics(connection)
@@ -37,6 +40,7 @@ test('no tsconfig exists', async () => {
 
   assert.deepEqual(diagnostics, {
     diagnostics: [],
-    uri: textDocument.uri
+    uri: textDocument.uri,
+    version: 1
   })
 })

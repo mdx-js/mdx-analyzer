@@ -5,6 +5,7 @@
     "checkJs": true,
     "module": "node16",
     "noEmit": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "paths": {

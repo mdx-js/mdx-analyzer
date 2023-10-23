@@ -8,7 +8,7 @@ import {
   InitializeRequest,
   SymbolKind
 } from 'vscode-languageserver'
-import {createConnection, fixtureUri, openTextDocument} from './utils.js'
+import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -24,8 +24,9 @@ afterEach(() => {
 test('resolve document symbols', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/mixed.mdx')
@@ -43,8 +44,8 @@ test('resolve document symbols', async () => {
         start: {line: 10, character: 0}
       },
       selectionRange: {
-        end: {line: 15, character: 1},
-        start: {line: 10, character: 0}
+        end: {line: 10, character: 32},
+        start: {line: 10, character: 16}
       }
     }
   ])
@@ -53,8 +54,9 @@ test('resolve document symbols', async () => {
 test('ignore non-existent mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const uri = fixtureUri('node16/non-existent.mdx')
@@ -68,8 +70,9 @@ test('ignore non-existent mdx files', async () => {
 test('ignore non-mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/component.tsx')

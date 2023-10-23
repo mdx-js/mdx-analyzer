@@ -14,7 +14,6 @@ It contains the following workspaces:
     can handle MDX files.
 *   [`@mdx-js/language-server`][] provides MDX IntelliSense using the
     [Language Server Protocol][].
-*   [`@mdx-js/monaco`][] provides MDX IntelliSense for [Monaco editor][].
 *   [`vscode-mdx`][] provides MDX IntelliSense and basic language support for
     [Visual Studio Code][].
 
@@ -92,8 +91,6 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 
 [MIT][] © [JounQin][]@[1stG.me][]
 
-[`@mdx-js/monaco`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/monaco
-
 [`@mdx-js/language-server`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/language-server
 
 [`@mdx-js/language-service`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/language-service
@@ -107,8 +104,6 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 [language server protocol]: https://microsoft.github.io/language-server-protocol/
 
 [mdx]: https://github.com/mdx-js/mdx
-
-[monaco editor]: https://microsoft.github.io/monaco-editor/
 
 [mit]: http://opensource.org/licenses/MIT
 

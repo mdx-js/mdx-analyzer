@@ -3,32 +3,44 @@
  * @typedef {import('unified').PluggableList} PluggableList
  */
 
+import path from 'node:path'
 import {loadPlugin} from 'load-plugin'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkGfm from 'remark-gfm'
+
+/** @type {PluggableList} */
+const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
 
 /**
  * Load remark plugins from a configuration object.
  *
- * @param {string} cwd
+ * @param {unknown} tsConfig
  *   The current working directory to resolve plugins from.
- * @param {unknown} config
- *   The object that defines the configuration.
+ * @param {typeof import('typescript')} [ts]
  * @returns {Promise<PluggableList | undefined>}
  *   A list of unified plugins to use.
  */
-export async function loadPlugins(cwd, config) {
-  if (typeof config !== 'object') {
-    return
+export async function loadPlugins(tsConfig, ts) {
+  if (typeof tsConfig !== 'string' || !ts) {
+    return [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
   }
 
-  if (!config) {
-    return
+  const jsonText = ts.sys.readFile(tsConfig)
+
+  if (jsonText === undefined) {
+    return defaultPlugins
   }
 
-  if (!('plugins' in config)) {
-    return
+  const {config, error} = ts.parseConfigFileTextToJson(tsConfig, jsonText)
+  if (error) {
+    return defaultPlugins
   }
 
-  const pluginConfig = config.plugins
+  if (!config?.mdx) {
+    return defaultPlugins
+  }
+
+  const pluginConfig = config.mdx.plugins
 
   if (typeof pluginConfig !== 'object') {
     return
@@ -41,6 +53,7 @@ export async function loadPlugins(cwd, config) {
   const pluginArray = Array.isArray(pluginConfig)
     ? pluginConfig
     : Object.entries(pluginConfig)
+  const cwd = path.dirname(tsConfig)
 
   /** @type {Promise<Pluggable>[]} */
   const plugins = []

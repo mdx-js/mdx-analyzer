@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 import {FoldingRangeRequest, InitializeRequest} from 'vscode-languageserver'
-import {createConnection, fixtureUri, openTextDocument} from './utils.js'
+import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -20,8 +20,9 @@ afterEach(() => {
 test('resolve folding ranges', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/mixed.mdx')
@@ -38,81 +39,52 @@ test('resolve folding ranges', async () => {
       startLine: 2
     },
     {
-      endCharacter: 11,
-      endLine: 45,
-      kind: 'region',
-      startCharacter: 0,
-      startLine: 6
-    },
-    {
-      endCharacter: 1,
-      endLine: 15,
-      kind: 'region',
+      endCharacter: 10,
+      endLine: 14,
       startCharacter: 43,
       startLine: 10
     },
     {
-      endCharacter: 3,
-      endLine: 13,
-      kind: 'region',
+      endCharacter: 12,
+      endLine: 12,
       startCharacter: 16,
       startLine: 11
     },
     {
-      endCharacter: 38,
+      endLine: 45,
+      startLine: 6
+    },
+    {
       endLine: 31,
-      kind: 'region',
-      startCharacter: 0,
       startLine: 17
     },
     {
-      endCharacter: 9,
       endLine: 23,
-      kind: 'region',
-      startCharacter: 0,
       startLine: 21
     },
     {
-      endCharacter: 38,
       endLine: 31,
-      kind: 'region',
-      startCharacter: 0,
       startLine: 25
     },
     {
-      endCharacter: 38,
       endLine: 31,
-      kind: 'region',
-      startCharacter: 0,
       startLine: 29
     },
     {
-      endCharacter: 11,
-      endLine: 45,
-      kind: 'region',
-      startCharacter: 0,
+      endLine: 42,
       startLine: 33
     },
     {
-      endCharacter: 3,
+      endLine: 45,
+      startLine: 43
+    },
+    {
       endLine: 39,
-      kind: 'region',
-      startCharacter: 0,
       startLine: 37
     },
     {
-      endCharacter: 11,
       endLine: 45,
-      kind: 'region',
-      startCharacter: 0,
       startLine: 41
-    },
-    {
-      endCharacter: 11,
-      endLine: 45,
-      kind: 'region',
-      startCharacter: 2,
-      startLine: 43
     }
   ])
 })
@@ -120,8 +92,9 @@ test('resolve folding ranges', async () => {
 test('ignore non-existent mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const uri = fixtureUri('node16/non-existent.mdx')
@@ -135,8 +108,9 @@ test('ignore non-existent mdx files', async () => {
 test('ignore non-mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/component.tsx')

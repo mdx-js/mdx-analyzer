@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 import {InitializeRequest, RenameRequest} from 'vscode-languageserver'
-import {createConnection, fixtureUri, openTextDocument} from './utils.js'
+import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -20,8 +20,9 @@ afterEach(() => {
 test('handle rename request of variable for opened references', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   await openTextDocument(connection, 'node16/b.mdx')
@@ -38,8 +39,8 @@ test('handle rename request of variable for opened references', async () => {
         {
           newText: 'renamed',
           range: {
-            start: {line: 1, character: 16},
-            end: {line: 1, character: 17}
+            start: {line: 11, character: 1},
+            end: {line: 11, character: 2}
           }
         },
         {
@@ -52,18 +53,21 @@ test('handle rename request of variable for opened references', async () => {
         {
           newText: 'renamed',
           range: {
-            end: {
-              character: 2,
-              line: 11
-            },
-            start: {
-              character: 1,
-              line: 11
-            }
+            start: {line: 1, character: 16},
+            end: {line: 1, character: 17}
           }
         }
       ],
       [fixtureUri('node16/b.mdx')]: [
+        {
+          newText: 'renamed',
+          range: {
+            start: {line: 0, character: 9},
+            end: {line: 0, character: 10}
+          }
+        }
+      ],
+      [fixtureUri('node16/mixed.mdx')]: [
         {
           newText: 'renamed',
           range: {
@@ -79,8 +83,9 @@ test('handle rename request of variable for opened references', async () => {
 test('handle undefined rename request', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/undefined-props.mdx')
@@ -96,8 +101,9 @@ test('handle undefined rename request', async () => {
 test('ignore non-existent mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const uri = fixtureUri('node16/non-existent.mdx')
@@ -113,8 +119,9 @@ test('ignore non-existent mdx files', async () => {
 test('ignore non-mdx files', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
-    rootUri: null,
-    capabilities: {}
+    rootUri: fixtureUri('node16'),
+    capabilities: {},
+    initializationOptions: {typescript: {tsdk}}
   })
 
   const {uri} = await openTextDocument(connection, 'node16/component.tsx')

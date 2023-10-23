@@ -48,7 +48,7 @@
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.0.0",
     "@volar/language-server": "~1.10.0",
-    "@volar/vscode": "^1.0.0",
+    "@volar/vscode": "~1.10.0",
     "@vscode/vsce": "^2.0.0",
     "esbuild": "^0.18.0",
     "ovsx": "^0.8.0",

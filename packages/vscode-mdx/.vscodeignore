@@ -4,7 +4,6 @@
 *.map
 *.ts
 *.tsbuildinfo
-demo/
 fixtures/
 node_modules/
 packages/

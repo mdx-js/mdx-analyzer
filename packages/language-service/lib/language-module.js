@@ -298,9 +298,15 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
 }
 
 /**
+ * Create a [Volar](https://volarjs.dev) language module to support MDX.
+ *
  * @param {typeof import('typescript')} ts
+ *   The TypeScript module.
  * @param {PluggableList} [plugins]
+ *   A list of remark syntax plugins. Only syntax plugins are supported.
+ *   Transformers are unused.
  * @returns {Language}
+ *   A Volar language module to support MDX.
  */
 export function getLanguageModule(ts, plugins) {
   const processor = unified().use(remarkParse).use(remarkMdx)

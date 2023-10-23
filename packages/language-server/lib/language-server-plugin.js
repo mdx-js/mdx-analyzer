@@ -3,7 +3,9 @@
  */
 
 import assert from 'node:assert'
-import {resolveConfig} from '@mdx-js/language-service'
+import {getLanguageModule} from '@mdx-js/language-service'
+import {create as createMarkdownService} from 'volar-service-markdown'
+import {create as createTypeScriptService} from 'volar-service-typescript'
 import {loadPlugins} from './configuration.js'
 
 /**
@@ -35,7 +37,14 @@ export function plugin(initOptions, modules) {
         modules.typescript
       )
 
-      return resolveConfig(config, modules.typescript, plugins)
+      config.languages ||= {}
+      config.languages.mdx ||= getLanguageModule(modules.typescript, plugins)
+
+      config.services ||= {}
+      config.services.markdown = createMarkdownService()
+      config.services.typescript = createTypeScriptService()
+
+      return config
     }
   }
 }

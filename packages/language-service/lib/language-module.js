@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@volar/language-core').Language} Language<VirtualFile>
+ * @typedef {import('@volar/language-core').Language} Language
  * @typedef {import('@volar/language-core').VirtualFile} VirtualFile
  * @typedef {import('estree').Program} Program
  * @typedef {import('mdast').Root} Root

@@ -35,13 +35,10 @@
     "@types/mdast": "^3.0.0",
     "@types/unist": "^2.0.0",
     "@volar/language-core": "~1.10.0",
-    "@volar/language-service": "~1.10.0",
     "remark-mdx": "^2.0.0",
     "remark-parse": "^10.0.0",
     "unified": "^10.0.0",
-    "unist-util-visit-parents": "^5.0.0",
-    "volar-service-markdown": "0.0.14",
-    "volar-service-typescript": "0.0.14"
+    "unist-util-visit-parents": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

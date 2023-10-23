@@ -11,7 +11,7 @@ import {
 } from '@volar/language-server'
 import remarkFrontmatter from 'remark-frontmatter'
 import typescript from 'typescript'
-import {getLanguageModule} from '../lib/language-module.js'
+import {getLanguageModule} from '@mdx-js/language-service'
 
 test('create virtual file w/ mdxjsEsm', () => {
   const module = getLanguageModule(typescript)

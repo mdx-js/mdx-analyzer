@@ -36,7 +36,9 @@
     "@volar/language-server": "~1.10.0",
     "load-plugin": "^5.0.0",
     "remark-frontmatter": "^4.0.0",
-    "remark-gfm": "^3.0.0"
+    "remark-gfm": "^3.0.0",
+    "volar-service-markdown": "0.0.14",
+    "volar-service-typescript": "0.0.14"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

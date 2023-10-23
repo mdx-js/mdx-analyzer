@@ -1,1 +1,1 @@
-export {resolveConfig} from './lib/language-service.js'
+export {getLanguageModule} from './lib/language-module.js'

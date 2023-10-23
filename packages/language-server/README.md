@@ -38,7 +38,7 @@ same transports are supported.
 
 ## Language server features
 
-This language server supports all featyres supported by
+This language server supports all features supported by
 [`volar-service-markdown`][volar-service-markdown] and
 [`volar-service-typescript`][volar-service-typescript]
 

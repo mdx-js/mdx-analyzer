@@ -20,7 +20,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "vscode": ">=1.0.0"
+    "vscode": ">=1.82.0"
   },
   "main": "out/extension.js",
   "keywords": [

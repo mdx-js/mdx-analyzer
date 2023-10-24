@@ -1,5 +1,5 @@
 ---
-'@mdx-js/language-server': minor---
+'@mdx-js/language-server': minor
 'vscode-mdx': minor
 ---
 

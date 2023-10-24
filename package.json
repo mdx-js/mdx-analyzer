@@ -18,6 +18,7 @@
     "prettier": "^3.0.0",
     "react": "^18.0.0",
     "remark-cli": "^11.0.0",
+    "remark-frontmatter": "^4.0.0",
     "remark-preset-wooorm": "^9.0.0",
     "typescript": "^5.0.0",
     "xo": "^0.56.0"
@@ -32,6 +33,7 @@
   },
   "remarkConfig": {
     "plugins": [
+      "remark-frontmatter",
       "remark-preset-wooorm",
       [
         "remark-lint-no-html",

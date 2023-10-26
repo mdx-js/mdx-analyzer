@@ -1,11 +1,10 @@
 /**
  * @typedef {import('@volar/language-core').Language} Language
  * @typedef {import('@volar/language-core').VirtualFile} VirtualFile
- * @typedef {import('estree').Program} Program
  * @typedef {import('mdast').Root} Root
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
  * @typedef {import('unified').PluggableList} PluggableList
- * @typedef {import('unified').Processor<Root, Root, Root>} Processor
+ * @typedef {import('unified').Processor<Root>} Processor
  * @typedef {import('unist').Node} Node
  * @typedef {import('unist').Parent} Parent
  *
@@ -188,13 +187,17 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
       }
 
       case 'mdxFlowExpression':
-      case 'mdxJsxTextElement':
       case 'mdxTextExpression': {
         jsxPositions.push([start, end])
-        if (/** @type {Program} */ (node.data?.estree)?.body.length === 0) {
+        if (node.data?.estree?.body.length === 0) {
           esmPositions.push([start + 1, end - 1])
         }
 
+        break
+      }
+
+      case 'mdxJsxTextElement': {
+        jsxPositions.push([start, end])
         break
       }
 

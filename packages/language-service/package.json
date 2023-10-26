@@ -31,18 +31,17 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@types/estree": "^1.0.0",
-    "@types/mdast": "^3.0.0",
-    "@types/unist": "^2.0.0",
+    "@types/mdast": "^4.0.0",
+    "@types/unist": "^3.0.0",
     "@volar/language-core": "~1.10.0",
-    "remark-mdx": "^2.0.0",
-    "remark-parse": "^10.0.0",
-    "unified": "^10.0.0",
-    "unist-util-visit-parents": "^5.0.0"
+    "remark-mdx": "^3.0.0",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.0",
+    "unist-util-visit-parents": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "remark-frontmatter": "^4.0.0"
+    "remark-frontmatter": "^5.0.0"
   },
   "sideEffects": false
 }

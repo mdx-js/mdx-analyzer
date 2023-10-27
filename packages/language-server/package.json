@@ -28,8 +28,8 @@
     "unified"
   ],
   "scripts": {
-    "build": "tsc",
-    "test-api": "node --test"
+    "test-api": "node --test",
+    "test": "npm run test-api"
   },
   "dependencies": {
     "@mdx-js/language-service": "0.1.0",

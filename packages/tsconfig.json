@@ -1,0 +1,16 @@
+{
+  "files": [],
+  "references": [
+    {"path": "./language-server"},
+    {"path": "./language-service"},
+    {"path": "./vscode-mdx"}
+  ],
+  "compilerOptions": {
+    "checkJs": true,
+    "composite": true,
+    "lib": ["es2021"],
+    "module": "node16",
+    "strict": true,
+    "target": "es2021"
+  }
+}

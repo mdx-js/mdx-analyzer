@@ -1,15 +1,8 @@
 {
-  "include": ["**/**.js"],
-  "exclude": ["coverage/", "node_modules/"],
+  "extends": "..",
+  "include": ["**/*.js"],
+  "exclude": ["coverage/", "node_modules/", "out/"],
   "compilerOptions": {
-    "checkJs": true,
-    "esModuleInterop": false,
-    "module": "node16",
-    "noEmit": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "paths": {
-      "@mdx-js/language-service": ["../language-service/index.js"]
-    }
+    "noEmit": true
   }
 }

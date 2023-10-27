@@ -6,10 +6,10 @@
   ],
   "scripts": {
     "generate": "npm --workspace vscode-mdx run generate",
-    "build": "npm --workspaces run build",
     "format": "remark . -qfo && prettier . -w --log-level warn && xo --fix",
-    "test-api": "npm run test-api --workspaces --if-present",
-    "test": "npm run build && npm run format && npm run test-api"
+    "test-types": "tsc --build --clean packages && tsc --build packages",
+    "test-api": "node --test",
+    "test": "npm run test-types && npm run format && npm run test-api"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.0",

@@ -1,13 +1,9 @@
 {
-  "include": ["**/**.js"],
+  "extends": "..",
+  "include": ["**/*.js"],
   "exclude": ["coverage/", "node_modules/"],
   "compilerOptions": {
-    "checkJs": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "module": "node16",
-    "skipLibCheck": true,
-    "strict": true,
-    "target": "es2020"
+    "emitDeclarationOnly": true
   }
 }

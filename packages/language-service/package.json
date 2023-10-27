@@ -26,9 +26,9 @@
     "unified"
   ],
   "scripts": {
-    "build": "tsc --build --clean && tsc --build",
-    "prepack": "npm run build",
-    "test": "node --test"
+    "prepack": "tsc --build --clean && tsc --build",
+    "test-api": "node --test",
+    "test": "npm pack && npm run test-api"
   },
   "dependencies": {
     "@types/mdast": "^4.0.0",

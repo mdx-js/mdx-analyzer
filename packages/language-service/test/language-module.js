@@ -74,13 +74,7 @@ test('create virtual file w/ mdxjsEsm', () => {
         embeddedFiles: [],
         fileName: 'file:///test.mdx.md',
         kind: FileKind.TypeScriptHostFile,
-        mappings: [
-          {
-            sourceRange: [0, 35],
-            generatedRange: [0, 35],
-            data: FileRangeCapabilities.full
-          }
-        ],
+        mappings: [],
         snapshot: snapshotFromLines('                                  ', '')
       }
     ]
@@ -148,13 +142,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
         embeddedFiles: [],
         fileName: 'file:///test.mdx.md',
         kind: FileKind.TypeScriptHostFile,
-        mappings: [
-          {
-            sourceRange: [0, 10],
-            generatedRange: [0, 10],
-            data: FileRangeCapabilities.full
-          }
-        ],
+        mappings: [],
         snapshot: snapshotFromLines('         ', '')
       }
     ]
@@ -244,8 +232,8 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
         kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
-            sourceRange: [0, 66],
-            generatedRange: [0, 66],
+            sourceRange: [9, 59],
+            generatedRange: [9, 59],
             data: FileRangeCapabilities.full
           }
         ],
@@ -323,13 +311,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
         embeddedFiles: [],
         fileName: 'file:///test.mdx.md',
         kind: FileKind.TypeScriptHostFile,
-        mappings: [
-          {
-            sourceRange: [0, 8],
-            generatedRange: [0, 8],
-            data: FileRangeCapabilities.full
-          }
-        ],
+        mappings: [],
         snapshot: snapshotFromLines('       ', '')
       }
     ]
@@ -399,8 +381,8 @@ test('create virtual file w/ mdxJsxTextElement', () => {
         kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
-            sourceRange: [0, 10],
-            generatedRange: [0, 10],
+            sourceRange: [0, 2],
+            generatedRange: [0, 2],
             data: FileRangeCapabilities.full
           }
         ],
@@ -473,8 +455,13 @@ test('create virtual file w/ mdxTextExpression', () => {
         kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
-            sourceRange: [0, 18],
-            generatedRange: [0, 18],
+            sourceRange: [0, 4],
+            generatedRange: [0, 4],
+            data: FileRangeCapabilities.full
+          },
+          {
+            sourceRange: [14, 17],
+            generatedRange: [14, 17],
             data: FileRangeCapabilities.full
           }
         ],
@@ -605,8 +592,8 @@ test('create virtual file w/ yaml frontmatter', () => {
         kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
-            sourceRange: [0, 27],
-            generatedRange: [0, 27],
+            sourceRange: [0, 26],
+            generatedRange: [0, 26],
             data: FileRangeCapabilities.full
           }
         ],
@@ -693,8 +680,8 @@ test('update virtual file', () => {
         kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
-            sourceRange: [0, 19],
-            generatedRange: [0, 19],
+            sourceRange: [0, 18],
+            generatedRange: [0, 18],
             data: FileRangeCapabilities.full
           }
         ],

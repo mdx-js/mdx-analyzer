@@ -1,15 +1,10 @@
 {
-  "include": ["**/**.js"],
+  "extends": "..",
+  "include": ["**/*.js", "package.json"],
   "exclude": ["coverage/", "node_modules/"],
+  "references": [{"path": "../language-service"}],
   "compilerOptions": {
-    "checkJs": true,
-    "module": "node16",
     "noEmit": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "paths": {
-      "@mdx-js/language-service": ["../language-service/index.js"]
-    }
+    "resolveJsonModule": true
   }
 }

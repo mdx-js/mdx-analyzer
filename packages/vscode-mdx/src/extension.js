@@ -41,8 +41,7 @@ export async function activate(context) {
     {
       documentSelector: [{language: 'mdx'}],
       initializationOptions: {
-        typescript: {tsdk},
-        diagnosticModel: DiagnosticModel.Pull
+        typescript: {tsdk}
       }
     }
   )

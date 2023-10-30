@@ -1,4 +1,5 @@
 /**
+ * @typedef {import('@volar/vscode').ExportsInfoForLabs} ExportsInfoForLabs
  * @typedef {import('vscode').ExtensionContext} ExtensionContext
  */
 
@@ -19,6 +20,10 @@ let client
  *
  * @param {ExtensionContext} context
  *   The extension context as given by VSCode.
+ * @returns {Promise<ExportsInfoForLabs | undefined>}
+ *   Info for the
+ *   [Volar,js Labs](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volarjs-labs)
+ *   extension.
  */
 export async function activate(context) {
   if (!workspace.getConfiguration('mdx').get('experimentalLanguageServer')) {

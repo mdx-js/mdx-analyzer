@@ -2,11 +2,10 @@
  * @typedef {import('vscode').ExtensionContext} ExtensionContext
  */
 
-import * as path from 'node:path'
 import {DiagnosticModel} from '@volar/language-server'
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
-import {activateAutoInsertion, supportLabsVersion} from '@volar/vscode'
-import {env, languages, workspace} from 'vscode'
+import {activateAutoInsertion, getTsdk, supportLabsVersion} from '@volar/vscode'
+import {languages, workspace} from 'vscode'
 import {LanguageClient} from 'vscode-languageclient/node.js'
 import {documentDropEditProvider} from './document-drop-edit-provider.js'
 
@@ -26,15 +25,15 @@ export async function activate(context) {
     return
   }
 
+  const {tsdk} = await getTsdk(context)
+
   client = new LanguageClient(
     'MDX',
     {module: context.asAbsolutePath('out/language-server.js')},
     {
       documentSelector: [{language: 'mdx'}],
       initializationOptions: {
-        typescript: {
-          tsdk: path.join(env.appRoot, 'extensions/node_modules/typescript/lib')
-        },
+        typescript: {tsdk},
         diagnosticModel: DiagnosticModel.Pull
       }
     }

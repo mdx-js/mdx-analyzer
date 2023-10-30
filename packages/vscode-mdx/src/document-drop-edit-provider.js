@@ -4,6 +4,7 @@
  */
 
 import {Uri, WorkspaceEdit} from 'vscode'
+import {toMarkdown} from 'mdast-util-to-markdown'
 
 /**
  * @type {DocumentDropEditProvider}
@@ -35,7 +36,7 @@ export const documentDropEditProvider = {
       })
 
       return {
-        insertText: '![](' + file.name + ')',
+        insertText: toMarkdown({type: 'image', url: file.name}).trim(),
         additionalEdit
       }
     }

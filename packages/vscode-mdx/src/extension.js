@@ -6,8 +6,9 @@ import * as path from 'node:path'
 import {DiagnosticModel} from '@volar/language-server'
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {activateAutoInsertion, supportLabsVersion} from '@volar/vscode'
-import {env, workspace} from 'vscode'
+import {env, languages, workspace} from 'vscode'
 import {LanguageClient} from 'vscode-languageclient/node.js'
+import {documentDropEditProvider} from './document-drop-edit-provider.js'
 
 /**
  * @type {LanguageClient}
@@ -42,6 +43,13 @@ export async function activate(context) {
   await client.start()
 
   activateAutoInsertion([client], (document) => document.languageId === 'mdx')
+
+  context.subscriptions.push(
+    languages.registerDocumentDropEditProvider(
+      {language: 'mdx'},
+      documentDropEditProvider
+    )
+  )
 
   return {
     volarLabs: {

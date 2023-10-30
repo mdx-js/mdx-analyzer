@@ -7,7 +7,7 @@ import {DiagnosticModel} from '@volar/language-server'
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {activateAutoInsertion, getTsdk, supportLabsVersion} from '@volar/vscode'
 import {languages, workspace} from 'vscode'
-import {LanguageClient} from 'vscode-languageclient/node.js'
+import {LanguageClient, TransportKind} from 'vscode-languageclient/node.js'
 import {documentDropEditProvider} from './document-drop-edit-provider.js'
 
 /**
@@ -34,7 +34,10 @@ export async function activate(context) {
 
   client = new LanguageClient(
     'MDX',
-    {module: context.asAbsolutePath('out/language-server.js')},
+    {
+      module: context.asAbsolutePath('out/language-server.js'),
+      transport: TransportKind.ipc
+    },
     {
       documentSelector: [{language: 'mdx'}],
       initializationOptions: {

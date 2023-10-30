@@ -1,10 +1,29 @@
 /**
+ * @typedef {import('mdast').RootContent} RootContent
  * @typedef {import('vscode').DocumentDropEditProvider} DocumentDropEditProvider
  * @typedef {import('vscode').DataTransferItem} DataTransferItem
  */
 
+import path from 'node:path'
 import {Uri, WorkspaceEdit} from 'vscode'
 import {toMarkdown} from 'mdast-util-to-markdown'
+
+// https://github.com/microsoft/vscode/blob/1.83.1/extensions/markdown-language-features/src/languageFeatures/copyFiles/shared.ts#L29-L41
+const imageExtensions = new Set([
+  '.bmp',
+  '.gif',
+  '.ico',
+  '.jpe',
+  '.jpeg',
+  '.jpg',
+  '.png',
+  '.psd',
+  '.svg',
+  '.tga',
+  '.tif',
+  '.tiff',
+  '.webp'
+])
 
 /**
  * @type {DocumentDropEditProvider}
@@ -14,9 +33,17 @@ export const documentDropEditProvider = {
     /** @type {DataTransferItem | undefined} */
     let textItem
 
+    /** @type {DataTransferItem | undefined} */
+    let uriListItem
+
     for (const [mime, item] of dataTransfer) {
       if (mime === 'text/plain') {
         textItem = item
+        continue
+      }
+
+      if (mime === 'text/uri-list') {
+        uriListItem = item
         continue
       }
 
@@ -38,6 +65,33 @@ export const documentDropEditProvider = {
       return {
         insertText: toMarkdown({type: 'image', url: file.name}).trim(),
         additionalEdit
+      }
+    }
+
+    if (uriListItem) {
+      const value = await uriListItem.asString()
+      const uris = value.split(/\r?\n/)
+      /** @type {string[]} */
+      const content = []
+
+      for (const line of uris) {
+        const uri = Uri.parse(line)
+        const value =
+          uri.scheme === document.uri.scheme
+            ? path.posix.relative(document.uri.path, uri.path)
+            : line
+
+        content.push(
+          toMarkdown(
+            imageExtensions.has(path.posix.extname(uri.path))
+              ? {type: 'image', url: value}
+              : {type: 'text', value}
+          ).trim()
+        )
+      }
+
+      return {
+        insertText: content.join(' ')
       }
     }
 

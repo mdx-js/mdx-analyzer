@@ -3,7 +3,6 @@
  * @typedef {import('vscode').ExtensionContext} ExtensionContext
  */
 
-import {DiagnosticModel} from '@volar/language-server'
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {activateAutoInsertion, getTsdk, supportLabsVersion} from '@volar/vscode'
 import {languages, workspace} from 'vscode'

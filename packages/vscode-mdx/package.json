@@ -160,6 +160,16 @@
           "meta.embedded.xml": "xml",
           "meta.embedded.yaml": "yaml"
         }
+      },
+      {
+        "scopeName": "source.markdown.mdx.codeblock",
+        "path": "./syntaxes/mdx.markdown.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.mdx": "mdx"
+        }
       }
     ]
   }

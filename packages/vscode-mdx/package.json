@@ -20,7 +20,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "vscode": ">=1.82.0"
+    "vscode": "^1.82.0"
   },
   "main": "out/extension.js",
   "keywords": [
@@ -46,15 +46,14 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "@types/vscode": "^1.0.0",
-    "@volar/language-server": "~1.10.0",
-    "@volar/vscode": "~1.10.0",
+    "@types/vscode": "^1.82.0",
+    "@volar/language-server": "~1.11.0",
+    "@volar/vscode": "~1.11.0",
     "@vscode/vsce": "^2.0.0",
     "esbuild": "^0.19.0",
     "mdast-util-to-markdown": "^2.0.0",
     "ovsx": "^0.8.0",
-    "undici": "^5.0.0",
-    "vscode-languageclient": "^9.0.0"
+    "undici": "^5.0.0"
   },
   "galleryBanner": {
     "color": "#fcb32c",

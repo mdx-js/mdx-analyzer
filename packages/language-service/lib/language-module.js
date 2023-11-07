@@ -15,7 +15,7 @@ import {
   FileCapabilities,
   FileKind,
   FileRangeCapabilities
-} from '@volar/language-server'
+} from '@volar/language-core'
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import {unified} from 'unified'

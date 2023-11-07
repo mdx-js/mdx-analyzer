@@ -75,6 +75,10 @@ export const documentDropEditProvider = {
       const content = []
 
       for (const line of uris) {
+        if (!URL.canParse(line)) {
+          continue
+        }
+
         const uri = Uri.parse(line)
         const value =
           uri.scheme === document.uri.scheme

@@ -47,8 +47,8 @@
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.82.0",
-    "@volar/language-server": "~1.11.1",
-    "@volar/vscode": "~1.11.1",
+    "@volar/language-server": "~1.11.0",
+    "@volar/vscode": "~1.11.0",
     "@vscode/vsce": "^2.0.0",
     "esbuild": "^0.19.0",
     "mdast-util-to-markdown": "^2.0.0",

@@ -6,7 +6,7 @@
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {activateAutoInsertion, getTsdk, supportLabsVersion} from '@volar/vscode'
 import {languages, workspace} from 'vscode'
-import {LanguageClient, TransportKind} from 'vscode-languageclient/node.js'
+import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
 import {documentDropEditProvider} from './document-drop-edit-provider.js'
 
 /**

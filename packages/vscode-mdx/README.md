@@ -17,7 +17,7 @@ You can install this extension from the [Marketplace](https://marketplace.visual
 This extension provides the following settings:
 
 *   `mdx.experimentalLanguageServer`: Enable experimental IntelliSense support
-    for MDX files.  (`boolean`, default: false)
+    for MDX files.  (`boolean`, default: true)
 
 ## Plugins
 

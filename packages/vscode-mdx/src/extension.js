@@ -49,8 +49,8 @@ export async function activate(context) {
   tryRestartServer()
 
   context.subscriptions.push(
-    workspace.onDidChangeConfiguration((e) => {
-      if (e.affectsConfiguration('mdx.experimentalLanguageServer')) {
+    workspace.onDidChangeConfiguration((event) => {
+      if (event.affectsConfiguration('mdx.experimentalLanguageServer')) {
         tryRestartServer();
       }
     })

@@ -17,7 +17,7 @@ let client
 /**
  * @type {Disposable[]}
  */
-let features = []
+const features = []
 
 /**
  * Activate the extension.
@@ -51,7 +51,7 @@ export async function activate(context) {
   context.subscriptions.push(
     workspace.onDidChangeConfiguration((event) => {
       if (event.affectsConfiguration('mdx.experimentalLanguageServer')) {
-        tryRestartServer();
+        tryRestartServer()
       }
     })
   )
@@ -81,7 +81,10 @@ export async function deactivate() {
 
 function stopServer() {
   if (client?.needsStop()) {
-    features.forEach(sub => sub.dispose())
+    for (const sub of features) {
+      sub.dispose()
+    }
+
     features.length = 0
 
     client.stop()
@@ -90,19 +93,25 @@ function stopServer() {
 
 function startServer() {
   if (client.needsStart()) {
-    window.withProgress({
-      location: ProgressLocation.Window,
-      title: 'Starting MDX Language Server...',
-    }, async () => {
-      await client.start()
+    window.withProgress(
+      {
+        location: ProgressLocation.Window,
+        title: 'Starting MDX Language Server...'
+      },
+      async () => {
+        await client.start()
 
-      features.push(
-        await activateAutoInsertion([client], (document) => document.languageId === 'mdx'),
-        languages.registerDocumentDropEditProvider(
-          {language: 'mdx'},
-          documentDropEditProvider
+        features.push(
+          await activateAutoInsertion(
+            [client],
+            (document) => document.languageId === 'mdx'
+          ),
+          languages.registerDocumentDropEditProvider(
+            {language: 'mdx'},
+            documentDropEditProvider
+          )
         )
-      )
-    })
+      }
+    )
   }
 }

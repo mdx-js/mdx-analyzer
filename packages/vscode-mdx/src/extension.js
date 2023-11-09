@@ -64,10 +64,10 @@ export async function activate(context) {
     }
   }
 
-  function tryRestartServer() {
-    stopServer()
+  async function tryRestartServer() {
+    await stopServer()
     if (workspace.getConfiguration('mdx').get('experimentalLanguageServer')) {
-      startServer()
+      await startServer()
     }
   }
 }
@@ -76,10 +76,10 @@ export async function activate(context) {
  * Deactivate the extension.
  */
 export async function deactivate() {
-  stopServer()
+  await stopServer()
 }
 
-function stopServer() {
+async function stopServer() {
   if (client?.needsStop()) {
     for (const sub of features) {
       sub.dispose()
@@ -87,13 +87,13 @@ function stopServer() {
 
     features.length = 0
 
-    client.stop()
+    await client.stop()
   }
 }
 
-function startServer() {
+async function startServer() {
   if (client.needsStart()) {
-    window.withProgress(
+    await window.withProgress(
       {
         location: ProgressLocation.Window,
         title: 'Starting MDX Language Server...'

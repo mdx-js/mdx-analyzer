@@ -56,7 +56,7 @@ export async function activate(context) {
 
   context.subscriptions.push(
     workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration('mdx.experimentalLanguageServer')) {
+      if (event.affectsConfiguration('mdx.server.enable')) {
         tryRestartServer()
       }
     })
@@ -72,7 +72,7 @@ export async function activate(context) {
 
   async function tryRestartServer() {
     await stopServer()
-    if (workspace.getConfiguration('mdx').get('experimentalLanguageServer')) {
+    if (workspace.getConfiguration('mdx').get('server.enable')) {
       await startServer()
     }
   }

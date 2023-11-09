@@ -5,7 +5,13 @@
 
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {activateAutoInsertion, getTsdk, supportLabsVersion} from '@volar/vscode'
-import {languages, workspace} from 'vscode'
+import {
+  Disposable,
+  languages,
+  workspace,
+  window,
+  ProgressLocation
+} from 'vscode'
 import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
 import {documentDropEditProvider} from './document-drop-edit-provider.js'
 
@@ -13,6 +19,11 @@ import {documentDropEditProvider} from './document-drop-edit-provider.js'
  * @type {LanguageClient}
  */
 let client
+
+/**
+ * @type {Disposable}
+ */
+let disposable
 
 /**
  * Activate the extension.
@@ -25,10 +36,6 @@ let client
  *   extension.
  */
 export async function activate(context) {
-  if (!workspace.getConfiguration('mdx').get('experimentalLanguageServer')) {
-    return
-  }
-
   const {tsdk} = await getTsdk(context)
 
   client = new LanguageClient(
@@ -45,15 +52,14 @@ export async function activate(context) {
     }
   )
 
-  await client.start()
-
-  activateAutoInsertion([client], (document) => document.languageId === 'mdx')
+  tryRestartServer()
 
   context.subscriptions.push(
-    languages.registerDocumentDropEditProvider(
-      {language: 'mdx'},
-      documentDropEditProvider
-    )
+    workspace.onDidChangeConfiguration((event) => {
+      if (event.affectsConfiguration('mdx.server.enable')) {
+        tryRestartServer()
+      }
+    })
   )
 
   return {
@@ -63,13 +69,51 @@ export async function activate(context) {
       languageServerProtocol
     }
   }
+
+  async function tryRestartServer() {
+    await stopServer()
+    if (workspace.getConfiguration('mdx').get('server.enable')) {
+      await startServer()
+    }
+  }
 }
 
 /**
  * Deactivate the extension.
  */
 export async function deactivate() {
-  if (client) {
+  await stopServer()
+}
+
+async function stopServer() {
+  if (client?.needsStop()) {
+    disposable.dispose()
+
     await client.stop()
+  }
+}
+
+async function startServer() {
+  if (client.needsStart()) {
+    await window.withProgress(
+      {
+        location: ProgressLocation.Window,
+        title: 'Starting MDX Language Server…'
+      },
+      async () => {
+        await client.start()
+
+        disposable = Disposable.from(
+          await activateAutoInsertion(
+            [client],
+            (document) => document.languageId === 'mdx'
+          ),
+          languages.registerDocumentDropEditProvider(
+            {language: 'mdx'},
+            documentDropEditProvider
+          )
+        )
+      }
+    )
   }
 }

@@ -64,9 +64,9 @@
       {
         "title": "MDX",
         "properties": {
-          "mdx.experimentalLanguageServer": {
+          "mdx.server.enable": {
             "type": "boolean",
-            "default": false,
+            "default": true,
             "description": "Enable experimental IntelliSense support for MDX files."
           },
           "mdx.trace.server.verbosity": {

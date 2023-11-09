@@ -1,7 +1,7 @@
 {
   "settings": {
     "git.openRepositoryInParentFolders": "never",
-    "mdx.experimentalLanguageServer": true,
+    "mdx.server.enable": true,
     "mdx.trace.server.verbosity": "compact",
     "mdx.trace.server.format": "text"
   },

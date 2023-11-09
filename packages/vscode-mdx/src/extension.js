@@ -98,7 +98,7 @@ async function startServer() {
     await window.withProgress(
       {
         location: ProgressLocation.Window,
-        title: 'Starting MDX Language Server...'
+        title: 'Starting MDX Language Server…'
       },
       async () => {
         await client.start()

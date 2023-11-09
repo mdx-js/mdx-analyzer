@@ -1,12 +1,17 @@
 /**
  * @typedef {import('@volar/vscode').ExportsInfoForLabs} ExportsInfoForLabs
- * @typedef {import('@volar/vscode').Disposable} Disposable
  * @typedef {import('vscode').ExtensionContext} ExtensionContext
  */
 
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {activateAutoInsertion, getTsdk, supportLabsVersion} from '@volar/vscode'
-import {languages, workspace, window, ProgressLocation} from 'vscode'
+import {
+  Disposable,
+  languages,
+  workspace,
+  window,
+  ProgressLocation
+} from 'vscode'
 import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
 import {documentDropEditProvider} from './document-drop-edit-provider.js'
 
@@ -14,10 +19,11 @@ import {documentDropEditProvider} from './document-drop-edit-provider.js'
  * @type {LanguageClient}
  */
 let client
+
 /**
- * @type {Disposable[]}
+ * @type {Disposable}
  */
-const features = []
+let disposable
 
 /**
  * Activate the extension.
@@ -81,11 +87,7 @@ export async function deactivate() {
 
 async function stopServer() {
   if (client?.needsStop()) {
-    for (const sub of features) {
-      sub.dispose()
-    }
-
-    features.length = 0
+    disposable.dispose()
 
     await client.stop()
   }
@@ -101,7 +103,7 @@ async function startServer() {
       async () => {
         await client.start()
 
-        features.push(
+        disposable = Disposable.from(
           await activateAutoInsertion(
             [client],
             (document) => document.languageId === 'mdx'

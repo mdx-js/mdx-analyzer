@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.5.0
+
+### Minor Changes
+
+- [`8a8dc1b`](https://github.com/mdx-js/mdx-analyzer/commit/8a8dc1bc745ae30b48b07e025ee10326bebe78ba) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Enable the language server by default.
+  The setting `mdx.experimentalLanguageServer` was renamed to `mdx.server.enable`.
+
+- [#344](https://github.com/mdx-js/mdx-analyzer/pull/344) [`d48c926`](https://github.com/mdx-js/mdx-analyzer/commit/d48c926b2a5c21cc764a865f18ea6cb7ff18daad) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update to MDX 3
+
+- [#340](https://github.com/mdx-js/mdx-analyzer/pull/340) [`045458d`](https://github.com/mdx-js/mdx-analyzer/commit/045458d1e43909207837bf6e3c6782367c2b70a8) Thanks [@remcohaszing](https://github.com/remcohaszing)! - The language server and Visual Studio Code extension are now based on [Volar](https://volarjs.dev).
+
+- [#345](https://github.com/mdx-js/mdx-analyzer/pull/345) [`e02ea4f`](https://github.com/mdx-js/mdx-analyzer/commit/e02ea4fd5b4a98f6e12d85293b77016cdde5e6a8) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support drag and dropping text and images into the editor.
+
+- [#348](https://github.com/mdx-js/mdx-analyzer/pull/348) [`6a5ef78`](https://github.com/mdx-js/mdx-analyzer/commit/6a5ef78787afb572df21dd4bc3fbf17933dc855b) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Syntax highlight MDX code blocks in markdown files.
+
+### Patch Changes
+
+- [#338](https://github.com/mdx-js/mdx-analyzer/pull/338) [`c2c67b8`](https://github.com/mdx-js/mdx-analyzer/commit/c2c67b8d558c317909c264dbe0056e9218a18174) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Define the configuration options `mdx.trace.server.verbosity` and `mdx.trace.server.format`.
+
 ## 1.4.0
 
 ### Minor Changes

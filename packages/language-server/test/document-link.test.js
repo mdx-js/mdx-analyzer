@@ -1,9 +1,9 @@
 /**
- * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/language-server').ProtocolConnection} ProtocolConnection
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {DocumentLinkRequest, InitializeRequest} from 'vscode-languageserver'
+import {DocumentLinkRequest, InitializeRequest} from '@volar/language-server'
 import {
   createConnection,
   fixturePath,

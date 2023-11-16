@@ -1,7 +1,7 @@
 /**
- * @typedef {import('vscode-languageserver').TextDocumentItem} TextDocumentItem
- * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
- * @typedef {import('vscode-languageserver').PublishDiagnosticsParams} PublishDiagnosticsParams
+ * @typedef {import('@volar/language-server').TextDocumentItem} TextDocumentItem
+ * @typedef {import('@volar/language-server').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/language-server').PublishDiagnosticsParams} PublishDiagnosticsParams
  */
 
 import {spawn} from 'node:child_process'
@@ -15,7 +15,7 @@ import {
   IPCMessageReader,
   IPCMessageWriter,
   PublishDiagnosticsNotification
-} from 'vscode-languageserver/node.js'
+} from '@volar/language-server/node.js'
 import {URI} from 'vscode-uri'
 // eslint-disable-next-line import/order
 import normalizePath from 'normalize-path'

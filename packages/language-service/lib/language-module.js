@@ -112,6 +112,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
         codegenStacks: [],
         embeddedFiles: [],
         fileName: fileName + '.jsx',
+        languageId: 'javascriptreact',
         kind: FileKind.TypeScriptHostFile,
         mappings: jsxMappings,
         snapshot: ts.ScriptSnapshot.fromString(fallback)
@@ -121,6 +122,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
         codegenStacks: [],
         embeddedFiles: [],
         fileName: fileName + '.md',
+        languageId: 'markdown',
         kind: FileKind.TypeScriptHostFile,
         mappings: mdMappings,
         snapshot: ts.ScriptSnapshot.fromString(mdx)
@@ -152,6 +154,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
           codegenStacks: [],
           embeddedFiles: [],
           fileName: fileName + '.yaml',
+          languageId: 'yaml',
           kind: FileKind.TypeScriptHostFile,
           mappings: [
             {
@@ -282,6 +285,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
       codegenStacks: [],
       embeddedFiles: [],
       fileName: fileName + '.jsx',
+      languageId: 'javascriptreact',
       kind: FileKind.TypeScriptHostFile,
       mappings: jsxMappings,
       snapshot: ts.ScriptSnapshot.fromString(js)
@@ -291,6 +295,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
       codegenStacks: [],
       embeddedFiles: [],
       fileName: fileName + '.md',
+      languageId: 'markdown',
       kind: FileKind.TypeScriptHostFile,
       mappings: mdMappings,
       snapshot: ts.ScriptSnapshot.fromString(mdShadow)
@@ -332,6 +337,7 @@ export function getLanguageModule(ts, plugins) {
         codegenStacks: [],
         embeddedFiles: getVirtualFiles(fileName, snapshot, ts, processor),
         fileName,
+        languageId: 'mdx',
         kind: FileKind.TextFile,
         mappings: [
           {
@@ -364,7 +370,7 @@ export function getLanguageModule(ts, plugins) {
       )
     },
 
-    resolveHost(host) {
+    resolveTypeScriptProjectHost(host) {
       return {
         ...host,
         getCompilationSettings: () => ({

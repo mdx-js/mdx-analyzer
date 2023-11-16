@@ -8,7 +8,7 @@ import {
   FileCapabilities,
   FileKind,
   FileRangeCapabilities
-} from '@volar/language-server'
+} from '@volar/language-core'
 import remarkFrontmatter from 'remark-frontmatter'
 import typescript from 'typescript'
 import {getLanguageModule} from '@mdx-js/language-service'
@@ -694,13 +694,13 @@ test('update virtual file', () => {
 test('compilation setting defaults', () => {
   const module = getLanguageModule(typescript)
 
-  const host = module.resolveHost?.({
+  const host = module.resolveTypeScriptProjectHost?.({
     getCompilationSettings: () => ({}),
     getProjectVersion: () => '1',
     getScriptFileNames: () => [],
     getScriptSnapshot: () => undefined,
-    rootPath: '/',
-    workspacePath: '/'
+    getCurrentDirectory: () => '/',
+    configFileName: undefined,
   })
 
   const compilerOptions = host?.getCompilationSettings()
@@ -718,7 +718,7 @@ test('compilation setting defaults', () => {
 test('compilation setting overrides', () => {
   const module = getLanguageModule(typescript)
 
-  const host = module.resolveHost?.({
+  const host = module.resolveTypeScriptProjectHost?.({
     getCompilationSettings: () => ({
       jsx: typescript.JsxEmit.React,
       jsxFactory: 'h',
@@ -730,8 +730,8 @@ test('compilation setting overrides', () => {
     getProjectVersion: () => '1',
     getScriptFileNames: () => [],
     getScriptSnapshot: () => undefined,
-    rootPath: '/',
-    workspacePath: '/'
+    getCurrentDirectory: () => '/',
+    configFileName: undefined,
   })
 
   const compilerOptions = host?.getCompilationSettings()

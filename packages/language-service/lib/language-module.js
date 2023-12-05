@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@volar/language-core').Language} Language
+ * @typedef {import('@volar/language-core').LanguagePlugin} LanguagePlugin
  * @typedef {import('@volar/language-core').VirtualFile} VirtualFile
  * @typedef {import('mdast').Root} Root
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
@@ -11,13 +11,10 @@
  * @typedef {[start: number, end: number]} OffsetRange
  */
 
-import {
-  FileKind,
-} from '@volar/language-core'
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
-import {unified} from 'unified'
-import {visitParents} from 'unist-util-visit-parents'
+import { unified } from 'unified'
+import { visitParents } from 'unist-util-visit-parents'
 
 const componentStart = `
 /**
@@ -109,7 +106,9 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
         embeddedFiles: [],
         id: fileId + '.jsx',
         languageId: 'javascriptreact',
-        kind: FileKind.TypeScriptHostFile,
+        typescript: {
+          scriptKind: ts.ScriptKind.JSX,
+        },
         mappings: jsxMappings,
         snapshot: ts.ScriptSnapshot.fromString(fallback)
       },
@@ -117,7 +116,6 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
         embeddedFiles: [],
         id: fileId + '.md',
         languageId: 'markdown',
-        kind: FileKind.TypeScriptHostFile,
         mappings: mdMappings,
         snapshot: ts.ScriptSnapshot.fromString(mdx)
       }
@@ -147,15 +145,19 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
           embeddedFiles: [],
           id: fileId + '.yaml',
           languageId: 'yaml',
-          kind: FileKind.TypeScriptHostFile,
           mappings: [
             {
-              sourceRange: [
-                frontmatterStart,
-                frontmatterStart + node.value.length
-              ],
-              generatedRange: [0, node.value.length],
-              data: {}
+              sourceOffsets: [frontmatterStart],
+              generatedOffsets: [0],
+              lengths: [node.value.length],
+              data: {
+                verification: true,
+                completion: true,
+                semantic: true,
+                navigation: true,
+                structure: true,
+                format: true,
+              }
             }
           ],
           snapshot: ts.ScriptSnapshot.fromString(node.value)
@@ -229,9 +231,17 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
       mdShadow += ' '
       if (mdChunkStart !== undefined) {
         mdMappings.push({
-          sourceRange: [mdChunkStart, index],
-          generatedRange: [mdChunkStart, index],
-          data: {}
+          sourceOffsets: [mdChunkStart],
+          generatedOffsets: [mdChunkStart],
+          lengths: [index - mdChunkStart],
+          data: {
+            verification: true,
+            completion: true,
+            semantic: true,
+            navigation: true,
+            structure: true,
+            format: true,
+          }
         })
       }
 
@@ -246,9 +256,17 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
 
   if (mdChunkStart !== undefined) {
     mdMappings.push({
-      sourceRange: [mdChunkStart, mdx.length - 1],
-      generatedRange: [mdChunkStart, mdx.length - 1],
-      data: {}
+      sourceOffsets: [mdChunkStart],
+      generatedOffsets: [mdChunkStart],
+      lengths: [mdx.length - 1 - mdChunkStart],
+      data: {
+        verification: true,
+        completion: true,
+        semantic: true,
+        navigation: true,
+        structure: true,
+        format: true,
+      }
     })
   }
 
@@ -257,17 +275,33 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
 
   for (const [start, end] of esmPositions) {
     jsxMappings.push({
-      sourceRange: [start, end],
-      generatedRange: [start, end],
-      data: {}
+      sourceOffsets: [start],
+      generatedOffsets: [start],
+      lengths: [end - start],
+      data: {
+        verification: true,
+        completion: true,
+        semantic: true,
+        navigation: true,
+        structure: true,
+        format: true,
+      }
     })
   }
 
   for (const [start, end] of jsxPositions) {
     jsxMappings.push({
-      sourceRange: [start, end],
-      generatedRange: [start + jsxStart, end + jsxStart],
-      data: {}
+      sourceOffsets: [start],
+      generatedOffsets: [start + jsxStart],
+      lengths: [end - start],
+      data: {
+        verification: true,
+        completion: true,
+        semantic: true,
+        navigation: true,
+        structure: true,
+        format: true,
+      }
     })
   }
 
@@ -276,7 +310,9 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
       embeddedFiles: [],
       id: fileId + '.jsx',
       languageId: 'javascriptreact',
-      kind: FileKind.TypeScriptHostFile,
+      typescript: {
+        scriptKind: ts.ScriptKind.JSX,
+      },
       mappings: jsxMappings,
       snapshot: ts.ScriptSnapshot.fromString(js)
     },
@@ -284,7 +320,6 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
       embeddedFiles: [],
       id: fileId + '.md',
       languageId: 'markdown',
-      kind: FileKind.TypeScriptHostFile,
       mappings: mdMappings,
       snapshot: ts.ScriptSnapshot.fromString(mdShadow)
     }
@@ -301,7 +336,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
  * @param {PluggableList} [plugins]
  *   A list of remark syntax plugins. Only syntax plugins are supported.
  *   Transformers are unused.
- * @returns {Language}
+ * @returns {LanguagePlugin}
  *   A Volar language module to support MDX.
  */
 export function getLanguageModule(ts, plugins) {
@@ -324,12 +359,19 @@ export function getLanguageModule(ts, plugins) {
         embeddedFiles: getVirtualFiles(id, snapshot, ts, processor),
         id,
         languageId: 'mdx',
-        kind: FileKind.TextFile,
         mappings: [
           {
-            sourceRange: [0, length],
-            generatedRange: [0, length],
-            data: {}
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [length],
+            data: {
+              verification: true,
+              completion: true,
+              semantic: true,
+              navigation: true,
+              structure: true,
+              format: true,
+            }
           }
         ],
         snapshot
@@ -342,9 +384,17 @@ export function getLanguageModule(ts, plugins) {
       const length = snapshot.getLength()
       mdxFile.mappings = [
         {
-          sourceRange: [0, length],
-          generatedRange: [0, length],
-          data: {}
+          sourceOffsets: [0],
+          generatedOffsets: [0],
+          lengths: [length],
+          data: {
+            verification: true,
+            completion: true,
+            semantic: true,
+            navigation: true,
+            structure: true,
+            format: true,
+          }
         }
       ]
 
@@ -357,6 +407,12 @@ export function getLanguageModule(ts, plugins) {
     },
 
     typescript: {
+      resolveSourceFileName(tsFileName) {
+        if (tsFileName.endsWith('.mdx.tsx')) {
+          // .mdx.tsx -> .mdx
+          return tsFileName = tsFileName.slice(0, -'.tsx'.length);
+        }
+      },
       resolveLanguageServiceHost(host) {
         return {
           ...host,

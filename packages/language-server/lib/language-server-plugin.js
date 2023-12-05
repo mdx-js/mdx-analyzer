@@ -29,11 +29,11 @@ export function plugin({modules}) {
       'tsx'
     ],
 
-    async resolveConfig(config, env, projectHost) {
+    async resolveConfig(config, env, projectContext) {
       assert(modules.typescript, 'TypeScript module is missing')
 
       const plugins = await loadPlugins(
-        projectHost?.configFileName,
+        projectContext?.configFileName,
         modules.typescript
       )
 
@@ -42,7 +42,7 @@ export function plugin({modules}) {
 
       config.services ||= {}
       config.services.markdown = createMarkdownService()
-      config.services.typescript = createTypeScriptService()
+      config.services.typescript = createTypeScriptService(modules.typescript)
 
       return config
     }

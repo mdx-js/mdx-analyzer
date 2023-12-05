@@ -4,9 +4,6 @@
 
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
-import {
-  FileKind,
-} from '@volar/language-core'
 import remarkFrontmatter from 'remark-frontmatter'
 import typescript from 'typescript'
 import {getLanguageModule} from '@mdx-js/language-service'
@@ -20,7 +17,6 @@ test('create virtual file w/ mdxjsEsm', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
-    kind: FileKind.TextFile,
     mappings: [
       {
         sourceRange: [0, 35],
@@ -33,7 +29,9 @@ test('create virtual file w/ mdxjsEsm', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
             data: {},
@@ -65,7 +63,6 @@ test('create virtual file w/ mdxjsEsm', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
         mappings: [],
         snapshot: snapshotFromLines('                                  ', '')
       }
@@ -82,7 +79,6 @@ test('create virtual file w/ mdxFlowExpression', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
-    kind: FileKind.TextFile,
     mappings: [
       {
         sourceRange: [0, 10],
@@ -95,7 +91,9 @@ test('create virtual file w/ mdxFlowExpression', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
             data: {},
@@ -127,7 +125,6 @@ test('create virtual file w/ mdxFlowExpression', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
         mappings: [],
         snapshot: snapshotFromLines('         ', '')
       }
@@ -151,7 +148,6 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
-    kind: FileKind.TextFile,
     mappings: [
       {
         sourceRange: [0, 66],
@@ -164,7 +160,9 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
             data: {},
@@ -209,7 +207,6 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
             sourceRange: [9, 59],
@@ -239,7 +236,6 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
-    kind: FileKind.TextFile,
     mappings: [
       {
         sourceRange: [0, 8],
@@ -252,7 +248,9 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
             data: {},
@@ -284,7 +282,6 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
         mappings: [],
         snapshot: snapshotFromLines('       ', '')
       }
@@ -301,7 +298,6 @@ test('create virtual file w/ mdxJsxTextElement', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
-    kind: FileKind.TextFile,
     mappings: [
       {
         sourceRange: [0, 10],
@@ -314,7 +310,9 @@ test('create virtual file w/ mdxJsxTextElement', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
             data: {},
@@ -346,7 +344,6 @@ test('create virtual file w/ mdxJsxTextElement', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
             sourceRange: [0, 2],
@@ -369,7 +366,6 @@ test('create virtual file w/ mdxTextExpression', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
-    kind: FileKind.TextFile,
     mappings: [
       {
         sourceRange: [0, 18],
@@ -382,7 +378,9 @@ test('create virtual file w/ mdxTextExpression', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
             data: {},
@@ -414,7 +412,6 @@ test('create virtual file w/ mdxTextExpression', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
             sourceRange: [0, 4],
@@ -442,7 +439,6 @@ test('create virtual file w/ syntax error', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
-    kind: FileKind.TextFile,
     mappings: [
       {
         sourceRange: [0, 2],
@@ -456,7 +452,9 @@ test('create virtual file w/ syntax error', () => {
         capabilities: {},
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [],
         snapshot: snapshotFromLines(
           '',
@@ -481,7 +479,6 @@ test('create virtual file w/ syntax error', () => {
         capabilities: {},
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
         mappings: [],
         snapshot: snapshotFromLines('<', '')
       }
@@ -498,7 +495,6 @@ test('create virtual file w/ yaml frontmatter', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
-    kind: FileKind.TextFile,
     mappings: [
       {
         sourceRange: [0, 27],
@@ -511,7 +507,9 @@ test('create virtual file w/ yaml frontmatter', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [],
         snapshot: snapshotFromLines(
           '   ',
@@ -541,7 +539,6 @@ test('create virtual file w/ yaml frontmatter', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
             sourceRange: [0, 26],
@@ -554,7 +551,6 @@ test('create virtual file w/ yaml frontmatter', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.yaml',
-        kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
             sourceRange: [4, 22],
@@ -582,7 +578,6 @@ test('update virtual file', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
-    kind: FileKind.TextFile,
     mappings: [
       {
         sourceRange: [0, 19],
@@ -595,7 +590,9 @@ test('update virtual file', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [],
         snapshot: snapshotFromLines(
           '                  ',
@@ -621,7 +618,6 @@ test('update virtual file', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
         mappings: [
           {
             sourceRange: [0, 18],

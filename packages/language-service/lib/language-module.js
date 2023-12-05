@@ -410,7 +410,7 @@ export function getLanguageModule(ts, plugins) {
       resolveSourceFileName(tsFileName) {
         if (tsFileName.endsWith('.mdx.tsx')) {
           // .mdx.tsx -> .mdx
-          return tsFileName = tsFileName.slice(0, -'.tsx'.length);
+          return tsFileName.slice(0, -'.tsx'.length);
         }
       },
       resolveLanguageServiceHost(host) {

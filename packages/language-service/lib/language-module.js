@@ -408,9 +408,9 @@ export function getLanguageModule(ts, plugins) {
 
     typescript: {
       resolveSourceFileName(tsFileName) {
-        if (tsFileName.endsWith('.mdx.tsx')) {
-          // .mdx.tsx -> .mdx
-          return tsFileName.slice(0, -'.tsx'.length)
+        if (tsFileName.endsWith('.mdx.jsx')) {
+          // .mdx.jsx → .mdx
+          return tsFileName.slice(0, -4)
         }
       },
       resolveLanguageServiceHost(host) {

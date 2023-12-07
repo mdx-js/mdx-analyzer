@@ -636,7 +636,7 @@ test('compilation setting defaults', () => {
 
   // @ts-expect-error
   const host = module.typescript?.resolveLanguageServiceHost?.({
-    getCompilationSettings: () => ({}),
+    getCompilationSettings: () => ({})
   })
 
   const compilerOptions = host?.getCompilationSettings()
@@ -663,7 +663,7 @@ test('compilation setting overrides', () => {
       jsxImportSource: 'preact',
       allowJs: false,
       allowNonTsExtensions: false
-    }),
+    })
   })
 
   const compilerOptions = host?.getCompilationSettings()

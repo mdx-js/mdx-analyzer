@@ -13,8 +13,8 @@
 
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
-import { unified } from 'unified'
-import { visitParents } from 'unist-util-visit-parents'
+import {unified} from 'unified'
+import {visitParents} from 'unist-util-visit-parents'
 
 const componentStart = `
 /**
@@ -107,7 +107,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
         id: fileId + '.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: ts.ScriptKind.JSX,
+          scriptKind: ts.ScriptKind.JSX
         },
         mappings: jsxMappings,
         snapshot: ts.ScriptSnapshot.fromString(fallback)
@@ -156,7 +156,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
                 semantic: true,
                 navigation: true,
                 structure: true,
-                format: true,
+                format: true
               }
             }
           ],
@@ -240,7 +240,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
             semantic: true,
             navigation: true,
             structure: true,
-            format: true,
+            format: true
           }
         })
       }
@@ -265,7 +265,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
         semantic: true,
         navigation: true,
         structure: true,
-        format: true,
+        format: true
       }
     })
   }
@@ -284,7 +284,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
         semantic: true,
         navigation: true,
         structure: true,
-        format: true,
+        format: true
       }
     })
   }
@@ -300,7 +300,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
         semantic: true,
         navigation: true,
         structure: true,
-        format: true,
+        format: true
       }
     })
   }
@@ -311,7 +311,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
       id: fileId + '.jsx',
       languageId: 'javascriptreact',
       typescript: {
-        scriptKind: ts.ScriptKind.JSX,
+        scriptKind: ts.ScriptKind.JSX
       },
       mappings: jsxMappings,
       snapshot: ts.ScriptSnapshot.fromString(js)
@@ -370,7 +370,7 @@ export function getLanguageModule(ts, plugins) {
               semantic: true,
               navigation: true,
               structure: true,
-              format: true,
+              format: true
             }
           }
         ],
@@ -393,7 +393,7 @@ export function getLanguageModule(ts, plugins) {
             semantic: true,
             navigation: true,
             structure: true,
-            format: true,
+            format: true
           }
         }
       ]
@@ -410,7 +410,7 @@ export function getLanguageModule(ts, plugins) {
       resolveSourceFileName(tsFileName) {
         if (tsFileName.endsWith('.mdx.tsx')) {
           // .mdx.tsx -> .mdx
-          return tsFileName.slice(0, -'.tsx'.length);
+          return tsFileName.slice(0, -'.tsx'.length)
         }
       },
       resolveLanguageServiceHost(host) {

@@ -23,7 +23,7 @@ afterEach(() => {
   connection.dispose()
 })
 
-test.skip('resolve markdown link references', async () => {
+test('resolve markdown link references', async () => {
   await connection.sendRequest(InitializeRequest.type, {
     processId: null,
     rootUri: fixtureUri('node16'),

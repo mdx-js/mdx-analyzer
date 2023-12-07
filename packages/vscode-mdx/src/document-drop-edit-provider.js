@@ -75,23 +75,23 @@ export const documentDropEditProvider = {
       const content = []
 
       for (const line of uris) {
-        if (!URL.canParse(line)) {
+        try {
+          const uri = Uri.parse(line, true)
+          const value =
+            uri.scheme === document.uri.scheme
+              ? path.posix.relative(document.uri.path, uri.path)
+              : line
+
+          content.push(
+            toMarkdown(
+              imageExtensions.has(path.posix.extname(uri.path))
+                ? {type: 'image', url: value}
+                : {type: 'text', value}
+            ).trim()
+          )
+        } catch {
           continue
         }
-
-        const uri = Uri.parse(line)
-        const value =
-          uri.scheme === document.uri.scheme
-            ? path.posix.relative(document.uri.path, uri.path)
-            : line
-
-        content.push(
-          toMarkdown(
-            imageExtensions.has(path.posix.extname(uri.path))
-              ? {type: 'image', url: value}
-              : {type: 'text', value}
-          ).trim()
-        )
       }
 
       return {

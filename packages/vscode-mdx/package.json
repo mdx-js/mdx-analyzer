@@ -113,6 +113,21 @@
         "url": "./tsconfig.schema.json"
       }
     ],
+    "commands": [
+      {
+        "command": "mdx.selectTypescriptVersion",
+        "title": "Select TypeScript version…",
+        "category": "MDX"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "mdx.selectTypescriptVersion",
+          "when": "editorLangId == mdx"
+        }
+      ]
+    },
     "grammars": [
       {
         "language": "mdx",

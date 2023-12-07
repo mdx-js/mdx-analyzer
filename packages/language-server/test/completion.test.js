@@ -38,7 +38,17 @@ test('support completion in ESM', async () => {
   })
 
   const {uri} = await openTextDocument(connection, 'node16/completion.mdx')
-  const result = await connection.sendRequest(CompletionRequest.type, {
+  // As of TypeScript 5.3, the first request doesn’t get a response.
+  // This appears to be a TypeScript regression.
+  let result = await connection.sendRequest(CompletionRequest.type, {
+    position: {line: 1, character: 1},
+    textDocument: {uri}
+  })
+  assert.ok(result)
+  assert.ok('items' in result)
+  assert.deepEqual(result.items, [])
+
+  result = await connection.sendRequest(CompletionRequest.type, {
     position: {line: 1, character: 1},
     textDocument: {uri}
   })
@@ -111,7 +121,7 @@ test('support completion in JSX', async () => {
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx.jsx'),
-          offset: 77,
+          offset: 430,
           originalItem: {name: 'Boolean'},
           uri: fixtureUri('node16/completion.mdx.jsx')
         }
@@ -134,7 +144,7 @@ test('support completion in JSX', async () => {
     commitCharacters: ['.', ',', ';', '('],
     data: {
       fileName: fixturePath('node16/completion.mdx.jsx'),
-      offset: 77,
+      offset: 430,
       originalItem: {name: 'Boolean'},
       uri: fixtureUri('node16/completion.mdx.jsx')
     },

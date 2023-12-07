@@ -1,10 +1,16 @@
 /**
  * @typedef {import('@volar/vscode').ExportsInfoForLabs} ExportsInfoForLabs
  * @typedef {import('vscode').ExtensionContext} ExtensionContext
+ * @typedef {import('vscode').TextDocument} TextDocument
  */
 
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
-import {activateAutoInsertion, getTsdk, supportLabsVersion} from '@volar/vscode'
+import {
+  activateAutoInsertion,
+  activateTsVersionStatusItem,
+  getTsdk,
+  supportLabsVersion
+} from '@volar/vscode'
 import {
   Disposable,
   languages,
@@ -73,7 +79,7 @@ export async function activate(context) {
   async function tryRestartServer() {
     await stopServer()
     if (workspace.getConfiguration('mdx').get('server.enable')) {
-      await startServer()
+      await startServer(context)
     }
   }
 }
@@ -93,7 +99,13 @@ async function stopServer() {
   }
 }
 
-async function startServer() {
+/**
+ * Start the language server and client integrations.
+ *
+ * @param {ExtensionContext} context
+ *   The extension context as given by VSCode.
+ */
+async function startServer(context) {
   if (client.needsStart()) {
     await window.withProgress(
       {
@@ -104,16 +116,35 @@ async function startServer() {
         await client.start()
 
         disposable = Disposable.from(
-          await activateAutoInsertion(
-            [client],
-            (document) => document.languageId === 'mdx'
-          ),
           languages.registerDocumentDropEditProvider(
             {language: 'mdx'},
             documentDropEditProvider
-          )
+          ),
+          ...(await Promise.all([
+            activateAutoInsertion([client], isMdxDocument),
+            activateTsVersionStatusItem(
+              'mdx.selectTypescriptVersion',
+              context,
+              client,
+              isMdxDocument,
+              (text) => 'TS ' + text,
+              true
+            )
+          ]))
         )
       }
     )
   }
+}
+
+/**
+ * Check whether or not a text document is MDX.
+ *
+ * @param {TextDocument} document
+ *   The text document to check.
+ * @returns {boolean}
+ *   Whether or not the text document is MDX.
+ */
+function isMdxDocument(document) {
+  return document.languageId === 'mdx'
 }

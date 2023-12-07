@@ -17,11 +17,20 @@ test('create virtual file w/ mdxjsEsm', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 35],
-        generatedRange: [0, 35],
-        data: {}
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [35],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
@@ -29,14 +38,23 @@ test('create virtual file w/ mdxjsEsm', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
+        languageId: 'javascriptreact',
         typescript: {
           scriptKind: 2
         },
         mappings: [
           {
-            data: {},
-            generatedRange: [0, 34],
-            sourceRange: [0, 34]
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [34],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -63,6 +81,7 @@ test('create virtual file w/ mdxjsEsm', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
+        languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('                                  ', '')
       }
@@ -79,11 +98,20 @@ test('create virtual file w/ mdxFlowExpression', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 10],
-        generatedRange: [0, 10],
-        data: {}
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [10],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
@@ -91,14 +119,23 @@ test('create virtual file w/ mdxFlowExpression', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
+        languageId: 'javascriptreact',
         typescript: {
           scriptKind: 2
         },
         mappings: [
           {
-            data: {},
-            generatedRange: [199, 208],
-            sourceRange: [0, 9]
+            generatedOffsets: [199],
+            sourceOffsets: [0],
+            lengths: [9],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -125,6 +162,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
+        languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('         ', '')
       }
@@ -148,11 +186,20 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 66],
-        generatedRange: [0, 66],
-        data: {}
+        generatedOffsets: [0],
+        sourceOffsets: [0],
+        lengths: [66],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
@@ -160,19 +207,36 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
+        languageId: 'javascriptreact',
         typescript: {
           scriptKind: 2
         },
         mappings: [
           {
-            data: {},
-            generatedRange: [255, 264],
-            sourceRange: [0, 9]
+            sourceOffsets: [0],
+            generatedOffsets: [255],
+            lengths: [9],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           },
           {
-            data: {},
-            generatedRange: [312, 320],
-            sourceRange: [57, 65]
+            sourceOffsets: [57],
+            generatedOffsets: [312],
+            lengths: [8],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -207,11 +271,20 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
+        languageId: 'markdown',
         mappings: [
           {
-            sourceRange: [9, 59],
-            generatedRange: [9, 59],
-            data: {}
+            sourceOffsets: [9],
+            generatedOffsets: [9],
+            lengths: [50],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -236,11 +309,20 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 8],
-        generatedRange: [0, 8],
-        data: {}
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [8],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
@@ -248,14 +330,20 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        typescript: {
-          scriptKind: 2
-        },
+        languageId: 'javascriptreact',
         mappings: [
           {
-            data: {},
-            generatedRange: [197, 204],
-            sourceRange: [0, 7]
+            sourceOffsets: [0],
+            generatedOffsets: [197],
+            lengths: [7],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -277,11 +365,15 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
           '// @ts-ignore',
           '/** @typedef {Props} MDXContentProps */',
           ''
-        )
+        ),
+        typescript: {
+          scriptKind: 2
+        }
       },
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
+        languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('       ', '')
       }
@@ -298,11 +390,20 @@ test('create virtual file w/ mdxJsxTextElement', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 10],
-        generatedRange: [0, 10],
-        data: {}
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [10],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
@@ -310,14 +411,23 @@ test('create virtual file w/ mdxJsxTextElement', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
+        languageId: 'javascriptreact',
         typescript: {
           scriptKind: 2
         },
         mappings: [
           {
-            data: {},
-            generatedRange: [201, 208],
-            sourceRange: [2, 9]
+            sourceOffsets: [2],
+            generatedOffsets: [201],
+            lengths: [7],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -344,11 +454,20 @@ test('create virtual file w/ mdxJsxTextElement', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
+        languageId: 'markdown',
         mappings: [
           {
-            sourceRange: [0, 2],
-            generatedRange: [0, 2],
-            data: {}
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [2],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines('A        ', '')
@@ -366,11 +485,20 @@ test('create virtual file w/ mdxTextExpression', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 18],
-        generatedRange: [0, 18],
-        data: {}
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [18],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
@@ -378,14 +506,23 @@ test('create virtual file w/ mdxTextExpression', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
+        languageId: 'javascriptreact',
         typescript: {
           scriptKind: 2
         },
         mappings: [
           {
-            data: {},
-            generatedRange: [211, 220],
-            sourceRange: [4, 13]
+            generatedOffsets: [211],
+            sourceOffsets: [4],
+            lengths: [9],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -412,16 +549,33 @@ test('create virtual file w/ mdxTextExpression', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
+        languageId: 'markdown',
         mappings: [
           {
-            sourceRange: [0, 4],
-            generatedRange: [0, 4],
-            data: {}
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [4],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           },
           {
-            sourceRange: [14, 17],
-            generatedRange: [14, 17],
-            data: {}
+            sourceOffsets: [14],
+            generatedOffsets: [14],
+            lengths: [3],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines('3 <           < 4', '')
@@ -439,22 +593,28 @@ test('create virtual file w/ syntax error', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 2],
-        generatedRange: [0, 2],
-        data: {}
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [2],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
     embeddedFiles: [
       {
-        capabilities: {},
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        typescript: {
-          scriptKind: 2
-        },
+        languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
           '',
@@ -473,12 +633,15 @@ test('create virtual file w/ syntax error', () => {
           '// @ts-ignore',
           '/** @typedef {Props} MDXContentProps */',
           ''
-        )
+        ),
+        typescript: {
+          scriptKind: 2
+        }
       },
       {
-        capabilities: {},
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
+        languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('<', '')
       }
@@ -495,11 +658,20 @@ test('create virtual file w/ yaml frontmatter', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 27],
-        generatedRange: [0, 27],
-        data: {}
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [27],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
@@ -507,9 +679,7 @@ test('create virtual file w/ yaml frontmatter', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        typescript: {
-          scriptKind: 2
-        },
+        languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
           '   ',
@@ -534,16 +704,28 @@ test('create virtual file w/ yaml frontmatter', () => {
           '// @ts-ignore',
           '/** @typedef {Props} MDXContentProps */',
           ''
-        )
+        ),
+        typescript: {
+          scriptKind: 2
+        }
       },
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
+        languageId: 'markdown',
         mappings: [
           {
-            sourceRange: [0, 26],
-            generatedRange: [0, 26],
-            data: {}
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [26],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines('---', 'hello: frontmatter', '---', '')
@@ -551,11 +733,20 @@ test('create virtual file w/ yaml frontmatter', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.yaml',
+        languageId: 'yaml',
         mappings: [
           {
-            sourceRange: [4, 22],
-            generatedRange: [0, 18],
-            data: {}
+            sourceOffsets: [4],
+            generatedOffsets: [0],
+            lengths: [18],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines('hello: frontmatter')
@@ -578,11 +769,20 @@ test('update virtual file', () => {
 
   assert.deepEqual(file, {
     id: 'file:///test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 19],
-        generatedRange: [0, 19],
-        data: {}
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [19],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
@@ -590,9 +790,7 @@ test('update virtual file', () => {
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.jsx',
-        typescript: {
-          scriptKind: 2
-        },
+        languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
           '                  ',
@@ -613,16 +811,28 @@ test('update virtual file', () => {
           '// @ts-ignore',
           '/** @typedef {Props} MDXContentProps */',
           ''
-        )
+        ),
+        typescript: {
+          scriptKind: 2
+        }
       },
       {
         embeddedFiles: [],
         id: 'file:///test.mdx.md',
+        languageId: 'markdown',
         mappings: [
           {
-            sourceRange: [0, 18],
-            generatedRange: [0, 18],
-            data: {}
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [18],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines('This line is fixed', '')

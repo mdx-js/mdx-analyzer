@@ -67,7 +67,7 @@ test('support completion in ESM', async () => {
           uri: fixtureUri('node16/completion.mdx.jsx')
         }
       },
-      serviceId: 'typescript',
+      serviceIndex: 1,
       uri: fixtureUri('node16/completion.mdx'),
       virtualDocumentUri: fixtureUri('node16/completion.mdx.jsx')
     },
@@ -126,7 +126,7 @@ test('support completion in JSX', async () => {
           uri: fixtureUri('node16/completion.mdx.jsx')
         }
       },
-      serviceId: 'typescript',
+      serviceIndex: 1,
       uri: fixtureUri('node16/completion.mdx'),
       virtualDocumentUri: fixtureUri('node16/completion.mdx.jsx')
     },

@@ -76,7 +76,7 @@ test('resolve markdown link references', async () => {
             href: {kind: 2, ref: 'mdx'}
           }
         },
-        serviceId: 'markdown'
+        serviceIndex: 0
       }
     },
     {
@@ -85,7 +85,7 @@ test('resolve markdown link references', async () => {
       data: {
         uri: fixtureUri('node16/link-reference.mdx'),
         original: {},
-        serviceId: 'markdown'
+        serviceIndex: 0
       }
     }
   ])

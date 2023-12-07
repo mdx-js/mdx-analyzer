@@ -49,10 +49,9 @@ test('type errors', async () => {
           isFormat: false,
           original: {},
           ruleFixIndex: 0,
-          serviceOrRuleId: 'typescript',
-          type: 'service',
+          serviceIndex: 1,
           uri: fixtureUri('node16/type-errors.mdx'),
-          version: 0
+          version: 1
         },
         message:
           "Property 'counter' may not exist on type 'Props'. Did you mean 'count'?",
@@ -82,10 +81,9 @@ test('type errors', async () => {
           isFormat: false,
           original: {},
           ruleFixIndex: 0,
-          serviceOrRuleId: 'typescript',
-          type: 'service',
+          serviceIndex: 1,
           uri: fixtureUri('node16/type-errors.mdx'),
-          version: 0
+          version: 1
         },
         message:
           "Property 'counts' may not exist on type 'Props'. Did you mean 'count'?",

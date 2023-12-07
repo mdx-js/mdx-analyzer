@@ -5,12 +5,7 @@ import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 import {DocumentLinkRequest, InitializeRequest} from '@volar/language-server'
 import {URI} from 'vscode-uri'
-import {
-  createConnection,
-  fixtureUri,
-  openTextDocument,
-  tsdk
-} from './utils.js'
+import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
 
 /** @type {ProtocolConnection} */
 let connection
@@ -57,7 +52,8 @@ test('resolve markdown link references', async () => {
               pathText: 'mdx',
               resource: {
                 $mid: 1,
-                path: URI.parse(fixtureUri('node16/link-reference.mdx.md')).path,
+                path: URI.parse(fixtureUri('node16/link-reference.mdx.md'))
+                  .path,
                 scheme: 'file'
               },
               range: {

@@ -348,7 +348,7 @@ export function getLanguageModule(ts, plugins) {
   processor.freeze()
 
   return {
-    createVirtualFile(id, languageId, snapshot) {
+    createVirtualFile(fileName, languageId, snapshot) {
       if (languageId !== 'mdx') {
         return
       }
@@ -356,8 +356,8 @@ export function getLanguageModule(ts, plugins) {
       const length = snapshot.getLength()
 
       return {
-        embeddedFiles: getVirtualFiles(id, snapshot, ts, processor),
-        id,
+        embeddedFiles: getVirtualFiles(fileName, snapshot, ts, processor),
+        fileName,
         languageId: 'mdx',
         mappings: [
           {
@@ -399,7 +399,7 @@ export function getLanguageModule(ts, plugins) {
       ]
 
       mdxFile.embeddedFiles = getVirtualFiles(
-        mdxFile.id,
+        mdxFile.fileName,
         snapshot,
         ts,
         processor

@@ -61,7 +61,9 @@ export function createConnection() {
  * @returns {string} The uri that matches the fixture file name.
  */
 export function fixtureUri(fileName) {
-  return URI.parse(String(new URL(`../../../fixtures/${fileName}`, import.meta.url))).toString()
+  return URI.parse(
+    String(new URL(`../../../fixtures/${fileName}`, import.meta.url))
+  ).toString()
 }
 
 /**

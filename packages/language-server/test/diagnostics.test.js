@@ -48,7 +48,6 @@ test('type errors', async () => {
           documentUri: fixtureUri('node16/type-errors.mdx.jsx'),
           isFormat: false,
           original: {},
-          ruleFixIndex: 0,
           serviceIndex: 1,
           uri: fixtureUri('node16/type-errors.mdx'),
           version: 1
@@ -80,7 +79,6 @@ test('type errors', async () => {
           documentUri: fixtureUri('node16/type-errors.mdx.jsx'),
           isFormat: false,
           original: {},
-          ruleFixIndex: 0,
           serviceIndex: 1,
           uri: fixtureUri('node16/type-errors.mdx'),
           version: 1

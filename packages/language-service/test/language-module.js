@@ -13,7 +13,7 @@ test('create virtual file w/ mdxjsEsm', () => {
 
   const snapshot = snapshotFromLines('import {Planet} from "./Planet.js"', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
     fileName: '/test.mdx',
@@ -94,7 +94,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
 
   const snapshot = snapshotFromLines('{Math.PI}', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
     fileName: '/test.mdx',
@@ -182,7 +182,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
     ''
   )
 
-  const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
     fileName: '/test.mdx',
@@ -305,7 +305,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
 
   const snapshot = snapshotFromLines('<div />', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
     fileName: '/test.mdx',
@@ -386,7 +386,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
 
   const snapshot = snapshotFromLines('A <div />', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
     fileName: '/test.mdx',
@@ -481,7 +481,7 @@ test('create virtual file w/ mdxTextExpression', () => {
 
   const snapshot = snapshotFromLines('3 < {Math.PI} < 4', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
     fileName: '/test.mdx',
@@ -589,7 +589,7 @@ test('create virtual file w/ syntax error', () => {
 
   const snapshot = snapshotFromLines('<', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
     fileName: '/test.mdx',
@@ -654,7 +654,7 @@ test('create virtual file w/ yaml frontmatter', () => {
 
   const snapshot = snapshotFromLines('---', 'hello: frontmatter', '---', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
     fileName: '/test.mdx',
@@ -759,7 +759,7 @@ test('update virtual file', () => {
   const module = getLanguageModule(typescript)
 
   const file = module.createVirtualFile(
-    'file:///test.mdx',
+    '/test.mdx',
     'mdx',
     snapshotFromLines('Tihs lne haz tyops', '')
   )

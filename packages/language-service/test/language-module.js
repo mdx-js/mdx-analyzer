@@ -16,7 +16,7 @@ test('create virtual file w/ mdxjsEsm', () => {
   const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    id: 'file:///test.mdx',
+    fileName: '/test.mdx',
     languageId: 'mdx',
     mappings: [
       {
@@ -37,7 +37,7 @@ test('create virtual file w/ mdxjsEsm', () => {
     embeddedFiles: [
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.jsx',
+        fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
           scriptKind: 2
@@ -80,7 +80,7 @@ test('create virtual file w/ mdxjsEsm', () => {
       },
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.md',
+        fileName: '/test.mdx.md',
         languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('                                  ', '')
@@ -97,7 +97,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
   const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    id: 'file:///test.mdx',
+    fileName: '/test.mdx',
     languageId: 'mdx',
     mappings: [
       {
@@ -118,7 +118,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
     embeddedFiles: [
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.jsx',
+        fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
           scriptKind: 2
@@ -161,7 +161,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
       },
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.md',
+        fileName: '/test.mdx.md',
         languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('         ', '')
@@ -185,7 +185,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
   const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    id: 'file:///test.mdx',
+    fileName: '/test.mdx',
     languageId: 'mdx',
     mappings: [
       {
@@ -206,7 +206,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
     embeddedFiles: [
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.jsx',
+        fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
           scriptKind: 2
@@ -270,7 +270,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
       },
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.md',
+        fileName: '/test.mdx.md',
         languageId: 'markdown',
         mappings: [
           {
@@ -308,7 +308,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
   const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    id: 'file:///test.mdx',
+    fileName: '/test.mdx',
     languageId: 'mdx',
     mappings: [
       {
@@ -329,7 +329,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
     embeddedFiles: [
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.jsx',
+        fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         mappings: [
           {
@@ -372,7 +372,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
       },
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.md',
+        fileName: '/test.mdx.md',
         languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('       ', '')
@@ -389,7 +389,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
   const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    id: 'file:///test.mdx',
+    fileName: '/test.mdx',
     languageId: 'mdx',
     mappings: [
       {
@@ -410,7 +410,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
     embeddedFiles: [
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.jsx',
+        fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
           scriptKind: 2
@@ -453,7 +453,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
       },
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.md',
+        fileName: '/test.mdx.md',
         languageId: 'markdown',
         mappings: [
           {
@@ -484,7 +484,7 @@ test('create virtual file w/ mdxTextExpression', () => {
   const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    id: 'file:///test.mdx',
+    fileName: '/test.mdx',
     languageId: 'mdx',
     mappings: [
       {
@@ -505,7 +505,7 @@ test('create virtual file w/ mdxTextExpression', () => {
     embeddedFiles: [
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.jsx',
+        fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
           scriptKind: 2
@@ -548,7 +548,7 @@ test('create virtual file w/ mdxTextExpression', () => {
       },
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.md',
+        fileName: '/test.mdx.md',
         languageId: 'markdown',
         mappings: [
           {
@@ -592,7 +592,7 @@ test('create virtual file w/ syntax error', () => {
   const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    id: 'file:///test.mdx',
+    fileName: '/test.mdx',
     languageId: 'mdx',
     mappings: [
       {
@@ -613,7 +613,7 @@ test('create virtual file w/ syntax error', () => {
     embeddedFiles: [
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.jsx',
+        fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
@@ -640,7 +640,7 @@ test('create virtual file w/ syntax error', () => {
       },
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.md',
+        fileName: '/test.mdx.md',
         languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('<', '')
@@ -657,7 +657,7 @@ test('create virtual file w/ yaml frontmatter', () => {
   const file = module.createVirtualFile('file:///test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    id: 'file:///test.mdx',
+    fileName: '/test.mdx',
     languageId: 'mdx',
     mappings: [
       {
@@ -678,7 +678,7 @@ test('create virtual file w/ yaml frontmatter', () => {
     embeddedFiles: [
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.jsx',
+        fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
@@ -711,7 +711,7 @@ test('create virtual file w/ yaml frontmatter', () => {
       },
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.md',
+        fileName: '/test.mdx.md',
         languageId: 'markdown',
         mappings: [
           {
@@ -732,7 +732,7 @@ test('create virtual file w/ yaml frontmatter', () => {
       },
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.yaml',
+        fileName: '/test.mdx.yaml',
         languageId: 'yaml',
         mappings: [
           {
@@ -768,7 +768,7 @@ test('update virtual file', () => {
   module.updateVirtualFile(/** @type {VirtualFile} */ (file), snapshot)
 
   assert.deepEqual(file, {
-    id: 'file:///test.mdx',
+    fileName: '/test.mdx',
     languageId: 'mdx',
     mappings: [
       {
@@ -789,7 +789,7 @@ test('update virtual file', () => {
     embeddedFiles: [
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.jsx',
+        fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
@@ -818,7 +818,7 @@ test('update virtual file', () => {
       },
       {
         embeddedFiles: [],
-        id: 'file:///test.mdx.md',
+        fileName: '/test.mdx.md',
         languageId: 'markdown',
         mappings: [
           {

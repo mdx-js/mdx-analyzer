@@ -83,13 +83,13 @@ function findLastOffset(node) {
 }
 
 /**
- * @param {string} fileId
+ * @param {string} fileName
  * @param {IScriptSnapshot} snapshot
  * @param {typeof import('typescript')} ts
  * @param {Processor} processor
  * @returns {VirtualFile[]}
  */
-function getVirtualFiles(fileId, snapshot, ts, processor) {
+function getVirtualFiles(fileName, snapshot, ts, processor) {
   const mdx = snapshot.getText(0, snapshot.getLength())
   /** @type {VirtualFile['mappings']} */
   const jsxMappings = []
@@ -104,7 +104,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
     return [
       {
         embeddedFiles: [],
-        id: fileId + '.jsx',
+        fileName: fileName + '.jsx',
         languageId: 'javascriptreact',
         typescript: {
           scriptKind: ts.ScriptKind.JSX
@@ -114,7 +114,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
       },
       {
         embeddedFiles: [],
-        id: fileId + '.md',
+        fileName: fileName + '.md',
         languageId: 'markdown',
         mappings: mdMappings,
         snapshot: ts.ScriptSnapshot.fromString(mdx)
@@ -143,7 +143,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
         const frontmatterStart = frontmatterWithFences.indexOf(node.value)
         virtualFiles.push({
           embeddedFiles: [],
-          id: fileId + '.yaml',
+          fileName: fileName + '.yaml',
           languageId: 'yaml',
           mappings: [
             {
@@ -308,7 +308,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
   virtualFiles.unshift(
     {
       embeddedFiles: [],
-      id: fileId + '.jsx',
+      fileName: fileName + '.jsx',
       languageId: 'javascriptreact',
       typescript: {
         scriptKind: ts.ScriptKind.JSX
@@ -318,7 +318,7 @@ function getVirtualFiles(fileId, snapshot, ts, processor) {
     },
     {
       embeddedFiles: [],
-      id: fileId + '.md',
+      fileName: fileName + '.md',
       languageId: 'markdown',
       mappings: mdMappings,
       snapshot: ts.ScriptSnapshot.fromString(mdShadow)

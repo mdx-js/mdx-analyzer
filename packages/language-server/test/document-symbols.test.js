@@ -29,7 +29,7 @@ test('resolve document symbols', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/mixed.mdx')
+  const {uri} = await openTextDocument(connection, 'node16/mixed.mdx', 'mdx')
   const result = await connection.sendRequest(DocumentSymbolRequest.type, {
     textDocument: {uri}
   })
@@ -75,7 +75,11 @@ test('ignore non-mdx files', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/component.tsx')
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/component.tsx',
+    'typescriptreact'
+  )
   const result = await connection.sendRequest(DocumentSymbolRequest.type, {
     textDocument: {uri}
   })

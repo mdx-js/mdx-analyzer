@@ -34,7 +34,8 @@ test('no tsconfig exists', async () => {
   const diagnosticsPromise = waitForDiagnostics(connection)
   const textDocument = await openTextDocument(
     connection,
-    'no-tsconfig/readme.mdx'
+    'no-tsconfig/readme.mdx',
+    'mdx'
   )
   const diagnostics = await diagnosticsPromise
 

@@ -34,7 +34,8 @@ test('frontmatter', async () => {
   const diagnosticsPromise = waitForDiagnostics(connection)
   const textDocument = await openTextDocument(
     connection,
-    'frontmatter/frontmatter.mdx'
+    'frontmatter/frontmatter.mdx',
+    'mdx'
   )
   const diagnostics = await diagnosticsPromise
 

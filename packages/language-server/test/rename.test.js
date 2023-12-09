@@ -25,8 +25,8 @@ test('handle rename request of variable for opened references', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  await openTextDocument(connection, 'node16/b.mdx')
-  const {uri} = await openTextDocument(connection, 'node16/a.mdx')
+  await openTextDocument(connection, 'node16/b.mdx', 'mdx')
+  const {uri} = await openTextDocument(connection, 'node16/a.mdx', 'mdx')
   const result = await connection.sendRequest(RenameRequest.type, {
     newName: 'renamed',
     position: {line: 4, character: 3},
@@ -88,7 +88,11 @@ test('handle undefined rename request', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/undefined-props.mdx')
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/undefined-props.mdx',
+    'mdx'
+  )
   const result = await connection.sendRequest(RenameRequest.type, {
     newName: 'renamed',
     position: {line: 4, character: 3},
@@ -124,7 +128,11 @@ test('ignore non-mdx files', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/component.tsx')
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/component.tsx',
+    'typescriptreact'
+  )
   const result = await connection.sendRequest(RenameRequest.type, {
     newName: 'renamed',
     position: {line: 9, character: 15},

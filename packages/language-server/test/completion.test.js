@@ -37,7 +37,11 @@ test('support completion in ESM', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/completion.mdx')
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/completion.mdx',
+    'mdx'
+  )
   // As of TypeScript 5.3, the first request doesn’t get a response.
   // This appears to be a TypeScript regression.
   let result = await connection.sendRequest(CompletionRequest.type, {
@@ -106,7 +110,11 @@ test('support completion in JSX', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/completion.mdx')
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/completion.mdx',
+    'mdx'
+  )
   const result = await connection.sendRequest(CompletionRequest.type, {
     position: {line: 5, character: 3},
     textDocument: {uri}
@@ -165,7 +173,11 @@ test('ignore completion in markdown content', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/completion.mdx')
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/completion.mdx',
+    'mdx'
+  )
   const result = await connection.sendRequest(CompletionRequest.type, {
     position: {line: 8, character: 10},
     textDocument: {uri}

@@ -26,7 +26,11 @@ test('resolve markdown link references', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/link-reference.mdx')
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/link-reference.mdx',
+    'mdx'
+  )
   const result = await connection.sendRequest(DocumentLinkRequest.type, {
     textDocument: {uri}
   })

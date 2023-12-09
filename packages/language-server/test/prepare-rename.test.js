@@ -25,7 +25,7 @@ test('handle prepare rename request of variable', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/a.mdx')
+  const {uri} = await openTextDocument(connection, 'node16/a.mdx', 'mdx')
   const result = await connection.sendRequest(PrepareRenameRequest.type, {
     position: {line: 4, character: 3},
     textDocument: {uri}
@@ -62,7 +62,11 @@ test('ignore non-mdx files', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/component.tsx')
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/component.tsx',
+    'typescriptreact'
+  )
   const result = await connection.sendRequest(PrepareRenameRequest.type, {
     position: {line: 9, character: 15},
     textDocument: {uri}

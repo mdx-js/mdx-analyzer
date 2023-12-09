@@ -25,7 +25,7 @@ test('resolve file-local definitions in ESM', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/a.mdx')
+  const {uri} = await openTextDocument(connection, 'node16/a.mdx', 'mdx')
   const result = await connection.sendRequest(DefinitionRequest.type, {
     position: {line: 4, character: 3},
     textDocument: {uri}
@@ -58,8 +58,8 @@ test('resolve cross-file definitions in ESM if the other file was previously ope
     initializationOptions: {typescript: {tsdk}}
   })
 
-  await openTextDocument(connection, 'node16/a.mdx')
-  const {uri} = await openTextDocument(connection, 'node16/b.mdx')
+  await openTextDocument(connection, 'node16/a.mdx', 'mdx')
+  const {uri} = await openTextDocument(connection, 'node16/b.mdx', 'mdx')
   const result = await connection.sendRequest(DefinitionRequest.type, {
     position: {line: 0, character: 10},
     textDocument: {uri}
@@ -92,7 +92,7 @@ test('resolve cross-file definitions in ESM if the other file is unopened', asyn
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/b.mdx')
+  const {uri} = await openTextDocument(connection, 'node16/b.mdx', 'mdx')
   const result = await connection.sendRequest(DefinitionRequest.type, {
     position: {line: 0, character: 10},
     textDocument: {uri}
@@ -125,7 +125,11 @@ test('does not resolve shadow content', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/undefined-props.mdx')
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/undefined-props.mdx',
+    'mdx'
+  )
   const result = await connection.sendRequest(DefinitionRequest.type, {
     position: {line: 0, character: 37},
     textDocument: {uri}
@@ -159,7 +163,11 @@ test('ignore non-mdx files', async () => {
     initializationOptions: {typescript: {tsdk}}
   })
 
-  const {uri} = await openTextDocument(connection, 'node16/component.tsx')
+  const {uri} = await openTextDocument(
+    connection,
+    'node16/component.tsx',
+    'typescriptreact'
+  )
   const result = await connection.sendRequest(DefinitionRequest.type, {
     position: {line: 9, character: 15},
     textDocument: {uri}

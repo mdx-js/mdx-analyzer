@@ -79,15 +79,16 @@ export function fixturePath(fileName) {
  *
  * @param {ProtocolConnection} connection The LSP connection to use.
  * @param {string} fileName The file path to open relative to the `fixtures` directory.
+ * @param {string} languageId The language ID to use for the file.
  * @returns {Promise<TextDocumentItem>} The text document that was sent to the server.
  */
-export async function openTextDocument(connection, fileName) {
+export async function openTextDocument(connection, fileName, languageId) {
   const url = new URL(`../../../fixtures/${fileName}`, import.meta.url)
   const uri = URI.parse(String(url)).toString()
   const text = await fs.readFile(url, 'utf8')
   /** @type {TextDocumentItem} */
   const textDocument = {
-    languageId: 'mdx',
+    languageId,
     text,
     uri,
     version: 1

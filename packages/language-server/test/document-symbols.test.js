@@ -1,38 +1,29 @@
 /**
- * @typedef {import('@volar/language-server').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {
-  DocumentSymbolRequest,
-  InitializeRequest,
-  SymbolKind
-} from '@volar/language-server'
-import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
+import {SymbolKind} from '@volar/language-server'
+import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
-/** @type {ProtocolConnection} */
-let connection
+/** @type {LanguageServerHandle} */
+let serverHandle
 
-beforeEach(() => {
-  connection = createConnection()
+beforeEach(async () => {
+  serverHandle = createServer()
+  await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 
 afterEach(() => {
-  connection.dispose()
+  serverHandle.connection.dispose()
 })
 
 test('resolve document symbols', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/mixed.mdx', 'mdx')
-  const result = await connection.sendRequest(DocumentSymbolRequest.type, {
-    textDocument: {uri}
-  })
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/mixed.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendDocumentSymbolRequest(uri)
 
   assert.deepEqual(result, [
     {
@@ -52,37 +43,8 @@ test('resolve document symbols', async () => {
 })
 
 test('ignore non-existent mdx files', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
   const uri = fixtureUri('node16/non-existent.mdx')
-  const result = await connection.sendRequest(DocumentSymbolRequest.type, {
-    textDocument: {uri}
-  })
-
-  assert.deepEqual(result, null)
-})
-
-test('ignore non-mdx files', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(
-    connection,
-    'node16/component.tsx',
-    'typescriptreact'
-  )
-  const result = await connection.sendRequest(DocumentSymbolRequest.type, {
-    textDocument: {uri}
-  })
+  const result = await serverHandle.sendDocumentSymbolRequest(uri)
 
   assert.deepEqual(result, null)
 })

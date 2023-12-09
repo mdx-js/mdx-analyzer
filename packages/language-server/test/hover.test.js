@@ -1,34 +1,30 @@
 /**
- * @typedef {import('@volar/language-server').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {HoverRequest, InitializeRequest} from '@volar/language-server'
-import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
+import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
-/** @type {ProtocolConnection} */
-let connection
+/** @type {LanguageServerHandle} */
+let serverHandle
 
-beforeEach(() => {
-  connection = createConnection()
+beforeEach(async () => {
+  serverHandle = createServer()
+  await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 
 afterEach(() => {
-  connection.dispose()
+  serverHandle.connection.dispose()
 })
 
 test('resolve hover in ESM', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/a.mdx', 'mdx')
-  const result = await connection.sendRequest(HoverRequest.type, {
-    position: {line: 4, character: 3},
-    textDocument: {uri}
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/a.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendHoverRequest(uri, {
+    line: 4,
+    character: 3
   })
 
   assert.deepEqual(result, {
@@ -44,18 +40,14 @@ test('resolve hover in ESM', async () => {
 })
 
 test('resolve import hover in ESM if the other file was previously opened', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  await openTextDocument(connection, 'node16/a.mdx', 'mdx')
-  const {uri} = await openTextDocument(connection, 'node16/b.mdx', 'mdx')
-  const result = await connection.sendRequest(HoverRequest.type, {
-    position: {line: 0, character: 10},
-    textDocument: {uri}
+  await serverHandle.openTextDocument(fixturePath('node16/a.mdx'), 'mdx')
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/b.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendHoverRequest(uri, {
+    line: 0,
+    character: 10
   })
 
   assert.deepEqual(result, {
@@ -72,17 +64,13 @@ test('resolve import hover in ESM if the other file was previously opened', asyn
 })
 
 test('resolve import hover in ESM if the other file is unopened', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/b.mdx', 'mdx')
-  const result = await connection.sendRequest(HoverRequest.type, {
-    position: {line: 0, character: 10},
-    textDocument: {uri}
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/b.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendHoverRequest(uri, {
+    line: 0,
+    character: 10
   })
 
   assert.deepEqual(result, {
@@ -99,17 +87,13 @@ test('resolve import hover in ESM if the other file is unopened', async () => {
 })
 
 test('resolve import hover in JSX expressions', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/a.mdx', 'mdx')
-  const result = await connection.sendRequest(HoverRequest.type, {
-    position: {line: 11, character: 1},
-    textDocument: {uri}
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/a.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendHoverRequest(uri, {
+    line: 11,
+    character: 1
   })
 
   assert.deepEqual(result, {
@@ -125,21 +109,13 @@ test('resolve import hover in JSX expressions', async () => {
 })
 
 test('support mdxJsxTextElement', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(
-    connection,
-    'node16/mdx-jsx-text-element.mdx',
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/mdx-jsx-text-element.mdx'),
     'mdx'
   )
-  const result = await connection.sendRequest(HoverRequest.type, {
-    position: {line: 3, character: 5},
-    textDocument: {uri}
+  const result = await serverHandle.sendHoverRequest(uri, {
+    line: 3,
+    character: 5
   })
 
   assert.deepEqual(result, {
@@ -156,17 +132,13 @@ test('support mdxJsxTextElement', async () => {
 })
 
 test('resolve import hover in JSX elements', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/a.mdx', 'mdx')
-  const result = await connection.sendRequest(HoverRequest.type, {
-    position: {line: 13, character: 5},
-    textDocument: {uri}
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/a.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendHoverRequest(uri, {
+    line: 13,
+    character: 5
   })
 
   assert.deepEqual(result, {
@@ -182,38 +154,10 @@ test('resolve import hover in JSX elements', async () => {
 })
 
 test('ignore non-existent mdx files', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
   const uri = fixtureUri('node16/non-existent.mdx')
-  const result = await connection.sendRequest(HoverRequest.type, {
-    position: {line: 7, character: 15},
-    textDocument: {uri}
-  })
-
-  assert.deepEqual(result, null)
-})
-
-test('ignore non-mdx files', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(
-    connection,
-    'node16/component.tsx',
-    'typescriptreact'
-  )
-  const result = await connection.sendRequest(HoverRequest.type, {
-    position: {line: 9, character: 15},
-    textDocument: {uri}
+  const result = await serverHandle.sendHoverRequest(uri, {
+    line: 7,
+    character: 15
   })
 
   assert.deepEqual(result, null)

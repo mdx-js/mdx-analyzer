@@ -1,39 +1,29 @@
 /**
- * @typedef {import('@volar/language-server').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {DocumentLinkRequest, InitializeRequest} from '@volar/language-server'
 import {URI} from 'vscode-uri'
-import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
+import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
-/** @type {ProtocolConnection} */
-let connection
+/** @type {LanguageServerHandle} */
+let serverHandle
 
-beforeEach(() => {
-  connection = createConnection()
+beforeEach(async () => {
+  serverHandle = createServer()
+  await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 
 afterEach(() => {
-  connection.dispose()
+  serverHandle.connection.dispose()
 })
 
 test('resolve markdown link references', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(
-    connection,
-    'node16/link-reference.mdx',
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/link-reference.mdx'),
     'mdx'
   )
-  const result = await connection.sendRequest(DocumentLinkRequest.type, {
-    textDocument: {uri}
-  })
+  const result = await serverHandle.sendDocumentLinkRequest(uri)
 
   assert.deepEqual(result, [
     {

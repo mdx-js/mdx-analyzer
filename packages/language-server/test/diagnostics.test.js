@@ -1,48 +1,32 @@
 /**
- * @typedef {import('@volar/language-server').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {InitializeRequest} from '@volar/language-server'
-import {
-  createConnection,
-  fixtureUri,
-  openTextDocument,
-  tsdk,
-  waitForDiagnostics
-} from './utils.js'
+import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
-/** @type {ProtocolConnection} */
-let connection
+/** @type {LanguageServerHandle} */
+let serverHandle
 
-beforeEach(() => {
-  connection = createConnection()
+beforeEach(async () => {
+  serverHandle = createServer()
+  await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 
 afterEach(() => {
-  connection.dispose()
+  serverHandle.connection.dispose()
 })
 
 test('type errors', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const diagnosticsPromise = waitForDiagnostics(connection)
-  const textDocument = await openTextDocument(
-    connection,
-    'node16/type-errors.mdx',
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/type-errors.mdx'),
     'mdx'
   )
-  const diagnostics = await diagnosticsPromise
+  const diagnostics = await serverHandle.sendDocumentDiagnosticRequest(uri)
 
   assert.deepEqual(diagnostics, {
-    uri: textDocument.uri,
-    version: 1,
-    diagnostics: [
+    kind: 'full',
+    items: [
       {
         code: 2568,
         data: {
@@ -110,24 +94,14 @@ test('type errors', async () => {
 })
 
 test('does not resolve shadow content', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const diagnosticsPromise = waitForDiagnostics(connection)
-  const textDocument = await openTextDocument(
-    connection,
-    'node16/link-reference.mdx',
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/link-reference.mdx'),
     'mdx'
   )
-  const diagnostics = await diagnosticsPromise
+  const diagnostics = await serverHandle.sendDocumentDiagnosticRequest(uri)
 
   assert.deepEqual(diagnostics, {
-    uri: textDocument.uri,
-    diagnostics: [],
-    version: 1
+    items: [],
+    kind: 'full'
   })
 })

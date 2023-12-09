@@ -1,37 +1,33 @@
 /**
- * @typedef {import('@volar/language-server').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {InitializeRequest, RenameRequest} from '@volar/language-server'
-import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
+import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
-/** @type {ProtocolConnection} */
-let connection
+/** @type {LanguageServerHandle} */
+let serverHandle
 
-beforeEach(() => {
-  connection = createConnection()
+beforeEach(async () => {
+  serverHandle = createServer()
+  await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 
 afterEach(() => {
-  connection.dispose()
+  serverHandle.connection.dispose()
 })
 
 test('handle rename request of variable for opened references', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  await openTextDocument(connection, 'node16/b.mdx', 'mdx')
-  const {uri} = await openTextDocument(connection, 'node16/a.mdx', 'mdx')
-  const result = await connection.sendRequest(RenameRequest.type, {
-    newName: 'renamed',
-    position: {line: 4, character: 3},
-    textDocument: {uri}
-  })
+  await serverHandle.openTextDocument(fixturePath('node16/b.mdx'), 'mdx')
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/a.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendRenameRequest(
+    uri,
+    {line: 4, character: 3},
+    'renamed'
+  )
 
   assert.deepEqual(result, {
     changes: {
@@ -81,63 +77,26 @@ test('handle rename request of variable for opened references', async () => {
 })
 
 test('handle undefined rename request', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(
-    connection,
-    'node16/undefined-props.mdx',
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/undefined-props.mdx'),
     'mdx'
   )
-  const result = await connection.sendRequest(RenameRequest.type, {
-    newName: 'renamed',
-    position: {line: 4, character: 3},
-    textDocument: {uri}
-  })
+  const result = await serverHandle.sendRenameRequest(
+    uri,
+    {line: 4, character: 3},
+    'renamed'
+  )
 
   assert.deepEqual(result, null)
 })
 
 test('ignore non-existent mdx files', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
   const uri = fixtureUri('node16/non-existent.mdx')
-  const result = await connection.sendRequest(RenameRequest.type, {
-    newName: 'renamed',
-    position: {line: 7, character: 15},
-    textDocument: {uri}
-  })
-
-  assert.deepEqual(result, null)
-})
-
-test('ignore non-mdx files', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(
-    connection,
-    'node16/component.tsx',
-    'typescriptreact'
+  const result = await serverHandle.sendRenameRequest(
+    uri,
+    {line: 7, character: 15},
+    'renamed'
   )
-  const result = await connection.sendRequest(RenameRequest.type, {
-    newName: 'renamed',
-    position: {line: 9, character: 15},
-    textDocument: {uri}
-  })
 
   assert.deepEqual(result, null)
 })

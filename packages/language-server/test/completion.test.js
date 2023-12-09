@@ -1,62 +1,42 @@
 /**
- * @typedef {import('@volar/language-server').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {
-  CompletionItemKind,
-  CompletionRequest,
-  CompletionResolveRequest,
-  InitializeRequest,
-  InsertTextFormat
-} from '@volar/language-server'
-import {
-  createConnection,
-  fixturePath,
-  fixtureUri,
-  openTextDocument,
-  tsdk
-} from './utils.js'
+import {CompletionItemKind, InsertTextFormat} from '@volar/language-server'
+import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
-/** @type {ProtocolConnection} */
-let connection
+/** @type {LanguageServerHandle} */
+let serverHandle
 
-beforeEach(() => {
-  connection = createConnection()
+beforeEach(async () => {
+  serverHandle = createServer()
+  await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 
 afterEach(() => {
-  connection.dispose()
+  serverHandle.connection.dispose()
 })
 
 test('support completion in ESM', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(
-    connection,
-    'node16/completion.mdx',
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/completion.mdx'),
     'mdx'
   )
   // As of TypeScript 5.3, the first request doesn’t get a response.
   // This appears to be a TypeScript regression.
-  let result = await connection.sendRequest(CompletionRequest.type, {
-    position: {line: 1, character: 1},
-    textDocument: {uri}
+  let result = await serverHandle.sendCompletionRequest(uri, {
+    line: 1,
+    character: 1
   })
   assert.ok(result)
   assert.ok('items' in result)
   assert.deepEqual(result.items, [])
 
-  result = await connection.sendRequest(CompletionRequest.type, {
-    position: {line: 1, character: 1},
-    textDocument: {uri}
+  result = await serverHandle.sendCompletionRequest(uri, {
+    line: 1,
+    character: 1
   })
-
   assert.ok(result)
   assert.ok('items' in result)
   const completion = result.items.find((r) => r.label === 'Boolean')
@@ -81,10 +61,7 @@ test('support completion in ESM', async () => {
     sortText: '15'
   })
 
-  const resolved = await connection.sendRequest(
-    CompletionResolveRequest.type,
-    completion
-  )
+  const resolved = await serverHandle.sendCompletionResolveRequest(completion)
   assert.deepEqual(resolved, {
     commitCharacters: ['.', ',', ';', '('],
     data: {
@@ -103,21 +80,13 @@ test('support completion in ESM', async () => {
 })
 
 test('support completion in JSX', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(
-    connection,
-    'node16/completion.mdx',
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/completion.mdx'),
     'mdx'
   )
-  const result = await connection.sendRequest(CompletionRequest.type, {
-    position: {line: 5, character: 3},
-    textDocument: {uri}
+  const result = await serverHandle.sendCompletionRequest(uri, {
+    line: 5,
+    character: 3
   })
 
   assert.ok(result)
@@ -144,10 +113,7 @@ test('support completion in JSX', async () => {
     sortText: '15'
   })
 
-  const resolved = await connection.sendRequest(
-    CompletionResolveRequest.type,
-    completion
-  )
+  const resolved = await serverHandle.sendCompletionResolveRequest(completion)
   assert.deepEqual(resolved, {
     commitCharacters: ['.', ',', ';', '('],
     data: {
@@ -166,21 +132,13 @@ test('support completion in JSX', async () => {
 })
 
 test('ignore completion in markdown content', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(
-    connection,
-    'node16/completion.mdx',
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/completion.mdx'),
     'mdx'
   )
-  const result = await connection.sendRequest(CompletionRequest.type, {
-    position: {line: 8, character: 10},
-    textDocument: {uri}
+  const result = await serverHandle.sendCompletionRequest(uri, {
+    line: 8,
+    character: 10
   })
 
   assert.deepEqual(result, {isIncomplete: false, items: []})

@@ -1,5 +1,4 @@
 /**
- * @typedef {import('mdast').RootContent} RootContent
  * @typedef {import('vscode').DocumentDropEditProvider} DocumentDropEditProvider
  * @typedef {import('vscode').DataTransferItem} DataTransferItem
  */

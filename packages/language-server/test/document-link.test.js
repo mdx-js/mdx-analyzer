@@ -2,6 +2,7 @@
  * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
  */
 import assert from 'node:assert/strict'
+import process from 'node:process'
 import {afterEach, beforeEach, test} from 'node:test'
 import {DocumentLinkRequest, InitializeRequest} from 'vscode-languageserver'
 import {
@@ -36,6 +37,8 @@ test('resolve markdown link references', async () => {
     textDocument: {uri}
   })
 
+  const linkReferencePath = fixturePath('node16/link-reference.mdx.md')
+
   assert.deepEqual(result, [
     {
       range: {
@@ -57,7 +60,10 @@ test('resolve markdown link references', async () => {
               pathText: 'mdx',
               resource: {
                 $mid: 1,
-                path: fixturePath('node16/link-reference.mdx.md'),
+                path:
+                  process.platform === 'win32'
+                    ? '/' + linkReferencePath
+                    : linkReferencePath,
                 scheme: 'file'
               },
               range: {

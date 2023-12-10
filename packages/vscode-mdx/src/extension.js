@@ -16,7 +16,8 @@ import {
   languages,
   workspace,
   window,
-  ProgressLocation
+  ProgressLocation,
+  extensions
 } from 'vscode'
 import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
 import {documentDropEditProvider} from './document-drop-edit-provider.js'
@@ -42,6 +43,8 @@ let disposable
  *   extension.
  */
 export async function activate(context) {
+  extensions.getExtension('vscode.typescript-language-features')?.activate()
+
   const {tsdk} = await getTsdk(context)
 
   client = new LanguageClient(

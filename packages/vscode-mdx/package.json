@@ -35,9 +35,6 @@
     "onLanguage:typescript",
     "onLanguage:typescriptreact"
   ],
-  "vsce": {
-    "dependencies": false
-  },
   "scripts": {
     "build": "node ./script/build.mjs",
     "build:debug": "npm run build debug",
@@ -185,6 +182,16 @@
         "embeddedLanguages": {
           "meta.embedded.block.mdx": "mdx"
         }
+      }
+    ],
+    "typescriptServerPlugins": [
+      {
+        "name": "typescript-plugin-bundled",
+        "enableForWorkspaceTypeScriptVersions": true,
+        "configNamespace": "typescript",
+        "languages": [
+          "mdx"
+        ]
       }
     ]
   }

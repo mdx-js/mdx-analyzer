@@ -104,4 +104,4 @@ function init(modules) {
   }
 }
 
-exports = init
+module.exports = init

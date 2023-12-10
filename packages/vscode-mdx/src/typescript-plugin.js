@@ -25,7 +25,7 @@ function init(modules) {
   const {typescript: ts} = modules
   return {
     create(info) {
-      const enptySnapshot = ts.ScriptSnapshot.fromString('')
+      const emptySnapshot = ts.ScriptSnapshot.fromString('')
       const getScriptSnapshot = info.languageServiceHost.getScriptSnapshot.bind(info.languageServiceHost)
       const getScriptVersion = info.languageServiceHost.getScriptVersion.bind(info.languageServiceHost)
       const getScriptKind = info.languageServiceHost.getScriptKind?.bind(info.languageServiceHost)

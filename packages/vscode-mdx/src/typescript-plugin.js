@@ -1,7 +1,7 @@
 /**
- * @typedef {import('typescript/lib/tsserverlibrary.js').server.Project} Project
- * @typedef {import('typescript/lib/tsserverlibrary.js').server.PluginModuleFactory} PluginModuleFactory
- * @typedef {import('typescript/lib/tsserverlibrary.js').LanguageService} LanguageService
+ * @typedef {import('typescript').server.Project} Project
+ * @typedef {import('typescript').server.PluginModuleFactory} PluginModuleFactory
+ * @typedef {import('typescript').LanguageService} LanguageService
  */
 
 import {

@@ -21,7 +21,7 @@ const externalFiles = new WeakMap()
 /**
  * @type {PluginModuleFactory} modules
  */
-const init = (modules) => {
+function init(modules) {
   const {typescript: ts} = modules
   return {
     create(info) {

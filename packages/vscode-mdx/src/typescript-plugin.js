@@ -36,7 +36,7 @@ function init(modules) {
 
       info.languageServiceHost.getScriptSnapshot = (fileName) => {
         if (!initialized && fileName.endsWith('.mdx')) {
-          return enptySnapshot
+          return emptySnapshot
         }
         return getScriptSnapshot(fileName)
       }

@@ -93,13 +93,15 @@ function init(modules) {
       return info.languageService
     },
     getExternalFiles(project, updateLevel = 0) {
-      if (updateLevel >= 1 || !externalFiles.has(project)) {
-        const newFiles = searchExternalFiles(ts, project, ['.mdx'])
-        externalFiles.set(project, newFiles)
+      let files = externalFiles.get(project)
+
+      if (updateLevel >= 1 || !files) {
+        files = searchExternalFiles(ts, project, ['.mdx'])
+        externalFiles.set(project, files)
         project.refreshDiagnostics()
       }
 
-      return externalFiles.get(project) ?? []
+      return files
     }
   }
 }

@@ -67,10 +67,7 @@ test('create virtual file w/ mdxjsEsm', () => {
           ' *   The props that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
-          '  return <>',
-          '                                  ',
-          '',
-          '  </>',
+          '  return <></>',
           '}',
           '',
           '// @ts-ignore',
@@ -82,8 +79,22 @@ test('create virtual file w/ mdxjsEsm', () => {
         embeddedFiles: [],
         fileName: '/test.mdx.md',
         languageId: 'markdown',
-        mappings: [],
-        snapshot: snapshotFromLines('                                  ', '')
+        mappings: [
+          {
+            sourceOffsets: [34],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
       }
     ]
   })
@@ -125,8 +136,8 @@ test('create virtual file w/ mdxFlowExpression', () => {
         },
         mappings: [
           {
-            generatedOffsets: [199],
             sourceOffsets: [0],
+            generatedOffsets: [188],
             lengths: [9],
             data: {
               completion: true,
@@ -139,7 +150,6 @@ test('create virtual file w/ mdxFlowExpression', () => {
           }
         ],
         snapshot: snapshotFromLines(
-          '         ',
           '',
           '/**',
           ' * Render the MDX contents.',
@@ -148,10 +158,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
           ' *   The props that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
-          '  return <>',
-          '{Math.PI}',
-          '',
-          '  </>',
+          '  return <>{Math.PI}</>',
           '}',
           '',
           '// @ts-ignore',
@@ -163,8 +170,22 @@ test('create virtual file w/ mdxFlowExpression', () => {
         embeddedFiles: [],
         fileName: '/test.mdx.md',
         languageId: 'markdown',
-        mappings: [],
-        snapshot: snapshotFromLines('         ', '')
+        mappings: [
+          {
+            sourceOffsets: [9],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
       }
     ]
   })
@@ -189,8 +210,8 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
     languageId: 'mdx',
     mappings: [
       {
-        generatedOffsets: [0],
         sourceOffsets: [0],
+        generatedOffsets: [0],
         lengths: [66],
         data: {
           completion: true,
@@ -213,22 +234,9 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
         },
         mappings: [
           {
-            sourceOffsets: [0],
-            generatedOffsets: [255],
-            lengths: [9],
-            data: {
-              completion: true,
-              format: true,
-              navigation: true,
-              semantic: true,
-              structure: true,
-              verification: true
-            }
-          },
-          {
-            sourceOffsets: [57],
-            generatedOffsets: [312],
-            lengths: [8],
+            sourceOffsets: [0, 57],
+            generatedOffsets: [188, 206],
+            lengths: [9, 8],
             data: {
               completion: true,
               format: true,
@@ -240,11 +248,6 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
           }
         ],
         snapshot: snapshotFromLines(
-          '     ',
-          '',
-          '                                                  ',
-          '',
-          '      ',
           '',
           '/**',
           ' * Render the MDX contents.',
@@ -253,14 +256,11 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
           ' *   The props that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
-          '  return <>',
-          '<div>',
+          '  return <><div>',
           '',
-          '                                                  ',
+          "  <>{''}</>",
           '',
-          '</div>',
-          '',
-          '  </>',
+          '</div></>',
           '}',
           '',
           '// @ts-ignore',
@@ -274,9 +274,9 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
         languageId: 'markdown',
         mappings: [
           {
-            sourceOffsets: [9],
-            generatedOffsets: [9],
-            lengths: [50],
+            sourceOffsets: [9, 65],
+            generatedOffsets: [0, 55],
+            lengths: [48, 1],
             data: {
               completion: true,
               format: true,
@@ -288,11 +288,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
           }
         ],
         snapshot: snapshotFromLines(
-          '     ',
-          '',
-          '  This content should not be part of the JSX embed',
-          '',
-          '      ',
+          'This content should not be part of the JSX embed<!---->',
           ''
         )
       }
@@ -334,7 +330,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
         mappings: [
           {
             sourceOffsets: [0],
-            generatedOffsets: [197],
+            generatedOffsets: [188],
             lengths: [7],
             data: {
               completion: true,
@@ -347,7 +343,6 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
           }
         ],
         snapshot: snapshotFromLines(
-          '       ',
           '',
           '/**',
           ' * Render the MDX contents.',
@@ -356,10 +351,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
           ' *   The props that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
-          '  return <>',
-          '<div />',
-          '',
-          '  </>',
+          '  return <><div /></>',
           '}',
           '',
           '// @ts-ignore',
@@ -374,8 +366,22 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
         embeddedFiles: [],
         fileName: '/test.mdx.md',
         languageId: 'markdown',
-        mappings: [],
-        snapshot: snapshotFromLines('       ', '')
+        mappings: [
+          {
+            sourceOffsets: [7],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
       }
     ]
   })
@@ -418,7 +424,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
         mappings: [
           {
             sourceOffsets: [2],
-            generatedOffsets: [201],
+            generatedOffsets: [194],
             lengths: [7],
             data: {
               completion: true,
@@ -431,7 +437,6 @@ test('create virtual file w/ mdxJsxTextElement', () => {
           }
         ],
         snapshot: snapshotFromLines(
-          '         ',
           '',
           '/**',
           ' * Render the MDX contents.',
@@ -440,10 +445,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
           ' *   The props that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
-          '  return <>',
-          '  <div />',
-          '',
-          '  </>',
+          "  return <><>{''}<div /></></>",
           '}',
           '',
           '// @ts-ignore',
@@ -457,9 +459,9 @@ test('create virtual file w/ mdxJsxTextElement', () => {
         languageId: 'markdown',
         mappings: [
           {
-            sourceOffsets: [0],
-            generatedOffsets: [0],
-            lengths: [2],
+            sourceOffsets: [0, 9],
+            generatedOffsets: [0, 9],
+            lengths: [2, 1],
             data: {
               completion: true,
               format: true,
@@ -470,7 +472,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
             }
           }
         ],
-        snapshot: snapshotFromLines('A        ', '')
+        snapshot: snapshotFromLines('A <!---->', '')
       }
     ]
   })
@@ -512,7 +514,7 @@ test('create virtual file w/ mdxTextExpression', () => {
         },
         mappings: [
           {
-            generatedOffsets: [211],
+            generatedOffsets: [194],
             sourceOffsets: [4],
             lengths: [9],
             data: {
@@ -526,7 +528,6 @@ test('create virtual file w/ mdxTextExpression', () => {
           }
         ],
         snapshot: snapshotFromLines(
-          '                 ',
           '',
           '/**',
           ' * Render the MDX contents.',
@@ -535,10 +536,7 @@ test('create virtual file w/ mdxTextExpression', () => {
           ' *   The props that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
-          '  return <>',
-          '    {Math.PI}    ',
-          '',
-          '  </>',
+          "  return <><>{''}{Math.PI}{''}</></>",
           '}',
           '',
           '// @ts-ignore',
@@ -552,22 +550,9 @@ test('create virtual file w/ mdxTextExpression', () => {
         languageId: 'markdown',
         mappings: [
           {
-            sourceOffsets: [0],
-            generatedOffsets: [0],
-            lengths: [4],
-            data: {
-              completion: true,
-              format: true,
-              navigation: true,
-              semantic: true,
-              structure: true,
-              verification: true
-            }
-          },
-          {
-            sourceOffsets: [14],
-            generatedOffsets: [14],
-            lengths: [3],
+            sourceOffsets: [0, 13],
+            generatedOffsets: [0, 11],
+            lengths: [4, 5],
             data: {
               completion: true,
               format: true,
@@ -578,7 +563,7 @@ test('create virtual file w/ mdxTextExpression', () => {
             }
           }
         ],
-        snapshot: snapshotFromLines('3 <           < 4', '')
+        snapshot: snapshotFromLines('3 < <!----> < 4', '')
       }
     ]
   })
@@ -625,9 +610,7 @@ test('create virtual file w/ syntax error', () => {
           ' *   The props that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
-          '  return <>',
-          '',
-          '  </>',
+          '  return ',
           '}',
           '',
           '// @ts-ignore',
@@ -682,9 +665,6 @@ test('create virtual file w/ yaml frontmatter', () => {
         languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
-          '   ',
-          '                  ',
-          '   ',
           '',
           '/**',
           ' * Render the MDX contents.',
@@ -693,12 +673,7 @@ test('create virtual file w/ yaml frontmatter', () => {
           ' *   The props that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
-          '  return <>',
-          '   ',
-          '                  ',
-          '   ',
-          '',
-          '  </>',
+          '  return <></>',
           '}',
           '',
           '// @ts-ignore',
@@ -717,7 +692,7 @@ test('create virtual file w/ yaml frontmatter', () => {
           {
             sourceOffsets: [0],
             generatedOffsets: [0],
-            lengths: [26],
+            lengths: [27],
             data: {
               completion: true,
               format: true,
@@ -793,7 +768,6 @@ test('update virtual file', () => {
         languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
-          '                  ',
           '',
           '/**',
           ' * Render the MDX contents.',
@@ -802,10 +776,7 @@ test('update virtual file', () => {
           ' *   The props that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
-          '  return <>',
-          '                  ',
-          '',
-          '  </>',
+          "  return <><>{''}</></>",
           '}',
           '',
           '// @ts-ignore',
@@ -824,7 +795,7 @@ test('update virtual file', () => {
           {
             sourceOffsets: [0],
             generatedOffsets: [0],
-            lengths: [18],
+            lengths: [19],
             data: {
               completion: true,
               format: true,

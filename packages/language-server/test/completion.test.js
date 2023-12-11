@@ -84,6 +84,10 @@ test('support completion in JSX', async () => {
     fixturePath('node16/completion.mdx'),
     'mdx'
   )
+  await serverHandle.sendCompletionRequest(uri, {
+    line: 5,
+    character: 3
+  })
   const result = await serverHandle.sendCompletionRequest(uri, {
     line: 5,
     character: 3
@@ -98,7 +102,7 @@ test('support completion in JSX', async () => {
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx.jsx'),
-          offset: 430,
+          offset: 67,
           originalItem: {name: 'Boolean'},
           uri: fixtureUri('node16/completion.mdx.jsx')
         }
@@ -118,7 +122,7 @@ test('support completion in JSX', async () => {
     commitCharacters: ['.', ',', ';', '('],
     data: {
       fileName: fixturePath('node16/completion.mdx.jsx'),
-      offset: 430,
+      offset: 67,
       originalItem: {name: 'Boolean'},
       uri: fixtureUri('node16/completion.mdx.jsx')
     },

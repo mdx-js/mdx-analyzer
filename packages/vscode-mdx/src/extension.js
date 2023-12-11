@@ -127,8 +127,7 @@ async function startServer(context) {
               context,
               client,
               isMdxDocument,
-              (text) => 'TS ' + text,
-              true
+              (text) => 'TS ' + text
             )
           ]))
         )

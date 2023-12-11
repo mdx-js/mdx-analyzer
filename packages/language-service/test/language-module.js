@@ -4,11 +4,6 @@
 
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
-import {
-  FileCapabilities,
-  FileKind,
-  FileRangeCapabilities
-} from '@volar/language-server'
 import remarkFrontmatter from 'remark-frontmatter'
 import typescript from 'typescript'
 import {getLanguageModule} from '@mdx-js/language-service'
@@ -18,33 +13,48 @@ test('create virtual file w/ mdxjsEsm', () => {
 
   const snapshot = snapshotFromLines('import {Planet} from "./Planet.js"', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', snapshot, 'mdx')
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    capabilities: FileCapabilities.full,
-    codegenStacks: [],
-    fileName: 'file:///test.mdx',
-    kind: FileKind.TextFile,
+    fileName: '/test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 35],
-        generatedRange: [0, 35],
-        data: FileRangeCapabilities.full
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [35],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
     embeddedFiles: [
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
-            data: FileRangeCapabilities.full,
-            generatedRange: [0, 34],
-            sourceRange: [0, 34]
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [34],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -69,11 +79,9 @@ test('create virtual file w/ mdxjsEsm', () => {
         )
       },
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('                                  ', '')
       }
@@ -86,33 +94,48 @@ test('create virtual file w/ mdxFlowExpression', () => {
 
   const snapshot = snapshotFromLines('{Math.PI}', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', snapshot, 'mdx')
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    capabilities: FileCapabilities.full,
-    codegenStacks: [],
-    fileName: 'file:///test.mdx',
-    kind: FileKind.TextFile,
+    fileName: '/test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 10],
-        generatedRange: [0, 10],
-        data: FileRangeCapabilities.full
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [10],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
     embeddedFiles: [
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
-            data: FileRangeCapabilities.full,
-            generatedRange: [199, 208],
-            sourceRange: [0, 9]
+            generatedOffsets: [199],
+            sourceOffsets: [0],
+            lengths: [9],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -137,11 +160,9 @@ test('create virtual file w/ mdxFlowExpression', () => {
         )
       },
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('         ', '')
       }
@@ -161,38 +182,61 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
     ''
   )
 
-  const file = module.createVirtualFile('file:///test.mdx', snapshot, 'mdx')
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    capabilities: FileCapabilities.full,
-    codegenStacks: [],
-    fileName: 'file:///test.mdx',
-    kind: FileKind.TextFile,
+    fileName: '/test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 66],
-        generatedRange: [0, 66],
-        data: FileRangeCapabilities.full
+        generatedOffsets: [0],
+        sourceOffsets: [0],
+        lengths: [66],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
     embeddedFiles: [
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
-            data: FileRangeCapabilities.full,
-            generatedRange: [255, 264],
-            sourceRange: [0, 9]
+            sourceOffsets: [0],
+            generatedOffsets: [255],
+            lengths: [9],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           },
           {
-            data: FileRangeCapabilities.full,
-            generatedRange: [312, 320],
-            sourceRange: [57, 65]
+            sourceOffsets: [57],
+            generatedOffsets: [312],
+            lengths: [8],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -225,16 +269,22 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
         )
       },
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
         mappings: [
           {
-            sourceRange: [9, 59],
-            generatedRange: [9, 59],
-            data: FileRangeCapabilities.full
+            sourceOffsets: [9],
+            generatedOffsets: [9],
+            lengths: [50],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -255,33 +305,45 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
 
   const snapshot = snapshotFromLines('<div />', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', snapshot, 'mdx')
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    capabilities: FileCapabilities.full,
-    codegenStacks: [],
-    fileName: 'file:///test.mdx',
-    kind: FileKind.TextFile,
+    fileName: '/test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 8],
-        generatedRange: [0, 8],
-        data: FileRangeCapabilities.full
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [8],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
     embeddedFiles: [
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
         mappings: [
           {
-            data: FileRangeCapabilities.full,
-            generatedRange: [197, 204],
-            sourceRange: [0, 7]
+            sourceOffsets: [0],
+            generatedOffsets: [197],
+            lengths: [7],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -303,14 +365,15 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
           '// @ts-ignore',
           '/** @typedef {Props} MDXContentProps */',
           ''
-        )
+        ),
+        typescript: {
+          scriptKind: 2
+        }
       },
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('       ', '')
       }
@@ -323,33 +386,48 @@ test('create virtual file w/ mdxJsxTextElement', () => {
 
   const snapshot = snapshotFromLines('A <div />', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', snapshot, 'mdx')
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    capabilities: FileCapabilities.full,
-    codegenStacks: [],
-    fileName: 'file:///test.mdx',
-    kind: FileKind.TextFile,
+    fileName: '/test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 10],
-        generatedRange: [0, 10],
-        data: FileRangeCapabilities.full
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [10],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
     embeddedFiles: [
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
-            data: FileRangeCapabilities.full,
-            generatedRange: [201, 208],
-            sourceRange: [2, 9]
+            sourceOffsets: [2],
+            generatedOffsets: [201],
+            lengths: [7],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -374,16 +452,22 @@ test('create virtual file w/ mdxJsxTextElement', () => {
         )
       },
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
         mappings: [
           {
-            sourceRange: [0, 2],
-            generatedRange: [0, 2],
-            data: FileRangeCapabilities.full
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [2],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines('A        ', '')
@@ -397,33 +481,48 @@ test('create virtual file w/ mdxTextExpression', () => {
 
   const snapshot = snapshotFromLines('3 < {Math.PI} < 4', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', snapshot, 'mdx')
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    capabilities: FileCapabilities.full,
-    codegenStacks: [],
-    fileName: 'file:///test.mdx',
-    kind: FileKind.TextFile,
+    fileName: '/test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 18],
-        generatedRange: [0, 18],
-        data: FileRangeCapabilities.full
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [18],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
     embeddedFiles: [
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
         mappings: [
           {
-            data: FileRangeCapabilities.full,
-            generatedRange: [211, 220],
-            sourceRange: [4, 13]
+            generatedOffsets: [211],
+            sourceOffsets: [4],
+            lengths: [9],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines(
@@ -448,21 +547,35 @@ test('create virtual file w/ mdxTextExpression', () => {
         )
       },
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
         mappings: [
           {
-            sourceRange: [0, 4],
-            generatedRange: [0, 4],
-            data: FileRangeCapabilities.full
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [4],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           },
           {
-            sourceRange: [14, 17],
-            generatedRange: [14, 17],
-            data: FileRangeCapabilities.full
+            sourceOffsets: [14],
+            generatedOffsets: [14],
+            lengths: [3],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines('3 <           < 4', '')
@@ -476,28 +589,32 @@ test('create virtual file w/ syntax error', () => {
 
   const snapshot = snapshotFromLines('<', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', snapshot, 'mdx')
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    capabilities: FileCapabilities.full,
-    codegenStacks: [],
-    fileName: 'file:///test.mdx',
-    kind: FileKind.TextFile,
+    fileName: '/test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 2],
-        generatedRange: [0, 2],
-        data: FileRangeCapabilities.full
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [2],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
     embeddedFiles: [
       {
-        capabilities: {},
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
           '',
@@ -516,14 +633,15 @@ test('create virtual file w/ syntax error', () => {
           '// @ts-ignore',
           '/** @typedef {Props} MDXContentProps */',
           ''
-        )
+        ),
+        typescript: {
+          scriptKind: 2
+        }
       },
       {
-        capabilities: {},
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
         mappings: [],
         snapshot: snapshotFromLines('<', '')
       }
@@ -536,28 +654,32 @@ test('create virtual file w/ yaml frontmatter', () => {
 
   const snapshot = snapshotFromLines('---', 'hello: frontmatter', '---', '')
 
-  const file = module.createVirtualFile('file:///test.mdx', snapshot, 'mdx')
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.deepEqual(file, {
-    capabilities: FileCapabilities.full,
-    codegenStacks: [],
-    fileName: 'file:///test.mdx',
-    kind: FileKind.TextFile,
+    fileName: '/test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 27],
-        generatedRange: [0, 27],
-        data: FileRangeCapabilities.full
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [27],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
     embeddedFiles: [
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
           '   ',
@@ -582,34 +704,49 @@ test('create virtual file w/ yaml frontmatter', () => {
           '// @ts-ignore',
           '/** @typedef {Props} MDXContentProps */',
           ''
-        )
+        ),
+        typescript: {
+          scriptKind: 2
+        }
       },
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
         mappings: [
           {
-            sourceRange: [0, 26],
-            generatedRange: [0, 26],
-            data: FileRangeCapabilities.full
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [26],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines('---', 'hello: frontmatter', '---', '')
       },
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.yaml',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.yaml',
+        languageId: 'yaml',
         mappings: [
           {
-            sourceRange: [4, 22],
-            generatedRange: [0, 18],
-            data: FileRangeCapabilities.full
+            sourceOffsets: [4],
+            generatedOffsets: [0],
+            lengths: [18],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines('hello: frontmatter')
@@ -622,34 +759,38 @@ test('update virtual file', () => {
   const module = getLanguageModule(typescript)
 
   const file = module.createVirtualFile(
-    'file:///test.mdx',
-    snapshotFromLines('Tihs lne haz tyops', ''),
-    'mdx'
+    '/test.mdx',
+    'mdx',
+    snapshotFromLines('Tihs lne haz tyops', '')
   )
 
   const snapshot = snapshotFromLines('This line is fixed', '')
   module.updateVirtualFile(/** @type {VirtualFile} */ (file), snapshot)
 
   assert.deepEqual(file, {
-    capabilities: FileCapabilities.full,
-    codegenStacks: [],
-    fileName: 'file:///test.mdx',
-    kind: FileKind.TextFile,
+    fileName: '/test.mdx',
+    languageId: 'mdx',
     mappings: [
       {
-        sourceRange: [0, 19],
-        generatedRange: [0, 19],
-        data: FileRangeCapabilities.full
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [19],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
       }
     ],
     snapshot,
     embeddedFiles: [
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.jsx',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
         mappings: [],
         snapshot: snapshotFromLines(
           '                  ',
@@ -670,19 +811,28 @@ test('update virtual file', () => {
           '// @ts-ignore',
           '/** @typedef {Props} MDXContentProps */',
           ''
-        )
+        ),
+        typescript: {
+          scriptKind: 2
+        }
       },
       {
-        capabilities: FileCapabilities.full,
-        codegenStacks: [],
         embeddedFiles: [],
-        fileName: 'file:///test.mdx.md',
-        kind: FileKind.TypeScriptHostFile,
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
         mappings: [
           {
-            sourceRange: [0, 18],
-            generatedRange: [0, 18],
-            data: FileRangeCapabilities.full
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [18],
+            data: {
+              completion: true,
+              format: true,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
           }
         ],
         snapshot: snapshotFromLines('This line is fixed', '')
@@ -694,13 +844,9 @@ test('update virtual file', () => {
 test('compilation setting defaults', () => {
   const module = getLanguageModule(typescript)
 
-  const host = module.resolveHost?.({
-    getCompilationSettings: () => ({}),
-    getProjectVersion: () => '1',
-    getScriptFileNames: () => [],
-    getScriptSnapshot: () => undefined,
-    rootPath: '/',
-    workspacePath: '/'
+  // @ts-expect-error
+  const host = module.typescript?.resolveLanguageServiceHost?.({
+    getCompilationSettings: () => ({})
   })
 
   const compilerOptions = host?.getCompilationSettings()
@@ -718,7 +864,8 @@ test('compilation setting defaults', () => {
 test('compilation setting overrides', () => {
   const module = getLanguageModule(typescript)
 
-  const host = module.resolveHost?.({
+  // @ts-expect-error
+  const host = module.typescript?.resolveLanguageServiceHost?.({
     getCompilationSettings: () => ({
       jsx: typescript.JsxEmit.React,
       jsxFactory: 'h',
@@ -726,12 +873,7 @@ test('compilation setting overrides', () => {
       jsxImportSource: 'preact',
       allowJs: false,
       allowNonTsExtensions: false
-    }),
-    getProjectVersion: () => '1',
-    getScriptFileNames: () => [],
-    getScriptSnapshot: () => undefined,
-    rootPath: '/',
-    workspacePath: '/'
+    })
   })
 
   const compilerOptions = host?.getCompilationSettings()

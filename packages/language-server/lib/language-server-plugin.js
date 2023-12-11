@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@volar/language-server/node.js').LanguageServerPlugin} LanguageServerPlugin
+ * @typedef {import('@volar/language-server/node.js').ServerPlugin} ServerPlugin
  */
 
 import assert from 'node:assert'
@@ -9,13 +9,15 @@ import {create as createTypeScriptService} from 'volar-service-typescript'
 import {loadPlugins} from './configuration.js'
 
 /**
- * @type {LanguageServerPlugin}
+ * @type {ServerPlugin}
  */
-export function plugin(initOptions, modules) {
+export function plugin({modules}) {
   return {
-    extraFileExtensions: [
-      {extension: 'mdx', isMixedContent: true, scriptKind: 7}
-    ],
+    typescript: {
+      extraFileExtensions: [
+        {extension: 'mdx', isMixedContent: true, scriptKind: 7}
+      ]
+    },
 
     watchFileExtensions: [
       'cjs',
@@ -29,11 +31,11 @@ export function plugin(initOptions, modules) {
       'tsx'
     ],
 
-    async resolveConfig(config, ctx) {
+    async resolveConfig(config, env, projectContext) {
       assert(modules.typescript, 'TypeScript module is missing')
 
       const plugins = await loadPlugins(
-        ctx?.project?.tsConfig,
+        projectContext?.typescript?.configFileName,
         modules.typescript
       )
 
@@ -42,7 +44,7 @@ export function plugin(initOptions, modules) {
 
       config.services ||= {}
       config.services.markdown = createMarkdownService()
-      config.services.typescript = createTypeScriptService()
+      config.services.typescript = createTypeScriptService(modules.typescript)
 
       return config
     }

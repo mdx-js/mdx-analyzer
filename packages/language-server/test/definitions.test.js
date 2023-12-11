@@ -1,34 +1,30 @@
 /**
- * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {DefinitionRequest, InitializeRequest} from 'vscode-languageserver'
-import {createConnection, fixtureUri, openTextDocument, tsdk} from './utils.js'
+import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
-/** @type {ProtocolConnection} */
-let connection
+/** @type {LanguageServerHandle} */
+let serverHandle
 
-beforeEach(() => {
-  connection = createConnection()
+beforeEach(async () => {
+  serverHandle = createServer()
+  await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 
 afterEach(() => {
-  connection.dispose()
+  serverHandle.connection.dispose()
 })
 
 test('resolve file-local definitions in ESM', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/a.mdx')
-  const result = await connection.sendRequest(DefinitionRequest.type, {
-    position: {line: 4, character: 3},
-    textDocument: {uri}
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/a.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendDefinitionRequest(uri, {
+    line: 4,
+    character: 3
   })
 
   assert.deepEqual(result, [
@@ -51,18 +47,14 @@ test('resolve file-local definitions in ESM', async () => {
 })
 
 test('resolve cross-file definitions in ESM if the other file was previously opened', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  await openTextDocument(connection, 'node16/a.mdx')
-  const {uri} = await openTextDocument(connection, 'node16/b.mdx')
-  const result = await connection.sendRequest(DefinitionRequest.type, {
-    position: {line: 0, character: 10},
-    textDocument: {uri}
+  await serverHandle.openTextDocument(fixturePath('node16/a.mdx'), 'mdx')
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/b.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendDefinitionRequest(uri, {
+    line: 0,
+    character: 10
   })
 
   assert.deepEqual(result, [
@@ -85,17 +77,13 @@ test('resolve cross-file definitions in ESM if the other file was previously ope
 })
 
 test('resolve cross-file definitions in ESM if the other file is unopened', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/b.mdx')
-  const result = await connection.sendRequest(DefinitionRequest.type, {
-    position: {line: 0, character: 10},
-    textDocument: {uri}
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/b.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendDefinitionRequest(uri, {
+    line: 0,
+    character: 10
   })
 
   assert.deepEqual(result, [
@@ -118,52 +106,24 @@ test('resolve cross-file definitions in ESM if the other file is unopened', asyn
 })
 
 test('does not resolve shadow content', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/undefined-props.mdx')
-  const result = await connection.sendRequest(DefinitionRequest.type, {
-    position: {line: 0, character: 37},
-    textDocument: {uri}
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/undefined-props.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendDefinitionRequest(uri, {
+    line: 0,
+    character: 37
   })
 
   assert.deepEqual(result, [])
 })
 
 test('ignore non-existent mdx files', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
   const uri = fixtureUri('node16/non-existent.mdx')
-  const result = await connection.sendRequest(DefinitionRequest.type, {
-    position: {line: 7, character: 15},
-    textDocument: {uri}
+  const result = await serverHandle.sendDefinitionRequest(uri, {
+    line: 7,
+    character: 15
   })
 
   assert.deepEqual(result, null)
-})
-
-test('ignore non-mdx files', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/component.tsx')
-  const result = await connection.sendRequest(DefinitionRequest.type, {
-    position: {line: 9, character: 15},
-    textDocument: {uri}
-  })
-
-  assert.deepEqual(result, [])
 })

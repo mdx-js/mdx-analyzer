@@ -1,31 +1,25 @@
 /**
- * @typedef {import('vscode-languageserver-protocol').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {InitializeRequest} from 'vscode-languageserver-protocol'
-import {createConnection, fixtureUri, tsdk} from './utils.js'
+import {createServer, fixtureUri, tsdk} from './utils.js'
 
-/** @type {ProtocolConnection} */
-let connection
+/** @type {LanguageServerHandle} */
+let serverHandle
 
-beforeEach(() => {
-  connection = createConnection()
+beforeEach(async () => {
+  serverHandle = createServer()
 })
 
 afterEach(() => {
-  connection.dispose()
+  serverHandle.connection.dispose()
 })
 
 test('initialize', async () => {
-  const initializeResponse = await connection.sendRequest(
-    InitializeRequest.type,
-    {
-      processId: null,
-      rootUri: fixtureUri('node16'),
-      capabilities: {},
-      initializationOptions: {typescript: {tsdk}}
-    }
+  const initializeResponse = await serverHandle.initialize(
+    fixtureUri('node16'),
+    {typescript: {tsdk}}
   )
   assert.deepEqual(initializeResponse, {
     capabilities: {
@@ -127,6 +121,10 @@ test('initialize', async () => {
         }
       },
       workspaceSymbolProvider: true
+    },
+    serverInfo: {
+      name: '@volar/language-server',
+      version: '2.0.0-alpha.3'
     }
   })
 })

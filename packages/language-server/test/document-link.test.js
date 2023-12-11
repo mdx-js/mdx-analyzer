@@ -1,40 +1,29 @@
 /**
- * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {DocumentLinkRequest, InitializeRequest} from 'vscode-languageserver'
-import {
-  createConnection,
-  fixturePath,
-  fixtureUri,
-  openTextDocument,
-  tsdk
-} from './utils.js'
+import {URI} from 'vscode-uri'
+import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
-/** @type {ProtocolConnection} */
-let connection
+/** @type {LanguageServerHandle} */
+let serverHandle
 
-beforeEach(() => {
-  connection = createConnection()
+beforeEach(async () => {
+  serverHandle = createServer()
+  await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 
 afterEach(() => {
-  connection.dispose()
+  serverHandle.connection.dispose()
 })
 
 test('resolve markdown link references', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('node16'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const {uri} = await openTextDocument(connection, 'node16/link-reference.mdx')
-  const result = await connection.sendRequest(DocumentLinkRequest.type, {
-    textDocument: {uri}
-  })
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/link-reference.mdx'),
+    'mdx'
+  )
+  const result = await serverHandle.sendDocumentLinkRequest(uri)
 
   assert.deepEqual(result, [
     {
@@ -57,7 +46,8 @@ test('resolve markdown link references', async () => {
               pathText: 'mdx',
               resource: {
                 $mid: 1,
-                path: fixturePath('node16/link-reference.mdx.md'),
+                path: URI.parse(fixtureUri('node16/link-reference.mdx.md'))
+                  .path,
                 scheme: 'file'
               },
               range: {
@@ -76,7 +66,7 @@ test('resolve markdown link references', async () => {
             href: {kind: 2, ref: 'mdx'}
           }
         },
-        serviceId: 'markdown'
+        serviceIndex: 0
       }
     },
     {
@@ -85,7 +75,7 @@ test('resolve markdown link references', async () => {
       data: {
         uri: fixtureUri('node16/link-reference.mdx'),
         original: {},
-        serviceId: 'markdown'
+        serviceIndex: 0
       }
     }
   ])

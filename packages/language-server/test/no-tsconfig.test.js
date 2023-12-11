@@ -1,46 +1,31 @@
 /**
- * @typedef {import('vscode-languageserver').ProtocolConnection} ProtocolConnection
+ * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {InitializeRequest} from 'vscode-languageserver'
-import {
-  createConnection,
-  openTextDocument,
-  waitForDiagnostics,
-  tsdk,
-  fixtureUri
-} from './utils.js'
+import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
-/** @type {ProtocolConnection} */
-let connection
+/** @type {LanguageServerHandle} */
+let serverHandle
 
-beforeEach(() => {
-  connection = createConnection()
+beforeEach(async () => {
+  serverHandle = createServer()
+  await serverHandle.initialize(fixtureUri('no-tsconfig'), {typescript: {tsdk}})
 })
 
 afterEach(() => {
-  connection.dispose()
+  serverHandle.connection.dispose()
 })
 
 test('no tsconfig exists', async () => {
-  await connection.sendRequest(InitializeRequest.type, {
-    processId: null,
-    rootUri: fixtureUri('no-tsconfig'),
-    capabilities: {},
-    initializationOptions: {typescript: {tsdk}}
-  })
-
-  const diagnosticsPromise = waitForDiagnostics(connection)
-  const textDocument = await openTextDocument(
-    connection,
-    'no-tsconfig/readme.mdx'
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('no-tsconfig/readme.mdx'),
+    'mdx'
   )
-  const diagnostics = await diagnosticsPromise
+  const diagnostics = await serverHandle.sendDocumentDiagnosticRequest(uri)
 
   assert.deepEqual(diagnostics, {
-    diagnostics: [],
-    uri: textDocument.uri,
-    version: 1
+    items: [],
+    kind: 'full'
   })
 })

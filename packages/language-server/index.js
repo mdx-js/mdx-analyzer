@@ -2,10 +2,10 @@
 import process from 'node:process'
 import {
   createConnection,
-  startLanguageServer
+  startTypeScriptServer
 } from '@volar/language-server/node.js'
 import {plugin} from './lib/language-server-plugin.js'
 
 process.title = 'mdx-language-server'
 
-startLanguageServer(createConnection(), plugin)
+startTypeScriptServer(createConnection(), plugin)

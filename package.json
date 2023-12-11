@@ -50,6 +50,8 @@
     ],
     "rules": {
       "@typescript-eslint/prefer-nullish-coalescing": "off",
+      "complexity": "off",
+      "max-depth": "off",
       "max-params": "off"
     }
   }

@@ -3,6 +3,7 @@
  * @typedef {import('@volar/language-core').LanguagePlugin} LanguagePlugin
  * @typedef {import('@volar/language-core').Mapping<CodeInformation>} Mapping
  * @typedef {import('@volar/language-core').VirtualFile} VirtualFile
+ * @typedef {import('estree').ExportDefaultDeclaration} ExportDefaultDeclaration
  * @typedef {import('mdast').Root} Root
  * @typedef {import('mdast').RootContent} RootContent
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
@@ -16,6 +17,27 @@ import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import {unified} from 'unified'
 
+/**
+ * @param {string} propsName
+ */
+const layoutJsDoc = (propsName) => `
+/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */
+
+/**
+ * There is one special component: [MDX layout](https://mdxjs.com/docs/using-mdx/#layout).
+ * If it is defined, it’s used to wrap all content.
+ * A layout can be defined from within MDX using a default export.
+ *
+ * @param {{readonly [K in keyof MDXLayoutProps]: MDXLayoutProps[K]}} ${propsName}
+ *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.
+ *   In addition, the MDX layout receives the \`children\` prop, which contains the rendered MDX content.
+ * @returns {JSX.Element}
+ *   The MDX content wrapped in the layout.
+ */`
+
+/**
+ * @param {boolean} hasLayout
+ */
 const componentStart = `
 /**
  * Render the MDX contents.
@@ -65,6 +87,46 @@ function addOffset(mapping, sourceOffset, generatedOffset, length) {
   mapping.sourceOffsets.push(sourceOffset)
   mapping.generatedOffsets.push(generatedOffset)
   mapping.lengths.push(length)
+}
+
+/**
+ * @param {string} haystack
+ * @param {string} needle
+ * @param {number} start
+ */
+function findIndexAfter(haystack, needle, start) {
+  for (let index = start; index < haystack.length; index++) {
+    if (haystack[index] === needle) {
+      return index
+    }
+  }
+
+  return -1
+}
+
+/**
+ * @param {ExportDefaultDeclaration} node
+ */
+function getPropsName(node) {
+  const {declaration} = node
+  const {type} = declaration
+
+  if (
+    type !== 'ArrowFunctionExpression' &&
+    type !== 'FunctionDeclaration' &&
+    type !== 'FunctionExpression'
+  ) {
+    return
+  }
+
+  if (declaration.params.length === 1) {
+    const parameter = declaration.params[0]
+    if (parameter.type === 'Identifier') {
+      return parameter.name
+    }
+  }
+
+  return 'props'
 }
 
 /**
@@ -250,8 +312,74 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
 
         case 'mdxjsEsm': {
           updateMarkdownFromNode(node)
-          addOffset(esmMapping, start, esm.length, end - start)
-          esm += mdx.slice(start, end) + '\n'
+          const body = node.data?.estree?.body
+
+          if (!body?.length) {
+            addOffset(esmMapping, start, esm.length, end - start)
+            esm += mdx.slice(start, end) + '\n'
+            break
+          }
+
+          for (const child of body) {
+            if (child.type === 'ExportDefaultDeclaration') {
+              const propsName = getPropsName(child)
+              if (propsName) {
+                esm += layoutJsDoc(propsName)
+              }
+
+              esm += '\nconst MDXLayout = '
+              addOffset(
+                esmMapping,
+                child.declaration.start,
+                esm.length,
+                child.end - child.declaration.start
+              )
+              esm += mdx.slice(child.declaration.start, child.end) + '\n'
+              continue
+            }
+
+            if (child.type === 'ExportNamedDeclaration' && child.source) {
+              const {specifiers} = child
+              for (let index = 0; index < specifiers.length; index++) {
+                const specifier = specifiers[index]
+                if (specifier.local.name === 'default') {
+                  addOffset(
+                    esmMapping,
+                    start,
+                    esm.length,
+                    specifier.start - start
+                  )
+                  esm += mdx.slice(start, specifier.start)
+                  const nextPosition =
+                    index === specifiers.length - 1
+                      ? specifier.end
+                      : findIndexAfter(mdx, ',', specifier.end) + 1
+                  addOffset(
+                    esmMapping,
+                    nextPosition,
+                    esm.length,
+                    end - nextPosition
+                  )
+                  esm +=
+                    mdx.slice(nextPosition, end) +
+                    '\nimport {' +
+                    specifier.exported.name +
+                    ' as MDXLayout} from ' +
+                    JSON.stringify(child.source.value)
+                  return
+                }
+              }
+            }
+
+            addOffset(
+              esmMapping,
+              child.start,
+              esm.length,
+              child.end - child.start
+            )
+            esm += mdx.slice(child.start, child.end) + '\n'
+          }
+
           break
         }
 

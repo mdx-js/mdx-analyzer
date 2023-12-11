@@ -186,7 +186,10 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
         markdown.length,
         startOffset - nextMarkdownSourceStart
       )
-      markdown += mdx.slice(nextMarkdownSourceStart, startOffset) + '<!---->'
+      markdown += mdx.slice(nextMarkdownSourceStart, startOffset)
+      if (startOffset !== endOffset) {
+        markdown += '<!---->'
+      }
     }
 
     nextMarkdownSourceStart = endOffset

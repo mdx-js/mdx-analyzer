@@ -94,7 +94,7 @@ test('create virtual file w/ mdxjsEsm', () => {
             }
           }
         ],
-        snapshot: snapshotFromLines('', '<!---->')
+        snapshot: snapshotFromLines('', '')
       }
     ]
   })
@@ -185,7 +185,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
             }
           }
         ],
-        snapshot: snapshotFromLines('', '<!---->')
+        snapshot: snapshotFromLines('', '')
       }
     ]
   })
@@ -289,7 +289,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
         ],
         snapshot: snapshotFromLines(
           'This content should not be part of the JSX embed<!---->',
-          '<!---->'
+          ''
         )
       }
     ]
@@ -381,7 +381,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
             }
           }
         ],
-        snapshot: snapshotFromLines('', '<!---->')
+        snapshot: snapshotFromLines('', '')
       }
     ]
   })
@@ -472,7 +472,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
             }
           }
         ],
-        snapshot: snapshotFromLines('A <!---->', '<!---->')
+        snapshot: snapshotFromLines('A <!---->', '')
       }
     ]
   })
@@ -563,7 +563,7 @@ test('create virtual file w/ mdxTextExpression', () => {
             }
           }
         ],
-        snapshot: snapshotFromLines('3 < <!----> < 4', '<!---->')
+        snapshot: snapshotFromLines('3 < <!----> < 4', '')
       }
     ]
   })
@@ -703,12 +703,7 @@ test('create virtual file w/ yaml frontmatter', () => {
             }
           }
         ],
-        snapshot: snapshotFromLines(
-          '---',
-          'hello: frontmatter',
-          '---',
-          '<!---->'
-        )
+        snapshot: snapshotFromLines('---', 'hello: frontmatter', '---', '')
       },
       {
         embeddedFiles: [],
@@ -811,7 +806,7 @@ test('update virtual file', () => {
             }
           }
         ],
-        snapshot: snapshotFromLines('This line is fixed', '<!---->')
+        snapshot: snapshotFromLines('This line is fixed', '')
       }
     ]
   })

@@ -1,6 +1,6 @@
 {
   "extends": "..",
-  "include": ["**/*.js"],
+  "include": ["**/*.js", "./types.d.ts"],
   "exclude": ["coverage/", "node_modules/"],
   "compilerOptions": {
     "declaration": true,

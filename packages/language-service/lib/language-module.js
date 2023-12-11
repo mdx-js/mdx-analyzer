@@ -120,7 +120,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
       semantic: true,
       navigation: true,
       structure: true,
-      format: true
+      format: false
     }
   }
 
@@ -139,7 +139,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
       semantic: true,
       navigation: true,
       structure: true,
-      format: true
+      format: false
     }
   }
 
@@ -158,7 +158,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
       semantic: true,
       navigation: true,
       structure: true,
-      format: true
+      format: false
     }
   }
 
@@ -438,7 +438,7 @@ export function getLanguageModule(ts, plugins) {
             semantic: true,
             navigation: true,
             structure: true,
-            format: true
+            format: false
           }
         }
       ]

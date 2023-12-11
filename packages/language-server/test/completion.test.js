@@ -122,7 +122,7 @@ test('support completion in JSX', async () => {
     commitCharacters: ['.', ',', ';', '('],
     data: {
       fileName: fixturePath('node16/completion.mdx.jsx'),
-      offset: 430,
+      offset: 67,
       originalItem: {name: 'Boolean'},
       uri: fixtureUri('node16/completion.mdx.jsx')
     },

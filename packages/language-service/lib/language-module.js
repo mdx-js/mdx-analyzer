@@ -20,8 +20,8 @@ const componentStart = `
 /**
  * Render the MDX contents.
  *
- * @param {MDXContentProps} props
- *   The props that have been passed to the MDX component.
+ * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props
+ *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.
  */
 export default function MDXContent(props) {
   return `
@@ -29,7 +29,7 @@ const componentEnd = `
 }
 
 // @ts-ignore
-/** @typedef {Props} MDXContentProps */
+/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */
 `
 
 const fallback = componentStart + componentEnd

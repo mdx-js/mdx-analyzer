@@ -63,15 +63,15 @@ test('create virtual file w/ mdxjsEsm', () => {
           '/**',
           ' * Render the MDX contents.',
           ' *',
-          ' * @param {MDXContentProps} props',
-          ' *   The props that have been passed to the MDX component.',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
           '  return <></>',
           '}',
           '',
           '// @ts-ignore',
-          '/** @typedef {Props} MDXContentProps */',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
           ''
         )
       },
@@ -137,7 +137,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
         mappings: [
           {
             sourceOffsets: [0],
-            generatedOffsets: [188],
+            generatedOffsets: [275],
             lengths: [9],
             data: {
               completion: true,
@@ -154,15 +154,15 @@ test('create virtual file w/ mdxFlowExpression', () => {
           '/**',
           ' * Render the MDX contents.',
           ' *',
-          ' * @param {MDXContentProps} props',
-          ' *   The props that have been passed to the MDX component.',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
           '  return <>{Math.PI}</>',
           '}',
           '',
           '// @ts-ignore',
-          '/** @typedef {Props} MDXContentProps */',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
           ''
         )
       },
@@ -235,7 +235,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
         mappings: [
           {
             sourceOffsets: [0, 57],
-            generatedOffsets: [188, 206],
+            generatedOffsets: [275, 293],
             lengths: [9, 8],
             data: {
               completion: true,
@@ -252,8 +252,8 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
           '/**',
           ' * Render the MDX contents.',
           ' *',
-          ' * @param {MDXContentProps} props',
-          ' *   The props that have been passed to the MDX component.',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
           '  return <><div>',
@@ -264,7 +264,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
           '}',
           '',
           '// @ts-ignore',
-          '/** @typedef {Props} MDXContentProps */',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
           ''
         )
       },
@@ -330,7 +330,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
         mappings: [
           {
             sourceOffsets: [0],
-            generatedOffsets: [188],
+            generatedOffsets: [275],
             lengths: [7],
             data: {
               completion: true,
@@ -347,15 +347,15 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
           '/**',
           ' * Render the MDX contents.',
           ' *',
-          ' * @param {MDXContentProps} props',
-          ' *   The props that have been passed to the MDX component.',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
           '  return <><div /></>',
           '}',
           '',
           '// @ts-ignore',
-          '/** @typedef {Props} MDXContentProps */',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
           ''
         ),
         typescript: {
@@ -424,7 +424,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
         mappings: [
           {
             sourceOffsets: [2],
-            generatedOffsets: [194],
+            generatedOffsets: [281],
             lengths: [7],
             data: {
               completion: true,
@@ -441,15 +441,15 @@ test('create virtual file w/ mdxJsxTextElement', () => {
           '/**',
           ' * Render the MDX contents.',
           ' *',
-          ' * @param {MDXContentProps} props',
-          ' *   The props that have been passed to the MDX component.',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
           "  return <><>{''}<div /></></>",
           '}',
           '',
           '// @ts-ignore',
-          '/** @typedef {Props} MDXContentProps */',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
           ''
         )
       },
@@ -514,7 +514,7 @@ test('create virtual file w/ mdxTextExpression', () => {
         },
         mappings: [
           {
-            generatedOffsets: [194],
+            generatedOffsets: [281],
             sourceOffsets: [4],
             lengths: [9],
             data: {
@@ -532,15 +532,15 @@ test('create virtual file w/ mdxTextExpression', () => {
           '/**',
           ' * Render the MDX contents.',
           ' *',
-          ' * @param {MDXContentProps} props',
-          ' *   The props that have been passed to the MDX component.',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
           "  return <><>{''}{Math.PI}{''}</></>",
           '}',
           '',
           '// @ts-ignore',
-          '/** @typedef {Props} MDXContentProps */',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
           ''
         )
       },
@@ -606,15 +606,15 @@ test('create virtual file w/ syntax error', () => {
           '/**',
           ' * Render the MDX contents.',
           ' *',
-          ' * @param {MDXContentProps} props',
-          ' *   The props that have been passed to the MDX component.',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
           '  return ',
           '}',
           '',
           '// @ts-ignore',
-          '/** @typedef {Props} MDXContentProps */',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
           ''
         ),
         typescript: {
@@ -669,15 +669,15 @@ test('create virtual file w/ yaml frontmatter', () => {
           '/**',
           ' * Render the MDX contents.',
           ' *',
-          ' * @param {MDXContentProps} props',
-          ' *   The props that have been passed to the MDX component.',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
           '  return <></>',
           '}',
           '',
           '// @ts-ignore',
-          '/** @typedef {Props} MDXContentProps */',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
           ''
         ),
         typescript: {
@@ -772,15 +772,15 @@ test('update virtual file', () => {
           '/**',
           ' * Render the MDX contents.',
           ' *',
-          ' * @param {MDXContentProps} props',
-          ' *   The props that have been passed to the MDX component.',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
           "  return <><>{''}</></>",
           '}',
           '',
           '// @ts-ignore',
-          '/** @typedef {Props} MDXContentProps */',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
           ''
         ),
         typescript: {

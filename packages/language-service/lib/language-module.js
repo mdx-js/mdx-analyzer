@@ -438,7 +438,7 @@ export function getLanguageModule(ts, plugins) {
             semantic: true,
             navigation: true,
             structure: true,
-            format: false
+            format: true
           }
         }
       ]

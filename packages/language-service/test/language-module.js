@@ -49,7 +49,7 @@ test('create virtual file w/ mdxjsEsm', () => {
             lengths: [34],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -86,7 +86,7 @@ test('create virtual file w/ mdxjsEsm', () => {
             lengths: [1],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -141,7 +141,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
             lengths: [9],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -177,7 +177,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
             lengths: [1],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -239,7 +239,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
             lengths: [9, 8],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -279,7 +279,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
             lengths: [48, 1],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -334,7 +334,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
             lengths: [7],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -373,7 +373,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
             lengths: [1],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -428,7 +428,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
             lengths: [7],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -464,7 +464,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
             lengths: [2, 1],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -519,7 +519,7 @@ test('create virtual file w/ mdxTextExpression', () => {
             lengths: [9],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -555,7 +555,7 @@ test('create virtual file w/ mdxTextExpression', () => {
             lengths: [4, 5],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -695,7 +695,7 @@ test('create virtual file w/ yaml frontmatter', () => {
             lengths: [27],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,
@@ -798,7 +798,7 @@ test('update virtual file', () => {
             lengths: [19],
             data: {
               completion: true,
-              format: true,
+              format: false,
               navigation: true,
               semantic: true,
               structure: true,

@@ -115,12 +115,12 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
     generatedOffsets: [],
     lengths: [],
     data: {
-      verification: true,
       completion: true,
-      semantic: true,
+      format: false,
       navigation: true,
+      semantic: true,
       structure: true,
-      format: true
+      verification: true
     }
   }
 
@@ -134,12 +134,12 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
     generatedOffsets: [],
     lengths: [],
     data: {
-      verification: true,
       completion: true,
-      semantic: true,
+      format: false,
       navigation: true,
+      semantic: true,
       structure: true,
-      format: true
+      verification: true
     }
   }
 
@@ -153,12 +153,12 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
     generatedOffsets: [],
     lengths: [],
     data: {
-      verification: true,
       completion: true,
-      semantic: true,
+      format: false,
       navigation: true,
+      semantic: true,
       structure: true,
-      format: true
+      verification: true
     }
   }
 
@@ -233,12 +233,12 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
                 generatedOffsets: [0],
                 lengths: [node.value.length],
                 data: {
-                  verification: true,
                   completion: true,
-                  semantic: true,
+                  format: true,
                   navigation: true,
+                  semantic: true,
                   structure: true,
-                  format: true
+                  verification: true
                 }
               }
             ],
@@ -410,12 +410,12 @@ export function getLanguageModule(ts, plugins) {
             generatedOffsets: [0],
             lengths: [length],
             data: {
-              verification: true,
               completion: true,
-              semantic: true,
+              format: true,
               navigation: true,
+              semantic: true,
               structure: true,
-              format: true
+              verification: true
             }
           }
         ],
@@ -433,12 +433,12 @@ export function getLanguageModule(ts, plugins) {
           generatedOffsets: [0],
           lengths: [length],
           data: {
-            verification: true,
             completion: true,
-            semantic: true,
+            format: true,
             navigation: true,
+            semantic: true,
             structure: true,
-            format: true
+            verification: true
           }
         }
       ]

@@ -42,17 +42,6 @@
     ]
   },
   "xo": {
-    "prettier": true,
-    "env": [
-      "browser",
-      "es2021",
-      "node"
-    ],
-    "rules": {
-      "@typescript-eslint/prefer-nullish-coalescing": "off",
-      "complexity": "off",
-      "max-depth": "off",
-      "max-params": "off"
-    }
+    "prettier": true
   }
 }

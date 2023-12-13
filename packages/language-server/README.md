@@ -1,4 +1,4 @@
-# `@mdx-js/language-service`
+# `@mdx-js/language-server`
 
 ## What is this?
 

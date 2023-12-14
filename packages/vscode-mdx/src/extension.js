@@ -138,15 +138,16 @@ try {
     // @ts-expect-error
     require('node:fs').readFileSync = (...args) => {
       if (args[0] === extensionJsPath) {
+        /** @type {string} */
         let text = readFileSync(...args)
 
-        // @ts-expect-error patch jsTsLanguageModes
+        // @patch jsTsLanguageModes
         text = text.replace(
           't.$u=[t.$r,t.$s,t.$p,t.$q]',
           (s) => s + '.concat("mdx")'
         )
 
-        // @ts-expect-error patch isSupportedLanguageMode
+        // Patch isSupportedLanguageMode
         text = text.replace(
           's.languages.match([t.$p,t.$q,t.$r,t.$s]',
           (s) => s + '.concat("mdx")'

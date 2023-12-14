@@ -36,9 +36,6 @@ const layoutJsDoc = (propsName) => `
  *   The MDX content wrapped in the layout.
  */`
 
-/**
- * @param {boolean} hasLayout
- */
 const componentStart = `
 /**
  * Render the MDX contents.

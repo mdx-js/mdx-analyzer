@@ -110,17 +110,34 @@
         "url": "./tsconfig.schema.json"
       }
     ],
-    "commands": [
-      {
-        "command": "mdx.selectTypescriptVersion",
-        "title": "Select TypeScript version…",
-        "category": "MDX"
-      }
-    ],
     "menus": {
+      "editor/context": [
+        {
+          "command": "typescript.goToSourceDefinition",
+          "when": "tsSupportsSourceDefinition && resourceLangId == mdx",
+          "group": "navigation@9"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "typescript.findAllFileReferences",
+          "when": "tsSupportsFileReferences && resourceLangId == mdx",
+          "group": "4_search"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "typescript.findAllFileReferences",
+          "when": "tsSupportsFileReferences && resourceLangId == mdx"
+        }
+      ],
       "commandPalette": [
         {
-          "command": "mdx.selectTypescriptVersion",
+          "command": "typescript.reloadProjects",
+          "when": "editorLangId == mdx && typescript.isManagedFile"
+        },
+        {
+          "command": "typescript.goToProjectConfig",
           "when": "editorLangId == mdx"
         }
       ]

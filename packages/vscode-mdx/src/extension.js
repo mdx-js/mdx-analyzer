@@ -5,12 +5,7 @@
  */
 
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
-import {
-  activateAutoInsertion,
-  activateTsVersionStatusItem,
-  getTsdk,
-  supportLabsVersion
-} from '@volar/vscode'
+import {activateAutoInsertion, getTsdk, supportLabsVersion} from '@volar/vscode'
 import {
   Disposable,
   languages,
@@ -74,7 +69,7 @@ export async function activate(context) {
   return {
     volarLabs: {
       version: supportLabsVersion,
-      languageClients: [client],
+      languageClient: client,
       languageServerProtocol
     }
   }
@@ -123,30 +118,44 @@ async function startServer(context) {
             {language: 'mdx'},
             documentDropEditProvider
           ),
-          ...(await Promise.all([
-            activateAutoInsertion([client], isMdxDocument),
-            activateTsVersionStatusItem(
-              'mdx.selectTypescriptVersion',
-              context,
-              client,
-              isMdxDocument,
-              (text) => 'TS ' + text
-            )
-          ]))
+          ...(await Promise.all([activateAutoInsertion(['mdx'], client)]))
         )
       }
     )
   }
 }
 
-/**
- * Check whether or not a text document is MDX.
- *
- * @param {TextDocument} document
- *   The text document to check.
- * @returns {boolean}
- *   Whether or not the text document is MDX.
- */
-function isMdxDocument(document) {
-  return document.languageId === 'mdx'
-}
+try {
+  const tsExtension = extensions.getExtension(
+    'vscode.typescript-language-features'
+  )
+  if (tsExtension) {
+    const readFileSync = require('node:fs').readFileSync
+    const extensionJsPath = require.resolve('./dist/extension.js', {
+      paths: [tsExtension.extensionPath]
+    })
+
+    // @ts-expect-error
+    require('node:fs').readFileSync = (...args) => {
+      if (args[0] === extensionJsPath) {
+        let text = readFileSync(...args)
+
+        // @ts-expect-error patch jsTsLanguageModes
+        text = text.replace(
+          't.$u=[t.$r,t.$s,t.$p,t.$q]',
+          (s) => s + '.concat("mdx")'
+        )
+
+        // @ts-expect-error patch isSupportedLanguageMode
+        text = text.replace(
+          's.languages.match([t.$p,t.$q,t.$r,t.$s]',
+          (s) => s + '.concat("mdx")'
+        )
+
+        return text
+      }
+
+      return readFileSync(...args)
+    }
+  }
+} catch {}

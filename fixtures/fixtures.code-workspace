@@ -3,7 +3,8 @@
     "git.openRepositoryInParentFolders": "never",
     "mdx.server.enable": true,
     "mdx.trace.server.verbosity": "compact",
-    "mdx.trace.server.format": "text"
+    "mdx.trace.server.format": "text",
+    "typescript.tsserver.log": "normal"
   },
   "folders": [
     {"path": "demo"},

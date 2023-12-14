@@ -115,7 +115,7 @@ test('initialize', async () => {
         fileOperations: {
           willRename: {
             filters: [
-              {pattern: {glob: '**/*.{cjs,ctx,js,json,mdx,mjs,mts,ts,tsx}'}}
+              {pattern: {glob: '**/*.{cjs,cts,js,jsx,json,mdx,mjs,mts,ts,tsx}'}}
             ]
           }
         }

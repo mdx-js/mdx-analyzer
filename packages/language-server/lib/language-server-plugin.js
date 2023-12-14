@@ -23,6 +23,7 @@ export function plugin({modules}) {
       'cjs',
       'cts',
       'js',
+      'jsx',
       'json',
       'mdx',
       'mjs',

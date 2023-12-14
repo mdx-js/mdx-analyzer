@@ -21,8 +21,9 @@ export function plugin({modules}) {
 
     watchFileExtensions: [
       'cjs',
-      'ctx',
+      'cts',
       'js',
+      'jsx',
       'json',
       'mdx',
       'mjs',

@@ -6,7 +6,7 @@
 import {createRequire} from 'node:module'
 import path from 'node:path'
 import {fileURLToPath} from 'node:url'
-import {URI} from 'vscode-uri'
+import {URI, Utils} from 'vscode-uri'
 import {startLanguageServer} from '@volar/test-utils'
 // eslint-disable-next-line import/order
 import normalizePath from 'normalize-path'
@@ -17,6 +17,11 @@ const pkgRequire = createRequire(pkgPath)
 const pkg = require('../package.json')
 
 const bin = pkgRequire.resolve(pkg.bin['mdx-language-server'])
+
+const fixturesURI = Utils.joinPath(
+  URI.parse(import.meta.url),
+  '../../../../fixtures'
+)
 
 /**
  * The path to the TypeScript SDK.
@@ -32,9 +37,7 @@ export function createServer() {
  * @returns {string} The uri that matches the fixture file name.
  */
 export function fixtureUri(fileName) {
-  return URI.parse(
-    String(new URL(`../../../fixtures/${fileName}`, import.meta.url))
-  ).toString()
+  return String(Utils.joinPath(fixturesURI, fileName))
 }
 
 /**

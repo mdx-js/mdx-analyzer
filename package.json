@@ -43,13 +43,7 @@
   },
   "xo": {
     "prettier": true,
-    "env": [
-      "browser",
-      "es2021",
-      "node"
-    ],
     "rules": {
-      "@typescript-eslint/prefer-nullish-coalescing": "off",
       "max-params": "off"
     }
   }

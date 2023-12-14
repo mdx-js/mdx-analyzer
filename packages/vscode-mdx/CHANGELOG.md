@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.6.0
+
+### Minor Changes
+
+- [#358](https://github.com/mdx-js/mdx-analyzer/pull/358) [`90c0e2d750ac91897179cb77e4c0e6b4555904e4`](https://github.com/mdx-js/mdx-analyzer/commit/90c0e2d750ac91897179cb77e4c0e6b4555904e4) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add a TypeScript version status item.
+  Clicking it opens a menu to select the TypeScript version to use.
+
+### Patch Changes
+
+- [#357](https://github.com/mdx-js/mdx-analyzer/pull/357) [`7110d611e3cf704f050cccae68773622655e2c41`](https://github.com/mdx-js/mdx-analyzer/commit/7110d611e3cf704f050cccae68773622655e2c41) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix dropping local images in an MDX file.
+
+- [#364](https://github.com/mdx-js/mdx-analyzer/pull/364) [`423bf184d88789b7f2a519f7a48d981f38756b0f`](https://github.com/mdx-js/mdx-analyzer/commit/423bf184d88789b7f2a519f7a48d981f38756b0f) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Disable formatting
+
 ## 1.5.0
 
 ### Minor Changes
@@ -154,7 +167,7 @@
   In JSX, you can include JS expressions within tags, like:
 
   ```mdx
-  <Component>{doSomething('a', 7)}</Component>
+  <Component>{doSomething("a", 7)}</Component>
   ```
 
   This PR adds syntax highlighting for those expressions by adding a new pattern

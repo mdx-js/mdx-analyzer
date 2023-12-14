@@ -1,85 +1,228 @@
 /**
+ * @typedef {import('@volar/language-core').CodeInformation} CodeInformation
  * @typedef {import('@volar/language-core').LanguagePlugin} LanguagePlugin
+ * @typedef {import('@volar/language-core').Mapping<CodeInformation>} Mapping
  * @typedef {import('@volar/language-core').VirtualFile} VirtualFile
+ * @typedef {import('estree').ExportDefaultDeclaration} ExportDefaultDeclaration
  * @typedef {import('mdast').Root} Root
+ * @typedef {import('mdast').RootContent} RootContent
+ * @typedef {import('mdast-util-mdxjs-esm').MdxjsEsm} MdxjsEsm
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
  * @typedef {import('unified').PluggableList} PluggableList
  * @typedef {import('unified').Processor<Root>} Processor
- * @typedef {import('unist').Node} Node
- * @typedef {import('unist').Parent} Parent
  *
- * @typedef {[start: number, end: number]} OffsetRange
+ * @typedef {Root | RootContent} Node
  */
 
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import {unified} from 'unified'
-import {visitParents} from 'unist-util-visit-parents'
+
+/**
+ * @param {string} propsName
+ */
+const layoutJsDoc = (propsName) => `
+/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */
+
+/**
+ * There is one special component: [MDX layout](https://mdxjs.com/docs/using-mdx/#layout).
+ * If it is defined, it’s used to wrap all content.
+ * A layout can be defined from within MDX using a default export.
+ *
+ * @param {{readonly [K in keyof MDXLayoutProps]: MDXLayoutProps[K]}} ${propsName}
+ *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.
+ *   In addition, the MDX layout receives the \`children\` prop, which contains the rendered MDX content.
+ * @returns {JSX.Element}
+ *   The MDX content wrapped in the layout.
+ */`
 
 const componentStart = `
 /**
  * Render the MDX contents.
  *
- * @param {MDXContentProps} props
- *   The props that have been passed to the MDX component.
+ * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props
+ *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.
  */
 export default function MDXContent(props) {
-  return <>
-`
+  return `
 const componentEnd = `
-  </>
 }
 
 // @ts-ignore
-/** @typedef {Props} MDXContentProps */
+/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */
 `
 
 const fallback = componentStart + componentEnd
 
-const whitespaceRegex = /\s/u
-
 /**
- * @param {OffsetRange[]} positions
- * @param {number} index
- * @returns {boolean} XXX
+ * Visit an mdast tree with and enter and exit callback.
+ *
+ * @param {Node} node
+ *   The mdast tree to visit.
+ * @param {(node: Node) => undefined} onEnter
+ *   The callback caled when entering a node.
+ * @param {(node: Node) => undefined} onExit
+ *   The callback caled when exiting a node.
  */
-function shouldShow(positions, index) {
-  return positions.some(([start, end]) => start <= index && index < end)
-}
-
-/**
- * @param {OffsetRange} a
- * @param {OffsetRange} b
- * @returns {number} XXX
- */
-function compareRanges(a, b) {
-  return a[0] - b[0] || a[1] - b[1]
-}
-
-/**
- * @param {Parent} node
- * @returns {number | undefined} XXX
- */
-function findFirstOffset(node) {
-  for (const child of node.children) {
-    const start = child.position?.start?.offset
-    if (start !== undefined) {
-      return start
+function visit(node, onEnter, onExit) {
+  onEnter(node)
+  if ('children' in node) {
+    for (const child of node.children) {
+      visit(child, onEnter, onExit)
     }
   }
+
+  onExit(node)
 }
 
 /**
- * @param {Parent} node
- * @returns {number | undefined} XXX
+ * Generate mapped virtual content based on a source string and start and end offsets.
+ *
+ * @param {Mapping} mapping
+ *   The Volar mapping to append the offsets to.
+ * @param {string} source
+ *   The original source code.
+ * @param {string} generated
+ *   The generated content so far.
+ * @param {number} startOffset
+ *   The start offset in the original source code.
+ * @param {number} endOffset
+ *   The end offset in the original source code.
+ * @returns {string}
+ *   The updated generated content.
  */
-function findLastOffset(node) {
-  for (let index = node.children.length - 1; index >= 0; index--) {
-    const end = node.children[index].position?.end?.offset
-    if (end !== undefined) {
-      return end
+function addOffset(mapping, source, generated, startOffset, endOffset) {
+  if (startOffset === endOffset) {
+    return generated
+  }
+
+  const length = endOffset - startOffset
+  const previousSourceOffset = mapping.sourceOffsets.at(-1)
+  const previousGeneratedOffset = mapping.generatedOffsets.at(-1)
+  const previousLength = mapping.lengths.at(-1)
+  if (
+    previousSourceOffset !== undefined &&
+    previousGeneratedOffset !== undefined &&
+    previousLength !== undefined &&
+    previousSourceOffset + previousLength === startOffset &&
+    previousGeneratedOffset + previousLength === generated.length
+  ) {
+    mapping.lengths[mapping.lengths.length - 1] += length
+  } else {
+    mapping.sourceOffsets.push(startOffset)
+    mapping.generatedOffsets.push(generated.length)
+    mapping.lengths.push(length)
+  }
+
+  return generated + source.slice(startOffset, endOffset)
+}
+
+/**
+ * @param {string} haystack
+ * @param {string} needle
+ * @param {number} start
+ */
+function findIndexAfter(haystack, needle, start) {
+  for (let index = start; index < haystack.length; index++) {
+    if (haystack[index] === needle) {
+      return index
     }
   }
+
+  return -1
+}
+
+/**
+ * @param {ExportDefaultDeclaration} node
+ */
+function getPropsName(node) {
+  const {declaration} = node
+  const {type} = declaration
+
+  if (
+    type !== 'ArrowFunctionExpression' &&
+    type !== 'FunctionDeclaration' &&
+    type !== 'FunctionExpression'
+  ) {
+    return
+  }
+
+  if (declaration.params.length === 1) {
+    const parameter = declaration.params[0]
+    if (parameter.type === 'Identifier') {
+      return parameter.name
+    }
+  }
+
+  return 'props'
+}
+
+/**
+ * Process exports of an MDX ESM node.
+ *
+ * @param {string} mdx
+ *   The full MDX code to process.
+ * @param {MdxjsEsm} node
+ *   The MDX ESM node to process.
+ * @param {Mapping} mapping
+ *   The Volar mapping to add offsets to.
+ * @param {string} esm
+ *   The virtual ESM code up to the point this function was called.
+ * @returns {string}
+ *   The updated virtual ESM code.
+ */
+function processExports(mdx, node, mapping, esm) {
+  const start = node.position?.start?.offset
+  const end = node.position?.end?.offset
+
+  if (start === undefined || end === undefined) {
+    return esm
+  }
+
+  const body = node.data?.estree?.body
+
+  if (!body?.length) {
+    return addOffset(mapping, mdx, esm, start, end) + '\n'
+  }
+
+  for (const child of body) {
+    if (child.type === 'ExportDefaultDeclaration') {
+      const propsName = getPropsName(child)
+      if (propsName) {
+        esm += layoutJsDoc(propsName)
+      }
+
+      esm += '\nconst MDXLayout = '
+      esm =
+        addOffset(mapping, mdx, esm, child.declaration.start, child.end) + '\n'
+      continue
+    }
+
+    if (child.type === 'ExportNamedDeclaration' && child.source) {
+      const {specifiers} = child
+      for (let index = 0; index < specifiers.length; index++) {
+        const specifier = specifiers[index]
+        if (specifier.local.name === 'default') {
+          esm = addOffset(mapping, mdx, esm, start, specifier.start)
+          const nextPosition =
+            index === specifiers.length - 1
+              ? specifier.end
+              : findIndexAfter(mdx, ',', specifier.end) + 1
+          return (
+            addOffset(mapping, mdx, esm, nextPosition, end) +
+            '\nimport {' +
+            specifier.exported.name +
+            ' as MDXLayout} from ' +
+            JSON.stringify(child.source.value)
+          )
+        }
+      }
+    }
+
+    esm = addOffset(mapping, mdx, esm, child.start, child.end) + '\n'
+  }
+
+  return esm
 }
 
 /**
@@ -91,10 +234,8 @@ function findLastOffset(node) {
  */
 function getVirtualFiles(fileName, snapshot, ts, processor) {
   const mdx = snapshot.getText(0, snapshot.getLength())
-  /** @type {VirtualFile['mappings']} */
-  const jsxMappings = []
-  /** @type {VirtualFile['mappings']} */
-  const mdMappings = []
+  /** @type {Mapping[]} */
+  const jsMappings = []
   /** @type {Root} */
   let ast
 
@@ -109,200 +250,273 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
         typescript: {
           scriptKind: ts.ScriptKind.JSX
         },
-        mappings: jsxMappings,
+        mappings: jsMappings,
         snapshot: ts.ScriptSnapshot.fromString(fallback)
       },
       {
         embeddedFiles: [],
         fileName: fileName + '.md',
         languageId: 'markdown',
-        mappings: mdMappings,
+        mappings: [],
         snapshot: ts.ScriptSnapshot.fromString(mdx)
       }
     ]
   }
 
-  /** @type {OffsetRange[]} */
-  const esmPositions = []
-  /** @type {OffsetRange[]} */
-  const jsxPositions = []
+  /**
+   * The Volar mapping that maps all ESM syntax of the MDX file to the virtual JavaScript file.
+   *
+   * @type {Mapping}
+   */
+  const esmMapping = {
+    sourceOffsets: [],
+    generatedOffsets: [],
+    lengths: [],
+    data: {
+      completion: true,
+      format: false,
+      navigation: true,
+      semantic: true,
+      structure: true,
+      verification: true
+    }
+  }
+
+  /**
+   * The Volar mapping that maps all JSX syntax of the MDX file to the virtual JavaScript file.
+   *
+   * @type {Mapping}
+   */
+  const jsxMapping = {
+    sourceOffsets: [],
+    generatedOffsets: [],
+    lengths: [],
+    data: {
+      completion: true,
+      format: false,
+      navigation: true,
+      semantic: true,
+      structure: true,
+      verification: true
+    }
+  }
+
+  /**
+   * The Volar mapping that maps all markdown content to the virtual markdown file.
+   *
+   * @type {Mapping}
+   */
+  const markdownMapping = {
+    sourceOffsets: [],
+    generatedOffsets: [],
+    lengths: [],
+    data: {
+      completion: true,
+      format: false,
+      navigation: true,
+      semantic: true,
+      structure: true,
+      verification: true
+    }
+  }
+
   /** @type {VirtualFile[]} */
   const virtualFiles = []
 
-  visitParents(ast, (node) => {
-    const start = node.position?.start?.offset
-    const end = node.position?.end?.offset
+  let esm = ''
+  let jsx = ''
+  let markdown = ''
+  let nextMarkdownSourceStart = 0
 
-    if (start === undefined || end === undefined) {
-      return
+  /**
+   * Update the **markdown** mappings from a start and end offset of a **JavaScript** chunk.
+   *
+   * @param {number} startOffset
+   *   The start offset of the JavaScript chunk.
+   * @param {number} endOffset
+   *   The end offset of the JavaScript chunk.
+   */
+  function updateMarkdownFromOffsets(startOffset, endOffset) {
+    if (nextMarkdownSourceStart !== startOffset) {
+      const slice = mdx.slice(nextMarkdownSourceStart, startOffset)
+      for (const match of slice.matchAll(/^[\t ]*(.*\r?\n?)/gm)) {
+        if (match.index === undefined) {
+          continue
+        }
+
+        const [line, lineContent] = match
+        if (line.length === 0) {
+          continue
+        }
+
+        const lineEnd = nextMarkdownSourceStart + match.index + line.length
+        let lineStart = lineEnd - lineContent.length
+        if (
+          match.index === 0 &&
+          nextMarkdownSourceStart !== 0 &&
+          mdx[lineStart - 1] !== '\n'
+        ) {
+          lineStart = nextMarkdownSourceStart + match.index
+        }
+
+        markdown = addOffset(markdownMapping, mdx, markdown, lineStart, lineEnd)
+      }
+
+      if (startOffset !== endOffset) {
+        markdown += '<!---->'
+      }
     }
 
-    switch (node.type) {
-      case 'yaml': {
-        const frontmatterWithFences = mdx.slice(start, end)
-        const frontmatterStart = frontmatterWithFences.indexOf(node.value)
-        virtualFiles.push({
-          embeddedFiles: [],
-          fileName: fileName + '.yaml',
-          languageId: 'yaml',
-          mappings: [
-            {
-              sourceOffsets: [frontmatterStart],
-              generatedOffsets: [0],
-              lengths: [node.value.length],
-              data: {
-                verification: true,
-                completion: true,
-                semantic: true,
-                navigation: true,
-                structure: true,
-                format: true
+    nextMarkdownSourceStart = endOffset
+  }
+
+  /**
+   * Update the **markdown** mappings from a start and end offset of a **JavaScript** node.
+   *
+   * @param {Node} node
+   *   The JavaScript node.
+   */
+  function updateMarkdownFromNode(node) {
+    const startOffset = /** @type {number} */ (node.position?.start.offset)
+    const endOffset = /** @type {number} */ (node.position?.end.offset)
+
+    updateMarkdownFromOffsets(startOffset, endOffset)
+  }
+
+  visit(
+    ast,
+    (node) => {
+      const start = node.position?.start?.offset
+      let end = node.position?.end?.offset
+
+      if (start === undefined || end === undefined) {
+        return
+      }
+
+      switch (node.type) {
+        case 'toml':
+        case 'yaml': {
+          const frontmatterWithFences = mdx.slice(start, end)
+          const frontmatterStart = frontmatterWithFences.indexOf(node.value)
+          virtualFiles.push({
+            embeddedFiles: [],
+            fileName: fileName + '.' + node.type,
+            languageId: node.type,
+            mappings: [
+              {
+                sourceOffsets: [frontmatterStart],
+                generatedOffsets: [0],
+                lengths: [node.value.length],
+                data: {
+                  completion: true,
+                  format: true,
+                  navigation: true,
+                  semantic: true,
+                  structure: true,
+                  verification: true
+                }
               }
-            }
-          ],
-          snapshot: ts.ScriptSnapshot.fromString(node.value)
-        })
+            ],
+            snapshot: ts.ScriptSnapshot.fromString(node.value)
+          })
 
-        break
-      }
-
-      case 'mdxjsEsm': {
-        esmPositions.push([start, end])
-        break
-      }
-
-      case 'mdxJsxFlowElement': {
-        const firstOffset = findFirstOffset(node)
-        const lastOffset = findLastOffset(node)
-        if (firstOffset === undefined || lastOffset === undefined) {
-          jsxPositions.push([start, end])
           break
         }
 
-        jsxPositions.push([start, firstOffset], [lastOffset, end])
-        break
-      }
-
-      case 'mdxFlowExpression':
-      case 'mdxTextExpression': {
-        jsxPositions.push([start, end])
-        if (node.data?.estree?.body.length === 0) {
-          esmPositions.push([start + 1, end - 1])
+        case 'mdxjsEsm': {
+          updateMarkdownFromNode(node)
+          esm = processExports(mdx, node, esmMapping, esm)
+          break
         }
 
-        break
-      }
-
-      case 'mdxJsxTextElement': {
-        jsxPositions.push([start, end])
-        break
-      }
-
-      default: {
-        break
-      }
-    }
-  })
-
-  esmPositions.sort(compareRanges)
-  jsxPositions.sort(compareRanges)
-  let esmShadow = ''
-  let jsxShadow = ''
-  let mdShadow = ''
-  /** @type {number | undefined} */
-  let mdChunkStart
-
-  // eslint-disable-next-line unicorn/no-for-loop
-  for (let index = 0; index < mdx.length; index++) {
-    const char = mdx[index]
-
-    if (whitespaceRegex.test(char)) {
-      esmShadow += char
-      jsxShadow += char
-      mdShadow += char
-      continue
-    }
-
-    const shouldShowEsm = shouldShow(esmPositions, index)
-    const shouldShowJsx = shouldShow(jsxPositions, index)
-    esmShadow += shouldShowEsm ? char : ' '
-    jsxShadow += shouldShowJsx ? char : ' '
-    if (shouldShowEsm || shouldShowJsx) {
-      mdShadow += ' '
-      if (mdChunkStart !== undefined) {
-        mdMappings.push({
-          sourceOffsets: [mdChunkStart],
-          generatedOffsets: [mdChunkStart],
-          lengths: [index - mdChunkStart],
-          data: {
-            verification: true,
-            completion: true,
-            semantic: true,
-            navigation: true,
-            structure: true,
-            format: true
+        case 'mdxJsxFlowElement':
+        case 'mdxJsxTextElement': {
+          if (node.children.length > 0) {
+            end = /** @type {number} */ (
+              node.children[0].position?.start.offset
+            )
           }
-        })
-      }
 
-      mdChunkStart = undefined
-    } else {
-      mdShadow += char
-      if (mdChunkStart === undefined) {
-        mdChunkStart = index
+          updateMarkdownFromOffsets(start, end)
+          jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+          break
+        }
+
+        case 'mdxFlowExpression':
+        case 'mdxTextExpression': {
+          updateMarkdownFromNode(node)
+
+          if (node.data?.estree?.body.length === 0) {
+            jsx = addOffset(jsxMapping, mdx, jsx, start, start + 1)
+            jsx = addOffset(jsxMapping, mdx, jsx, end - 1, end)
+            esm = addOffset(esmMapping, mdx, esm, start + 1, end - 1) + '\n'
+          } else {
+            jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+          }
+
+          break
+        }
+
+        case 'text': {
+          jsx += "{''}"
+          break
+        }
+
+        default: {
+          jsx += '<>'
+          break
+        }
+      }
+    },
+    (node) => {
+      switch (node.type) {
+        case 'mdxJsxFlowElement':
+        case 'mdxJsxTextElement': {
+          const child = node.children?.at(-1)
+
+          if (child) {
+            const start = /** @type {number} */ (child.position?.end.offset)
+            const end = /** @type {number} */ (node.position?.end.offset)
+
+            updateMarkdownFromOffsets(start, end)
+            jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+          }
+
+          break
+        }
+
+        case 'mdxTextExpression':
+        case 'mdxjsEsm':
+        case 'mdxFlowExpression':
+        case 'text':
+        case 'toml':
+        case 'yaml': {
+          break
+        }
+
+        default: {
+          jsx += '</>'
+          break
+        }
       }
     }
+  )
+
+  updateMarkdownFromOffsets(mdx.length, mdx.length)
+  esm += componentStart
+
+  for (let i = 0; i < jsxMapping.generatedOffsets.length; i++) {
+    jsxMapping.generatedOffsets[i] += esm.length
   }
 
-  if (mdChunkStart !== undefined) {
-    mdMappings.push({
-      sourceOffsets: [mdChunkStart],
-      generatedOffsets: [mdChunkStart],
-      lengths: [mdx.length - 1 - mdChunkStart],
-      data: {
-        verification: true,
-        completion: true,
-        semantic: true,
-        navigation: true,
-        structure: true,
-        format: true
-      }
-    })
+  esm += jsx + componentEnd
+
+  if (esmMapping.sourceOffsets.length > 0) {
+    jsMappings.push(esmMapping)
   }
 
-  const jsxStart = esmShadow.length + componentStart.length
-  const js = esmShadow + componentStart + jsxShadow + componentEnd
-
-  for (const [start, end] of esmPositions) {
-    jsxMappings.push({
-      sourceOffsets: [start],
-      generatedOffsets: [start],
-      lengths: [end - start],
-      data: {
-        verification: true,
-        completion: true,
-        semantic: true,
-        navigation: true,
-        structure: true,
-        format: true
-      }
-    })
-  }
-
-  for (const [start, end] of jsxPositions) {
-    jsxMappings.push({
-      sourceOffsets: [start],
-      generatedOffsets: [start + jsxStart],
-      lengths: [end - start],
-      data: {
-        verification: true,
-        completion: true,
-        semantic: true,
-        navigation: true,
-        structure: true,
-        format: true
-      }
-    })
+  if (jsxMapping.sourceOffsets.length > 0) {
+    jsMappings.push(jsxMapping)
   }
 
   virtualFiles.unshift(
@@ -313,15 +527,15 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
       typescript: {
         scriptKind: ts.ScriptKind.JSX
       },
-      mappings: jsxMappings,
-      snapshot: ts.ScriptSnapshot.fromString(js)
+      mappings: jsMappings,
+      snapshot: ts.ScriptSnapshot.fromString(esm)
     },
     {
       embeddedFiles: [],
       fileName: fileName + '.md',
       languageId: 'markdown',
-      mappings: mdMappings,
-      snapshot: ts.ScriptSnapshot.fromString(mdShadow)
+      mappings: [markdownMapping],
+      snapshot: ts.ScriptSnapshot.fromString(markdown)
     }
   )
 
@@ -365,12 +579,12 @@ export function getLanguageModule(ts, plugins) {
             generatedOffsets: [0],
             lengths: [length],
             data: {
-              verification: true,
               completion: true,
-              semantic: true,
+              format: true,
               navigation: true,
+              semantic: true,
               structure: true,
-              format: true
+              verification: true
             }
           }
         ],
@@ -388,12 +602,12 @@ export function getLanguageModule(ts, plugins) {
           generatedOffsets: [0],
           lengths: [length],
           data: {
-            verification: true,
             completion: true,
-            semantic: true,
+            format: true,
             navigation: true,
+            semantic: true,
             structure: true,
-            format: true
+            verification: true
           }
         }
       ]

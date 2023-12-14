@@ -141,13 +141,13 @@ try {
         /** @type {string} */
         let text = readFileSync(...args)
 
-        // @patch jsTsLanguageModes
+        // patch jsTsLanguageModes
         text = text.replace(
           't.$u=[t.$r,t.$s,t.$p,t.$q]',
           (s) => s + '.concat("mdx")'
         )
 
-        // Patch isSupportedLanguageMode
+        // patch isSupportedLanguageMode
         text = text.replace(
           's.languages.match([t.$p,t.$q,t.$r,t.$s]',
           (s) => s + '.concat("mdx")'

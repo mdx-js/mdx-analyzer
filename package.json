@@ -42,6 +42,9 @@
     ]
   },
   "xo": {
-    "prettier": true
+    "prettier": true,
+    "rules": {
+      "max-params": "off"
+    }
   }
 }

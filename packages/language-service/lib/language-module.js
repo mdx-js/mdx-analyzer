@@ -76,15 +76,30 @@ function visit(node, onEnter, onExit) {
 }
 
 /**
+ * Generate mapped virtual content based on a source string and start and end offsets.
+ *
  * @param {Mapping} mapping
- * @param {number} sourceOffset
- * @param {number} generatedOffset
- * @param {number} length
+ *   The Volar mapping to append the offsets to.
+ * @param {string} source
+ *   The original source code.
+ * @param {string} generated
+ *   The generated content so far.
+ * @param {number} startOffset
+ *   The start offset in the original source code.
+ * @param {number} endOffset
+ *   The end offset in the original source code.
+ * @returns {string}
+ *   The updated generated content.
  */
-function addOffset(mapping, sourceOffset, generatedOffset, length) {
-  mapping.sourceOffsets.push(sourceOffset)
-  mapping.generatedOffsets.push(generatedOffset)
-  mapping.lengths.push(length)
+function addOffset(mapping, source, generated, startOffset, endOffset) {
+  if (startOffset === endOffset) {
+    return generated
+  }
+
+  mapping.sourceOffsets.push(startOffset)
+  mapping.generatedOffsets.push(generated.length)
+  mapping.lengths.push(endOffset - startOffset)
+  return generated + source.slice(startOffset, endOffset)
 }
 
 /**
@@ -152,8 +167,7 @@ function processExports(mdx, node, mapping, esm) {
   const body = node.data?.estree?.body
 
   if (!body?.length) {
-    addOffset(mapping, start, esm.length, end - start)
-    return esm + mdx.slice(start, end) + '\n'
+    return addOffset(mapping, mdx, esm, start, end) + '\n'
   }
 
   for (const child of body) {
@@ -164,13 +178,8 @@ function processExports(mdx, node, mapping, esm) {
       }
 
       esm += '\nconst MDXLayout = '
-      addOffset(
-        mapping,
-        child.declaration.start,
-        esm.length,
-        child.end - child.declaration.start
-      )
-      esm += mdx.slice(child.declaration.start, child.end) + '\n'
+      esm =
+        addOffset(mapping, mdx, esm, child.declaration.start, child.end) + '\n'
       continue
     }
 
@@ -179,16 +188,13 @@ function processExports(mdx, node, mapping, esm) {
       for (let index = 0; index < specifiers.length; index++) {
         const specifier = specifiers[index]
         if (specifier.local.name === 'default') {
-          addOffset(mapping, start, esm.length, specifier.start - start)
-          esm += mdx.slice(start, specifier.start)
+          esm = addOffset(mapping, mdx, esm, start, specifier.start)
           const nextPosition =
             index === specifiers.length - 1
               ? specifier.end
               : findIndexAfter(mdx, ',', specifier.end) + 1
-          addOffset(mapping, nextPosition, esm.length, end - nextPosition)
           return (
-            esm +
-            mdx.slice(nextPosition, end) +
+            addOffset(mapping, mdx, esm, nextPosition, end) +
             '\nimport {' +
             specifier.exported.name +
             ' as MDXLayout} from ' +
@@ -198,8 +204,7 @@ function processExports(mdx, node, mapping, esm) {
       }
     }
 
-    addOffset(mapping, child.start, esm.length, child.end - child.start)
-    esm += mdx.slice(child.start, child.end) + '\n'
+    esm = addOffset(mapping, mdx, esm, child.start, child.end) + '\n'
   }
 
   return esm
@@ -318,13 +323,13 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
    */
   function updateMarkdownFromOffsets(startOffset, endOffset) {
     if (nextMarkdownSourceStart !== startOffset) {
-      addOffset(
+      markdown = addOffset(
         markdownMapping,
+        mdx,
+        markdown,
         nextMarkdownSourceStart,
-        markdown.length,
-        startOffset - nextMarkdownSourceStart
+        startOffset
       )
-      markdown += mdx.slice(nextMarkdownSourceStart, startOffset)
       if (startOffset !== endOffset) {
         markdown += '<!---->'
       }
@@ -401,8 +406,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
           }
 
           updateMarkdownFromOffsets(start, end)
-          addOffset(jsxMapping, start, jsx.length, end - start)
-          jsx += mdx.slice(start, end)
+          jsx = addOffset(jsxMapping, mdx, jsx, start, end)
           break
         }
 
@@ -414,11 +418,9 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
             start += 1
             end -= 1
 
-            addOffset(esmMapping, start, esm.length, end - start)
-            esm += mdx.slice(start, end) + '\n'
+            esm = addOffset(esmMapping, mdx, esm, start, end) + '\n'
           } else {
-            addOffset(jsxMapping, start, jsx.length, end - start)
-            jsx += mdx.slice(start, end)
+            jsx = addOffset(jsxMapping, mdx, jsx, start, end)
           }
 
           break
@@ -446,8 +448,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
             const end = /** @type {number} */ (node.position?.end.offset)
 
             updateMarkdownFromOffsets(start, end)
-            addOffset(jsxMapping, start, jsx.length, end - start)
-            jsx += mdx.slice(start, end)
+            jsx = addOffset(jsxMapping, mdx, jsx, start, end)
           }
 
           break

@@ -354,7 +354,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
   visit(
     ast,
     (node) => {
-      let start = node.position?.start?.offset
+      const start = node.position?.start?.offset
       let end = node.position?.end?.offset
 
       if (start === undefined || end === undefined) {
@@ -415,10 +415,9 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
           updateMarkdownFromNode(node)
 
           if (node.data?.estree?.body.length === 0) {
-            start += 1
-            end -= 1
-
-            esm = addOffset(esmMapping, mdx, esm, start, end) + '\n'
+            jsx = addOffset(jsxMapping, mdx, jsx, start, start + 1)
+            jsx = addOffset(jsxMapping, mdx, jsx, end - 1, end)
+            esm = addOffset(esmMapping, mdx, esm, start + 1, end - 1) + '\n'
           } else {
             jsx = addOffset(jsxMapping, mdx, jsx, start, end)
           }

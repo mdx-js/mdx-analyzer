@@ -1,6 +1,5 @@
 {
   "private": true,
-  "type": "module",
   "repository": "https://github.com/mdx-js/mdx-analyzer.git",
   "workspaces": [
     "packages/*"

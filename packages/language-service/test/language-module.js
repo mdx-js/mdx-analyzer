@@ -100,6 +100,1019 @@ test('create virtual file w/ mdxjsEsm', () => {
   })
 })
 
+test('create virtual file w/o MDX layout in case of named re-export', () => {
+  const module = getLanguageModule(typescript)
+
+  const snapshot = snapshotFromLines('export {named} from "./Layout.js"', '')
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [34],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [
+          {
+            sourceOffsets: [0],
+            generatedOffsets: [0],
+            lengths: [33],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          'export {named} from "./Layout.js"',
+          '',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          '  return <></>',
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [33],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
+      }
+    ]
+  })
+})
+
+test('create virtual file w/ MDX layout in case of default re-export', () => {
+  const module = getLanguageModule(typescript)
+
+  const snapshot = snapshotFromLines('export {default} from "./Layout.js"', '')
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [36],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [
+          {
+            sourceOffsets: [0, 15],
+            generatedOffsets: [0, 8],
+            lengths: [8, 20],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          'export {} from "./Layout.js"',
+          'import {default as MDXLayout} from "./Layout.js"',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          '  return <></>',
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [35],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
+      }
+    ]
+  })
+})
+
+test('create virtual file w/ MDX layout in case of named and default re-export', () => {
+  const module = getLanguageModule(typescript)
+
+  const snapshot = snapshotFromLines(
+    'export {named, default} from "./Layout.js"',
+    ''
+  )
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [43],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [
+          {
+            sourceOffsets: [0, 22],
+            generatedOffsets: [0, 15],
+            lengths: [15, 20],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          'export {named, } from "./Layout.js"',
+          'import {default as MDXLayout} from "./Layout.js"',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          '  return <></>',
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [42],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
+      }
+    ]
+  })
+})
+
+test('create virtual file w/ MDX layout in case of default and named re-export', () => {
+  const module = getLanguageModule(typescript)
+
+  const snapshot = snapshotFromLines(
+    'export {default, named} from "./Layout.js"',
+    ''
+  )
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [43],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [
+          {
+            sourceOffsets: [0, 16],
+            generatedOffsets: [0, 8],
+            lengths: [8, 26],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          'export { named} from "./Layout.js"',
+          'import {default as MDXLayout} from "./Layout.js"',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          '  return <></>',
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [42],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
+      }
+    ]
+  })
+})
+
+test('create virtual file w/ MDX layout in case of a default exported arrow function', () => {
+  const module = getLanguageModule(typescript)
+
+  const snapshot = snapshotFromLines('export default () => {}', '')
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [24],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [
+          {
+            sourceOffsets: [15],
+            generatedOffsets: [670],
+            lengths: [8],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          '',
+          '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
+          '',
+          '/**',
+          ' * There is one special component: [MDX layout](https://mdxjs.com/docs/using-mdx/#layout).',
+          ' * If it is defined, it’s used to wrap all content.',
+          ' * A layout can be defined from within MDX using a default export.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXLayoutProps]: MDXLayoutProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' *   In addition, the MDX layout receives the `children` prop, which contains the rendered MDX content.',
+          ' * @returns {JSX.Element}',
+          ' *   The MDX content wrapped in the layout.',
+          ' */',
+          'const MDXLayout = () => {}',
+          '',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          '  return <></>',
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [23],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
+      }
+    ]
+  })
+})
+
+test('create virtual file w/ MDX layout in case of a default exported function declaration', () => {
+  const module = getLanguageModule(typescript)
+
+  const snapshot = snapshotFromLines(
+    'export default function MDXLayout() {}',
+    ''
+  )
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [39],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [
+          {
+            sourceOffsets: [15],
+            generatedOffsets: [670],
+            lengths: [23],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          '',
+          '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
+          '',
+          '/**',
+          ' * There is one special component: [MDX layout](https://mdxjs.com/docs/using-mdx/#layout).',
+          ' * If it is defined, it’s used to wrap all content.',
+          ' * A layout can be defined from within MDX using a default export.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXLayoutProps]: MDXLayoutProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' *   In addition, the MDX layout receives the `children` prop, which contains the rendered MDX content.',
+          ' * @returns {JSX.Element}',
+          ' *   The MDX content wrapped in the layout.',
+          ' */',
+          'const MDXLayout = function MDXLayout() {}',
+          '',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          '  return <></>',
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [38],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
+      }
+    ]
+  })
+})
+
+test('create virtual file w/ MDX layout in case of a default exported constant', () => {
+  const module = getLanguageModule(typescript)
+
+  const snapshot = snapshotFromLines('export default "main"', '')
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [22],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [
+          {
+            sourceOffsets: [15],
+            generatedOffsets: [19],
+            lengths: [6],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          '',
+          'const MDXLayout = "main"',
+          '',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          '  return <></>',
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [21],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
+      }
+    ]
+  })
+})
+
+test('create virtual file w/ MDX layout and matching argument name', () => {
+  const module = getLanguageModule(typescript)
+
+  const snapshot = snapshotFromLines(
+    'export default function MDXLayout(properties) {}',
+    ''
+  )
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [49],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [
+          {
+            sourceOffsets: [15],
+            generatedOffsets: [675],
+            lengths: [33],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          '',
+          '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
+          '',
+          '/**',
+          ' * There is one special component: [MDX layout](https://mdxjs.com/docs/using-mdx/#layout).',
+          ' * If it is defined, it’s used to wrap all content.',
+          ' * A layout can be defined from within MDX using a default export.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXLayoutProps]: MDXLayoutProps[K]}} properties',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' *   In addition, the MDX layout receives the `children` prop, which contains the rendered MDX content.',
+          ' * @returns {JSX.Element}',
+          ' *   The MDX content wrapped in the layout.',
+          ' */',
+          'const MDXLayout = function MDXLayout(properties) {}',
+          '',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          '  return <></>',
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [48],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
+      }
+    ]
+  })
+})
+
+test('create virtual file w/ MDX layout in case of a default export followed by a named', () => {
+  const module = getLanguageModule(typescript)
+
+  const snapshot = snapshotFromLines(
+    'export default function MDXLayout() {}',
+    'export function named() {}',
+    ''
+  )
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [66],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [
+          {
+            sourceOffsets: [15, 39],
+            generatedOffsets: [670, 694],
+            lengths: [23, 26],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          '',
+          '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
+          '',
+          '/**',
+          ' * There is one special component: [MDX layout](https://mdxjs.com/docs/using-mdx/#layout).',
+          ' * If it is defined, it’s used to wrap all content.',
+          ' * A layout can be defined from within MDX using a default export.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXLayoutProps]: MDXLayoutProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' *   In addition, the MDX layout receives the `children` prop, which contains the rendered MDX content.',
+          ' * @returns {JSX.Element}',
+          ' *   The MDX content wrapped in the layout.',
+          ' */',
+          'const MDXLayout = function MDXLayout() {}',
+          'export function named() {}',
+          '',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          '  return <></>',
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [65],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
+      }
+    ]
+  })
+})
+
+test('create virtual file w/ MDX layout in case of a default export preceded by a named', () => {
+  const module = getLanguageModule(typescript)
+
+  const snapshot = snapshotFromLines(
+    'export function named() {}',
+    'export default function MDXLayout() {}',
+    ''
+  )
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [66],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [
+          {
+            sourceOffsets: [0, 42],
+            generatedOffsets: [0, 697],
+            lengths: [26, 23],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          'export function named() {}',
+          '',
+          '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
+          '',
+          '/**',
+          ' * There is one special component: [MDX layout](https://mdxjs.com/docs/using-mdx/#layout).',
+          ' * If it is defined, it’s used to wrap all content.',
+          ' * A layout can be defined from within MDX using a default export.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXLayoutProps]: MDXLayoutProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' *   In addition, the MDX layout receives the `children` prop, which contains the rendered MDX content.',
+          ' * @returns {JSX.Element}',
+          ' *   The MDX content wrapped in the layout.',
+          ' */',
+          'const MDXLayout = function MDXLayout() {}',
+          '',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          '  return <></>',
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [65],
+            generatedOffsets: [0],
+            lengths: [1],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines('', '')
+      }
+    ]
+  })
+})
+
 test('create virtual file w/ mdxFlowExpression', () => {
   const module = getLanguageModule(typescript)
 

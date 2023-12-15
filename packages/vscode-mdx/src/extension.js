@@ -52,6 +52,10 @@ export async function activate(context) {
       documentSelector: [{language: 'mdx'}],
       initializationOptions: {
         typescript: {tsdk}
+      },
+      markdown: {
+        isTrusted: true,
+        supportHtml: true,
       }
     }
   )

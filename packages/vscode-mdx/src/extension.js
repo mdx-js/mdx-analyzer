@@ -125,6 +125,7 @@ async function startServer(context) {
   }
 }
 
+// Track https://github.com/microsoft/vscode/issues/200511
 try {
   const tsExtension = extensions.getExtension(
     'vscode.typescript-language-features'

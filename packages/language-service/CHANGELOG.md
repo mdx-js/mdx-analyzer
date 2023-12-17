@@ -1,5 +1,17 @@
 # @mdx-js/language-service
 
+## 0.3.0
+
+### Minor Changes
+
+- [#365](https://github.com/mdx-js/mdx-analyzer/pull/365) [`de0c819acaeb79fc0b29515f6c73690e300510d3`](https://github.com/mdx-js/mdx-analyzer/commit/de0c819acaeb79fc0b29515f6c73690e300510d3) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support MDXLayout
+
+### Patch Changes
+
+- [#366](https://github.com/mdx-js/mdx-analyzer/pull/366) [`ee4439ac31d183e473754c5fdcba07bb3861d373`](https://github.com/mdx-js/mdx-analyzer/commit/ee4439ac31d183e473754c5fdcba07bb3861d373) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Prettify props types in hover
+
+- [#364](https://github.com/mdx-js/mdx-analyzer/pull/364) [`423bf184d88789b7f2a519f7a48d981f38756b0f`](https://github.com/mdx-js/mdx-analyzer/commit/423bf184d88789b7f2a519f7a48d981f38756b0f) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Disable formatting
+
 ## 0.2.0
 
 ### Minor Changes

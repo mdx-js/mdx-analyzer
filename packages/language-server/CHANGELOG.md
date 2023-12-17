@@ -1,5 +1,14 @@
 # @mdx-js/language-server
 
+## 0.2.1
+
+### Patch Changes
+
+- [#364](https://github.com/mdx-js/mdx-analyzer/pull/364) [`423bf184d88789b7f2a519f7a48d981f38756b0f`](https://github.com/mdx-js/mdx-analyzer/commit/423bf184d88789b7f2a519f7a48d981f38756b0f) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Disable formatting
+
+- Updated dependencies [[`de0c819acaeb79fc0b29515f6c73690e300510d3`](https://github.com/mdx-js/mdx-analyzer/commit/de0c819acaeb79fc0b29515f6c73690e300510d3), [`ee4439ac31d183e473754c5fdcba07bb3861d373`](https://github.com/mdx-js/mdx-analyzer/commit/ee4439ac31d183e473754c5fdcba07bb3861d373), [`423bf184d88789b7f2a519f7a48d981f38756b0f`](https://github.com/mdx-js/mdx-analyzer/commit/423bf184d88789b7f2a519f7a48d981f38756b0f)]:
+  - @mdx-js/language-service@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes

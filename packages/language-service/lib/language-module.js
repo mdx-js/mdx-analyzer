@@ -134,9 +134,24 @@ function addOffset(mapping, source, generated, startOffset, endOffset) {
     return generated
   }
 
-  mapping.sourceOffsets.push(startOffset)
-  mapping.generatedOffsets.push(generated.length)
-  mapping.lengths.push(endOffset - startOffset)
+  const length = endOffset - startOffset
+  const previousSourceOffset = mapping.sourceOffsets.at(-1)
+  const previousGeneratedOffset = mapping.generatedOffsets.at(-1)
+  const previousLength = mapping.lengths.at(-1)
+  if (
+    previousSourceOffset !== undefined &&
+    previousGeneratedOffset !== undefined &&
+    previousLength !== undefined &&
+    previousSourceOffset + previousLength === startOffset &&
+    previousGeneratedOffset + previousLength === generated.length
+  ) {
+    mapping.lengths[mapping.lengths.length - 1] += length
+  } else {
+    mapping.sourceOffsets.push(startOffset)
+    mapping.generatedOffsets.push(generated.length)
+    mapping.lengths.push(length)
+  }
+
   return generated + source.slice(startOffset, endOffset)
 }
 
@@ -360,13 +375,30 @@ function getVirtualFiles(fileName, snapshot, processor) {
    */
   function updateMarkdownFromOffsets(startOffset, endOffset) {
     if (nextMarkdownSourceStart !== startOffset) {
-      markdown = addOffset(
-        markdownMapping,
-        mdx,
-        markdown,
-        nextMarkdownSourceStart,
-        startOffset
-      )
+      const slice = mdx.slice(nextMarkdownSourceStart, startOffset)
+      for (const match of slice.matchAll(/^[\t ]*(.*\r?\n?)/gm)) {
+        if (match.index === undefined) {
+          continue
+        }
+
+        const [line, lineContent] = match
+        if (line.length === 0) {
+          continue
+        }
+
+        const lineEnd = nextMarkdownSourceStart + match.index + line.length
+        let lineStart = lineEnd - lineContent.length
+        if (
+          match.index === 0 &&
+          nextMarkdownSourceStart !== 0 &&
+          mdx[lineStart - 1] !== '\n'
+        ) {
+          lineStart = nextMarkdownSourceStart + match.index
+        }
+
+        markdown = addOffset(markdownMapping, mdx, markdown, lineStart, lineEnd)
+      }
+
       if (startOffset !== endOffset) {
         markdown += '<!---->'
       }

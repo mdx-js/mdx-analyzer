@@ -115,7 +115,7 @@ test('initialize', async () => {
         fileOperations: {
           willRename: {
             filters: [
-              {pattern: {glob: '**/*.{cjs,ctx,js,json,mdx,mjs,mts,ts,tsx}'}}
+              {pattern: {glob: '**/*.{cjs,cts,js,jsx,json,mdx,mjs,mts,ts,tsx}'}}
             ]
           }
         }
@@ -124,7 +124,7 @@ test('initialize', async () => {
     },
     serverInfo: {
       name: '@volar/language-server',
-      version: '2.0.0-alpha.3'
+      version: '2.0.0-alpha.7'
     }
   })
 })

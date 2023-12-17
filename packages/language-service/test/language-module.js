@@ -1583,6 +1583,95 @@ test('create virtual file w/ mdxTextExpression', () => {
   })
 })
 
+test('create virtual file w/ dedented markdown content', () => {
+  const module = getLanguageModule()
+
+  const snapshot = snapshotFromLines(
+    '     | Language |',
+    ' | --- |',
+    '            | MDX |',
+    '     | JavaScript |',
+    '| TypeScript |'
+  )
+
+  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.deepEqual(file, {
+    fileName: '/test.mdx',
+    languageId: 'mdx',
+    mappings: [
+      {
+        sourceOffsets: [0],
+        generatedOffsets: [0],
+        lengths: [81],
+        data: {
+          completion: true,
+          format: true,
+          navigation: true,
+          semantic: true,
+          structure: true,
+          verification: true
+        }
+      }
+    ],
+    snapshot,
+    embeddedFiles: [
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.jsx',
+        languageId: 'javascriptreact',
+        typescript: {
+          scriptKind: 2
+        },
+        mappings: [],
+        snapshot: snapshotFromLines(
+          '',
+          '/**',
+          ' * Render the MDX contents.',
+          ' *',
+          ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+          ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+          ' */',
+          'export default function MDXContent(props) {',
+          "  return <><>{''}</></>",
+          '}',
+          '',
+          '// @ts-ignore',
+          '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+          ''
+        )
+      },
+      {
+        embeddedFiles: [],
+        fileName: '/test.mdx.md',
+        languageId: 'markdown',
+        mappings: [
+          {
+            sourceOffsets: [5, 19, 39, 52],
+            generatedOffsets: [0, 13, 21, 29],
+            lengths: [13, 8, 8, 29],
+            data: {
+              completion: true,
+              format: false,
+              navigation: true,
+              semantic: true,
+              structure: true,
+              verification: true
+            }
+          }
+        ],
+        snapshot: snapshotFromLines(
+          '| Language |',
+          '| --- |',
+          '| MDX |',
+          '| JavaScript |',
+          '| TypeScript |'
+        )
+      }
+    ]
+  })
+})
+
 test('create virtual file w/ syntax error', () => {
   const module = getLanguageModule()
 

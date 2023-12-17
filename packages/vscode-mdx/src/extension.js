@@ -1,7 +1,6 @@
 /**
  * @typedef {import('@volar/vscode').ExportsInfoForLabs} ExportsInfoForLabs
  * @typedef {import('vscode').ExtensionContext} ExtensionContext
- * @typedef {import('vscode').TextDocument} TextDocument
  */
 
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
@@ -36,7 +35,7 @@ let disposable
  *
  * @param {ExtensionContext} context
  *   The extension context as given by VSCode.
- * @returns {Promise<ExportsInfoForLabs | undefined>}
+ * @returns {Promise<ExportsInfoForLabs>}
  *   Info for the
  *   [Volar,js Labs](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volarjs-labs)
  *   extension.
@@ -71,7 +70,7 @@ export async function activate(context) {
   return {
     volarLabs: {
       version: supportLabsVersion,
-      languageClients: [client],
+      languageClient: client,
       languageServerProtocol
     }
   }
@@ -121,12 +120,12 @@ async function startServer(context) {
             documentDropEditProvider
           ),
           ...(await Promise.all([
-            activateAutoInsertion([client], isMdxDocument),
+            activateAutoInsertion('mdx', client),
             activateTsVersionStatusItem(
+              'mdx',
               'mdx.selectTypescriptVersion',
               context,
               client,
-              isMdxDocument,
               (text) => 'TS ' + text
             )
           ]))
@@ -134,16 +133,4 @@ async function startServer(context) {
       }
     )
   }
-}
-
-/**
- * Check whether or not a text document is MDX.
- *
- * @param {TextDocument} document
- *   The text document to check.
- * @returns {boolean}
- *   Whether or not the text document is MDX.
- */
-function isMdxDocument(document) {
-  return document.languageId === 'mdx'
 }

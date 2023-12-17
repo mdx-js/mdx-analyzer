@@ -41,7 +41,7 @@ export function plugin({modules}) {
       )
 
       config.languages ||= {}
-      config.languages.mdx ||= getLanguageModule(modules.typescript, plugins)
+      config.languages.mdx ||= getLanguageModule(plugins)
 
       config.services ||= {}
       config.services.markdown = createMarkdownService()

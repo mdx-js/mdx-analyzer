@@ -19,6 +19,44 @@ import remarkParse from 'remark-parse'
 import {unified} from 'unified'
 
 /**
+ * A TypeScript compatible script snapshot that wraps a string of text.
+ *
+ * @implements {IScriptSnapshot}
+ */
+export class ScriptSnapshot {
+  /**
+   * @param {string} text
+   *   The text to wrap.
+   */
+  constructor(text) {
+    this.text = text
+  }
+
+  /**
+   * Not implemented.
+   *
+   * @returns {undefined}
+   */
+  getChangeRange() {}
+
+  /**
+   * @returns {number}
+   */
+  getLength() {
+    return this.text.length
+  }
+
+  /**
+   * @param {number} start
+   * @param {number} end
+   * @returns {string}
+   */
+  getText(start, end) {
+    return this.text.slice(start, end)
+  }
+}
+
+/**
  * @param {string} propsName
  */
 const layoutJsDoc = (propsName) => `
@@ -228,11 +266,10 @@ function processExports(mdx, node, mapping, esm) {
 /**
  * @param {string} fileName
  * @param {IScriptSnapshot} snapshot
- * @param {typeof import('typescript')} ts
  * @param {Processor} processor
  * @returns {VirtualFile[]}
  */
-function getVirtualFiles(fileName, snapshot, ts, processor) {
+function getVirtualFiles(fileName, snapshot, processor) {
   const mdx = snapshot.getText(0, snapshot.getLength())
   /** @type {Mapping[]} */
   const jsMappings = []
@@ -248,17 +285,17 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
         fileName: fileName + '.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: ts.ScriptKind.JSX
+          scriptKind: 2
         },
         mappings: jsMappings,
-        snapshot: ts.ScriptSnapshot.fromString(fallback)
+        snapshot: new ScriptSnapshot(fallback)
       },
       {
         embeddedFiles: [],
         fileName: fileName + '.md',
         languageId: 'markdown',
         mappings: [],
-        snapshot: ts.ScriptSnapshot.fromString(mdx)
+        snapshot: new ScriptSnapshot(mdx)
       }
     ]
   }
@@ -417,7 +454,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
                 }
               }
             ],
-            snapshot: ts.ScriptSnapshot.fromString(node.value)
+            snapshot: new ScriptSnapshot(node.value)
           })
 
           break
@@ -525,17 +562,17 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
       fileName: fileName + '.jsx',
       languageId: 'javascriptreact',
       typescript: {
-        scriptKind: ts.ScriptKind.JSX
+        scriptKind: 2
       },
       mappings: jsMappings,
-      snapshot: ts.ScriptSnapshot.fromString(esm)
+      snapshot: new ScriptSnapshot(esm)
     },
     {
       embeddedFiles: [],
       fileName: fileName + '.md',
       languageId: 'markdown',
       mappings: [markdownMapping],
-      snapshot: ts.ScriptSnapshot.fromString(markdown)
+      snapshot: new ScriptSnapshot(markdown)
     }
   )
 
@@ -545,15 +582,13 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
 /**
  * Create a [Volar](https://volarjs.dev) language module to support MDX.
  *
- * @param {typeof import('typescript')} ts
- *   The TypeScript module.
  * @param {PluggableList} [plugins]
  *   A list of remark syntax plugins. Only syntax plugins are supported.
  *   Transformers are unused.
  * @returns {LanguagePlugin}
  *   A Volar language module to support MDX.
  */
-export function getLanguageModule(ts, plugins) {
+export function getLanguageModule(plugins) {
   const processor = unified().use(remarkParse).use(remarkMdx)
   if (plugins) {
     processor.use(plugins)
@@ -570,7 +605,7 @@ export function getLanguageModule(ts, plugins) {
       const length = snapshot.getLength()
 
       return {
-        embeddedFiles: getVirtualFiles(fileName, snapshot, ts, processor),
+        embeddedFiles: getVirtualFiles(fileName, snapshot, processor),
         fileName,
         languageId: 'mdx',
         mappings: [
@@ -615,7 +650,6 @@ export function getLanguageModule(ts, plugins) {
       mdxFile.embeddedFiles = getVirtualFiles(
         mdxFile.fileName,
         snapshot,
-        ts,
         processor
       )
     },
@@ -632,7 +666,7 @@ export function getLanguageModule(ts, plugins) {
           ...host,
           getCompilationSettings: () => ({
             // Default to the JSX automatic runtime, because that’s what MDX does.
-            jsx: ts.JsxEmit.ReactJSX,
+            jsx: 4,
             // Set these defaults to match MDX if the user explicitly sets the classic runtime.
             jsxFactory: 'React.createElement',
             jsxFragmentFactory: 'React.Fragment',

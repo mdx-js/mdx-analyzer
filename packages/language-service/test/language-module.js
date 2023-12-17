@@ -7,9 +7,10 @@ import {test} from 'node:test'
 import remarkFrontmatter from 'remark-frontmatter'
 import typescript from 'typescript'
 import {getLanguageModule} from '@mdx-js/language-service'
+import {ScriptSnapshot} from '../lib/language-module.js'
 
 test('create virtual file w/ mdxjsEsm', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines('import {Planet} from "./Planet.js"', '')
 
@@ -40,7 +41,7 @@ test('create virtual file w/ mdxjsEsm', () => {
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -101,7 +102,7 @@ test('create virtual file w/ mdxjsEsm', () => {
 })
 
 test('create virtual file w/o MDX layout in case of named re-export', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines('export {named} from "./Layout.js"', '')
 
@@ -132,7 +133,7 @@ test('create virtual file w/o MDX layout in case of named re-export', () => {
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -193,7 +194,7 @@ test('create virtual file w/o MDX layout in case of named re-export', () => {
 })
 
 test('create virtual file w/ MDX layout in case of default re-export', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines('export {default} from "./Layout.js"', '')
 
@@ -224,7 +225,7 @@ test('create virtual file w/ MDX layout in case of default re-export', () => {
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -285,7 +286,7 @@ test('create virtual file w/ MDX layout in case of default re-export', () => {
 })
 
 test('create virtual file w/ MDX layout in case of named and default re-export', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines(
     'export {named, default} from "./Layout.js"',
@@ -319,7 +320,7 @@ test('create virtual file w/ MDX layout in case of named and default re-export',
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -380,7 +381,7 @@ test('create virtual file w/ MDX layout in case of named and default re-export',
 })
 
 test('create virtual file w/ MDX layout in case of default and named re-export', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines(
     'export {default, named} from "./Layout.js"',
@@ -414,7 +415,7 @@ test('create virtual file w/ MDX layout in case of default and named re-export',
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -475,7 +476,7 @@ test('create virtual file w/ MDX layout in case of default and named re-export',
 })
 
 test('create virtual file w/ MDX layout in case of a default exported arrow function', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines('export default () => {}', '')
 
@@ -506,7 +507,7 @@ test('create virtual file w/ MDX layout in case of a default exported arrow func
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -581,7 +582,7 @@ test('create virtual file w/ MDX layout in case of a default exported arrow func
 })
 
 test('create virtual file w/ MDX layout in case of a default exported function declaration', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines(
     'export default function MDXLayout() {}',
@@ -615,7 +616,7 @@ test('create virtual file w/ MDX layout in case of a default exported function d
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -690,7 +691,7 @@ test('create virtual file w/ MDX layout in case of a default exported function d
 })
 
 test('create virtual file w/ MDX layout in case of a default exported constant', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines('export default "main"', '')
 
@@ -721,7 +722,7 @@ test('create virtual file w/ MDX layout in case of a default exported constant',
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -783,7 +784,7 @@ test('create virtual file w/ MDX layout in case of a default exported constant',
 })
 
 test('create virtual file w/ MDX layout and matching argument name', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines(
     'export default function MDXLayout(properties) {}',
@@ -817,7 +818,7 @@ test('create virtual file w/ MDX layout and matching argument name', () => {
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -892,7 +893,7 @@ test('create virtual file w/ MDX layout and matching argument name', () => {
 })
 
 test('create virtual file w/ MDX layout in case of a default export followed by a named', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines(
     'export default function MDXLayout() {}',
@@ -927,7 +928,7 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -1003,7 +1004,7 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
 })
 
 test('create virtual file w/ MDX layout in case of a default export preceded by a named', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines(
     'export function named() {}',
@@ -1038,7 +1039,7 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -1114,7 +1115,7 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
 })
 
 test('create virtual file w/ mdxFlowExpression', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines('{Math.PI}', '')
 
@@ -1145,7 +1146,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -1205,7 +1206,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
 })
 
 test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines(
     '<div>',
@@ -1243,7 +1244,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -1310,7 +1311,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
 })
 
 test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines('<div />', '')
 
@@ -1372,7 +1373,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
           ''
         ),
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         }
       },
       {
@@ -1401,7 +1402,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
 })
 
 test('create virtual file w/ mdxJsxTextElement', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines('A <div />', '')
 
@@ -1432,7 +1433,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -1492,7 +1493,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
 })
 
 test('create virtual file w/ mdxTextExpression', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines('3 < {Math.PI} < 4', '')
 
@@ -1523,7 +1524,7 @@ test('create virtual file w/ mdxTextExpression', () => {
         fileName: '/test.mdx.jsx',
         languageId: 'javascriptreact',
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         },
         mappings: [
           {
@@ -1583,7 +1584,7 @@ test('create virtual file w/ mdxTextExpression', () => {
 })
 
 test('create virtual file w/ dedented markdown content', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines(
     '     | Language |',
@@ -1672,7 +1673,7 @@ test('create virtual file w/ dedented markdown content', () => {
 })
 
 test('create virtual file w/ syntax error', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const snapshot = snapshotFromLines('<', '')
 
@@ -1720,7 +1721,7 @@ test('create virtual file w/ syntax error', () => {
           ''
         ),
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         }
       },
       {
@@ -1735,7 +1736,7 @@ test('create virtual file w/ syntax error', () => {
 })
 
 test('create virtual file w/ yaml frontmatter', () => {
-  const module = getLanguageModule(typescript, [remarkFrontmatter])
+  const module = getLanguageModule([remarkFrontmatter])
 
   const snapshot = snapshotFromLines('---', 'hello: frontmatter', '---', '')
 
@@ -1783,7 +1784,7 @@ test('create virtual file w/ yaml frontmatter', () => {
           ''
         ),
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         }
       },
       {
@@ -1833,7 +1834,7 @@ test('create virtual file w/ yaml frontmatter', () => {
 })
 
 test('update virtual file', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   const file = module.createVirtualFile(
     '/test.mdx',
@@ -1886,7 +1887,7 @@ test('update virtual file', () => {
           ''
         ),
         typescript: {
-          scriptKind: 2
+          scriptKind: typescript.ScriptKind.JSX
         }
       },
       {
@@ -1915,7 +1916,7 @@ test('update virtual file', () => {
 })
 
 test('compilation setting defaults', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   // @ts-expect-error
   const host = module.typescript?.resolveLanguageServiceHost?.({
@@ -1935,7 +1936,7 @@ test('compilation setting defaults', () => {
 })
 
 test('compilation setting overrides', () => {
-  const module = getLanguageModule(typescript)
+  const module = getLanguageModule()
 
   // @ts-expect-error
   const host = module.typescript?.resolveLanguageServiceHost?.({
@@ -1966,5 +1967,5 @@ test('compilation setting overrides', () => {
  * @returns {typescript.IScriptSnapshot}
  */
 function snapshotFromLines(...lines) {
-  return typescript.ScriptSnapshot.fromString(lines.join('\n'))
+  return new ScriptSnapshot(lines.join('\n'))
 }

@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@volar/language-core').VirtualFile} VirtualFile
+ * @typedef {import('@volar/language-service').VirtualFile} VirtualFile
  */
 
 import assert from 'node:assert/strict'

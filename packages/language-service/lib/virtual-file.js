@@ -1,7 +1,7 @@
 /**
- * @typedef {import('@volar/language-core').CodeInformation} CodeInformation
- * @typedef {import('@volar/language-core').Mapping<CodeInformation>} Mapping
- * @typedef {import('@volar/language-core').VirtualFile} VirtualFile
+ * @typedef {import('@volar/language-service').CodeInformation} CodeInformation
+ * @typedef {import('@volar/language-service').Mapping<CodeInformation>} Mapping
+ * @typedef {import('@volar/language-service').VirtualFile} VirtualFile
  * @typedef {import('estree').ExportDefaultDeclaration} ExportDefaultDeclaration
  * @typedef {import('mdast').Nodes} Nodes
  * @typedef {import('mdast').Root} Root

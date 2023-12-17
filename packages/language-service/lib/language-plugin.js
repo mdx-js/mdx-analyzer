@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@volar/language-core').LanguagePlugin<VirtualMdxFile>} LanguagePlugin
+ * @typedef {import('@volar/language-service').LanguagePlugin<VirtualMdxFile>} LanguagePlugin
  * @typedef {import('unified').PluggableList} PluggableList
  */
 

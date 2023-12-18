@@ -51,7 +51,7 @@ test('support completion in ESM', async () => {
           uri: fixtureUri('node16/completion.mdx.jsx')
         }
       },
-      serviceIndex: 1,
+      serviceIndex: 2,
       uri: fixtureUri('node16/completion.mdx'),
       virtualDocumentUri: fixtureUri('node16/completion.mdx.jsx')
     },
@@ -107,7 +107,7 @@ test('support completion in JSX', async () => {
           uri: fixtureUri('node16/completion.mdx.jsx')
         }
       },
-      serviceIndex: 1,
+      serviceIndex: 2,
       uri: fixtureUri('node16/completion.mdx'),
       virtualDocumentUri: fixtureUri('node16/completion.mdx.jsx')
     },

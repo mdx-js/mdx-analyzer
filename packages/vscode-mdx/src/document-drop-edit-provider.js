@@ -4,7 +4,7 @@
  * @typedef {import('vscode').DataTransferItem} DataTransferItem
  */
 
-import path from 'node:path'
+import path from 'node:path/posix'
 import {Uri, WorkspaceEdit} from 'vscode'
 import {toMarkdown} from 'mdast-util-to-markdown'
 
@@ -79,12 +79,12 @@ export const documentDropEditProvider = {
           const uri = Uri.parse(line, true)
           const value =
             uri.scheme === document.uri.scheme
-              ? path.posix.relative(document.uri.path, uri.path)
+              ? path.relative(path.dirname(document.uri.path), uri.path)
               : line
 
           content.push(
             toMarkdown(
-              imageExtensions.has(path.posix.extname(uri.path))
+              imageExtensions.has(path.extname(uri.path))
                 ? {type: 'image', url: value}
                 : {type: 'text', value}
             ).trim()

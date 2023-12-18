@@ -119,16 +119,14 @@ async function startServer(context) {
             {language: 'mdx'},
             documentDropEditProvider
           ),
-          ...(await Promise.all([
-            activateAutoInsertion('mdx', client),
-            activateTsVersionStatusItem(
-              'mdx',
-              'mdx.selectTypescriptVersion',
-              context,
-              client,
-              (text) => 'TS ' + text
-            )
-          ]))
+          activateAutoInsertion('mdx', client),
+          activateTsVersionStatusItem(
+            'mdx',
+            'mdx.selectTypescriptVersion',
+            context,
+            client,
+            (text) => 'TS ' + text
+          )
         )
       }
     )

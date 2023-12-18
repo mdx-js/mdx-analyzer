@@ -7,7 +7,7 @@ import {test} from 'node:test'
 import remarkFrontmatter from 'remark-frontmatter'
 import typescript from 'typescript'
 import {getLanguageModule} from '@mdx-js/language-service'
-import {ScriptSnapshot} from '../lib/language-module.js'
+import {ScriptSnapshot} from '../lib/script-snapshot.js'
 
 test('create virtual file w/ mdxjsEsm', () => {
   const module = getLanguageModule()

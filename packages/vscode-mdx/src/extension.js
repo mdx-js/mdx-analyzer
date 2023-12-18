@@ -1,7 +1,6 @@
 /**
  * @typedef {import('@volar/vscode').ExportsInfoForLabs} ExportsInfoForLabs
  * @typedef {import('vscode').ExtensionContext} ExtensionContext
- * @typedef {import('vscode').TextDocument} TextDocument
  */
 
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
@@ -32,7 +31,7 @@ let disposable
  *
  * @param {ExtensionContext} context
  *   The extension context as given by VSCode.
- * @returns {Promise<ExportsInfoForLabs | undefined>}
+ * @returns {Promise<ExportsInfoForLabs>}
  *   Info for the
  *   [Volar,js Labs](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volarjs-labs)
  *   extension.
@@ -55,7 +54,7 @@ export async function activate(context) {
       },
       markdown: {
         isTrusted: true,
-        supportHtml: true,
+        supportHtml: true
       }
     }
   )
@@ -122,7 +121,7 @@ async function startServer(context) {
             {language: 'mdx'},
             documentDropEditProvider
           ),
-          ...(await Promise.all([activateAutoInsertion(['mdx'], client)]))
+          await activateAutoInsertion('mdx', client)
         )
       }
     )

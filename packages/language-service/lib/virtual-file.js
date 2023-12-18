@@ -1,22 +1,17 @@
 /**
- * @typedef {import('@volar/language-core').CodeInformation} CodeInformation
- * @typedef {import('@volar/language-core').LanguagePlugin} LanguagePlugin
- * @typedef {import('@volar/language-core').Mapping<CodeInformation>} Mapping
- * @typedef {import('@volar/language-core').VirtualFile} VirtualFile
+ * @typedef {import('@volar/language-service').CodeInformation} CodeInformation
+ * @typedef {import('@volar/language-service').Mapping<CodeInformation>} Mapping
+ * @typedef {import('@volar/language-service').VirtualFile} VirtualFile
  * @typedef {import('estree').ExportDefaultDeclaration} ExportDefaultDeclaration
+ * @typedef {import('mdast').Nodes} Nodes
  * @typedef {import('mdast').Root} Root
- * @typedef {import('mdast').RootContent} RootContent
  * @typedef {import('mdast-util-mdxjs-esm').MdxjsEsm} MdxjsEsm
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
- * @typedef {import('unified').PluggableList} PluggableList
  * @typedef {import('unified').Processor<Root>} Processor
- *
- * @typedef {Root | RootContent} Node
+ * @typedef {import('vfile-message').VFileMessage} VFileMessage
  */
 
-import remarkMdx from 'remark-mdx'
-import remarkParse from 'remark-parse'
-import {unified} from 'unified'
+import {ScriptSnapshot} from './script-snapshot.js'
 
 /**
  * @param {string} propsName
@@ -52,16 +47,16 @@ const componentEnd = `
 /** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */
 `
 
-const fallback = componentStart + componentEnd
+const fallback = componentStart + '<></>' + componentEnd
 
 /**
  * Visit an mdast tree with and enter and exit callback.
  *
- * @param {Node} node
+ * @param {Nodes} node
  *   The mdast tree to visit.
- * @param {(node: Node) => undefined} onEnter
+ * @param {(node: Nodes) => undefined} onEnter
  *   The callback caled when entering a node.
- * @param {(node: Node) => undefined} onExit
+ * @param {(node: Nodes) => undefined} onExit
  *   The callback caled when exiting a node.
  */
 function visit(node, onEnter, onExit) {
@@ -115,21 +110,6 @@ function addOffset(mapping, source, generated, startOffset, endOffset) {
   }
 
   return generated + source.slice(startOffset, endOffset)
-}
-
-/**
- * @param {string} haystack
- * @param {string} needle
- * @param {number} start
- */
-function findIndexAfter(haystack, needle, start) {
-  for (let index = start; index < haystack.length; index++) {
-    if (haystack[index] === needle) {
-      return index
-    }
-  }
-
-  return -1
 }
 
 /**
@@ -192,9 +172,14 @@ function processExports(mdx, node, mapping, esm) {
         esm += layoutJsDoc(propsName)
       }
 
-      esm += '\nconst MDXLayout = '
       esm =
-        addOffset(mapping, mdx, esm, child.declaration.start, child.end) + '\n'
+        addOffset(
+          mapping,
+          mdx,
+          esm + '\nconst MDXLayout = ',
+          child.declaration.start,
+          child.end
+        ) + '\n'
       continue
     }
 
@@ -207,7 +192,7 @@ function processExports(mdx, node, mapping, esm) {
           const nextPosition =
             index === specifiers.length - 1
               ? specifier.end
-              : findIndexAfter(mdx, ',', specifier.end) + 1
+              : mdx.indexOf(',', specifier.end) + 1
           return (
             addOffset(mapping, mdx, esm, nextPosition, end) +
             '\nimport {' +
@@ -227,41 +212,13 @@ function processExports(mdx, node, mapping, esm) {
 
 /**
  * @param {string} fileName
- * @param {IScriptSnapshot} snapshot
- * @param {typeof import('typescript')} ts
- * @param {Processor} processor
+ * @param {string} mdx
+ * @param {Root} ast
  * @returns {VirtualFile[]}
  */
-function getVirtualFiles(fileName, snapshot, ts, processor) {
-  const mdx = snapshot.getText(0, snapshot.getLength())
+function getEmbeddedFiles(fileName, mdx, ast) {
   /** @type {Mapping[]} */
   const jsMappings = []
-  /** @type {Root} */
-  let ast
-
-  try {
-    ast = processor.parse(mdx)
-  } catch {
-    return [
-      {
-        embeddedFiles: [],
-        fileName: fileName + '.jsx',
-        languageId: 'javascriptreact',
-        typescript: {
-          scriptKind: ts.ScriptKind.JSX
-        },
-        mappings: jsMappings,
-        snapshot: ts.ScriptSnapshot.fromString(fallback)
-      },
-      {
-        embeddedFiles: [],
-        fileName: fileName + '.md',
-        languageId: 'markdown',
-        mappings: [],
-        snapshot: ts.ScriptSnapshot.fromString(mdx)
-      }
-    ]
-  }
 
   /**
    * The Volar mapping that maps all ESM syntax of the MDX file to the virtual JavaScript file.
@@ -373,7 +330,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
   /**
    * Update the **markdown** mappings from a start and end offset of a **JavaScript** node.
    *
-   * @param {Node} node
+   * @param {Nodes} node
    *   The JavaScript node.
    */
   function updateMarkdownFromNode(node) {
@@ -417,7 +374,7 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
                 }
               }
             ],
-            snapshot: ts.ScriptSnapshot.fromString(node.value)
+            snapshot: new ScriptSnapshot(node.value)
           })
 
           break
@@ -525,17 +482,17 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
       fileName: fileName + '.jsx',
       languageId: 'javascriptreact',
       typescript: {
-        scriptKind: ts.ScriptKind.JSX
+        scriptKind: 2
       },
       mappings: jsMappings,
-      snapshot: ts.ScriptSnapshot.fromString(esm)
+      snapshot: new ScriptSnapshot(esm)
     },
     {
       embeddedFiles: [],
       fileName: fileName + '.md',
       languageId: 'markdown',
       mappings: [markdownMapping],
-      snapshot: ts.ScriptSnapshot.fromString(markdown)
+      snapshot: new ScriptSnapshot(markdown)
     }
   )
 
@@ -543,109 +500,105 @@ function getVirtualFiles(fileName, snapshot, ts, processor) {
 }
 
 /**
- * Create a [Volar](https://volarjs.dev) language module to support MDX.
- *
- * @param {typeof import('typescript')} ts
- *   The TypeScript module.
- * @param {PluggableList} [plugins]
- *   A list of remark syntax plugins. Only syntax plugins are supported.
- *   Transformers are unused.
- * @returns {LanguagePlugin}
- *   A Volar language module to support MDX.
+ * A Volar virtual file that contains some additional metadata for MDX files.
  */
-export function getLanguageModule(ts, plugins) {
-  const processor = unified().use(remarkParse).use(remarkMdx)
-  if (plugins) {
-    processor.use(plugins)
+export class VirtualMdxFile {
+  #processor
+
+  /**
+   * The virtual files embedded in the MDX file.
+   *
+   * @type {VirtualFile[]}
+   */
+  embeddedFiles = []
+
+  /**
+   * The error that was throw while parsing.
+   *
+   * @type {VFileMessage | undefined}
+   */
+  error
+
+  /**
+   * The language ID.
+   *
+   * @type {'mdx'}
+   */
+  languageId = 'mdx'
+
+  /**
+   * The code mappings of the MDX file. There is always only one mapping.
+   *
+   * @type {Mapping[]}
+   */
+  mappings = []
+
+  /**
+   * @param {string} fileName
+   *   The file name of the MDX file.
+   * @param {IScriptSnapshot} snapshot
+   *   The original TypeScript snapshot.
+   * @param {Processor} processor
+   *   The unified processor to use for parsing.
+   */
+  constructor(fileName, snapshot, processor) {
+    this.#processor = processor
+    this.fileName = fileName
+    this.snapshot = snapshot
+    this.update(snapshot)
   }
 
-  processor.freeze()
-
-  return {
-    createVirtualFile(fileName, languageId, snapshot) {
-      if (languageId !== 'mdx') {
-        return
+  /**
+   * Update the virtual file when it has changed.
+   *
+   * @param {IScriptSnapshot} snapshot
+   *   The new TypeScript snapshot.
+   * @returns {undefined}
+   */
+  update(snapshot) {
+    this.snapshot = snapshot
+    const length = snapshot.getLength()
+    this.mappings[0] = {
+      sourceOffsets: [0],
+      generatedOffsets: [0],
+      lengths: [length],
+      data: {
+        completion: true,
+        format: true,
+        navigation: true,
+        semantic: true,
+        structure: true,
+        verification: true
       }
+    }
 
-      const length = snapshot.getLength()
+    const mdx = snapshot.getText(0, length)
 
-      return {
-        embeddedFiles: getVirtualFiles(fileName, snapshot, ts, processor),
-        fileName,
-        languageId: 'mdx',
-        mappings: [
-          {
-            sourceOffsets: [0],
-            generatedOffsets: [0],
-            lengths: [length],
-            data: {
-              completion: true,
-              format: true,
-              navigation: true,
-              semantic: true,
-              structure: true,
-              verification: true
-            }
-          }
-        ],
-        snapshot
-      }
-    },
-
-    updateVirtualFile(mdxFile, snapshot) {
-      mdxFile.snapshot = snapshot
-
-      const length = snapshot.getLength()
-      mdxFile.mappings = [
+    try {
+      const ast = this.#processor.parse(mdx)
+      this.embeddedFiles = getEmbeddedFiles(this.fileName, mdx, ast)
+      this.error = undefined
+    } catch (error) {
+      this.error = /** @type {VFileMessage} */ (error)
+      this.embeddedFiles = [
         {
-          sourceOffsets: [0],
-          generatedOffsets: [0],
-          lengths: [length],
-          data: {
-            completion: true,
-            format: true,
-            navigation: true,
-            semantic: true,
-            structure: true,
-            verification: true
-          }
+          embeddedFiles: [],
+          fileName: this.fileName + '.jsx',
+          languageId: 'javascriptreact',
+          typescript: {
+            scriptKind: 2
+          },
+          mappings: [],
+          snapshot: new ScriptSnapshot(fallback)
+        },
+        {
+          embeddedFiles: [],
+          fileName: this.fileName + '.md',
+          languageId: 'markdown',
+          mappings: [],
+          snapshot: new ScriptSnapshot(mdx)
         }
       ]
-
-      mdxFile.embeddedFiles = getVirtualFiles(
-        mdxFile.fileName,
-        snapshot,
-        ts,
-        processor
-      )
-    },
-
-    typescript: {
-      resolveSourceFileName(tsFileName) {
-        if (tsFileName.endsWith('.mdx.jsx')) {
-          // .mdx.jsx → .mdx
-          return tsFileName.slice(0, -4)
-        }
-      },
-      resolveLanguageServiceHost(host) {
-        return {
-          ...host,
-          getCompilationSettings: () => ({
-            // Default to the JSX automatic runtime, because that’s what MDX does.
-            jsx: ts.JsxEmit.ReactJSX,
-            // Set these defaults to match MDX if the user explicitly sets the classic runtime.
-            jsxFactory: 'React.createElement',
-            jsxFragmentFactory: 'React.Fragment',
-            // Set this default to match MDX if the user overrides the import source.
-            jsxImportSource: 'react',
-            ...host.getCompilationSettings(),
-            // Always allow JS for type checking.
-            allowJs: true,
-            // This internal TypeScript property lets TypeScript load `.mdx` files.
-            allowNonTsExtensions: true
-          })
-        }
-      }
     }
   }
 }

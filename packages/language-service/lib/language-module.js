@@ -156,21 +156,6 @@ function addOffset(mapping, source, generated, startOffset, endOffset) {
 }
 
 /**
- * @param {string} haystack
- * @param {string} needle
- * @param {number} start
- */
-function findIndexAfter(haystack, needle, start) {
-  for (let index = start; index < haystack.length; index++) {
-    if (haystack[index] === needle) {
-      return index
-    }
-  }
-
-  return -1
-}
-
-/**
  * @param {ExportDefaultDeclaration} node
  */
 function getPropsName(node) {
@@ -245,7 +230,7 @@ function processExports(mdx, node, mapping, esm) {
           const nextPosition =
             index === specifiers.length - 1
               ? specifier.end
-              : findIndexAfter(mdx, ',', specifier.end) + 1
+              : mdx.indexOf(',', specifier.end) + 1
           return (
             addOffset(mapping, mdx, esm, nextPosition, end) +
             '\nimport {' +

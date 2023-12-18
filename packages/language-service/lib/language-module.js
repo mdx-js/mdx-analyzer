@@ -215,9 +215,14 @@ function processExports(mdx, node, mapping, esm) {
         esm += layoutJsDoc(propsName)
       }
 
-      esm += '\nconst MDXLayout = '
       esm =
-        addOffset(mapping, mdx, esm, child.declaration.start, child.end) + '\n'
+        addOffset(
+          mapping,
+          mdx,
+          esm + '\nconst MDXLayout = ',
+          child.declaration.start,
+          child.end
+        ) + '\n'
       continue
     }
 

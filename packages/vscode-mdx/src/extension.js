@@ -7,11 +7,11 @@ import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {activateAutoInsertion, getTsdk, supportLabsVersion} from '@volar/vscode'
 import {
   Disposable,
+  extensions,
   languages,
   workspace,
   window,
-  ProgressLocation,
-  extensions
+  ProgressLocation
 } from 'vscode'
 import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
 import {documentDropEditProvider} from './document-drop-edit-provider.js'
@@ -121,7 +121,7 @@ async function startServer(context) {
             {language: 'mdx'},
             documentDropEditProvider
           ),
-          await activateAutoInsertion('mdx', client)
+          activateAutoInsertion('mdx', client)
         )
       }
     )

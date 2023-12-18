@@ -1,1 +1,1 @@
-export {getLanguageModule} from './lib/language-module.js'
+export {createMdxLanguagePlugin} from './lib/language-module.js'

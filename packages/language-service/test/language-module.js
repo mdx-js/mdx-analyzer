@@ -4,7 +4,7 @@
 
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
-import {getLanguageModule} from '@mdx-js/language-service'
+import {createMdxLanguagePlugin} from '@mdx-js/language-service'
 import remarkFrontmatter from 'remark-frontmatter'
 import typescript from 'typescript'
 import {VFileMessage} from 'vfile-message'
@@ -12,11 +12,11 @@ import {ScriptSnapshot} from '../lib/script-snapshot.js'
 import {VirtualMdxFile} from '../lib/virtual-file.js'
 
 test('create virtual file w/ mdxjsEsm', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('import {Planet} from "./Planet.js"', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -104,11 +104,11 @@ test('create virtual file w/ mdxjsEsm', () => {
 })
 
 test('create virtual file w/o MDX layout in case of named re-export', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('export {named} from "./Layout.js"', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -196,11 +196,11 @@ test('create virtual file w/o MDX layout in case of named re-export', () => {
 })
 
 test('create virtual file w/ MDX layout in case of default re-export', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('export {default} from "./Layout.js"', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -288,14 +288,14 @@ test('create virtual file w/ MDX layout in case of default re-export', () => {
 })
 
 test('create virtual file w/ MDX layout in case of named and default re-export', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
     'export {named, default} from "./Layout.js"',
     ''
   )
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -383,14 +383,14 @@ test('create virtual file w/ MDX layout in case of named and default re-export',
 })
 
 test('create virtual file w/ MDX layout in case of default and named re-export', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
     'export {default, named} from "./Layout.js"',
     ''
   )
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -478,11 +478,11 @@ test('create virtual file w/ MDX layout in case of default and named re-export',
 })
 
 test('create virtual file w/ MDX layout in case of a default exported arrow function', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('export default () => {}', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -584,14 +584,14 @@ test('create virtual file w/ MDX layout in case of a default exported arrow func
 })
 
 test('create virtual file w/ MDX layout in case of a default exported function declaration', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
     'export default function MDXLayout() {}',
     ''
   )
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -693,11 +693,11 @@ test('create virtual file w/ MDX layout in case of a default exported function d
 })
 
 test('create virtual file w/ MDX layout in case of a default exported constant', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('export default "main"', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -786,14 +786,14 @@ test('create virtual file w/ MDX layout in case of a default exported constant',
 })
 
 test('create virtual file w/ MDX layout and matching argument name', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
     'export default function MDXLayout(properties) {}',
     ''
   )
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -895,7 +895,7 @@ test('create virtual file w/ MDX layout and matching argument name', () => {
 })
 
 test('create virtual file w/ MDX layout in case of a default export followed by a named', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
     'export default function MDXLayout() {}',
@@ -903,7 +903,7 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
     ''
   )
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -1006,7 +1006,7 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
 })
 
 test('create virtual file w/ MDX layout in case of a default export preceded by a named', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
     'export function named() {}',
@@ -1014,7 +1014,7 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
     ''
   )
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -1117,11 +1117,11 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
 })
 
 test('create virtual file w/ mdxFlowExpression', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('{Math.PI}', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -1208,7 +1208,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
 })
 
 test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
     '<div>',
@@ -1219,7 +1219,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
     ''
   )
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -1313,11 +1313,11 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
 })
 
 test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('<div />', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -1404,11 +1404,11 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
 })
 
 test('create virtual file w/ mdxJsxTextElement', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('A <div />', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -1495,11 +1495,11 @@ test('create virtual file w/ mdxJsxTextElement', () => {
 })
 
 test('create virtual file w/ mdxTextExpression', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('3 < {Math.PI} < 4', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -1586,7 +1586,7 @@ test('create virtual file w/ mdxTextExpression', () => {
 })
 
 test('create virtual file w/ dedented markdown content', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
     '     | Language |',
@@ -1596,7 +1596,7 @@ test('create virtual file w/ dedented markdown content', () => {
     '| TypeScript |'
   )
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -1675,11 +1675,11 @@ test('create virtual file w/ dedented markdown content', () => {
 })
 
 test('create virtual file w/ syntax error', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('<', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -1738,11 +1738,11 @@ test('create virtual file w/ syntax error', () => {
 })
 
 test('create virtual file w/ yaml frontmatter', () => {
-  const module = getLanguageModule([remarkFrontmatter])
+  const plugin = createMdxLanguagePlugin([remarkFrontmatter])
 
   const snapshot = snapshotFromLines('---', 'hello: frontmatter', '---', '')
 
-  const file = module.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
 
   assert.ok(file instanceof VirtualMdxFile)
   assert.equal(file.fileName, '/test.mdx')
@@ -1836,9 +1836,9 @@ test('create virtual file w/ yaml frontmatter', () => {
 })
 
 test('update virtual file', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
-  const file = module.createVirtualFile(
+  const file = plugin.createVirtualFile(
     '/test.mdx',
     'mdx',
     snapshotFromLines('Tihs lne haz tyops', '')
@@ -1847,7 +1847,7 @@ test('update virtual file', () => {
   assert.ok(file instanceof VirtualMdxFile)
 
   const snapshot = snapshotFromLines('This line is fixed', '')
-  module.updateVirtualFile(file, snapshot)
+  plugin.updateVirtualFile(file, snapshot)
 
   assert.equal(file.fileName, '/test.mdx')
   assert.equal(file.languageId, 'mdx')
@@ -1919,10 +1919,10 @@ test('update virtual file', () => {
 })
 
 test('compilation setting defaults', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   // @ts-expect-error
-  const host = module.typescript?.resolveLanguageServiceHost?.({
+  const host = plugin.typescript?.resolveLanguageServiceHost?.({
     getCompilationSettings: () => ({})
   })
 
@@ -1939,10 +1939,10 @@ test('compilation setting defaults', () => {
 })
 
 test('compilation setting overrides', () => {
-  const module = getLanguageModule()
+  const plugin = createMdxLanguagePlugin()
 
   // @ts-expect-error
-  const host = module.typescript?.resolveLanguageServiceHost?.({
+  const host = plugin.typescript?.resolveLanguageServiceHost?.({
     getCompilationSettings: () => ({
       jsx: typescript.JsxEmit.React,
       jsxFactory: 'h',

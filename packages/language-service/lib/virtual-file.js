@@ -8,6 +8,7 @@
  * @typedef {import('mdast-util-mdxjs-esm').MdxjsEsm} MdxjsEsm
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
  * @typedef {import('unified').Processor<Root>} Processor
+ * @typedef {import('vfile-message').VFileMessage} VFileMessage
  */
 
 import {ScriptSnapshot} from './script-snapshot.js'
@@ -211,40 +212,13 @@ function processExports(mdx, node, mapping, esm) {
 
 /**
  * @param {string} fileName
- * @param {IScriptSnapshot} snapshot
- * @param {Processor} processor
+ * @param {string} mdx
+ * @param {Root} ast
  * @returns {VirtualFile[]}
  */
-export function getVirtualFiles(fileName, snapshot, processor) {
-  const mdx = snapshot.getText(0, snapshot.getLength())
+function getEmbeddedFiles(fileName, mdx, ast) {
   /** @type {Mapping[]} */
   const jsMappings = []
-  /** @type {Root} */
-  let ast
-
-  try {
-    ast = processor.parse(mdx)
-  } catch {
-    return [
-      {
-        embeddedFiles: [],
-        fileName: fileName + '.jsx',
-        languageId: 'javascriptreact',
-        typescript: {
-          scriptKind: 2
-        },
-        mappings: jsMappings,
-        snapshot: new ScriptSnapshot(fallback)
-      },
-      {
-        embeddedFiles: [],
-        fileName: fileName + '.md',
-        languageId: 'markdown',
-        mappings: [],
-        snapshot: new ScriptSnapshot(mdx)
-      }
-    ]
-  }
 
   /**
    * The Volar mapping that maps all ESM syntax of the MDX file to the virtual JavaScript file.
@@ -523,4 +497,108 @@ export function getVirtualFiles(fileName, snapshot, processor) {
   )
 
   return virtualFiles
+}
+
+/**
+ * A Volar virtual file that contains some additional metadata for MDX files.
+ */
+export class VirtualMdxFile {
+  #processor
+
+  /**
+   * The virtual files embedded in the MDX file.
+   *
+   * @type {VirtualFile[]}
+   */
+  embeddedFiles = []
+
+  /**
+   * The error that was throw while parsing.
+   *
+   * @type {VFileMessage | undefined}
+   */
+  error
+
+  /**
+   * The language ID.
+   *
+   * @type {'mdx'}
+   */
+  languageId = 'mdx'
+
+  /**
+   * The code mappings of the MDX file. There is always only one mapping.
+   *
+   * @type {Mapping[]}
+   */
+  mappings = []
+
+  /**
+   * @param {string} fileName
+   *   The file name of the MDX file.
+   * @param {IScriptSnapshot} snapshot
+   *   The original TypeScript snapshot.
+   * @param {Processor} processor
+   *   The unified processor to use for parsing.
+   */
+  constructor(fileName, snapshot, processor) {
+    this.#processor = processor
+    this.fileName = fileName
+    this.snapshot = snapshot
+    this.update(snapshot)
+  }
+
+  /**
+   * Update the virtual file when it has changed.
+   *
+   * @param {IScriptSnapshot} snapshot
+   *   The new TypeScript snapshot.
+   * @returns {undefined}
+   */
+  update(snapshot) {
+    this.snapshot = snapshot
+    const length = snapshot.getLength()
+    this.mappings[0] = {
+      sourceOffsets: [0],
+      generatedOffsets: [0],
+      lengths: [length],
+      data: {
+        completion: true,
+        format: true,
+        navigation: true,
+        semantic: true,
+        structure: true,
+        verification: true
+      }
+    }
+
+    const mdx = snapshot.getText(0, length)
+
+    try {
+      const ast = this.#processor.parse(mdx)
+      this.embeddedFiles = getEmbeddedFiles(this.fileName, mdx, ast)
+      this.error = undefined
+    } catch (error) {
+      this.error = /** @type {VFileMessage} */ (error)
+      this.embeddedFiles = [
+        {
+          embeddedFiles: [],
+          fileName: this.fileName + '.jsx',
+          languageId: 'javascriptreact',
+          typescript: {
+            scriptKind: 2
+          },
+          mappings: [],
+          snapshot: new ScriptSnapshot(fallback)
+        },
+        {
+          embeddedFiles: [],
+          fileName: this.fileName + '.md',
+          languageId: 'markdown',
+          mappings: [],
+          snapshot: new ScriptSnapshot(mdx)
+        }
+      ]
+    }
+  }
 }

@@ -1,12 +1,12 @@
 /**
- * @typedef {import('@volar/language-core').LanguagePlugin} LanguagePlugin
+ * @typedef {import('@volar/language-core').LanguagePlugin<VirtualMdxFile>} LanguagePlugin
  * @typedef {import('unified').PluggableList} PluggableList
  */
 
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import {unified} from 'unified'
-import {getVirtualFiles} from './virtual-file.js'
+import {VirtualMdxFile} from './virtual-file.js'
 
 /**
  * Create a [Volar](https://volarjs.dev) language module to support MDX.
@@ -27,60 +27,13 @@ export function getLanguageModule(plugins) {
 
   return {
     createVirtualFile(fileName, languageId, snapshot) {
-      if (languageId !== 'mdx') {
-        return
-      }
-
-      const length = snapshot.getLength()
-
-      return {
-        embeddedFiles: getVirtualFiles(fileName, snapshot, processor),
-        fileName,
-        languageId: 'mdx',
-        mappings: [
-          {
-            sourceOffsets: [0],
-            generatedOffsets: [0],
-            lengths: [length],
-            data: {
-              completion: true,
-              format: true,
-              navigation: true,
-              semantic: true,
-              structure: true,
-              verification: true
-            }
-          }
-        ],
-        snapshot
+      if (languageId === 'mdx') {
+        return new VirtualMdxFile(fileName, snapshot, processor)
       }
     },
 
     updateVirtualFile(mdxFile, snapshot) {
-      mdxFile.snapshot = snapshot
-
-      const length = snapshot.getLength()
-      mdxFile.mappings = [
-        {
-          sourceOffsets: [0],
-          generatedOffsets: [0],
-          lengths: [length],
-          data: {
-            completion: true,
-            format: true,
-            navigation: true,
-            semantic: true,
-            structure: true,
-            verification: true
-          }
-        }
-      ]
-
-      mdxFile.embeddedFiles = getVirtualFiles(
-        mdxFile.fileName,
-        snapshot,
-        processor
-      )
+      mdxFile.update(snapshot)
     },
 
     typescript: {

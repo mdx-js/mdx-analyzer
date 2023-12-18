@@ -1713,7 +1713,7 @@ test('create virtual file w/ syntax error', () => {
           ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
           ' */',
           'export default function MDXContent(props) {',
-          '  return ',
+          '  return <></>',
           '}',
           '',
           '// @ts-ignore',

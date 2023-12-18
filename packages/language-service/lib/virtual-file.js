@@ -46,7 +46,7 @@ const componentEnd = `
 /** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */
 `
 
-const fallback = componentStart + componentEnd
+const fallback = componentStart + '<></>' + componentEnd
 
 /**
  * Visit an mdast tree with and enter and exit callback.

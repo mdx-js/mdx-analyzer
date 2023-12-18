@@ -15,9 +15,9 @@ import {VirtualMdxFile} from './virtual-file.js'
  *   A list of remark syntax plugins. Only syntax plugins are supported.
  *   Transformers are unused.
  * @returns {LanguagePlugin}
- *   A Volar language module to support MDX.
+ *   A Volar language plugin to support MDX.
  */
-export function getLanguageModule(plugins) {
+export function createMdxLanguagePlugin(plugins) {
   const processor = unified().use(remarkParse).use(remarkMdx)
   if (plugins) {
     processor.use(plugins)

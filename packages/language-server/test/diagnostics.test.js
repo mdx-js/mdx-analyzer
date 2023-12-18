@@ -17,6 +17,47 @@ afterEach(() => {
   serverHandle.connection.dispose()
 })
 
+test('parse errors', async () => {
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('node16/syntax-error.mdx'),
+    'mdx'
+  )
+  const diagnostics = await serverHandle.sendDocumentDiagnosticRequest(uri)
+
+  assert.deepEqual(diagnostics, {
+    kind: 'full',
+    items: [
+      {
+        code: 'acorn',
+        codeDescription: {
+          href: 'https://github.com/micromark/micromark-extension-mdxjs-esm#could-not-parse-importexports-with-acorn'
+        },
+        data: {
+          documentUri: fixtureUri('node16/syntax-error.mdx'),
+          isFormat: false,
+          original: {},
+          serviceIndex: 1,
+          uri: fixtureUri('node16/syntax-error.mdx'),
+          version: 0
+        },
+        message: 'Could not parse import/exports with acorn',
+        range: {
+          end: {
+            character: 7,
+            line: 0
+          },
+          start: {
+            character: 7,
+            line: 0
+          }
+        },
+        severity: 1,
+        source: 'MDX'
+      }
+    ]
+  })
+})
+
 test('type errors', async () => {
   const {uri} = await serverHandle.openTextDocument(
     fixturePath('node16/type-errors.mdx'),
@@ -33,7 +74,7 @@ test('type errors', async () => {
           documentUri: fixtureUri('node16/type-errors.mdx.jsx'),
           isFormat: false,
           original: {},
-          serviceIndex: 1,
+          serviceIndex: 2,
           uri: fixtureUri('node16/type-errors.mdx'),
           version: 1
         },
@@ -52,7 +93,7 @@ test('type errors', async () => {
           documentUri: fixtureUri('node16/type-errors.mdx.jsx'),
           isFormat: false,
           original: {},
-          serviceIndex: 1,
+          serviceIndex: 2,
           uri: fixtureUri('node16/type-errors.mdx'),
           version: 1
         },

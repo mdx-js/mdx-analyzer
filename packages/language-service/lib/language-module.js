@@ -4,14 +4,12 @@
  * @typedef {import('@volar/language-core').Mapping<CodeInformation>} Mapping
  * @typedef {import('@volar/language-core').VirtualFile} VirtualFile
  * @typedef {import('estree').ExportDefaultDeclaration} ExportDefaultDeclaration
+ * @typedef {import('mdast').Nodes} Nodes
  * @typedef {import('mdast').Root} Root
- * @typedef {import('mdast').RootContent} RootContent
  * @typedef {import('mdast-util-mdxjs-esm').MdxjsEsm} MdxjsEsm
  * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
  * @typedef {import('unified').PluggableList} PluggableList
  * @typedef {import('unified').Processor<Root>} Processor
- *
- * @typedef {Root | RootContent} Node
  */
 
 import remarkMdx from 'remark-mdx'
@@ -58,11 +56,11 @@ const fallback = componentStart + componentEnd
 /**
  * Visit an mdast tree with and enter and exit callback.
  *
- * @param {Node} node
+ * @param {Nodes} node
  *   The mdast tree to visit.
- * @param {(node: Node) => undefined} onEnter
+ * @param {(node: Nodes) => undefined} onEnter
  *   The callback caled when entering a node.
- * @param {(node: Node) => undefined} onExit
+ * @param {(node: Nodes) => undefined} onExit
  *   The callback caled when exiting a node.
  */
 function visit(node, onEnter, onExit) {
@@ -363,7 +361,7 @@ function getVirtualFiles(fileName, snapshot, processor) {
   /**
    * Update the **markdown** mappings from a start and end offset of a **JavaScript** node.
    *
-   * @param {Node} node
+   * @param {Nodes} node
    *   The JavaScript node.
    */
   function updateMarkdownFromNode(node) {

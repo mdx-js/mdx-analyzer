@@ -56,9 +56,7 @@ export function createMdxLanguagePlugin(plugins) {
             jsxImportSource: 'react',
             ...host.getCompilationSettings(),
             // Always allow JS for type checking.
-            allowJs: true,
-            // This internal TypeScript property lets TypeScript load `.mdx` files.
-            allowNonTsExtensions: true
+            allowJs: true
           })
         }
       }

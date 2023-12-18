@@ -1930,7 +1930,6 @@ test('compilation setting defaults', () => {
 
   assert.deepEqual(compilerOptions, {
     allowJs: true,
-    allowNonTsExtensions: true,
     jsx: typescript.JsxEmit.ReactJSX,
     jsxFactory: 'React.createElement',
     jsxFragmentFactory: 'React.Fragment',
@@ -1948,8 +1947,7 @@ test('compilation setting overrides', () => {
       jsxFactory: 'h',
       jsxFragmentFactory: 'Fragment',
       jsxImportSource: 'preact',
-      allowJs: false,
-      allowNonTsExtensions: false
+      allowJs: false
     })
   })
 
@@ -1957,7 +1955,6 @@ test('compilation setting overrides', () => {
 
   assert.deepEqual(compilerOptions, {
     allowJs: true,
-    allowNonTsExtensions: true,
     jsx: typescript.JsxEmit.React,
     jsxFactory: 'h',
     jsxFragmentFactory: 'Fragment',

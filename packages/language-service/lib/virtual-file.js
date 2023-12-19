@@ -3,6 +3,7 @@
  * @typedef {import('@volar/language-service').Mapping<CodeInformation>} Mapping
  * @typedef {import('@volar/language-service').VirtualFile} VirtualFile
  * @typedef {import('estree').ExportDefaultDeclaration} ExportDefaultDeclaration
+ * @typedef {import('estree').Program} Program
  * @typedef {import('mdast').Nodes} Nodes
  * @typedef {import('mdast').Root} Root
  * @typedef {import('mdast-util-mdxjs-esm').MdxjsEsm} MdxjsEsm
@@ -11,6 +12,7 @@
  * @typedef {import('vfile-message').VFileMessage} VFileMessage
  */
 
+import {walk} from 'estree-walker'
 import {ScriptSnapshot} from './script-snapshot.js'
 
 /**
@@ -31,7 +33,24 @@ const layoutJsDoc = (propsName) => `
  *   The MDX content wrapped in the layout.
  */`
 
-const componentStart = `
+/**
+ * @param {boolean} isAsync
+ *   Whether or not the `_createMdxContent` should be async
+ */
+const componentStart = (isAsync) => `
+/**
+ * @deprecated
+ *   Do not use.
+ *
+ * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props
+ *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.
+ */
+${isAsync ? 'async ' : ''}function _createMdxContent(props) {
+  return `
+
+const componentEnd = `
+}
+
 /**
  * Render the MDX contents.
  *
@@ -39,15 +58,14 @@ const componentStart = `
  *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.
  */
 export default function MDXContent(props) {
-  return `
-const componentEnd = `
+  return <_createMdxContent {...props} />
 }
 
 // @ts-ignore
 /** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */
 `
 
-const fallback = componentStart + '<></>' + componentEnd
+const fallback = componentStart(false) + '<></>' + componentEnd
 
 /**
  * Visit an mdast tree with and enter and exit callback.
@@ -211,6 +229,38 @@ function processExports(mdx, node, mapping, esm) {
 }
 
 /**
+ * @param {Program | undefined} expression
+ * @returns {boolean}
+ */
+function hasAwaitExpression(expression) {
+  let awaitExpression = false
+  if (expression) {
+    walk(expression, {
+      enter(node) {
+        if (
+          awaitExpression ||
+          node.type === 'ArrowFunctionExpression' ||
+          node.type === 'FunctionDeclaration' ||
+          node.type === 'FunctionExpression'
+        ) {
+          this.skip()
+          return
+        }
+
+        if (
+          node.type === 'AwaitExpression' ||
+          (node.type === 'ForOfStatement' && node.await)
+        ) {
+          awaitExpression = true
+          this.skip()
+        }
+      }
+    })
+  }
+  return awaitExpression
+}
+
+/**
  * @param {string} fileName
  * @param {string} mdx
  * @param {Root} ast
@@ -280,6 +330,7 @@ function getEmbeddedFiles(fileName, mdx, ast) {
   /** @type {VirtualFile[]} */
   const virtualFiles = []
 
+  let hasAwait = false
   let esm = ''
   let jsx = ''
   let markdown = ''
@@ -402,12 +453,17 @@ function getEmbeddedFiles(fileName, mdx, ast) {
         case 'mdxFlowExpression':
         case 'mdxTextExpression': {
           updateMarkdownFromNode(node)
+          const program = node.data?.estree
 
-          if (node.data?.estree?.body.length === 0) {
+          if (program?.body.length === 0) {
             jsx = addOffset(jsxMapping, mdx, jsx, start, start + 1)
             jsx = addOffset(jsxMapping, mdx, jsx, end - 1, end)
             esm = addOffset(esmMapping, mdx, esm, start + 1, end - 1) + '\n'
           } else {
+            if (program) {
+              hasAwait ||= hasAwaitExpression(program)
+            }
+
             jsx = addOffset(jsxMapping, mdx, jsx, start, end)
           }
 
@@ -460,7 +516,7 @@ function getEmbeddedFiles(fileName, mdx, ast) {
   )
 
   updateMarkdownFromOffsets(mdx.length, mdx.length)
-  esm += componentStart
+  esm += componentStart(hasAwait)
 
   for (let i = 0; i < jsxMapping.generatedOffsets.length; i++) {
     jsxMapping.generatedOffsets[i] += esm.length

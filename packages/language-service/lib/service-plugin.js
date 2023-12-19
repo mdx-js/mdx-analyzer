@@ -26,7 +26,9 @@ export function createMdxServicePlugin() {
             return [
               {
                 message: error.message,
-                code: error.ruleId,
+                code: error.source
+                  ? error.source + ':' + error.ruleId
+                  : error.ruleId,
                 codeDescription: {
                   href:
                     error.url || 'https://mdxjs.com/docs/troubleshooting-mdx/'

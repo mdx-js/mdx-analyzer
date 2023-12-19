@@ -7,7 +7,7 @@
     Once accepted there, it can be pulled into this project (`vscode-mdx`) with
     `script/generate.mjs`, and released.
 
-    Version from SHA: e14b65157a0b738430309b14b2f025f3bb37526a.
+    Version from SHA: 11eeefed6b5b13f0bfda019972ab96405a10a8fd.
   -->
   <dict>
     <key>name</key>
@@ -264,7 +264,7 @@
         <key>name</key>
         <string>markup.quote.mdx</string>
         <key>while</key>
-        <string>(?:^|\G)[\t ]*(&gt;)[ ]?</string>
+        <string>(&gt;)[ ]?</string>
         <key>whileCaptures</key>
         <dict>
           <key>0</key>
@@ -621,7 +621,7 @@
             <key>contentName</key>
             <string>markup.raw.code.fenced.mdx</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -669,7 +669,7 @@
             <key>contentName</key>
             <string>markup.raw.code.fenced.mdx</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -2278,7 +2278,7 @@
         <key>contentName</key>
         <string>markup.raw.math.flow.mdx</string>
         <key>end</key>
-        <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+        <string>(\1)(?:[\t ]*$)</string>
         <key>endCaptures</key>
         <dict>
           <key>1</key>
@@ -2702,7 +2702,7 @@
             <key>contentName</key>
             <string>meta.embedded.apib</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -2757,7 +2757,7 @@
             <key>contentName</key>
             <string>meta.embedded.apib</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -2818,7 +2818,7 @@
             <key>contentName</key>
             <string>meta.embedded.asciidoc</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -2873,7 +2873,7 @@
             <key>contentName</key>
             <string>meta.embedded.asciidoc</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -2934,7 +2934,7 @@
             <key>contentName</key>
             <string>meta.embedded.c</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -2989,7 +2989,7 @@
             <key>contentName</key>
             <string>meta.embedded.c</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3050,7 +3050,7 @@
             <key>contentName</key>
             <string>meta.embedded.clojure</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3105,7 +3105,7 @@
             <key>contentName</key>
             <string>meta.embedded.clojure</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3166,7 +3166,7 @@
             <key>contentName</key>
             <string>meta.embedded.coffee</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3221,7 +3221,7 @@
             <key>contentName</key>
             <string>meta.embedded.coffee</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3282,7 +3282,7 @@
             <key>contentName</key>
             <string>meta.embedded.console</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3337,7 +3337,7 @@
             <key>contentName</key>
             <string>meta.embedded.console</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3398,7 +3398,7 @@
             <key>contentName</key>
             <string>meta.embedded.cpp</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3457,7 +3457,7 @@
             <key>contentName</key>
             <string>meta.embedded.cpp</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3522,7 +3522,7 @@
             <key>contentName</key>
             <string>meta.embedded.cs</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3577,7 +3577,7 @@
             <key>contentName</key>
             <string>meta.embedded.cs</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3638,7 +3638,7 @@
             <key>contentName</key>
             <string>meta.embedded.css</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3693,7 +3693,7 @@
             <key>contentName</key>
             <string>meta.embedded.css</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3754,7 +3754,7 @@
             <key>contentName</key>
             <string>meta.embedded.diff</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3809,7 +3809,7 @@
             <key>contentName</key>
             <string>meta.embedded.diff</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3870,7 +3870,7 @@
             <key>contentName</key>
             <string>meta.embedded.dockerfile</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3925,7 +3925,7 @@
             <key>contentName</key>
             <string>meta.embedded.dockerfile</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -3986,7 +3986,7 @@
             <key>contentName</key>
             <string>meta.embedded.elixir</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4041,7 +4041,7 @@
             <key>contentName</key>
             <string>meta.embedded.elixir</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4102,7 +4102,7 @@
             <key>contentName</key>
             <string>meta.embedded.elm</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4157,7 +4157,7 @@
             <key>contentName</key>
             <string>meta.embedded.elm</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4218,7 +4218,7 @@
             <key>contentName</key>
             <string>meta.embedded.erlang</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4273,7 +4273,7 @@
             <key>contentName</key>
             <string>meta.embedded.erlang</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4334,7 +4334,7 @@
             <key>contentName</key>
             <string>meta.embedded.gitconfig</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4389,7 +4389,7 @@
             <key>contentName</key>
             <string>meta.embedded.gitconfig</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4450,7 +4450,7 @@
             <key>contentName</key>
             <string>meta.embedded.go</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4505,7 +4505,7 @@
             <key>contentName</key>
             <string>meta.embedded.go</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4566,7 +4566,7 @@
             <key>contentName</key>
             <string>meta.embedded.graphql</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4621,7 +4621,7 @@
             <key>contentName</key>
             <string>meta.embedded.graphql</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4648,7 +4648,7 @@
         <array>
           <dict>
             <key>begin</key>
-            <string>(?:^|\G)[\t ]*(`{3,})(?:[\t ]*((?i:c2hs|c2hs\x2dhaskell|frege|haskell|(?:.*\.)?(?:chs|dhall|hs|hs\x2dboot|hsc)))(?:[\t ]+((?:[^\n\r`])+))?)(?:[\t ]*$)</string>
+            <string>(?:^|\G)[\t ]*(`{3,})(?:[\t ]*((?i:bh|bluespec\x2dbh|bluespec\x2dclassic|c2hs|c2hs\x2dhaskell|frege|haskell|(?:.*\.)?(?:chs|dhall|hs|hs\x2dboot|hsc)))(?:[\t ]+((?:[^\n\r`])+))?)(?:[\t ]*$)</string>
             <key>beginCaptures</key>
             <dict>
               <key>1</key>
@@ -4682,7 +4682,7 @@
             <key>contentName</key>
             <string>meta.embedded.haskell</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4703,7 +4703,7 @@
           </dict>
           <dict>
             <key>begin</key>
-            <string>(?:^|\G)[\t ]*(~{3,})(?:[\t ]*((?i:c2hs|c2hs\x2dhaskell|frege|haskell|(?:.*\.)?(?:chs|dhall|hs|hs\x2dboot|hsc)))(?:[\t ]+((?:[^\n\r])+))?)(?:[\t ]*$)</string>
+            <string>(?:^|\G)[\t ]*(~{3,})(?:[\t ]*((?i:bh|bluespec\x2dbh|bluespec\x2dclassic|c2hs|c2hs\x2dhaskell|frege|haskell|(?:.*\.)?(?:chs|dhall|hs|hs\x2dboot|hsc)))(?:[\t ]+((?:[^\n\r])+))?)(?:[\t ]*$)</string>
             <key>beginCaptures</key>
             <dict>
               <key>1</key>
@@ -4737,7 +4737,7 @@
             <key>contentName</key>
             <string>meta.embedded.haskell</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4798,7 +4798,7 @@
             <key>contentName</key>
             <string>meta.embedded.html</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4853,7 +4853,7 @@
             <key>contentName</key>
             <string>meta.embedded.html</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4914,7 +4914,7 @@
             <key>contentName</key>
             <string>meta.embedded.ini</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -4969,7 +4969,7 @@
             <key>contentName</key>
             <string>meta.embedded.ini</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5030,7 +5030,7 @@
             <key>contentName</key>
             <string>meta.embedded.java</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5085,7 +5085,7 @@
             <key>contentName</key>
             <string>meta.embedded.java</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5112,7 +5112,7 @@
         <array>
           <dict>
             <key>begin</key>
-            <string>(?:^|\G)[\t ]*(`{3,})(?:[\t ]*((?i:cycript|javascript\+erb|json\x2dwith\x2dcomments|node|qt\x2dscript|(?:.*\.)?(?:_js|bones|cjs|code\x2dsnippets|cy|es6|jake|javascript|js|js\.erb|jsb|jscad|jsfl|jslib|jsm|json5|jsonc|jsonld|jspre|jss|jsx|mjs|njs|pac|sjs|ssjs|sublime\x2dbuild|sublime\x2dcommands|sublime\x2dcompletions|sublime\x2dkeymap|sublime\x2dmacro|sublime\x2dmenu|sublime\x2dmousemap|sublime\x2dproject|sublime\x2dsettings|sublime\x2dtheme|sublime\x2dworkspace|sublime_metrics|sublime_session|xsjs|xsjslib)))(?:[\t ]+((?:[^\n\r`])+))?)(?:[\t ]*$)</string>
+            <string>(?:^|\G)[\t ]*(`{3,})(?:[\t ]*((?i:cycript|javascript\+erb|json\x2dwith\x2dcomments|node|qt\x2dscript|(?:.*\.)?(?:_js|bones|cjs|code\x2dsnippets|code\x2dworkspace|cy|es6|jake|javascript|js|js\.erb|jsb|jscad|jsfl|jslib|jsm|json5|jsonc|jsonld|jspre|jss|jsx|mjs|njs|pac|sjs|ssjs|sublime\x2dbuild|sublime\x2dcommands|sublime\x2dcompletions|sublime\x2dkeymap|sublime\x2dmacro|sublime\x2dmenu|sublime\x2dmousemap|sublime\x2dproject|sublime\x2dsettings|sublime\x2dtheme|sublime\x2dworkspace|sublime_metrics|sublime_session|xsjs|xsjslib)))(?:[\t ]+((?:[^\n\r`])+))?)(?:[\t ]*$)</string>
             <key>beginCaptures</key>
             <dict>
               <key>1</key>
@@ -5146,7 +5146,7 @@
             <key>contentName</key>
             <string>meta.embedded.js</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5167,7 +5167,7 @@
           </dict>
           <dict>
             <key>begin</key>
-            <string>(?:^|\G)[\t ]*(~{3,})(?:[\t ]*((?i:cycript|javascript\+erb|json\x2dwith\x2dcomments|node|qt\x2dscript|(?:.*\.)?(?:_js|bones|cjs|code\x2dsnippets|cy|es6|jake|javascript|js|js\.erb|jsb|jscad|jsfl|jslib|jsm|json5|jsonc|jsonld|jspre|jss|jsx|mjs|njs|pac|sjs|ssjs|sublime\x2dbuild|sublime\x2dcommands|sublime\x2dcompletions|sublime\x2dkeymap|sublime\x2dmacro|sublime\x2dmenu|sublime\x2dmousemap|sublime\x2dproject|sublime\x2dsettings|sublime\x2dtheme|sublime\x2dworkspace|sublime_metrics|sublime_session|xsjs|xsjslib)))(?:[\t ]+((?:[^\n\r])+))?)(?:[\t ]*$)</string>
+            <string>(?:^|\G)[\t ]*(~{3,})(?:[\t ]*((?i:cycript|javascript\+erb|json\x2dwith\x2dcomments|node|qt\x2dscript|(?:.*\.)?(?:_js|bones|cjs|code\x2dsnippets|code\x2dworkspace|cy|es6|jake|javascript|js|js\.erb|jsb|jscad|jsfl|jslib|jsm|json5|jsonc|jsonld|jspre|jss|jsx|mjs|njs|pac|sjs|ssjs|sublime\x2dbuild|sublime\x2dcommands|sublime\x2dcompletions|sublime\x2dkeymap|sublime\x2dmacro|sublime\x2dmenu|sublime\x2dmousemap|sublime\x2dproject|sublime\x2dsettings|sublime\x2dtheme|sublime\x2dworkspace|sublime_metrics|sublime_session|xsjs|xsjslib)))(?:[\t ]+((?:[^\n\r])+))?)(?:[\t ]*$)</string>
             <key>beginCaptures</key>
             <dict>
               <key>1</key>
@@ -5201,7 +5201,7 @@
             <key>contentName</key>
             <string>meta.embedded.js</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5262,7 +5262,7 @@
             <key>contentName</key>
             <string>meta.embedded.json</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5317,7 +5317,7 @@
             <key>contentName</key>
             <string>meta.embedded.json</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5378,7 +5378,7 @@
             <key>contentName</key>
             <string>meta.embedded.julia</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5433,7 +5433,7 @@
             <key>contentName</key>
             <string>meta.embedded.julia</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5460,7 +5460,7 @@
         <array>
           <dict>
             <key>begin</key>
-            <string>(?:^|\G)[\t ]*(`{3,})(?:[\t ]*((?i:kotlin|(?:.*\.)?(?:kt|ktm|kts)))(?:[\t ]+((?:[^\n\r`])+))?)(?:[\t ]*$)</string>
+            <string>(?:^|\G)[\t ]*(`{3,})(?:[\t ]*((?i:gradle\x2dkotlin\x2ddsl|kotlin|(?:.*\.)?(?:gradle\.kts|kt|ktm|kts)))(?:[\t ]+((?:[^\n\r`])+))?)(?:[\t ]*$)</string>
             <key>beginCaptures</key>
             <dict>
               <key>1</key>
@@ -5494,7 +5494,7 @@
             <key>contentName</key>
             <string>meta.embedded.kotlin</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5515,7 +5515,7 @@
           </dict>
           <dict>
             <key>begin</key>
-            <string>(?:^|\G)[\t ]*(~{3,})(?:[\t ]*((?i:kotlin|(?:.*\.)?(?:kt|ktm|kts)))(?:[\t ]+((?:[^\n\r])+))?)(?:[\t ]*$)</string>
+            <string>(?:^|\G)[\t ]*(~{3,})(?:[\t ]*((?i:gradle\x2dkotlin\x2ddsl|kotlin|(?:.*\.)?(?:gradle\.kts|kt|ktm|kts)))(?:[\t ]+((?:[^\n\r])+))?)(?:[\t ]*$)</string>
             <key>beginCaptures</key>
             <dict>
               <key>1</key>
@@ -5549,7 +5549,7 @@
             <key>contentName</key>
             <string>meta.embedded.kotlin</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5610,7 +5610,7 @@
             <key>contentName</key>
             <string>meta.embedded.less</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5665,7 +5665,7 @@
             <key>contentName</key>
             <string>meta.embedded.less</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5726,7 +5726,7 @@
             <key>contentName</key>
             <string>meta.embedded.lua</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5781,7 +5781,7 @@
             <key>contentName</key>
             <string>meta.embedded.lua</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5842,7 +5842,7 @@
             <key>contentName</key>
             <string>meta.embedded.makefile</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5897,7 +5897,7 @@
             <key>contentName</key>
             <string>meta.embedded.makefile</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -5958,7 +5958,7 @@
             <key>contentName</key>
             <string>meta.embedded.md</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6021,7 +6021,7 @@
             <key>contentName</key>
             <string>meta.embedded.md</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6090,7 +6090,7 @@
             <key>contentName</key>
             <string>meta.embedded.mdx</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6145,7 +6145,7 @@
             <key>contentName</key>
             <string>meta.embedded.mdx</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6206,7 +6206,7 @@
             <key>contentName</key>
             <string>meta.embedded.objc</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6261,7 +6261,7 @@
             <key>contentName</key>
             <string>meta.embedded.objc</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6322,7 +6322,7 @@
             <key>contentName</key>
             <string>meta.embedded.perl</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6377,7 +6377,7 @@
             <key>contentName</key>
             <string>meta.embedded.perl</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6438,7 +6438,7 @@
             <key>contentName</key>
             <string>meta.embedded.php</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6493,7 +6493,7 @@
             <key>contentName</key>
             <string>meta.embedded.php</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6554,7 +6554,7 @@
             <key>contentName</key>
             <string>meta.embedded.python</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6609,7 +6609,7 @@
             <key>contentName</key>
             <string>meta.embedded.python</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6670,7 +6670,7 @@
             <key>contentName</key>
             <string>meta.embedded.r</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6725,7 +6725,7 @@
             <key>contentName</key>
             <string>meta.embedded.r</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6786,7 +6786,7 @@
             <key>contentName</key>
             <string>meta.embedded.raku</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6841,7 +6841,7 @@
             <key>contentName</key>
             <string>meta.embedded.raku</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6902,7 +6902,7 @@
             <key>contentName</key>
             <string>meta.embedded.ruby</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -6957,7 +6957,7 @@
             <key>contentName</key>
             <string>meta.embedded.ruby</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7018,7 +7018,7 @@
             <key>contentName</key>
             <string>meta.embedded.rust</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7073,7 +7073,7 @@
             <key>contentName</key>
             <string>meta.embedded.rust</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7134,7 +7134,7 @@
             <key>contentName</key>
             <string>meta.embedded.scala</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7189,7 +7189,7 @@
             <key>contentName</key>
             <string>meta.embedded.scala</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7250,7 +7250,7 @@
             <key>contentName</key>
             <string>meta.embedded.scss</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7305,7 +7305,7 @@
             <key>contentName</key>
             <string>meta.embedded.scss</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7366,7 +7366,7 @@
             <key>contentName</key>
             <string>meta.embedded.shell</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7421,7 +7421,7 @@
             <key>contentName</key>
             <string>meta.embedded.shell</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7482,7 +7482,7 @@
             <key>contentName</key>
             <string>meta.embedded.shell-session</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7537,7 +7537,7 @@
             <key>contentName</key>
             <string>meta.embedded.shell-session</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7598,7 +7598,7 @@
             <key>contentName</key>
             <string>meta.embedded.sql</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7653,7 +7653,7 @@
             <key>contentName</key>
             <string>meta.embedded.sql</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7714,7 +7714,7 @@
             <key>contentName</key>
             <string>meta.embedded.svg</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7773,7 +7773,7 @@
             <key>contentName</key>
             <string>meta.embedded.svg</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7838,7 +7838,7 @@
             <key>contentName</key>
             <string>meta.embedded.swift</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7893,7 +7893,7 @@
             <key>contentName</key>
             <string>meta.embedded.swift</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -7954,7 +7954,7 @@
             <key>contentName</key>
             <string>meta.embedded.toml</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8009,7 +8009,7 @@
             <key>contentName</key>
             <string>meta.embedded.toml</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8070,7 +8070,7 @@
             <key>contentName</key>
             <string>meta.embedded.ts</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8125,7 +8125,7 @@
             <key>contentName</key>
             <string>meta.embedded.ts</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8186,7 +8186,7 @@
             <key>contentName</key>
             <string>meta.embedded.tsx</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8241,7 +8241,7 @@
             <key>contentName</key>
             <string>meta.embedded.tsx</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8302,7 +8302,7 @@
             <key>contentName</key>
             <string>meta.embedded.vbnet</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8357,7 +8357,7 @@
             <key>contentName</key>
             <string>meta.embedded.vbnet</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8418,7 +8418,7 @@
             <key>contentName</key>
             <string>meta.embedded.xml</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8473,7 +8473,7 @@
             <key>contentName</key>
             <string>meta.embedded.xml</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8534,7 +8534,7 @@
             <key>contentName</key>
             <string>meta.embedded.yaml</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>
@@ -8589,7 +8589,7 @@
             <key>contentName</key>
             <string>meta.embedded.yaml</string>
             <key>end</key>
-            <string>(?:^|\G)[\t ]*(\1)(?:[\t ]*$)</string>
+            <string>(\1)(?:[\t ]*$)</string>
             <key>endCaptures</key>
             <dict>
               <key>1</key>

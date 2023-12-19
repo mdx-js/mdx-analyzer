@@ -257,6 +257,7 @@ function hasAwaitExpression(expression) {
       }
     })
   }
+
   return awaitExpression
 }
 

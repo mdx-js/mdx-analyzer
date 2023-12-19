@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.6.1
+
+### Patch Changes
+
+- [#374](https://github.com/mdx-js/mdx-analyzer/pull/374) [`b6b641dd05621d4819d3ac2d917cda0ecb385813`](https://github.com/mdx-js/mdx-analyzer/commit/b6b641dd05621d4819d3ac2d917cda0ecb385813) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Report syntax errors.
+
+- [#377](https://github.com/mdx-js/mdx-analyzer/pull/377) [`000db8cd1a15e7ed2723bd75a2871a92da1955aa`](https://github.com/mdx-js/mdx-analyzer/commit/000db8cd1a15e7ed2723bd75a2871a92da1955aa) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support await expressions.
+
 ## 1.6.0
 
 ### Minor Changes

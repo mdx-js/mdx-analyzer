@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@volar/vscode').ExportsInfoForLabs} ExportsInfoForLabs
+ * @typedef {import('@volar/vscode').LabsInfo} LabsInfo
  * @typedef {import('vscode').ExtensionContext} ExtensionContext
  */
 
@@ -7,8 +7,8 @@ import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {
   activateAutoInsertion,
   activateTsVersionStatusItem,
-  getTsdk,
-  supportLabsVersion
+  createLabsInfo,
+  getTsdk
 } from '@volar/vscode'
 import {
   Disposable,
@@ -35,7 +35,7 @@ let disposable
  *
  * @param {ExtensionContext} context
  *   The extension context as given by VSCode.
- * @returns {Promise<ExportsInfoForLabs>}
+ * @returns {Promise<LabsInfo>}
  *   Info for the
  *   [Volar,js Labs](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volarjs-labs)
  *   extension.
@@ -67,13 +67,10 @@ export async function activate(context) {
     })
   )
 
-  return {
-    volarLabs: {
-      version: supportLabsVersion,
-      languageClient: client,
-      languageServerProtocol
-    }
-  }
+  const volarLabs = createLabsInfo(languageServerProtocol)
+  volarLabs.addLanguageClient(client)
+
+  return volarLabs.extensionExports
 
   async function tryRestartServer() {
     await stopServer()

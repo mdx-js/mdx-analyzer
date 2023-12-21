@@ -37,6 +37,10 @@ export function createMdxLanguagePlugin(plugins) {
     },
 
     typescript: {
+      extraFileExtensions: [
+        {extension: 'mdx', isMixedContent: true, scriptKind: 7}
+      ],
+
       resolveSourceFileName(tsFileName) {
         if (tsFileName.endsWith('.mdx.jsx')) {
           // .mdx.jsx → .mdx

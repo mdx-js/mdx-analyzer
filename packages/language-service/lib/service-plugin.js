@@ -15,6 +15,7 @@ import {VirtualMdxFile} from './virtual-file.js'
  */
 export function createMdxServicePlugin() {
   return {
+    name: 'mdx',
     create(context) {
       return {
         provideSemanticDiagnostics(document) {

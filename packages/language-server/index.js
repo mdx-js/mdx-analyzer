@@ -34,19 +34,17 @@ connection.onInitialize((parameters) =>
       'tsx'
     ],
 
-    getServerCapabilitiesSetup() {
+    getServicePlugins() {
       assert(server.modules.typescript, 'TypeScript module is missing')
 
-      return {
-        servicePlugins: [
-          createMarkdownServicePlugin({configurationSection: 'mdx.validate'}),
-          createMdxServicePlugin(),
-          createTypeScriptServicePlugin(server.modules.typescript)
-        ]
-      }
+      return [
+        createMarkdownServicePlugin({configurationSection: 'mdx.validate'}),
+        createMdxServicePlugin(),
+        createTypeScriptServicePlugin(server.modules.typescript)
+      ]
     },
 
-    async getProjectSetup(serviceEnvironment, projectContext) {
+    async getLanguagePlugins(serviceEnvironment, projectContext) {
       assert(server.modules.typescript, 'TypeScript module is missing')
 
       const plugins = await loadPlugins(
@@ -54,14 +52,7 @@ connection.onInitialize((parameters) =>
         server.modules.typescript
       )
 
-      return {
-        languagePlugins: [createMdxLanguagePlugin(plugins)],
-        servicePlugins: [
-          createMarkdownServicePlugin({configurationSection: 'mdx.validate'}),
-          createMdxServicePlugin(),
-          createTypeScriptServicePlugin(server.modules.typescript)
-        ]
-      }
+      return [createMdxLanguagePlugin(plugins)]
     }
   })
 )

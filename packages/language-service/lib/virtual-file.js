@@ -16,6 +16,16 @@ import {walk} from 'estree-walker'
 import {ScriptSnapshot} from './script-snapshot.js'
 
 /**
+ * Render the content that should be prefixed to the embedded JavaScript file.
+ *
+ * @param {string} jsxImportSource
+ *   The string to use for the JSX import source tag.
+ */
+const jsPrefix = (jsxImportSource) => `/* @jsxRuntime automatic
+@jsxImportSource ${jsxImportSource} */
+`
+
+/**
  * @param {string} propsName
  */
 const layoutJsDoc = (propsName) => `
@@ -65,7 +75,8 @@ export default function MDXContent(props) {
 /** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */
 `
 
-const fallback = componentStart(false) + '<></>' + componentEnd
+const fallback =
+  jsPrefix('react') + componentStart(false) + '<></>' + componentEnd
 
 /**
  * Visit an mdast tree with and enter and exit callback.
@@ -265,9 +276,10 @@ function hasAwaitExpression(expression) {
  * @param {string} fileName
  * @param {string} mdx
  * @param {Root} ast
+ * @param {string} jsxImportSource
  * @returns {VirtualFile[]}
  */
-function getEmbeddedFiles(fileName, mdx, ast) {
+function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
   /** @type {Mapping[]} */
   const jsMappings = []
 
@@ -332,7 +344,7 @@ function getEmbeddedFiles(fileName, mdx, ast) {
   const virtualFiles = []
 
   let hasAwait = false
-  let esm = ''
+  let esm = jsPrefix(jsxImportSource)
   let jsx = ''
   let markdown = ''
   let nextMarkdownSourceStart = 0
@@ -561,6 +573,7 @@ function getEmbeddedFiles(fileName, mdx, ast) {
  */
 export class VirtualMdxFile {
   #processor
+  #jsxImportSource
 
   /**
    * The virtual files embedded in the MDX file.
@@ -597,9 +610,12 @@ export class VirtualMdxFile {
    *   The original TypeScript snapshot.
    * @param {Processor} processor
    *   The unified processor to use for parsing.
+   * @param {string} jsxImportSource
+   *   The JSX import source to use in the embedded JavaScript file.
    */
-  constructor(fileName, snapshot, processor) {
+  constructor(fileName, snapshot, processor, jsxImportSource) {
     this.#processor = processor
+    this.#jsxImportSource = jsxImportSource
     this.fileName = fileName
     this.snapshot = snapshot
     this.update(snapshot)
@@ -633,7 +649,12 @@ export class VirtualMdxFile {
 
     try {
       const ast = this.#processor.parse(mdx)
-      this.embeddedFiles = getEmbeddedFiles(this.fileName, mdx, ast)
+      this.embeddedFiles = getEmbeddedFiles(
+        this.fileName,
+        mdx,
+        ast,
+        this.#jsxImportSource
+      )
       this.error = undefined
     } catch (error) {
       this.error = /** @type {VFileMessage} */ (error)

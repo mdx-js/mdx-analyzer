@@ -46,7 +46,7 @@ test('create virtual file w/ mdxjsEsm', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [0],
+          generatedOffsets: [51],
           lengths: [34],
           data: {
             completion: true,
@@ -59,6 +59,8 @@ test('create virtual file w/ mdxjsEsm', () => {
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         'import {Planet} from "./Planet.js"',
         '',
         '/**',
@@ -149,7 +151,7 @@ test('create virtual file w/o MDX layout in case of named re-export', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [0],
+          generatedOffsets: [51],
           lengths: [33],
           data: {
             completion: true,
@@ -162,6 +164,8 @@ test('create virtual file w/o MDX layout in case of named re-export', () => {
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         'export {named} from "./Layout.js"',
         '',
         '/**',
@@ -255,7 +259,7 @@ test('create virtual file w/ MDX layout in case of default re-export', () => {
       mappings: [
         {
           sourceOffsets: [0, 15],
-          generatedOffsets: [0, 8],
+          generatedOffsets: [51, 59],
           lengths: [8, 20],
           data: {
             completion: true,
@@ -268,6 +272,8 @@ test('create virtual file w/ MDX layout in case of default re-export', () => {
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         'export {} from "./Layout.js"',
         'import {default as MDXLayout} from "./Layout.js"',
         '/**',
@@ -361,7 +367,7 @@ test('create virtual file w/ MDX layout in case of named and default re-export',
       mappings: [
         {
           sourceOffsets: [0, 22],
-          generatedOffsets: [0, 15],
+          generatedOffsets: [51, 66],
           lengths: [15, 20],
           data: {
             completion: true,
@@ -374,6 +380,8 @@ test('create virtual file w/ MDX layout in case of named and default re-export',
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         'export {named, } from "./Layout.js"',
         'import {default as MDXLayout} from "./Layout.js"',
         '/**',
@@ -467,7 +475,7 @@ test('create virtual file w/ MDX layout in case of default and named re-export',
       mappings: [
         {
           sourceOffsets: [0, 16],
-          generatedOffsets: [0, 8],
+          generatedOffsets: [51, 59],
           lengths: [8, 26],
           data: {
             completion: true,
@@ -480,6 +488,8 @@ test('create virtual file w/ MDX layout in case of default and named re-export',
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         'export { named} from "./Layout.js"',
         'import {default as MDXLayout} from "./Layout.js"',
         '/**',
@@ -570,7 +580,7 @@ test('create virtual file w/ MDX layout in case of a default exported arrow func
       mappings: [
         {
           sourceOffsets: [15],
-          generatedOffsets: [670],
+          generatedOffsets: [721],
           lengths: [8],
           data: {
             completion: true,
@@ -583,6 +593,8 @@ test('create virtual file w/ MDX layout in case of a default exported arrow func
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
         '',
@@ -690,7 +702,7 @@ test('create virtual file w/ MDX layout in case of a default exported function d
       mappings: [
         {
           sourceOffsets: [15],
-          generatedOffsets: [670],
+          generatedOffsets: [721],
           lengths: [23],
           data: {
             completion: true,
@@ -703,6 +715,8 @@ test('create virtual file w/ MDX layout in case of a default exported function d
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
         '',
@@ -807,7 +821,7 @@ test('create virtual file w/ MDX layout in case of a default exported constant',
       mappings: [
         {
           sourceOffsets: [15],
-          generatedOffsets: [19],
+          generatedOffsets: [70],
           lengths: [6],
           data: {
             completion: true,
@@ -820,6 +834,8 @@ test('create virtual file w/ MDX layout in case of a default exported constant',
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         'const MDXLayout = "main"',
         '',
@@ -914,7 +930,7 @@ test('create virtual file w/ MDX layout and matching argument name', () => {
       mappings: [
         {
           sourceOffsets: [15],
-          generatedOffsets: [675],
+          generatedOffsets: [726],
           lengths: [33],
           data: {
             completion: true,
@@ -927,6 +943,8 @@ test('create virtual file w/ MDX layout and matching argument name', () => {
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
         '',
@@ -1035,7 +1053,7 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
       mappings: [
         {
           sourceOffsets: [15, 39],
-          generatedOffsets: [670, 694],
+          generatedOffsets: [721, 745],
           lengths: [23, 26],
           data: {
             completion: true,
@@ -1048,6 +1066,8 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
         '',
@@ -1157,7 +1177,7 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
       mappings: [
         {
           sourceOffsets: [0, 42],
-          generatedOffsets: [0, 697],
+          generatedOffsets: [51, 748],
           lengths: [26, 23],
           data: {
             completion: true,
@@ -1170,6 +1190,8 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         'export function named() {}',
         '',
         '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
@@ -1275,7 +1297,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [271],
+          generatedOffsets: [322],
           lengths: [9],
           data: {
             completion: true,
@@ -1288,6 +1310,8 @@ test('create virtual file w/ mdxFlowExpression', () => {
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/**',
         ' * @deprecated',
@@ -1384,7 +1408,7 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
       mappings: [
         {
           sourceOffsets: [0, 57],
-          generatedOffsets: [271, 289],
+          generatedOffsets: [322, 340],
           lengths: [9, 8],
           data: {
             completion: true,
@@ -1397,6 +1421,8 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/**',
         ' * @deprecated',
@@ -1490,7 +1516,7 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [271],
+          generatedOffsets: [322],
           lengths: [7],
           data: {
             completion: true,
@@ -1503,6 +1529,8 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/**',
         ' * @deprecated',
@@ -1595,7 +1623,7 @@ test('create virtual file w/ mdxJsxTextElement', () => {
       mappings: [
         {
           sourceOffsets: [2],
-          generatedOffsets: [277],
+          generatedOffsets: [328],
           lengths: [7],
           data: {
             completion: true,
@@ -1608,6 +1636,8 @@ test('create virtual file w/ mdxJsxTextElement', () => {
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/**',
         ' * @deprecated',
@@ -1696,7 +1726,7 @@ test('create virtual file w/ mdxTextExpression', () => {
       },
       mappings: [
         {
-          generatedOffsets: [277],
+          generatedOffsets: [328],
           sourceOffsets: [4],
           lengths: [9],
           data: {
@@ -1710,6 +1740,8 @@ test('create virtual file w/ mdxTextExpression', () => {
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/**',
         ' * @deprecated',
@@ -1801,7 +1833,7 @@ test('create virtual file w/ async mdxTextExpression', () => {
       },
       mappings: [
         {
-          generatedOffsets: [283],
+          generatedOffsets: [334],
           sourceOffsets: [4],
           lengths: [32],
           data: {
@@ -1815,6 +1847,8 @@ test('create virtual file w/ async mdxTextExpression', () => {
         }
       ],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/**',
         ' * @deprecated',
@@ -1909,6 +1943,8 @@ test('create virtual file w/ dedented markdown content', () => {
       },
       mappings: [],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/**',
         ' * @deprecated',
@@ -2000,6 +2036,8 @@ test('create virtual file w/ syntax error', () => {
       languageId: 'javascriptreact',
       mappings: [],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/**',
         ' * @deprecated',
@@ -2074,6 +2112,8 @@ test('create virtual file w/ yaml frontmatter', () => {
       languageId: 'javascriptreact',
       mappings: [],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/**',
         ' * @deprecated',
@@ -2189,6 +2229,8 @@ test('update virtual file', () => {
       languageId: 'javascriptreact',
       mappings: [],
       snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
         '',
         '/**',
         ' * @deprecated',
@@ -2254,11 +2296,7 @@ test('compilation setting defaults', () => {
   const compilerOptions = host?.getCompilationSettings()
 
   assert.deepEqual(compilerOptions, {
-    allowJs: true,
-    jsx: typescript.JsxEmit.ReactJSX,
-    jsxFactory: 'React.createElement',
-    jsxFragmentFactory: 'React.Fragment',
-    jsxImportSource: 'react'
+    allowJs: true
   })
 })
 
@@ -2285,6 +2323,96 @@ test('compilation setting overrides', () => {
     jsxFragmentFactory: 'Fragment',
     jsxImportSource: 'preact'
   })
+})
+
+test('support custom jsxImportSource', () => {
+  const plugin = createMdxLanguagePlugin(undefined, 'preact')
+
+  const snapshot = snapshotFromLines('')
+
+  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+
+  assert.ok(file instanceof VirtualMdxFile)
+  assert.equal(file.fileName, '/test.mdx')
+  assert.equal(file.languageId, 'mdx')
+  assert.ifError(file.error)
+  assert.equal(file.snapshot, snapshot)
+  assert.deepEqual(file.mappings, [
+    {
+      sourceOffsets: [0],
+      generatedOffsets: [0],
+      lengths: [snapshot.getLength()],
+      data: {
+        completion: true,
+        format: true,
+        navigation: true,
+        semantic: true,
+        structure: true,
+        verification: true
+      }
+    }
+  ])
+  assert.deepEqual(file.embeddedFiles, [
+    {
+      embeddedFiles: [],
+      fileName: '/test.mdx.jsx',
+      languageId: 'javascriptreact',
+      mappings: [],
+      snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource preact */',
+        '',
+        '/**',
+        ' * @deprecated',
+        ' *   Do not use.',
+        ' *',
+        ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+        ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+        ' */',
+        'function _createMdxContent(props) {',
+        '  return <></>',
+        '}',
+        '',
+        '/**',
+        ' * Render the MDX contents.',
+        ' *',
+        ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+        ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+        ' */',
+        'export default function MDXContent(props) {',
+        '  return <_createMdxContent {...props} />',
+        '}',
+        '',
+        '// @ts-ignore',
+        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        ''
+      ),
+      typescript: {
+        scriptKind: typescript.ScriptKind.JSX
+      }
+    },
+    {
+      embeddedFiles: [],
+      fileName: '/test.mdx.md',
+      languageId: 'markdown',
+      mappings: [
+        {
+          sourceOffsets: [],
+          generatedOffsets: [],
+          lengths: [],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        }
+      ],
+      snapshot: snapshotFromLines('')
+    }
+  ])
 })
 
 /**

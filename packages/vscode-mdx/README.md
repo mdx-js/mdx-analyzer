@@ -81,8 +81,8 @@ Markdown Syntax could also be linted via [eslint-plugin-mdx][] and
 [remark-lint][] plugins.
 
 > it will read [remark][]’s
-> [configuration](https://github.com/remarkjs/remark/tree/main/packages/remark-cli#remark-cli)
-> automatically via [cosmiconfig](https://github.com/davidtheclark/cosmiconfig).
+> [configuration](https://github.com/remarkjs/remark/tree/main/packages/remark-cli#cli)
+> automatically via [unified-engine](https://github.com/unifiedjs/unified-engine).
 > But `.remarkignore` will not be respected, you should use `.eslintignore`
 > instead.
 

@@ -6,19 +6,13 @@
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {
   activateAutoInsertion,
+  activateDocumentDropEdit,
   activateTsVersionStatusItem,
   createLabsInfo,
   getTsdk
 } from '@volar/vscode'
-import {
-  Disposable,
-  languages,
-  workspace,
-  window,
-  ProgressLocation
-} from 'vscode'
+import {Disposable, workspace, window, ProgressLocation} from 'vscode'
 import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
-import {documentDropEditProvider} from './document-drop-edit-provider.js'
 
 /**
  * @type {LanguageClient}
@@ -112,11 +106,8 @@ async function startServer(context) {
         await client.start()
 
         disposable = Disposable.from(
-          languages.registerDocumentDropEditProvider(
-            {language: 'mdx'},
-            documentDropEditProvider
-          ),
           activateAutoInsertion('mdx', client),
+          activateDocumentDropEdit('mdx', client),
           activateTsVersionStatusItem(
             'mdx',
             'mdx.selectTypescriptVersion',

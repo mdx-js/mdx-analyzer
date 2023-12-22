@@ -37,11 +37,13 @@
     "@volar/language-service": "2.0.0-alpha.13",
     "estree-walker": "^3.0.0",
     "mdast-util-mdxjs-esm": "^2.0.0",
+    "mdast-util-to-markdown": "^2.0.0",
     "remark-mdx": "^3.0.0",
     "remark-parse": "^11.0.0",
     "unified": "^11.0.0",
     "unist-util-lsp": "^2.0.0",
-    "vfile-message": "^4.0.0"
+    "vfile-message": "^4.0.0",
+    "vscode-uri": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

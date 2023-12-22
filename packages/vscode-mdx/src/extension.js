@@ -1,20 +1,17 @@
 /**
- * @typedef {import('@volar/vscode').ExportsInfoForLabs} ExportsInfoForLabs
+ * @typedef {import('@volar/vscode').LabsInfo} LabsInfo
  * @typedef {import('vscode').ExtensionContext} ExtensionContext
  */
 
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
-import {activateAutoInsertion, getTsdk, supportLabsVersion} from '@volar/vscode'
 import {
-  Disposable,
-  extensions,
-  languages,
-  workspace,
-  window,
-  ProgressLocation
-} from 'vscode'
+  activateAutoInsertion,
+  activateDocumentDropEdit,
+  createLabsInfo,
+  getTsdk
+} from '@volar/vscode'
+import {Disposable, workspace, window, ProgressLocation, extensions} from 'vscode'
 import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
-import {documentDropEditProvider} from './document-drop-edit-provider.js'
 
 /**
  * @type {LanguageClient}
@@ -31,7 +28,7 @@ let disposable
  *
  * @param {ExtensionContext} context
  *   The extension context as given by VSCode.
- * @returns {Promise<ExportsInfoForLabs>}
+ * @returns {Promise<LabsInfo>}
  *   Info for the
  *   [Volar,js Labs](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volarjs-labs)
  *   extension.
@@ -69,13 +66,10 @@ export async function activate(context) {
     })
   )
 
-  return {
-    volarLabs: {
-      version: supportLabsVersion,
-      languageClient: client,
-      languageServerProtocol
-    }
-  }
+  const volarLabs = createLabsInfo(languageServerProtocol)
+  volarLabs.addLanguageClient(client)
+
+  return volarLabs.extensionExports
 
   async function tryRestartServer() {
     await stopServer()
@@ -117,11 +111,8 @@ async function startServer(context) {
         await client.start()
 
         disposable = Disposable.from(
-          languages.registerDocumentDropEditProvider(
-            {language: 'mdx'},
-            documentDropEditProvider
-          ),
-          activateAutoInsertion('mdx', client)
+          activateAutoInsertion('mdx', client),
+          activateDocumentDropEdit('mdx', client)
         )
       }
     )

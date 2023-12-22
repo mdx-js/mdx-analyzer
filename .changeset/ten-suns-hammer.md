@@ -1,7 +1,6 @@
 ---
 "@mdx-js/language-service": patch
 "@mdx-js/language-server": patch
-"vscode-mdx": patch
 ---
 
-Report syntax errors.
+Implement Volar’s document drop edits

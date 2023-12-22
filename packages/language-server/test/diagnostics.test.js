@@ -28,7 +28,7 @@ test('parse errors', async () => {
     kind: 'full',
     items: [
       {
-        code: 'acorn',
+        code: 'micromark-extension-mdxjs-esm:acorn',
         codeDescription: {
           href: 'https://github.com/micromark/micromark-extension-mdxjs-esm#could-not-parse-importexports-with-acorn'
         },

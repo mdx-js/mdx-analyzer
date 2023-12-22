@@ -23,17 +23,8 @@ test('support completion in ESM', async () => {
     fixturePath('node16/completion.mdx'),
     'mdx'
   )
-  // As of TypeScript 5.3, the first request doesn’t get a response.
-  // This appears to be a TypeScript regression.
-  let result = await serverHandle.sendCompletionRequest(uri, {
-    line: 1,
-    character: 1
-  })
-  assert.ok(result)
-  assert.ok('items' in result)
-  assert.deepEqual(result.items, [])
 
-  result = await serverHandle.sendCompletionRequest(uri, {
+  const result = await serverHandle.sendCompletionRequest(uri, {
     line: 1,
     character: 1
   })

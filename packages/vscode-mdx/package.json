@@ -31,7 +31,6 @@
   "activationEvents": [
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
-    "onLanguage:mdx",
     "onLanguage:typescript",
     "onLanguage:typescriptreact"
   ],

@@ -1,13 +1,28 @@
 /**
- * @typedef {import('@volar/language-service').ServicePlugin} ServicePlugin
  * @typedef {import('@volar/language-service').DataTransferItem} DataTransferItem
+ * @typedef {import('@volar/language-service').ServicePlugin} ServicePlugin
+ * @typedef {import('@volar/language-service').ServicePluginInstance<Provide>} ServicePluginInstance
+ * @typedef {import('./commands.js').SyntaxToggle} SyntaxToggle
+ */
+
+/**
+ * @typedef Commands
+ * @property {SyntaxToggle} toggleDelete
+ * @property {SyntaxToggle} toggleEmphasis
+ * @property {SyntaxToggle} toggleInlineCode
+ * @property {SyntaxToggle} toggleStrong
+ */
+
+/**
+ * @typedef Provide
+ * @property {() => Commands} mdxCommands
  */
 
 import path from 'node:path/posix'
 import {toMarkdown} from 'mdast-util-to-markdown'
 import {fromPlace} from 'unist-util-lsp'
 import {URI, Utils} from 'vscode-uri'
-import {VirtualMdxFile} from './virtual-file.js'
+import {createSyntaxToggle, getVirtualMdxFile} from './commands.js'
 
 // https://github.com/microsoft/vscode/blob/1.83.1/extensions/markdown-language-features/src/languageFeatures/copyFiles/shared.ts#L29-L41
 const imageExtensions = new Set([
@@ -37,8 +52,23 @@ const imageExtensions = new Set([
 export function createMdxServicePlugin() {
   return {
     name: 'mdx',
+
+    /**
+     * @returns {ServicePluginInstance}
+     */
     create(context) {
       return {
+        provide: {
+          mdxCommands() {
+            return {
+              toggleDelete: createSyntaxToggle(context, 'delete', '~'),
+              toggleEmphasis: createSyntaxToggle(context, 'emphasis', '_'),
+              toggleInlineCode: createSyntaxToggle(context, 'inlineCode', '`'),
+              toggleStrong: createSyntaxToggle(context, 'strong', '**')
+            }
+          }
+        },
+
         async provideDocumentDropEdits(document, position, dataTransfer) {
           const documentUri = URI.parse(document.uri)
 
@@ -126,7 +156,7 @@ export function createMdxServicePlugin() {
         },
 
         provideSemanticDiagnostics(document) {
-          const file = getVirtualMdxFile(document.uri)
+          const file = getVirtualMdxFile(context, document.uri)
 
           const error = file?.error
 
@@ -152,24 +182,6 @@ export function createMdxServicePlugin() {
               }
             ]
           }
-        }
-      }
-
-      /**
-       * Get the virtual MDX file that matches a document uri.
-       *
-       * @param {string} uri
-       *   The uri of which to find the matching virtual MDX file.
-       * @returns {VirtualMdxFile | undefined}
-       *   The matching virtual MDX file, if it exists. Otherwise undefined.
-       */
-      function getVirtualMdxFile(uri) {
-        const [file] = context.language.files.getVirtualFile(
-          context.env.uriToFileName(uri)
-        )
-
-        if (file instanceof VirtualMdxFile) {
-          return file
         }
       }
     }

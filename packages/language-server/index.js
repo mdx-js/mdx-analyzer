@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 /**
+ * @typedef {import('@mdx-js/language-service').Commands} Commands
  * @typedef {import('unified').PluggableList} PluggableList
  * @typedef {import('unified').Plugin} Plugin
  */
@@ -96,8 +97,38 @@ connection.onInitialize((parameters) =>
   })
 )
 
+connection.onRequest('mdx/toggleDelete', async (parameters) => {
+  const commands = await getCommands(parameters.uri)
+  return commands.toggleDelete(parameters)
+})
+
+connection.onRequest('mdx/toggleEmphasis', async (parameters) => {
+  const commands = await getCommands(parameters.uri)
+  return commands.toggleEmphasis(parameters)
+})
+
+connection.onRequest('mdx/toggleInlineCode', async (parameters) => {
+  const commands = await getCommands(parameters.uri)
+  return commands.toggleInlineCode(parameters)
+})
+
+connection.onRequest('mdx/toggleStrong', async (parameters) => {
+  const commands = await getCommands(parameters.uri)
+  return commands.toggleStrong(parameters)
+})
+
 connection.onInitialized(() => {
   server.initialized()
 })
 
 connection.listen()
+
+/**
+ * @param {string} uri
+ * @returns {Promise<Commands>}
+ */
+async function getCommands(uri) {
+  const project = await server.projects.getProject(uri)
+  const service = project.getLanguageService()
+  return service.context.inject('mdxCommands')
+}

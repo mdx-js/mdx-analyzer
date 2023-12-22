@@ -13,6 +13,7 @@
  */
 
 import {walk} from 'estree-walker'
+import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {ScriptSnapshot} from './script-snapshot.js'
 
 /**
@@ -398,8 +399,8 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
    *   The JavaScript node.
    */
   function updateMarkdownFromNode(node) {
-    const startOffset = /** @type {number} */ (node.position?.start.offset)
-    const endOffset = /** @type {number} */ (node.position?.end.offset)
+    const startOffset = getNodeStartOffset(node)
+    const endOffset = getNodeEndOffset(node)
 
     updateMarkdownFromOffsets(startOffset, endOffset)
   }
@@ -453,9 +454,7 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
         case 'mdxJsxFlowElement':
         case 'mdxJsxTextElement': {
           if (node.children.length > 0) {
-            end = /** @type {number} */ (
-              node.children[0].position?.start.offset
-            )
+            end = getNodeStartOffset(node.children[0])
           }
 
           updateMarkdownFromOffsets(start, end)
@@ -501,8 +500,8 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
           const child = node.children?.at(-1)
 
           if (child) {
-            const start = /** @type {number} */ (child.position?.end.offset)
-            const end = /** @type {number} */ (node.position?.end.offset)
+            const start = getNodeEndOffset(child)
+            const end = getNodeEndOffset(node)
 
             updateMarkdownFromOffsets(start, end)
             jsx = addOffset(jsxMapping, mdx, jsx, start, end)
@@ -574,6 +573,13 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
 export class VirtualMdxFile {
   #processor
   #jsxImportSource
+
+  /**
+   * The mdast of the document, but only if it’s valid.
+   *
+   * @type {Root | undefined}
+   */
+  ast
 
   /**
    * The virtual files embedded in the MDX file.
@@ -655,9 +661,11 @@ export class VirtualMdxFile {
         ast,
         this.#jsxImportSource
       )
+      this.ast = ast
       this.error = undefined
     } catch (error) {
       this.error = /** @type {VFileMessage} */ (error)
+      this.ast = undefined
       this.embeddedFiles = [
         {
           embeddedFiles: [],

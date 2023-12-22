@@ -124,7 +124,7 @@ test('initialize', async () => {
     },
     serverInfo: {
       name: '@volar/language-server',
-      version: '2.0.0-alpha.10'
+      version: '2.0.0-alpha.13'
     }
   })
 })

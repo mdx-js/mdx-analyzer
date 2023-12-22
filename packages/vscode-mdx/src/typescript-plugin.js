@@ -1,4 +1,4 @@
-import {createAsyncTSServerPlugin} from '@volar/typescript/lib/starters/createAsyncTSServerPlugin.js'
+import {createAsyncTSServerPlugin} from '@volar/typescript/lib/quickstart/createAsyncTSServerPlugin.js'
 import {createMdxLanguagePlugin} from '@mdx-js/language-service'
 import {loadPlugins} from '../../language-server/lib/configuration.js'
 

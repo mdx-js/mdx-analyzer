@@ -14,10 +14,12 @@ import {VirtualMdxFile} from './virtual-file.js'
  * @param {PluggableList} [plugins]
  *   A list of remark syntax plugins. Only syntax plugins are supported.
  *   Transformers are unused.
+ * @param {string} jsxImportSource
+ *   The JSX import source to use in the embedded JavaScript file.
  * @returns {LanguagePlugin}
  *   A Volar language plugin to support MDX.
  */
-export function createMdxLanguagePlugin(plugins) {
+export function createMdxLanguagePlugin(plugins, jsxImportSource = 'react') {
   const processor = unified().use(remarkParse).use(remarkMdx)
   if (plugins) {
     processor.use(plugins)
@@ -28,7 +30,12 @@ export function createMdxLanguagePlugin(plugins) {
   return {
     createVirtualFile(fileName, languageId, snapshot) {
       if (languageId === 'mdx') {
-        return new VirtualMdxFile(fileName, snapshot, processor)
+        return new VirtualMdxFile(
+          fileName,
+          snapshot,
+          processor,
+          jsxImportSource
+        )
       }
     },
 
@@ -51,13 +58,6 @@ export function createMdxLanguagePlugin(plugins) {
         return {
           ...host,
           getCompilationSettings: () => ({
-            // Default to the JSX automatic runtime, because that’s what MDX does.
-            jsx: 4,
-            // Set these defaults to match MDX if the user explicitly sets the classic runtime.
-            jsxFactory: 'React.createElement',
-            jsxFragmentFactory: 'React.Fragment',
-            // Set this default to match MDX if the user overrides the import source.
-            jsxImportSource: 'react',
             ...host.getCompilationSettings(),
             // Always allow JS for type checking.
             allowJs: true

@@ -37,7 +37,7 @@ test('support completion in ESM', async () => {
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx.jsx'),
-          offset: 30,
+          offset: 81,
           originalItem: {name: 'Boolean'},
           uri: fixtureUri('node16/completion.mdx.jsx')
         }
@@ -57,7 +57,7 @@ test('support completion in ESM', async () => {
     commitCharacters: ['.', ',', ';', '('],
     data: {
       fileName: fixturePath('node16/completion.mdx.jsx'),
-      offset: 30,
+      offset: 81,
       originalItem: {name: 'Boolean'},
       uri: fixtureUri('node16/completion.mdx.jsx')
     },
@@ -93,7 +93,7 @@ test('support completion in JSX', async () => {
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx.jsx'),
-          offset: 67,
+          offset: 118,
           originalItem: {name: 'Boolean'},
           uri: fixtureUri('node16/completion.mdx.jsx')
         }
@@ -113,7 +113,7 @@ test('support completion in JSX', async () => {
     commitCharacters: ['.', ',', ';', '('],
     data: {
       fileName: fixturePath('node16/completion.mdx.jsx'),
-      offset: 67,
+      offset: 118,
       originalItem: {name: 'Boolean'},
       uri: fixtureUri('node16/completion.mdx.jsx')
     },

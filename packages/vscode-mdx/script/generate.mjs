@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
-import {fetch} from 'undici'
 
 const repo = 'wooorm/markdown-tm-language'
 const branch = 'main'

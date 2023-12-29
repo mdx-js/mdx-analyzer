@@ -67,7 +67,7 @@ connection.onInitialize((parameters) =>
       let jsxImportSource = 'react'
 
       if (configFileName) {
-        const basePath = path.dirname(configFileName)
+        const cwd = path.dirname(configFileName)
         const configSourceFile = ts.readJsonConfigFile(
           configFileName,
           ts.sys.readFile
@@ -75,7 +75,7 @@ connection.onInitialize((parameters) =>
         const commandLine = ts.parseJsonSourceFileConfigFileContent(
           configSourceFile,
           ts.sys,
-          basePath,
+          cwd,
           undefined,
           configFileName
         )
@@ -83,7 +83,7 @@ connection.onInitialize((parameters) =>
           commandLine.raw?.mdx,
           (name) =>
             /** @type {Promise<Plugin>} */ (
-              loadPlugin(name, {prefix: 'remark', from: basePath})
+              loadPlugin(name, {prefix: 'remark', cwd})
             )
         )
         jsxImportSource = commandLine.options.jsxImportSource || jsxImportSource

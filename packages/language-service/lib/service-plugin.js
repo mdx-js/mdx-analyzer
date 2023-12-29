@@ -77,7 +77,6 @@ export function createMdxServicePlugin() {
                   uri: String(Utils.joinPath(documentUri, '..', file.name)),
                   contentsMimeType: mime,
                   options: {
-                    contents: file,
                     ignoreIfExists: true
                   }
                 }

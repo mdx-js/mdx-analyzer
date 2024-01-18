@@ -153,6 +153,26 @@
         }
       }
     ],
+    "keybindings": [
+      {
+        "command": "mdx.toggleEmphasis",
+        "key": "ctrl+i",
+        "mac": "cmd+i",
+        "when": "editorTextFocus && !editorReadonly && editorLangId == mdx"
+      },
+      {
+        "command": "mdx.toggleDelete",
+        "key": "alt+shift+5",
+        "mac": "cmd+shift+x",
+        "when": "editorTextFocus && !editorReadonly && editorLangId == mdx"
+      },
+      {
+        "command": "mdx.toggleStrong",
+        "key": "ctrl+b",
+        "mac": "cmd+b",
+        "when": "editorTextFocus && !editorReadonly && editorLangId == mdx"
+      }
+    ],
     "languages": [
       {
         "id": "mdx",
@@ -180,6 +200,26 @@
         "command": "mdx.selectTypescriptVersion",
         "title": "Select TypeScript version…",
         "category": "MDX"
+      },
+      {
+        "command": "mdx.toggleDelete",
+        "title": "Toggle Delete",
+        "category": "MDX"
+      },
+      {
+        "command": "mdx.toggleEmphasis",
+        "title": "Toggle Emphasis",
+        "category": "MDX"
+      },
+      {
+        "command": "mdx.toggleInlineCode",
+        "title": "Toggle Inline Code",
+        "category": "MDX"
+      },
+      {
+        "command": "mdx.toggleStrong",
+        "title": "Toggle Strong",
+        "category": "MDX"
       }
     ],
     "menus": {
@@ -187,6 +227,28 @@
         {
           "command": "mdx.selectTypescriptVersion",
           "when": "editorLangId == mdx"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "mdx.toggleDelete",
+          "when": "editorTextFocus && !editorReadonly && editorLangId == mdx",
+          "group": "1_modification"
+        },
+        {
+          "command": "mdx.toggleEmphasis",
+          "when": "editorTextFocus && !editorReadonly && editorLangId == mdx",
+          "group": "1_modification"
+        },
+        {
+          "command": "mdx.toggleInlineCode",
+          "when": "editorTextFocus && !editorReadonly && editorLangId == mdx",
+          "group": "1_modification"
+        },
+        {
+          "command": "mdx.toggleStrong",
+          "when": "editorTextFocus && !editorReadonly && editorLangId == mdx",
+          "group": "1_modification"
         }
       ]
     },

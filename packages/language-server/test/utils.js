@@ -5,11 +5,9 @@
 
 import {createRequire} from 'node:module'
 import path from 'node:path'
-import {fileURLToPath} from 'node:url'
 import {URI, Utils} from 'vscode-uri'
-import {startLanguageServer} from '@volar/test-utils'
 // eslint-disable-next-line import/order
-import normalizePath from 'normalize-path'
+import {startLanguageServer} from '@volar/test-utils'
 
 const require = createRequire(import.meta.url)
 const pkgPath = new URL('../package.json', import.meta.url)
@@ -45,5 +43,5 @@ export function fixtureUri(fileName) {
  * @returns {string}
  */
 export function fixturePath(fileName) {
-  return normalizePath(fileURLToPath(fixtureUri(fileName)))
+  return URI.parse(fixtureUri(fileName)).fsPath.replaceAll('\\', '/')
 }

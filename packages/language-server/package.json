@@ -43,9 +43,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "@types/normalize-path": "^3.0.0",
     "@volar/test-utils": "2.0.0-alpha.14",
-    "normalize-path": "^3.0.0",
     "unified": "^11.0.0"
   }
 }

@@ -31,7 +31,9 @@ test('resolve markdown link references', async () => {
         end: {line: 0, character: 12}
       },
       tooltip: 'Go to link definition',
-      target: fixtureUri('node16/link-reference.mdx?virtualCodeId=md#L3,8'),
+      target: fixtureUri(
+        'node16/link-reference.mdx?virtualCodeId=md#L3,8'
+      ).replace('%3A', ':'),
       data: {
         uri: fixtureUri('node16/link-reference.mdx'),
         original: {
@@ -43,7 +45,10 @@ test('resolve markdown link references', async () => {
               pathText: 'mdx',
               resource: {
                 $mid: 1,
-                path: fixturePath('node16/link-reference.mdx'),
+                path: fixturePath('node16/link-reference.mdx').replace(
+                  /^\/?/,
+                  '/'
+                ),
                 query: 'virtualCodeId=md',
                 scheme: 'file'
               },

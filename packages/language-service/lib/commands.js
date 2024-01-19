@@ -25,7 +25,7 @@
 
 import {visitParents} from 'unist-util-visit-parents'
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
-import {VirtualMdxFile} from './virtual-file.js'
+import {VirtualMdxCode} from './virtual-code.js'
 
 /**
  * Create a function to toggle prose syntax based on the AST.
@@ -41,9 +41,9 @@ import {VirtualMdxFile} from './virtual-file.js'
  */
 export function createSyntaxToggle(context, type, separator) {
   return ({range, uri}) => {
-    const file = getVirtualMdxFile(context, uri)
+    const [file] = context.documents.getVirtualCodeByUri(uri)
 
-    if (!file) {
+    if (!(file instanceof VirtualMdxCode)) {
       return
     }
 
@@ -143,25 +143,5 @@ export function createSyntaxToggle(context, type, separator) {
     if (edits) {
       return edits
     }
-  }
-}
-
-/**
- * Get the virtual MDX file that matches a document uri.
- *
- * @param {ServiceContext} context
- *   The Volar service context to use.
- * @param {string} uri
- *   The uri of which to find the matching virtual MDX file.
- * @returns {VirtualMdxFile | undefined}
- *   The matching virtual MDX file, if it exists. Otherwise undefined.
- */
-export function getVirtualMdxFile(context, uri) {
-  const [file] = context.language.files.getVirtualFile(
-    context.env.uriToFileName(uri)
-  )
-
-  if (file instanceof VirtualMdxFile) {
-    return file
   }
 }

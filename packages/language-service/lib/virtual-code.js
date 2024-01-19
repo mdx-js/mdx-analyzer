@@ -1,7 +1,6 @@
 /**
- * @typedef {import('@volar/language-service').CodeInformation} CodeInformation
- * @typedef {import('@volar/language-service').Mapping<CodeInformation>} Mapping
- * @typedef {import('@volar/language-service').VirtualFile} VirtualFile
+ * @typedef {import('@volar/language-service').CodeMapping} CodeMapping
+ * @typedef {import('@volar/language-service').VirtualCode} VirtualCode
  * @typedef {import('estree').ExportDefaultDeclaration} ExportDefaultDeclaration
  * @typedef {import('estree').Program} Program
  * @typedef {import('mdast').Nodes} Nodes
@@ -103,7 +102,7 @@ function visit(node, onEnter, onExit) {
 /**
  * Generate mapped virtual content based on a source string and start and end offsets.
  *
- * @param {Mapping} mapping
+ * @param {CodeMapping} mapping
  *   The Volar mapping to append the offsets to.
  * @param {string} source
  *   The original source code.
@@ -174,7 +173,7 @@ function getPropsName(node) {
  *   The full MDX code to process.
  * @param {MdxjsEsm} node
  *   The MDX ESM node to process.
- * @param {Mapping} mapping
+ * @param {CodeMapping} mapping
  *   The Volar mapping to add offsets to.
  * @param {string} esm
  *   The virtual ESM code up to the point this function was called.
@@ -274,20 +273,19 @@ function hasAwaitExpression(expression) {
 }
 
 /**
- * @param {string} fileName
  * @param {string} mdx
  * @param {Root} ast
  * @param {string} jsxImportSource
- * @returns {VirtualFile[]}
+ * @returns {VirtualCode[]}
  */
-function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
-  /** @type {Mapping[]} */
+function getEmbeddedCodes(mdx, ast, jsxImportSource) {
+  /** @type {CodeMapping[]} */
   const jsMappings = []
 
   /**
    * The Volar mapping that maps all ESM syntax of the MDX file to the virtual JavaScript file.
    *
-   * @type {Mapping}
+   * @type {CodeMapping}
    */
   const esmMapping = {
     sourceOffsets: [],
@@ -306,7 +304,7 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
   /**
    * The Volar mapping that maps all JSX syntax of the MDX file to the virtual JavaScript file.
    *
-   * @type {Mapping}
+   * @type {CodeMapping}
    */
   const jsxMapping = {
     sourceOffsets: [],
@@ -325,7 +323,7 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
   /**
    * The Volar mapping that maps all markdown content to the virtual markdown file.
    *
-   * @type {Mapping}
+   * @type {CodeMapping}
    */
   const markdownMapping = {
     sourceOffsets: [],
@@ -341,8 +339,8 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
     }
   }
 
-  /** @type {VirtualFile[]} */
-  const virtualFiles = []
+  /** @type {VirtualCode[]} */
+  const virtualCodes = []
 
   let hasAwait = false
   let esm = jsPrefix(jsxImportSource)
@@ -420,9 +418,9 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
         case 'yaml': {
           const frontmatterWithFences = mdx.slice(start, end)
           const frontmatterStart = frontmatterWithFences.indexOf(node.value)
-          virtualFiles.push({
-            embeddedFiles: [],
-            fileName: fileName + '.' + node.type,
+          virtualCodes.push({
+            embeddedCodes: [],
+            id: node.type,
             languageId: node.type,
             mappings: [
               {
@@ -544,33 +542,30 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
     jsMappings.push(jsxMapping)
   }
 
-  virtualFiles.unshift(
+  virtualCodes.unshift(
     {
-      embeddedFiles: [],
-      fileName: fileName + '.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: 2
-      },
       mappings: jsMappings,
       snapshot: new ScriptSnapshot(esm)
     },
     {
-      embeddedFiles: [],
-      fileName: fileName + '.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [markdownMapping],
       snapshot: new ScriptSnapshot(markdown)
     }
   )
 
-  return virtualFiles
+  return virtualCodes
 }
 
 /**
- * A Volar virtual file that contains some additional metadata for MDX files.
+ * A Volar virtual code that contains some additional metadata for MDX files.
  */
-export class VirtualMdxFile {
+export class VirtualMdxCode {
   #processor
   #jsxImportSource
 
@@ -584,9 +579,9 @@ export class VirtualMdxFile {
   /**
    * The virtual files embedded in the MDX file.
    *
-   * @type {VirtualFile[]}
+   * @type {VirtualCode[]}
    */
-  embeddedFiles = []
+  embeddedCodes = []
 
   /**
    * The error that was throw while parsing.
@@ -594,6 +589,13 @@ export class VirtualMdxFile {
    * @type {VFileMessage | undefined}
    */
   error
+
+  /**
+   * The file ID.
+   *
+   * @type {'mdx'}
+   */
+  id = 'mdx'
 
   /**
    * The language ID.
@@ -605,13 +607,11 @@ export class VirtualMdxFile {
   /**
    * The code mappings of the MDX file. There is always only one mapping.
    *
-   * @type {Mapping[]}
+   * @type {CodeMapping[]}
    */
   mappings = []
 
   /**
-   * @param {string} fileName
-   *   The file name of the MDX file.
    * @param {IScriptSnapshot} snapshot
    *   The original TypeScript snapshot.
    * @param {Processor} processor
@@ -619,10 +619,9 @@ export class VirtualMdxFile {
    * @param {string} jsxImportSource
    *   The JSX import source to use in the embedded JavaScript file.
    */
-  constructor(fileName, snapshot, processor, jsxImportSource) {
+  constructor(snapshot, processor, jsxImportSource) {
     this.#processor = processor
     this.#jsxImportSource = jsxImportSource
-    this.fileName = fileName
     this.snapshot = snapshot
     this.update(snapshot)
   }
@@ -655,31 +654,23 @@ export class VirtualMdxFile {
 
     try {
       const ast = this.#processor.parse(mdx)
-      this.embeddedFiles = getEmbeddedFiles(
-        this.fileName,
-        mdx,
-        ast,
-        this.#jsxImportSource
-      )
+      this.embeddedCodes = getEmbeddedCodes(mdx, ast, this.#jsxImportSource)
       this.ast = ast
       this.error = undefined
     } catch (error) {
       this.error = /** @type {VFileMessage} */ (error)
       this.ast = undefined
-      this.embeddedFiles = [
+      this.embeddedCodes = [
         {
-          embeddedFiles: [],
-          fileName: this.fileName + '.jsx',
+          embeddedCodes: [],
+          id: 'jsx',
           languageId: 'javascriptreact',
-          typescript: {
-            scriptKind: 2
-          },
           mappings: [],
           snapshot: new ScriptSnapshot(fallback)
         },
         {
-          embeddedFiles: [],
-          fileName: this.fileName + '.md',
+          embeddedCodes: [],
+          id: 'md',
           languageId: 'markdown',
           mappings: [],
           snapshot: new ScriptSnapshot(mdx)

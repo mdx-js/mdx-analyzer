@@ -42,7 +42,7 @@ test('initialize', async () => {
       colorProvider: true,
       completionProvider: {
         resolveProvider: true,
-        triggerCharacters: ['.', '"', "'", '`', '/', '<', '@', '#', ' ', '*']
+        triggerCharacters: ['.', '/', '#', '"', "'", '`', '<', '@', ' ', '*']
       },
       definitionProvider: true,
       documentFormattingProvider: true,
@@ -124,7 +124,7 @@ test('initialize', async () => {
     },
     serverInfo: {
       name: '@volar/language-server',
-      version: '2.0.0-alpha.13'
+      version: '2.0.0-alpha.14'
     }
   })
 })

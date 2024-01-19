@@ -3,7 +3,6 @@
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {URI} from 'vscode-uri'
 import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
 /** @type {LanguageServerHandle} */
@@ -32,9 +31,7 @@ test('resolve markdown link references', async () => {
         end: {line: 0, character: 12}
       },
       tooltip: 'Go to link definition',
-      // This is caused by an upstream bug in Volar
-      // target: fixtureUri('node16/link-reference.mdx') + '#L3,8',
-      target: fixtureUri('node16/link-reference.mdx') + '#L3,8',
+      target: fixtureUri('node16/link-reference.mdx?virtualCodeId=md#L3,8'),
       data: {
         uri: fixtureUri('node16/link-reference.mdx'),
         original: {
@@ -46,8 +43,8 @@ test('resolve markdown link references', async () => {
               pathText: 'mdx',
               resource: {
                 $mid: 1,
-                path: URI.parse(fixtureUri('node16/link-reference.mdx.md'))
-                  .path,
+                path: fixturePath('node16/link-reference.mdx'),
+                query: 'virtualCodeId=md',
                 scheme: 'file'
               },
               range: {

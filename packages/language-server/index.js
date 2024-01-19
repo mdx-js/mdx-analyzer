@@ -16,7 +16,7 @@ import {
 } from '@mdx-js/language-service'
 import {
   createConnection,
-  createNodeServer,
+  createServer,
   createTypeScriptProjectProvider
 } from '@volar/language-server/node.js'
 import {loadPlugin} from 'load-plugin'
@@ -30,7 +30,7 @@ process.title = 'mdx-language-server'
 /** @type {PluggableList} */
 const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
 const connection = createConnection()
-const server = createNodeServer(connection)
+const server = createServer(connection)
 
 connection.onInitialize((parameters) =>
   server.initialize(parameters, createTypeScriptProjectProvider, {

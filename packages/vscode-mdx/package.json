@@ -45,8 +45,8 @@
   },
   "devDependencies": {
     "@types/vscode": "^1.82.0",
-    "@volar/language-server": "2.0.0-alpha.13",
-    "@volar/vscode": "2.0.0-alpha.13",
+    "@volar/language-server": "2.0.0-alpha.14",
+    "@volar/vscode": "2.0.0-alpha.14",
     "@vscode/vsce": "^2.0.0",
     "esbuild": "^0.19.0",
     "ovsx": "^0.8.0"

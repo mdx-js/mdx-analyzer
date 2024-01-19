@@ -22,7 +22,8 @@ import path from 'node:path/posix'
 import {toMarkdown} from 'mdast-util-to-markdown'
 import {fromPlace} from 'unist-util-lsp'
 import {URI, Utils} from 'vscode-uri'
-import {createSyntaxToggle, getVirtualMdxFile} from './commands.js'
+import {createSyntaxToggle} from './commands.js'
+import {VirtualMdxCode} from './virtual-code.js'
 
 // https://github.com/microsoft/vscode/blob/1.83.1/extensions/markdown-language-features/src/languageFeatures/copyFiles/shared.ts#L29-L41
 const imageExtensions = new Set([
@@ -156,9 +157,13 @@ export function createMdxServicePlugin() {
         },
 
         provideSemanticDiagnostics(document) {
-          const file = getVirtualMdxFile(context, document.uri)
+          const [file] = context.documents.getVirtualCodeByUri(document.uri)
 
-          const error = file?.error
+          if (!(file instanceof VirtualMdxCode)) {
+            return
+          }
+
+          const error = file.error
 
           if (error) {
             return [

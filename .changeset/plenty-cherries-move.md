@@ -4,4 +4,4 @@
 "vscode-mdx": patch
 ---
 
-Update to Volar 2.0.0-alpha.13.
+Update to Volar 2.0.0-alpha.14.

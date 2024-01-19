@@ -37,7 +37,7 @@ export function createServer() {
  * @returns {string} The uri that matches the fixture file name.
  */
 export function fixtureUri(fileName) {
-  return String(Utils.joinPath(fixturesURI, fileName))
+  return fixturesURI + '/' + fileName
 }
 
 /**

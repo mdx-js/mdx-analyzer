@@ -65,6 +65,7 @@ connection.onInitialize((parameters) =>
 
       /** @type {PluggableList | undefined} */
       let plugins
+      let checkMdx = false
       let jsxImportSource = 'react'
 
       if (configFileName) {
@@ -87,11 +88,16 @@ connection.onInitialize((parameters) =>
               loadPlugin(name, {prefix: 'remark', cwd})
             )
         )
+        checkMdx = Boolean(commandLine.raw?.mdx?.checkMdx)
         jsxImportSource = commandLine.options.jsxImportSource || jsxImportSource
       }
 
       return [
-        createMdxLanguagePlugin(plugins || defaultPlugins, jsxImportSource)
+        createMdxLanguagePlugin(
+          plugins || defaultPlugins,
+          checkMdx,
+          jsxImportSource
+        )
       ]
     }
   })

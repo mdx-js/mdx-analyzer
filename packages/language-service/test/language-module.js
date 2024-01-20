@@ -2262,8 +2262,96 @@ test('compilation setting overrides', () => {
   })
 })
 
+test('support checkMdx', () => {
+  const plugin = createMdxLanguagePlugin(undefined, true)
+
+  const snapshot = snapshotFromLines('')
+
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
+    {
+      sourceOffsets: [0],
+      generatedOffsets: [0],
+      lengths: [snapshot.getLength()],
+      data: {
+        completion: true,
+        format: true,
+        navigation: true,
+        semantic: true,
+        structure: true,
+        verification: true
+      }
+    }
+  ])
+  assert.deepEqual(code.embeddedCodes, [
+    {
+      embeddedCodes: [],
+      id: 'jsx',
+      languageId: 'javascriptreact',
+      mappings: [],
+      snapshot: snapshotFromLines(
+        '// @ts-check',
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
+        '',
+        '/**',
+        ' * @deprecated',
+        ' *   Do not use.',
+        ' *',
+        ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+        ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+        ' */',
+        'function _createMdxContent(props) {',
+        '  return <></>',
+        '}',
+        '',
+        '/**',
+        ' * Render the MDX contents.',
+        ' *',
+        ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+        ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+        ' */',
+        'export default function MDXContent(props) {',
+        '  return <_createMdxContent {...props} />',
+        '}',
+        '',
+        '// @ts-ignore',
+        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        ''
+      )
+    },
+    {
+      embeddedCodes: [],
+      id: 'md',
+      languageId: 'markdown',
+      mappings: [
+        {
+          sourceOffsets: [],
+          generatedOffsets: [],
+          lengths: [],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        }
+      ],
+      snapshot: snapshotFromLines('')
+    }
+  ])
+})
+
 test('support custom jsxImportSource', () => {
-  const plugin = createMdxLanguagePlugin(undefined, 'preact')
+  const plugin = createMdxLanguagePlugin(undefined, false, 'preact')
 
   const snapshot = snapshotFromLines('')
 

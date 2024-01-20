@@ -18,10 +18,15 @@ import {ScriptSnapshot} from './script-snapshot.js'
 /**
  * Render the content that should be prefixed to the embedded JavaScript file.
  *
+ * @param {boolean} tsCheck
+ *   If true, insert a `@check-js` comment into the virtual JavaScript code.
  * @param {string} jsxImportSource
  *   The string to use for the JSX import source tag.
  */
-const jsPrefix = (jsxImportSource) => `/* @jsxRuntime automatic
+const jsPrefix = (
+  tsCheck,
+  jsxImportSource
+) => `${tsCheck ? '// @ts-check\n' : ''}/* @jsxRuntime automatic
 @jsxImportSource ${jsxImportSource} */
 `
 
@@ -76,7 +81,7 @@ export default function MDXContent(props) {
 `
 
 const fallback =
-  jsPrefix('react') + componentStart(false) + '<></>' + componentEnd
+  jsPrefix(false, 'react') + componentStart(false) + '<></>' + componentEnd
 
 /**
  * Visit an mdast tree with and enter and exit callback.
@@ -275,10 +280,11 @@ function hasAwaitExpression(expression) {
 /**
  * @param {string} mdx
  * @param {Root} ast
+ * @param {boolean} checkMdx
  * @param {string} jsxImportSource
  * @returns {VirtualCode[]}
  */
-function getEmbeddedCodes(mdx, ast, jsxImportSource) {
+function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
   /** @type {CodeMapping[]} */
   const jsMappings = []
 
@@ -343,7 +349,7 @@ function getEmbeddedCodes(mdx, ast, jsxImportSource) {
   const virtualCodes = []
 
   let hasAwait = false
-  let esm = jsPrefix(jsxImportSource)
+  let esm = jsPrefix(checkMdx, jsxImportSource)
   let jsx = ''
   let markdown = ''
   let nextMarkdownSourceStart = 0
@@ -567,6 +573,7 @@ function getEmbeddedCodes(mdx, ast, jsxImportSource) {
  */
 export class VirtualMdxCode {
   #processor
+  #checkMdx
   #jsxImportSource
 
   /**
@@ -616,11 +623,14 @@ export class VirtualMdxCode {
    *   The original TypeScript snapshot.
    * @param {Processor} processor
    *   The unified processor to use for parsing.
+   * @param {boolean} checkMdx
+   *   If true, insert a `@check-js` comment into the virtual JavaScript code.
    * @param {string} jsxImportSource
    *   The JSX import source to use in the embedded JavaScript file.
    */
-  constructor(snapshot, processor, jsxImportSource) {
+  constructor(snapshot, processor, checkMdx, jsxImportSource) {
     this.#processor = processor
+    this.#checkMdx = checkMdx
     this.#jsxImportSource = jsxImportSource
     this.snapshot = snapshot
     this.update(snapshot)
@@ -654,7 +664,12 @@ export class VirtualMdxCode {
 
     try {
       const ast = this.#processor.parse(mdx)
-      this.embeddedCodes = getEmbeddedCodes(mdx, ast, this.#jsxImportSource)
+      this.embeddedCodes = getEmbeddedCodes(
+        mdx,
+        ast,
+        this.#checkMdx,
+        this.#jsxImportSource
+      )
       this.ast = ast
       this.error = undefined
     } catch (error) {

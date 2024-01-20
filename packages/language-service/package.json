@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/language-service",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "description": "MDX Volar support",
   "repository": {

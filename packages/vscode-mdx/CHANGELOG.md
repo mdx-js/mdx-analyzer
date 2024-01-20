@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.7.0
+
+### Minor Changes
+
+- [`46bfd50`](https://github.com/mdx-js/mdx-analyzer/commit/46bfd50323f7d63037a99aea454c0cb67f1a4176) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add customization options for markdown validation.
+
+- [#384](https://github.com/mdx-js/mdx-analyzer/pull/384) [`b9a910e`](https://github.com/mdx-js/mdx-analyzer/commit/b9a910e4d9e87535e2973f2d7b5704d0489bc2e0) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support the commands `mdx.toggleDelete`, `mdx.toggleEmphasis`, `mdx.toggleInlineCode`, and `mdx.toggleStrong`.
+
+- [#381](https://github.com/mdx-js/mdx-analyzer/pull/381) [`ceb9a0b`](https://github.com/mdx-js/mdx-analyzer/commit/ceb9a0b587e9b0cd236a5e465c2aa1b24650a803) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Use the language server to provide drop edits.
+
+### Patch Changes
+
+- [#387](https://github.com/mdx-js/mdx-analyzer/pull/387) [`4070c63`](https://github.com/mdx-js/mdx-analyzer/commit/4070c6374cb55caa64fdda697ee56b9328c6038d) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support `tsconfig.json` option `mdx.checkMdx`
+
+- [`46bfd50`](https://github.com/mdx-js/mdx-analyzer/commit/46bfd50323f7d63037a99aea454c0cb67f1a4176) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update to Volar 2.0.0-alpha.14.
+
 ## 1.6.1
 
 ### Patch Changes
@@ -132,8 +148,8 @@
       // …
     },
     "mdx": {
-      "plugins": [["remark-frontmatter", ["toml", "yaml"]], "remark-gfm"]
-    }
+      "plugins": [["remark-frontmatter", ["toml", "yaml"]], "remark-gfm"],
+    },
   }
   ```
 

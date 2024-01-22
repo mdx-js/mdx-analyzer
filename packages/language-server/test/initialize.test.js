@@ -17,7 +17,7 @@ afterEach(() => {
 })
 
 test('initialize', async () => {
-  const initializeResponse = await serverHandle.initialize(
+  const {serverInfo, ...initializeResponse} = await serverHandle.initialize(
     fixtureUri('node16'),
     {typescript: {tsdk}}
   )
@@ -121,10 +121,6 @@ test('initialize', async () => {
         }
       },
       workspaceSymbolProvider: true
-    },
-    serverInfo: {
-      name: '@volar/language-server',
-      version: '2.0.0-alpha.14'
     }
   })
 })

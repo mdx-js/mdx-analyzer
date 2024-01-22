@@ -33,17 +33,17 @@
   },
   "dependencies": {
     "@mdx-js/language-service": "0.5.0",
-    "@volar/language-server": "2.0.0-alpha.14",
+    "@volar/language-server": "^2.0.0",
     "load-plugin": "^5.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
-    "volar-service-markdown": "0.0.26",
-    "volar-service-typescript": "0.0.26",
+    "volar-service-markdown": "0.0.27",
+    "volar-service-typescript": "0.0.27",
     "vscode-uri": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "@volar/test-utils": "2.0.0-alpha.14",
+    "@volar/test-utils": "^2.0.0",
     "unified": "^11.0.0"
   }
 }

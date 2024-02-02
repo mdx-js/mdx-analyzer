@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.7.1
+
+### Patch Changes
+
+- [#388](https://github.com/mdx-js/mdx-analyzer/pull/388) [`3069af7`](https://github.com/mdx-js/mdx-analyzer/commit/3069af7ade2feea2a65ad9ddcf241ceec55ec314) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update to Volar 2 stable.
+
+- [#391](https://github.com/mdx-js/mdx-analyzer/pull/391) [`2b29d7a`](https://github.com/mdx-js/mdx-analyzer/commit/2b29d7a30c624e2115bd7f0c6c64846f9f1ab741) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Avoid duplication when organizing imports.
+
 ## 1.7.0
 
 ### Minor Changes

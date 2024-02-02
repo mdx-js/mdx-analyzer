@@ -93,7 +93,7 @@ test('support completion in JSX', async () => {
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx'),
-          offset: 118,
+          offset: 119,
           originalItem: {name: 'Boolean'},
           uri: fixtureUri('node16/completion.mdx?virtualCodeId=jsx')
         }
@@ -113,7 +113,7 @@ test('support completion in JSX', async () => {
     commitCharacters: ['.', ',', ';', '('],
     data: {
       fileName: fixturePath('node16/completion.mdx'),
-      offset: 118,
+      offset: 119,
       originalItem: {name: 'Boolean'},
       uri: fixtureUri('node16/completion.mdx?virtualCodeId=jsx')
     },

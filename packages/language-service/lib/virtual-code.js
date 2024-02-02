@@ -117,12 +117,36 @@ function visit(node, onEnter, onExit) {
  *   The start offset in the original source code.
  * @param {number} endOffset
  *   The end offset in the original source code.
+ * @param {boolean} [includeNewline]
+ *  If true, and the source range is followed directly by a newline, extend the
+ *  end offset to include that newline.
  * @returns {string}
  *   The updated generated content.
  */
-function addOffset(mapping, source, generated, startOffset, endOffset) {
+function addOffset(
+  mapping,
+  source,
+  generated,
+  startOffset,
+  endOffset,
+  includeNewline
+) {
   if (startOffset === endOffset) {
     return generated
+  }
+
+  if (includeNewline) {
+    const LF = 10
+    const CR = 13
+    // eslint-disable-next-line unicorn/prefer-code-point
+    const charCode = source.charCodeAt(endOffset)
+    if (charCode === LF) {
+      endOffset += 1
+    }
+    // eslint-disable-next-line unicorn/prefer-code-point
+    else if (charCode === CR && source.charCodeAt(endOffset + 1) === LF) {
+      endOffset += 2
+    }
   }
 
   const length = endOffset - startOffset
@@ -196,7 +220,7 @@ function processExports(mdx, node, mapping, esm) {
   const body = node.data?.estree?.body
 
   if (!body?.length) {
-    return addOffset(mapping, mdx, esm, start, end) + '\n'
+    return addOffset(mapping, mdx, esm, start, end, true)
   }
 
   for (const child of body) {
@@ -206,14 +230,14 @@ function processExports(mdx, node, mapping, esm) {
         esm += layoutJsDoc(propsName)
       }
 
-      esm =
-        addOffset(
-          mapping,
-          mdx,
-          esm + '\nconst MDXLayout = ',
-          child.declaration.start,
-          child.end
-        ) + '\n'
+      esm = addOffset(
+        mapping,
+        mdx,
+        esm + '\nconst MDXLayout = ',
+        child.declaration.start,
+        child.end,
+        true
+      )
       continue
     }
 
@@ -228,20 +252,21 @@ function processExports(mdx, node, mapping, esm) {
               ? specifier.end
               : mdx.indexOf(',', specifier.end) + 1
           return (
-            addOffset(mapping, mdx, esm, nextPosition, end) +
+            addOffset(mapping, mdx, esm, nextPosition, end, true) +
             '\nimport {' +
             specifier.exported.name +
             ' as MDXLayout} from ' +
-            JSON.stringify(child.source.value)
+            JSON.stringify(child.source.value) +
+            '\n'
           )
         }
       }
     }
 
-    esm = addOffset(mapping, mdx, esm, child.start, child.end) + '\n'
+    esm = addOffset(mapping, mdx, esm, child.start, child.end, true)
   }
 
-  return esm
+  return esm + '\n'
 }
 
 /**

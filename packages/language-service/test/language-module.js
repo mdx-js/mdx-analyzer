@@ -47,7 +47,7 @@ test('create virtual code w/ mdxjsEsm', () => {
         {
           sourceOffsets: [0],
           generatedOffsets: [51],
-          lengths: [34],
+          lengths: [35],
           data: {
             completion: true,
             format: false,
@@ -62,6 +62,7 @@ test('create virtual code w/ mdxjsEsm', () => {
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
         'import {Planet} from "./Planet.js"',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -149,7 +150,7 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
         {
           sourceOffsets: [0],
           generatedOffsets: [51],
-          lengths: [33],
+          lengths: [34],
           data: {
             completion: true,
             format: false,
@@ -164,6 +165,7 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
         'export {named} from "./Layout.js"',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -251,7 +253,7 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
         {
           sourceOffsets: [0, 15],
           generatedOffsets: [51, 59],
-          lengths: [8, 20],
+          lengths: [8, 21],
           data: {
             completion: true,
             format: false,
@@ -266,7 +268,9 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
         'export {} from "./Layout.js"',
+        '',
         'import {default as MDXLayout} from "./Layout.js"',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -356,7 +360,7 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
         {
           sourceOffsets: [0, 22],
           generatedOffsets: [51, 66],
-          lengths: [15, 20],
+          lengths: [15, 21],
           data: {
             completion: true,
             format: false,
@@ -371,7 +375,9 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
         'export {named, } from "./Layout.js"',
+        '',
         'import {default as MDXLayout} from "./Layout.js"',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -461,7 +467,7 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
         {
           sourceOffsets: [0, 16],
           generatedOffsets: [51, 59],
-          lengths: [8, 26],
+          lengths: [8, 27],
           data: {
             completion: true,
             format: false,
@@ -476,7 +482,9 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
         'export { named} from "./Layout.js"',
+        '',
         'import {default as MDXLayout} from "./Layout.js"',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -563,7 +571,7 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
         {
           sourceOffsets: [15],
           generatedOffsets: [721],
-          lengths: [8],
+          lengths: [9],
           data: {
             completion: true,
             format: false,
@@ -592,6 +600,7 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
         ' *   The MDX content wrapped in the layout.',
         ' */',
         'const MDXLayout = () => {}',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -682,7 +691,7 @@ test('create virtual code w/ MDX layout in case of a default exported function d
         {
           sourceOffsets: [15],
           generatedOffsets: [721],
-          lengths: [23],
+          lengths: [24],
           data: {
             completion: true,
             format: false,
@@ -711,6 +720,7 @@ test('create virtual code w/ MDX layout in case of a default exported function d
         ' *   The MDX content wrapped in the layout.',
         ' */',
         'const MDXLayout = function MDXLayout() {}',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -798,7 +808,7 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
         {
           sourceOffsets: [15],
           generatedOffsets: [70],
-          lengths: [6],
+          lengths: [7],
           data: {
             completion: true,
             format: false,
@@ -814,6 +824,7 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
         '@jsxImportSource react */',
         '',
         'const MDXLayout = "main"',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -904,7 +915,7 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
         {
           sourceOffsets: [15],
           generatedOffsets: [726],
-          lengths: [33],
+          lengths: [34],
           data: {
             completion: true,
             format: false,
@@ -933,6 +944,7 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
         ' *   The MDX content wrapped in the layout.',
         ' */',
         'const MDXLayout = function MDXLayout(properties) {}',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -1022,9 +1034,9 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
       languageId: 'javascriptreact',
       mappings: [
         {
-          sourceOffsets: [15, 39],
-          generatedOffsets: [721, 745],
-          lengths: [23, 26],
+          sourceOffsets: [15],
+          generatedOffsets: [721],
+          lengths: [51],
           data: {
             completion: true,
             format: false,
@@ -1054,6 +1066,7 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
         ' */',
         'const MDXLayout = function MDXLayout() {}',
         'export function named() {}',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -1145,7 +1158,7 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
         {
           sourceOffsets: [0, 42],
           generatedOffsets: [51, 748],
-          lengths: [26, 23],
+          lengths: [27, 24],
           data: {
             completion: true,
             format: false,
@@ -1175,6 +1188,7 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
         ' *   The MDX content wrapped in the layout.',
         ' */',
         'const MDXLayout = function MDXLayout() {}',
+        '',
         '',
         '/**',
         ' * @deprecated',

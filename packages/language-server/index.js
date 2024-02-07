@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 /**
+ * @typedef {import('@mdx-js/language-service').Commands} Commands
  * @typedef {import('unified').PluggableList} PluggableList
  * @typedef {import('unified').Plugin} Plugin
  */
@@ -15,7 +16,7 @@ import {
 } from '@mdx-js/language-service'
 import {
   createConnection,
-  createNodeServer,
+  createServer,
   createSimpleProjectProvider
 } from '@volar/language-server/node.js'
 import {loadPlugin} from 'load-plugin'
@@ -29,7 +30,7 @@ process.title = 'mdx-language-server'
 /** @type {PluggableList} */
 const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
 const connection = createConnection()
-const server = createNodeServer(connection)
+const server = createServer(connection)
 
 connection.onInitialize((parameters) =>
   server.initialize(parameters, createSimpleProjectProvider, {
@@ -64,6 +65,7 @@ connection.onInitialize((parameters) =>
 
       /** @type {PluggableList | undefined} */
       let plugins
+      let checkMdx = false
       let jsxImportSource = 'react'
 
       if (configFileName) {
@@ -86,18 +88,53 @@ connection.onInitialize((parameters) =>
               loadPlugin(name, {prefix: 'remark', cwd})
             )
         )
+        checkMdx = Boolean(commandLine.raw?.mdx?.checkMdx)
         jsxImportSource = commandLine.options.jsxImportSource || jsxImportSource
       }
 
       return [
-        createMdxLanguagePlugin(plugins || defaultPlugins, jsxImportSource)
+        createMdxLanguagePlugin(
+          plugins || defaultPlugins,
+          checkMdx,
+          jsxImportSource
+        )
       ]
     }
   })
 )
+
+connection.onRequest('mdx/toggleDelete', async (parameters) => {
+  const commands = await getCommands(parameters.uri)
+  return commands.toggleDelete(parameters)
+})
+
+connection.onRequest('mdx/toggleEmphasis', async (parameters) => {
+  const commands = await getCommands(parameters.uri)
+  return commands.toggleEmphasis(parameters)
+})
+
+connection.onRequest('mdx/toggleInlineCode', async (parameters) => {
+  const commands = await getCommands(parameters.uri)
+  return commands.toggleInlineCode(parameters)
+})
+
+connection.onRequest('mdx/toggleStrong', async (parameters) => {
+  const commands = await getCommands(parameters.uri)
+  return commands.toggleStrong(parameters)
+})
 
 connection.onInitialized(() => {
   server.initialized()
 })
 
 connection.listen()
+
+/**
+ * @param {string} uri
+ * @returns {Promise<Commands>}
+ */
+async function getCommands(uri) {
+  const project = await server.projects.getProject(uri)
+  const service = project.getLanguageService()
+  return service.context.inject('mdxCommands')
+}

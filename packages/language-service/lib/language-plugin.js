@@ -1,12 +1,12 @@
 /**
- * @typedef {import('@volar/language-service').LanguagePlugin<VirtualMdxFile>} LanguagePlugin
+ * @typedef {import('@volar/language-service').LanguagePlugin<VirtualMdxCode>} LanguagePlugin
  * @typedef {import('unified').PluggableList} PluggableList
  */
 
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import {unified} from 'unified'
-import {VirtualMdxFile} from './virtual-file.js'
+import {VirtualMdxCode} from './virtual-code.js'
 
 /**
  * Create a [Volar](https://volarjs.dev) language module to support MDX.
@@ -14,12 +14,18 @@ import {VirtualMdxFile} from './virtual-file.js'
  * @param {PluggableList} [plugins]
  *   A list of remark syntax plugins. Only syntax plugins are supported.
  *   Transformers are unused.
+ * @param {boolean} checkMdx
+ *   If true, check MDX files strictly.
  * @param {string} jsxImportSource
  *   The JSX import source to use in the embedded JavaScript file.
  * @returns {LanguagePlugin}
  *   A Volar language plugin to support MDX.
  */
-export function createMdxLanguagePlugin(plugins, jsxImportSource = 'react') {
+export function createMdxLanguagePlugin(
+  plugins,
+  checkMdx = false,
+  jsxImportSource = 'react'
+) {
   const processor = unified().use(remarkParse).use(remarkMdx)
   if (plugins) {
     processor.use(plugins)
@@ -28,19 +34,20 @@ export function createMdxLanguagePlugin(plugins, jsxImportSource = 'react') {
   processor.freeze()
 
   return {
-    createVirtualFile(fileName, languageId, snapshot) {
+    createVirtualCode(fileId, languageId, snapshot) {
       if (languageId === 'mdx') {
-        return new VirtualMdxFile(
-          fileName,
+        return new VirtualMdxCode(
           snapshot,
           processor,
+          checkMdx,
           jsxImportSource
         )
       }
     },
 
-    updateVirtualFile(mdxFile, snapshot) {
-      mdxFile.update(snapshot)
+    updateVirtualCode(fileId, virtualCode, snapshot) {
+      virtualCode.update(snapshot)
+      return virtualCode
     },
 
     typescript: {
@@ -48,12 +55,14 @@ export function createMdxLanguagePlugin(plugins, jsxImportSource = 'react') {
         {extension: 'mdx', isMixedContent: true, scriptKind: 7}
       ],
 
-      resolveSourceFileName(tsFileName) {
-        if (tsFileName.endsWith('.mdx.jsx')) {
-          // .mdx.jsx → .mdx
-          return tsFileName.slice(0, -4)
+      getScript(rootVirtualCode) {
+        return {
+          code: rootVirtualCode.embeddedCodes[0],
+          extension: '.jsx',
+          scriptKind: 2
         }
       },
+
       resolveLanguageServiceHost(host) {
         return {
           ...host,

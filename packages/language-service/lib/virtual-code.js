@@ -1,7 +1,6 @@
 /**
- * @typedef {import('@volar/language-service').CodeInformation} CodeInformation
- * @typedef {import('@volar/language-service').Mapping<CodeInformation>} Mapping
- * @typedef {import('@volar/language-service').VirtualFile} VirtualFile
+ * @typedef {import('@volar/language-service').CodeMapping} CodeMapping
+ * @typedef {import('@volar/language-service').VirtualCode} VirtualCode
  * @typedef {import('estree').ExportDefaultDeclaration} ExportDefaultDeclaration
  * @typedef {import('estree').Program} Program
  * @typedef {import('mdast').Nodes} Nodes
@@ -13,15 +12,21 @@
  */
 
 import {walk} from 'estree-walker'
+import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {ScriptSnapshot} from './script-snapshot.js'
 
 /**
  * Render the content that should be prefixed to the embedded JavaScript file.
  *
+ * @param {boolean} tsCheck
+ *   If true, insert a `@check-js` comment into the virtual JavaScript code.
  * @param {string} jsxImportSource
  *   The string to use for the JSX import source tag.
  */
-const jsPrefix = (jsxImportSource) => `/* @jsxRuntime automatic
+const jsPrefix = (
+  tsCheck,
+  jsxImportSource
+) => `${tsCheck ? '// @ts-check\n' : ''}/* @jsxRuntime automatic
 @jsxImportSource ${jsxImportSource} */
 `
 
@@ -76,7 +81,7 @@ export default function MDXContent(props) {
 `
 
 const fallback =
-  jsPrefix('react') + componentStart(false) + '<></>' + componentEnd
+  jsPrefix(false, 'react') + componentStart(false) + '<></>' + componentEnd
 
 /**
  * Visit an mdast tree with and enter and exit callback.
@@ -102,7 +107,7 @@ function visit(node, onEnter, onExit) {
 /**
  * Generate mapped virtual content based on a source string and start and end offsets.
  *
- * @param {Mapping} mapping
+ * @param {CodeMapping} mapping
  *   The Volar mapping to append the offsets to.
  * @param {string} source
  *   The original source code.
@@ -112,12 +117,36 @@ function visit(node, onEnter, onExit) {
  *   The start offset in the original source code.
  * @param {number} endOffset
  *   The end offset in the original source code.
+ * @param {boolean} [includeNewline]
+ *  If true, and the source range is followed directly by a newline, extend the
+ *  end offset to include that newline.
  * @returns {string}
  *   The updated generated content.
  */
-function addOffset(mapping, source, generated, startOffset, endOffset) {
+function addOffset(
+  mapping,
+  source,
+  generated,
+  startOffset,
+  endOffset,
+  includeNewline
+) {
   if (startOffset === endOffset) {
     return generated
+  }
+
+  if (includeNewline) {
+    const LF = 10
+    const CR = 13
+    // eslint-disable-next-line unicorn/prefer-code-point
+    const charCode = source.charCodeAt(endOffset)
+    if (charCode === LF) {
+      endOffset += 1
+    }
+    // eslint-disable-next-line unicorn/prefer-code-point
+    else if (charCode === CR && source.charCodeAt(endOffset + 1) === LF) {
+      endOffset += 2
+    }
   }
 
   const length = endOffset - startOffset
@@ -173,7 +202,7 @@ function getPropsName(node) {
  *   The full MDX code to process.
  * @param {MdxjsEsm} node
  *   The MDX ESM node to process.
- * @param {Mapping} mapping
+ * @param {CodeMapping} mapping
  *   The Volar mapping to add offsets to.
  * @param {string} esm
  *   The virtual ESM code up to the point this function was called.
@@ -191,7 +220,7 @@ function processExports(mdx, node, mapping, esm) {
   const body = node.data?.estree?.body
 
   if (!body?.length) {
-    return addOffset(mapping, mdx, esm, start, end) + '\n'
+    return addOffset(mapping, mdx, esm, start, end, true)
   }
 
   for (const child of body) {
@@ -201,14 +230,14 @@ function processExports(mdx, node, mapping, esm) {
         esm += layoutJsDoc(propsName)
       }
 
-      esm =
-        addOffset(
-          mapping,
-          mdx,
-          esm + '\nconst MDXLayout = ',
-          child.declaration.start,
-          child.end
-        ) + '\n'
+      esm = addOffset(
+        mapping,
+        mdx,
+        esm + '\nconst MDXLayout = ',
+        child.declaration.start,
+        child.end,
+        true
+      )
       continue
     }
 
@@ -223,20 +252,21 @@ function processExports(mdx, node, mapping, esm) {
               ? specifier.end
               : mdx.indexOf(',', specifier.end) + 1
           return (
-            addOffset(mapping, mdx, esm, nextPosition, end) +
+            addOffset(mapping, mdx, esm, nextPosition, end, true) +
             '\nimport {' +
             specifier.exported.name +
             ' as MDXLayout} from ' +
-            JSON.stringify(child.source.value)
+            JSON.stringify(child.source.value) +
+            '\n'
           )
         }
       }
     }
 
-    esm = addOffset(mapping, mdx, esm, child.start, child.end) + '\n'
+    esm = addOffset(mapping, mdx, esm, child.start, child.end, true)
   }
 
-  return esm
+  return esm + '\n'
 }
 
 /**
@@ -273,20 +303,20 @@ function hasAwaitExpression(expression) {
 }
 
 /**
- * @param {string} fileName
  * @param {string} mdx
  * @param {Root} ast
+ * @param {boolean} checkMdx
  * @param {string} jsxImportSource
- * @returns {VirtualFile[]}
+ * @returns {VirtualCode[]}
  */
-function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
-  /** @type {Mapping[]} */
+function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
+  /** @type {CodeMapping[]} */
   const jsMappings = []
 
   /**
    * The Volar mapping that maps all ESM syntax of the MDX file to the virtual JavaScript file.
    *
-   * @type {Mapping}
+   * @type {CodeMapping}
    */
   const esmMapping = {
     sourceOffsets: [],
@@ -305,7 +335,7 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
   /**
    * The Volar mapping that maps all JSX syntax of the MDX file to the virtual JavaScript file.
    *
-   * @type {Mapping}
+   * @type {CodeMapping}
    */
   const jsxMapping = {
     sourceOffsets: [],
@@ -324,7 +354,7 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
   /**
    * The Volar mapping that maps all markdown content to the virtual markdown file.
    *
-   * @type {Mapping}
+   * @type {CodeMapping}
    */
   const markdownMapping = {
     sourceOffsets: [],
@@ -340,11 +370,11 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
     }
   }
 
-  /** @type {VirtualFile[]} */
-  const virtualFiles = []
+  /** @type {VirtualCode[]} */
+  const virtualCodes = []
 
   let hasAwait = false
-  let esm = jsPrefix(jsxImportSource)
+  let esm = jsPrefix(checkMdx, jsxImportSource)
   let jsx = ''
   let markdown = ''
   let nextMarkdownSourceStart = 0
@@ -398,8 +428,8 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
    *   The JavaScript node.
    */
   function updateMarkdownFromNode(node) {
-    const startOffset = /** @type {number} */ (node.position?.start.offset)
-    const endOffset = /** @type {number} */ (node.position?.end.offset)
+    const startOffset = getNodeStartOffset(node)
+    const endOffset = getNodeEndOffset(node)
 
     updateMarkdownFromOffsets(startOffset, endOffset)
   }
@@ -419,9 +449,9 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
         case 'yaml': {
           const frontmatterWithFences = mdx.slice(start, end)
           const frontmatterStart = frontmatterWithFences.indexOf(node.value)
-          virtualFiles.push({
-            embeddedFiles: [],
-            fileName: fileName + '.' + node.type,
+          virtualCodes.push({
+            embeddedCodes: [],
+            id: node.type,
             languageId: node.type,
             mappings: [
               {
@@ -453,9 +483,7 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
         case 'mdxJsxFlowElement':
         case 'mdxJsxTextElement': {
           if (node.children.length > 0) {
-            end = /** @type {number} */ (
-              node.children[0].position?.start.offset
-            )
+            end = getNodeStartOffset(node.children[0])
           }
 
           updateMarkdownFromOffsets(start, end)
@@ -501,8 +529,8 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
           const child = node.children?.at(-1)
 
           if (child) {
-            const start = /** @type {number} */ (child.position?.end.offset)
-            const end = /** @type {number} */ (node.position?.end.offset)
+            const start = getNodeEndOffset(child)
+            const end = getNodeEndOffset(node)
 
             updateMarkdownFromOffsets(start, end)
             jsx = addOffset(jsxMapping, mdx, jsx, start, end)
@@ -545,42 +573,47 @@ function getEmbeddedFiles(fileName, mdx, ast, jsxImportSource) {
     jsMappings.push(jsxMapping)
   }
 
-  virtualFiles.unshift(
+  virtualCodes.unshift(
     {
-      embeddedFiles: [],
-      fileName: fileName + '.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: 2
-      },
       mappings: jsMappings,
       snapshot: new ScriptSnapshot(esm)
     },
     {
-      embeddedFiles: [],
-      fileName: fileName + '.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [markdownMapping],
       snapshot: new ScriptSnapshot(markdown)
     }
   )
 
-  return virtualFiles
+  return virtualCodes
 }
 
 /**
- * A Volar virtual file that contains some additional metadata for MDX files.
+ * A Volar virtual code that contains some additional metadata for MDX files.
  */
-export class VirtualMdxFile {
+export class VirtualMdxCode {
   #processor
+  #checkMdx
   #jsxImportSource
+
+  /**
+   * The mdast of the document, but only if it’s valid.
+   *
+   * @type {Root | undefined}
+   */
+  ast
 
   /**
    * The virtual files embedded in the MDX file.
    *
-   * @type {VirtualFile[]}
+   * @type {VirtualCode[]}
    */
-  embeddedFiles = []
+  embeddedCodes = []
 
   /**
    * The error that was throw while parsing.
@@ -588,6 +621,13 @@ export class VirtualMdxFile {
    * @type {VFileMessage | undefined}
    */
   error
+
+  /**
+   * The file ID.
+   *
+   * @type {'mdx'}
+   */
+  id = 'mdx'
 
   /**
    * The language ID.
@@ -599,24 +639,24 @@ export class VirtualMdxFile {
   /**
    * The code mappings of the MDX file. There is always only one mapping.
    *
-   * @type {Mapping[]}
+   * @type {CodeMapping[]}
    */
   mappings = []
 
   /**
-   * @param {string} fileName
-   *   The file name of the MDX file.
    * @param {IScriptSnapshot} snapshot
    *   The original TypeScript snapshot.
    * @param {Processor} processor
    *   The unified processor to use for parsing.
+   * @param {boolean} checkMdx
+   *   If true, insert a `@check-js` comment into the virtual JavaScript code.
    * @param {string} jsxImportSource
    *   The JSX import source to use in the embedded JavaScript file.
    */
-  constructor(fileName, snapshot, processor, jsxImportSource) {
+  constructor(snapshot, processor, checkMdx, jsxImportSource) {
     this.#processor = processor
+    this.#checkMdx = checkMdx
     this.#jsxImportSource = jsxImportSource
-    this.fileName = fileName
     this.snapshot = snapshot
     this.update(snapshot)
   }
@@ -649,29 +689,28 @@ export class VirtualMdxFile {
 
     try {
       const ast = this.#processor.parse(mdx)
-      this.embeddedFiles = getEmbeddedFiles(
-        this.fileName,
+      this.embeddedCodes = getEmbeddedCodes(
         mdx,
         ast,
+        this.#checkMdx,
         this.#jsxImportSource
       )
+      this.ast = ast
       this.error = undefined
     } catch (error) {
       this.error = /** @type {VFileMessage} */ (error)
-      this.embeddedFiles = [
+      this.ast = undefined
+      this.embeddedCodes = [
         {
-          embeddedFiles: [],
-          fileName: this.fileName + '.jsx',
+          embeddedCodes: [],
+          id: 'jsx',
           languageId: 'javascriptreact',
-          typescript: {
-            scriptKind: 2
-          },
           mappings: [],
           snapshot: new ScriptSnapshot(fallback)
         },
         {
-          embeddedFiles: [],
-          fileName: this.fileName + '.md',
+          embeddedCodes: [],
+          id: 'md',
           languageId: 'markdown',
           mappings: [],
           snapshot: new ScriptSnapshot(mdx)

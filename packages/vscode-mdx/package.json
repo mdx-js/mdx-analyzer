@@ -1,6 +1,6 @@
 {
   "name": "vscode-mdx",
-  "version": "1.6.1",
+  "version": "1.7.1",
   "displayName": "MDX",
   "description": "Language support for MDX",
   "categories": [
@@ -42,12 +42,11 @@
   },
   "devDependencies": {
     "@types/vscode": "^1.82.0",
-    "@volar/language-server": "2.0.0-alpha.13",
-    "@volar/vscode": "2.0.0-alpha.13",
-    "@vscode/vsce": "^2.0.0",
+    "@volar/language-server": "~2.0.0",
+    "@volar/vscode": "~2.0.0",
+    "@vscode/vsce": "2.22.0",
     "esbuild": "^0.19.0",
-    "ovsx": "^0.8.0",
-    "undici": "^5.0.0"
+    "ovsx": "^0.8.0"
   },
   "galleryBanner": {
     "color": "#fcb32c",
@@ -151,6 +150,26 @@
         }
       }
     ],
+    "keybindings": [
+      {
+        "command": "mdx.toggleEmphasis",
+        "key": "ctrl+i",
+        "mac": "cmd+i",
+        "when": "editorTextFocus && !editorReadonly && editorLangId == mdx"
+      },
+      {
+        "command": "mdx.toggleDelete",
+        "key": "alt+shift+5",
+        "mac": "cmd+shift+x",
+        "when": "editorTextFocus && !editorReadonly && editorLangId == mdx"
+      },
+      {
+        "command": "mdx.toggleStrong",
+        "key": "ctrl+b",
+        "mac": "cmd+b",
+        "when": "editorTextFocus && !editorReadonly && editorLangId == mdx"
+      }
+    ],
     "languages": [
       {
         "id": "mdx",
@@ -173,12 +192,54 @@
         "url": "./tsconfig.schema.json"
       }
     ],
+    "commands": [
+      {
+        "command": "mdx.toggleDelete",
+        "title": "Toggle Delete",
+        "category": "MDX"
+      },
+      {
+        "command": "mdx.toggleEmphasis",
+        "title": "Toggle Emphasis",
+        "category": "MDX"
+      },
+      {
+        "command": "mdx.toggleInlineCode",
+        "title": "Toggle Inline Code",
+        "category": "MDX"
+      },
+      {
+        "command": "mdx.toggleStrong",
+        "title": "Toggle Strong",
+        "category": "MDX"
+      }
+    ],
     "menus": {
       "editor/context": [
         {
           "command": "typescript.goToSourceDefinition",
           "when": "tsSupportsSourceDefinition && resourceLangId == mdx",
           "group": "navigation@9"
+        },
+        {
+          "command": "mdx.toggleDelete",
+          "when": "editorTextFocus && !editorReadonly && editorLangId == mdx",
+          "group": "1_modification"
+        },
+        {
+          "command": "mdx.toggleEmphasis",
+          "when": "editorTextFocus && !editorReadonly && editorLangId == mdx",
+          "group": "1_modification"
+        },
+        {
+          "command": "mdx.toggleInlineCode",
+          "when": "editorTextFocus && !editorReadonly && editorLangId == mdx",
+          "group": "1_modification"
+        },
+        {
+          "command": "mdx.toggleStrong",
+          "when": "editorTextFocus && !editorReadonly && editorLangId == mdx",
+          "group": "1_modification"
         }
       ],
       "explorer/context": [

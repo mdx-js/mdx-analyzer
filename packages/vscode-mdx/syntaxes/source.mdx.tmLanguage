@@ -7,7 +7,7 @@
     Once accepted there, it can be pulled into this project (`vscode-mdx`) with
     `script/generate.mjs`, and released.
 
-    Version from SHA: 11eeefed6b5b13f0bfda019972ab96405a10a8fd.
+    Version from SHA: 371d61df9ddc3850e12aabe61b602d02e259e8a4.
   -->
   <dict>
     <key>name</key>
@@ -2147,7 +2147,7 @@
           </dict>
         </array>
         <key>end</key>
-        <string>^(?=[\t ]*$)</string>
+        <string>^(?=[\t ]*$)|$</string>
       </dict>
       <key>extension-github-gemoji</key>
       <dict>
@@ -2320,7 +2320,7 @@
         <key>begin</key>
         <string>(?:^|\G)(?=(?i:export|import)[ ])</string>
         <key>end</key>
-        <string>^(?=[\t ]*$)</string>
+        <string>^(?=[\t ]*$)|$</string>
         <key>patterns</key>
         <array>
           <dict>

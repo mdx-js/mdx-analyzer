@@ -1,5 +1,29 @@
 # @mdx-js/language-service
 
+## 0.5.1
+
+### Patch Changes
+
+- [#388](https://github.com/mdx-js/mdx-analyzer/pull/388) [`3069af7`](https://github.com/mdx-js/mdx-analyzer/commit/3069af7ade2feea2a65ad9ddcf241ceec55ec314) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update to Volar 2 stable.
+
+- [#391](https://github.com/mdx-js/mdx-analyzer/pull/391) [`2b29d7a`](https://github.com/mdx-js/mdx-analyzer/commit/2b29d7a30c624e2115bd7f0c6c64846f9f1ab741) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Avoid duplication when organizing imports.
+
+## 0.5.0
+
+### Minor Changes
+
+- [#384](https://github.com/mdx-js/mdx-analyzer/pull/384) [`b9a910e`](https://github.com/mdx-js/mdx-analyzer/commit/b9a910e4d9e87535e2973f2d7b5704d0489bc2e0) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support the commands `mdx/toggleDelete`, `mdx/toggleEmphasis`, `mdx/toggleInlineCode`, and `mdx/toggleStrong`.
+
+### Patch Changes
+
+- [#383](https://github.com/mdx-js/mdx-analyzer/pull/383) [`135f633`](https://github.com/mdx-js/mdx-analyzer/commit/135f6339d345a191e4bfbdb25450813cbf446152) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Expose function `resolveRemarkPlugins`
+
+- [#387](https://github.com/mdx-js/mdx-analyzer/pull/387) [`4070c63`](https://github.com/mdx-js/mdx-analyzer/commit/4070c6374cb55caa64fdda697ee56b9328c6038d) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support `tsconfig.json` option `mdx.checkMdx`
+
+- [`46bfd50`](https://github.com/mdx-js/mdx-analyzer/commit/46bfd50323f7d63037a99aea454c0cb67f1a4176) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update to Volar 2.0.0-alpha.14.
+
+- [#381](https://github.com/mdx-js/mdx-analyzer/pull/381) [`ceb9a0b`](https://github.com/mdx-js/mdx-analyzer/commit/ceb9a0b587e9b0cd236a5e465c2aa1b24650a803) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Implement Volar’s document drop edits
+
 ## 0.4.0
 
 ### Minor Changes

@@ -36,15 +36,15 @@ test('support completion in ESM', async () => {
     data: {
       original: {
         data: {
-          fileName: fixturePath('node16/completion.mdx.jsx'),
+          fileName: fixturePath('node16/completion.mdx'),
           offset: 81,
           originalItem: {name: 'Boolean'},
-          uri: fixtureUri('node16/completion.mdx.jsx')
+          uri: fixtureUri('node16/completion.mdx?virtualCodeId=jsx')
         }
       },
       serviceIndex: 2,
       uri: fixtureUri('node16/completion.mdx'),
-      virtualDocumentUri: fixtureUri('node16/completion.mdx.jsx')
+      virtualDocumentUri: fixtureUri('node16/completion.mdx?virtualCodeId=jsx')
     },
     insertTextFormat: InsertTextFormat.PlainText,
     kind: CompletionItemKind.Variable,
@@ -56,10 +56,10 @@ test('support completion in ESM', async () => {
   assert.deepEqual(resolved, {
     commitCharacters: ['.', ',', ';', '('],
     data: {
-      fileName: fixturePath('node16/completion.mdx.jsx'),
+      fileName: fixturePath('node16/completion.mdx'),
       offset: 81,
       originalItem: {name: 'Boolean'},
-      uri: fixtureUri('node16/completion.mdx.jsx')
+      uri: fixtureUri('node16/completion.mdx?virtualCodeId=jsx')
     },
     detail: 'interface Boolean\nvar Boolean: BooleanConstructor',
     documentation: {kind: 'markdown', value: ''},
@@ -92,15 +92,15 @@ test('support completion in JSX', async () => {
     data: {
       original: {
         data: {
-          fileName: fixturePath('node16/completion.mdx.jsx'),
-          offset: 118,
+          fileName: fixturePath('node16/completion.mdx'),
+          offset: 119,
           originalItem: {name: 'Boolean'},
-          uri: fixtureUri('node16/completion.mdx.jsx')
+          uri: fixtureUri('node16/completion.mdx?virtualCodeId=jsx')
         }
       },
       serviceIndex: 2,
       uri: fixtureUri('node16/completion.mdx'),
-      virtualDocumentUri: fixtureUri('node16/completion.mdx.jsx')
+      virtualDocumentUri: fixtureUri('node16/completion.mdx?virtualCodeId=jsx')
     },
     insertTextFormat: InsertTextFormat.PlainText,
     kind: CompletionItemKind.Variable,
@@ -112,10 +112,10 @@ test('support completion in JSX', async () => {
   assert.deepEqual(resolved, {
     commitCharacters: ['.', ',', ';', '('],
     data: {
-      fileName: fixturePath('node16/completion.mdx.jsx'),
-      offset: 118,
+      fileName: fixturePath('node16/completion.mdx'),
+      offset: 119,
       originalItem: {name: 'Boolean'},
-      uri: fixtureUri('node16/completion.mdx.jsx')
+      uri: fixtureUri('node16/completion.mdx?virtualCodeId=jsx')
     },
     detail: 'interface Boolean\nvar Boolean: BooleanConstructor',
     documentation: {kind: 'markdown', value: ''},

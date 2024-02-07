@@ -45,6 +45,12 @@ test('resolve folding ranges', async () => {
       startLine: 11
     },
     {
+      endCharacter: 0,
+      endLine: 2,
+      startCharacter: 0,
+      startLine: 2
+    },
+    {
       endLine: 45,
       startLine: 6
     },

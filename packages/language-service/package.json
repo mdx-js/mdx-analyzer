@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/language-service",
-  "version": "0.4.0",
+  "version": "0.5.1",
   "type": "module",
   "description": "MDX Volar support",
   "repository": {
@@ -34,7 +34,7 @@
     "@types/estree": "^1.0.0",
     "@types/mdast": "^4.0.0",
     "@types/unist": "^3.0.0",
-    "@volar/language-service": "2.0.0-alpha.13",
+    "@volar/language-service": "~2.0.0",
     "estree-walker": "^3.0.0",
     "mdast-util-mdxjs-esm": "^2.0.0",
     "mdast-util-to-markdown": "^2.0.0",
@@ -42,6 +42,7 @@
     "remark-parse": "^11.0.0",
     "unified": "^11.0.0",
     "unist-util-lsp": "^2.0.0",
+    "unist-util-visit-parents": "^6.0.0",
     "vfile-message": "^4.0.0",
     "vscode-uri": "^3.0.0"
   },

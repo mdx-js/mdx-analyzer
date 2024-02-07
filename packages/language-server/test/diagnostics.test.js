@@ -33,12 +33,12 @@ test('parse errors', async () => {
           href: 'https://github.com/micromark/micromark-extension-mdxjs-esm#could-not-parse-importexports-with-acorn'
         },
         data: {
-          documentUri: fixtureUri('node16/syntax-error.mdx'),
+          documentUri: fixtureUri('node16/syntax-error.mdx?virtualCodeId=mdx'),
           isFormat: false,
           original: {},
           serviceIndex: 1,
           uri: fixtureUri('node16/syntax-error.mdx'),
-          version: 0
+          version: 1
         },
         message: 'Could not parse import/exports with acorn',
         range: {
@@ -71,7 +71,7 @@ test('type errors', async () => {
       {
         code: 2568,
         data: {
-          documentUri: fixtureUri('node16/type-errors.mdx.jsx'),
+          documentUri: fixtureUri('node16/type-errors.mdx?virtualCodeId=jsx'),
           isFormat: false,
           original: {},
           serviceIndex: 2,
@@ -90,7 +90,7 @@ test('type errors', async () => {
       {
         code: 2568,
         data: {
-          documentUri: fixtureUri('node16/type-errors.mdx.jsx'),
+          documentUri: fixtureUri('node16/type-errors.mdx?virtualCodeId=jsx'),
           isFormat: false,
           original: {},
           serviceIndex: 2,

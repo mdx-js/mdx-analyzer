@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@volar/language-service').VirtualFile} VirtualFile
+ * @typedef {import('@volar/language-service').VirtualCode} VirtualCode
  */
 
 import assert from 'node:assert/strict'
@@ -9,21 +9,21 @@ import remarkFrontmatter from 'remark-frontmatter'
 import typescript from 'typescript'
 import {VFileMessage} from 'vfile-message'
 import {ScriptSnapshot} from '../lib/script-snapshot.js'
-import {VirtualMdxFile} from '../lib/virtual-file.js'
+import {VirtualMdxCode} from '../lib/virtual-code.js'
 
-test('create virtual file w/ mdxjsEsm', () => {
+test('create virtual code w/ mdxjsEsm', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('import {Planet} from "./Planet.js"', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -38,16 +38,16 @@ test('create virtual file w/ mdxjsEsm', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
         {
           sourceOffsets: [0],
           generatedOffsets: [51],
-          lengths: [34],
+          lengths: [35],
           data: {
             completion: true,
             format: false,
@@ -62,6 +62,7 @@ test('create virtual file w/ mdxjsEsm', () => {
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
         'import {Planet} from "./Planet.js"',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -87,14 +88,11 @@ test('create virtual file w/ mdxjsEsm', () => {
         '// @ts-ignore',
         '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
         ''
-      ),
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      }
+      )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -116,19 +114,19 @@ test('create virtual file w/ mdxjsEsm', () => {
   ])
 })
 
-test('create virtual file w/o MDX layout in case of named re-export', () => {
+test('create virtual code w/o MDX layout in case of named re-export', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('export {named} from "./Layout.js"', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -143,16 +141,16 @@ test('create virtual file w/o MDX layout in case of named re-export', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
         {
           sourceOffsets: [0],
           generatedOffsets: [51],
-          lengths: [33],
+          lengths: [34],
           data: {
             completion: true,
             format: false,
@@ -167,6 +165,7 @@ test('create virtual file w/o MDX layout in case of named re-export', () => {
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
         'export {named} from "./Layout.js"',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -192,14 +191,11 @@ test('create virtual file w/o MDX layout in case of named re-export', () => {
         '// @ts-ignore',
         '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
         ''
-      ),
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      }
+      )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -221,19 +217,19 @@ test('create virtual file w/o MDX layout in case of named re-export', () => {
   ])
 })
 
-test('create virtual file w/ MDX layout in case of default re-export', () => {
+test('create virtual code w/ MDX layout in case of default re-export', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('export {default} from "./Layout.js"', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -248,19 +244,16 @@ test('create virtual file w/ MDX layout in case of default re-export', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [0, 15],
           generatedOffsets: [51, 59],
-          lengths: [8, 20],
+          lengths: [8, 21],
           data: {
             completion: true,
             format: false,
@@ -275,7 +268,9 @@ test('create virtual file w/ MDX layout in case of default re-export', () => {
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
         'export {} from "./Layout.js"',
+        '',
         'import {default as MDXLayout} from "./Layout.js"',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -303,8 +298,8 @@ test('create virtual file w/ MDX layout in case of default re-export', () => {
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -326,7 +321,7 @@ test('create virtual file w/ MDX layout in case of default re-export', () => {
   ])
 })
 
-test('create virtual file w/ MDX layout in case of named and default re-export', () => {
+test('create virtual code w/ MDX layout in case of named and default re-export', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
@@ -334,14 +329,14 @@ test('create virtual file w/ MDX layout in case of named and default re-export',
     ''
   )
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -356,19 +351,16 @@ test('create virtual file w/ MDX layout in case of named and default re-export',
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [0, 22],
           generatedOffsets: [51, 66],
-          lengths: [15, 20],
+          lengths: [15, 21],
           data: {
             completion: true,
             format: false,
@@ -383,7 +375,9 @@ test('create virtual file w/ MDX layout in case of named and default re-export',
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
         'export {named, } from "./Layout.js"',
+        '',
         'import {default as MDXLayout} from "./Layout.js"',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -411,8 +405,8 @@ test('create virtual file w/ MDX layout in case of named and default re-export',
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -434,7 +428,7 @@ test('create virtual file w/ MDX layout in case of named and default re-export',
   ])
 })
 
-test('create virtual file w/ MDX layout in case of default and named re-export', () => {
+test('create virtual code w/ MDX layout in case of default and named re-export', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
@@ -442,14 +436,14 @@ test('create virtual file w/ MDX layout in case of default and named re-export',
     ''
   )
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -464,19 +458,16 @@ test('create virtual file w/ MDX layout in case of default and named re-export',
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [0, 16],
           generatedOffsets: [51, 59],
-          lengths: [8, 26],
+          lengths: [8, 27],
           data: {
             completion: true,
             format: false,
@@ -491,7 +482,9 @@ test('create virtual file w/ MDX layout in case of default and named re-export',
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
         'export { named} from "./Layout.js"',
+        '',
         'import {default as MDXLayout} from "./Layout.js"',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -519,8 +512,8 @@ test('create virtual file w/ MDX layout in case of default and named re-export',
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -542,19 +535,19 @@ test('create virtual file w/ MDX layout in case of default and named re-export',
   ])
 })
 
-test('create virtual file w/ MDX layout in case of a default exported arrow function', () => {
+test('create virtual code w/ MDX layout in case of a default exported arrow function', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('export default () => {}', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -569,19 +562,16 @@ test('create virtual file w/ MDX layout in case of a default exported arrow func
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [15],
           generatedOffsets: [721],
-          lengths: [8],
+          lengths: [9],
           data: {
             completion: true,
             format: false,
@@ -611,6 +601,7 @@ test('create virtual file w/ MDX layout in case of a default exported arrow func
         ' */',
         'const MDXLayout = () => {}',
         '',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -638,8 +629,8 @@ test('create virtual file w/ MDX layout in case of a default exported arrow func
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -661,7 +652,7 @@ test('create virtual file w/ MDX layout in case of a default exported arrow func
   ])
 })
 
-test('create virtual file w/ MDX layout in case of a default exported function declaration', () => {
+test('create virtual code w/ MDX layout in case of a default exported function declaration', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
@@ -669,14 +660,14 @@ test('create virtual file w/ MDX layout in case of a default exported function d
     ''
   )
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -691,19 +682,16 @@ test('create virtual file w/ MDX layout in case of a default exported function d
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [15],
           generatedOffsets: [721],
-          lengths: [23],
+          lengths: [24],
           data: {
             completion: true,
             format: false,
@@ -733,6 +721,7 @@ test('create virtual file w/ MDX layout in case of a default exported function d
         ' */',
         'const MDXLayout = function MDXLayout() {}',
         '',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -760,8 +749,8 @@ test('create virtual file w/ MDX layout in case of a default exported function d
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -783,19 +772,19 @@ test('create virtual file w/ MDX layout in case of a default exported function d
   ])
 })
 
-test('create virtual file w/ MDX layout in case of a default exported constant', () => {
+test('create virtual code w/ MDX layout in case of a default exported constant', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('export default "main"', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -810,19 +799,16 @@ test('create virtual file w/ MDX layout in case of a default exported constant',
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [15],
           generatedOffsets: [70],
-          lengths: [6],
+          lengths: [7],
           data: {
             completion: true,
             format: false,
@@ -838,6 +824,7 @@ test('create virtual file w/ MDX layout in case of a default exported constant',
         '@jsxImportSource react */',
         '',
         'const MDXLayout = "main"',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -866,8 +853,8 @@ test('create virtual file w/ MDX layout in case of a default exported constant',
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -889,7 +876,7 @@ test('create virtual file w/ MDX layout in case of a default exported constant',
   ])
 })
 
-test('create virtual file w/ MDX layout and matching argument name', () => {
+test('create virtual code w/ MDX layout and matching argument name', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
@@ -897,14 +884,14 @@ test('create virtual file w/ MDX layout and matching argument name', () => {
     ''
   )
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -919,19 +906,16 @@ test('create virtual file w/ MDX layout and matching argument name', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [15],
           generatedOffsets: [726],
-          lengths: [33],
+          lengths: [34],
           data: {
             completion: true,
             format: false,
@@ -961,6 +945,7 @@ test('create virtual file w/ MDX layout and matching argument name', () => {
         ' */',
         'const MDXLayout = function MDXLayout(properties) {}',
         '',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -988,8 +973,8 @@ test('create virtual file w/ MDX layout and matching argument name', () => {
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -1011,7 +996,7 @@ test('create virtual file w/ MDX layout and matching argument name', () => {
   ])
 })
 
-test('create virtual file w/ MDX layout in case of a default export followed by a named', () => {
+test('create virtual code w/ MDX layout in case of a default export followed by a named', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
@@ -1020,14 +1005,14 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
     ''
   )
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -1042,19 +1027,16 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
-          sourceOffsets: [15, 39],
-          generatedOffsets: [721, 745],
-          lengths: [23, 26],
+          sourceOffsets: [15],
+          generatedOffsets: [721],
+          lengths: [51],
           data: {
             completion: true,
             format: false,
@@ -1085,6 +1067,7 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
         'const MDXLayout = function MDXLayout() {}',
         'export function named() {}',
         '',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -1112,8 +1095,8 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -1135,7 +1118,7 @@ test('create virtual file w/ MDX layout in case of a default export followed by 
   ])
 })
 
-test('create virtual file w/ MDX layout in case of a default export preceded by a named', () => {
+test('create virtual code w/ MDX layout in case of a default export preceded by a named', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
@@ -1144,14 +1127,14 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
     ''
   )
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -1166,19 +1149,16 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [0, 42],
           generatedOffsets: [51, 748],
-          lengths: [26, 23],
+          lengths: [27, 24],
           data: {
             completion: true,
             format: false,
@@ -1209,6 +1189,7 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
         ' */',
         'const MDXLayout = function MDXLayout() {}',
         '',
+        '',
         '/**',
         ' * @deprecated',
         ' *   Do not use.',
@@ -1236,8 +1217,8 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -1259,19 +1240,19 @@ test('create virtual file w/ MDX layout in case of a default export preceded by 
   ])
 })
 
-test('create virtual file w/ mdxFlowExpression', () => {
+test('create virtual code w/ mdxFlowExpression', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('{Math.PI}', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -1286,14 +1267,11 @@ test('create virtual file w/ mdxFlowExpression', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [0],
@@ -1340,8 +1318,8 @@ test('create virtual file w/ mdxFlowExpression', () => {
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -1363,7 +1341,7 @@ test('create virtual file w/ mdxFlowExpression', () => {
   ])
 })
 
-test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
+test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
@@ -1375,14 +1353,14 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
     ''
   )
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -1397,14 +1375,11 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [0, 57],
@@ -1455,8 +1430,8 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -1481,19 +1456,19 @@ test('create virtual file w/ mdxJsxFlowElement w/ children', () => {
   ])
 })
 
-test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
+test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('<div />', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -1508,10 +1483,10 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
         {
@@ -1556,14 +1531,11 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
         '// @ts-ignore',
         '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
         ''
-      ),
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      }
+      )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -1585,19 +1557,19 @@ test('create virtual file w/ mdxJsxFlowElement w/o children', () => {
   ])
 })
 
-test('create virtual file w/ mdxJsxTextElement', () => {
+test('create virtual code w/ mdxJsxTextElement', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('A <div />', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -1612,14 +1584,11 @@ test('create virtual file w/ mdxJsxTextElement', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           sourceOffsets: [2],
@@ -1666,8 +1635,8 @@ test('create virtual file w/ mdxJsxTextElement', () => {
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -1689,19 +1658,19 @@ test('create virtual file w/ mdxJsxTextElement', () => {
   ])
 })
 
-test('create virtual file w/ mdxTextExpression', () => {
+test('create virtual code w/ mdxTextExpression', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('3 < {Math.PI} < 4', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -1716,14 +1685,11 @@ test('create virtual file w/ mdxTextExpression', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           generatedOffsets: [328],
@@ -1770,8 +1736,8 @@ test('create virtual file w/ mdxTextExpression', () => {
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -1793,7 +1759,7 @@ test('create virtual file w/ mdxTextExpression', () => {
   ])
 })
 
-test('create virtual file w/ async mdxTextExpression', () => {
+test('create virtual code w/ async mdxTextExpression', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
@@ -1801,14 +1767,14 @@ test('create virtual file w/ async mdxTextExpression', () => {
     ''
   )
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -1823,14 +1789,11 @@ test('create virtual file w/ async mdxTextExpression', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      },
       mappings: [
         {
           generatedOffsets: [334],
@@ -1877,8 +1840,8 @@ test('create virtual file w/ async mdxTextExpression', () => {
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -1900,7 +1863,7 @@ test('create virtual file w/ async mdxTextExpression', () => {
   ])
 })
 
-test('create virtual file w/ dedented markdown content', () => {
+test('create virtual code w/ dedented markdown content', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
@@ -1911,14 +1874,14 @@ test('create virtual file w/ dedented markdown content', () => {
     '| TypeScript |'
   )
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -1933,14 +1896,11 @@ test('create virtual file w/ dedented markdown content', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
-      typescript: {
-        scriptKind: 2
-      },
       mappings: [],
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
@@ -1973,8 +1933,8 @@ test('create virtual file w/ dedented markdown content', () => {
       )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -2002,19 +1962,19 @@ test('create virtual file w/ dedented markdown content', () => {
   ])
 })
 
-test('create virtual file w/ syntax error', () => {
+test('create virtual code w/ syntax error', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines('<', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ok(file.error instanceof VFileMessage)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ok(code.error instanceof VFileMessage)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -2029,10 +1989,10 @@ test('create virtual file w/ syntax error', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [],
       snapshot: snapshotFromLines(
@@ -2063,14 +2023,11 @@ test('create virtual file w/ syntax error', () => {
         '// @ts-ignore',
         '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
         ''
-      ),
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      }
+      )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [],
       snapshot: snapshotFromLines('<', '')
@@ -2078,19 +2035,19 @@ test('create virtual file w/ syntax error', () => {
   ])
 })
 
-test('create virtual file w/ yaml frontmatter', () => {
+test('create virtual code w/ yaml frontmatter', () => {
   const plugin = createMdxLanguagePlugin([remarkFrontmatter])
 
   const snapshot = snapshotFromLines('---', 'hello: frontmatter', '---', '')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -2105,10 +2062,10 @@ test('create virtual file w/ yaml frontmatter', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [],
       snapshot: snapshotFromLines(
@@ -2139,14 +2096,11 @@ test('create virtual file w/ yaml frontmatter', () => {
         '// @ts-ignore',
         '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
         ''
-      ),
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      }
+      )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -2166,8 +2120,8 @@ test('create virtual file w/ yaml frontmatter', () => {
       snapshot: snapshotFromLines('---', 'hello: frontmatter', '---', '')
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.yaml',
+      embeddedCodes: [],
+      id: 'yaml',
       languageId: 'yaml',
       mappings: [
         {
@@ -2189,25 +2143,25 @@ test('create virtual file w/ yaml frontmatter', () => {
   ])
 })
 
-test('update virtual file', () => {
+test('update virtual code', () => {
   const plugin = createMdxLanguagePlugin()
 
-  const file = plugin.createVirtualFile(
+  const code = plugin.createVirtualCode(
     '/test.mdx',
     'mdx',
     snapshotFromLines('Tihs lne haz tyops', '')
   )
 
-  assert.ok(file instanceof VirtualMdxFile)
+  assert.ok(code instanceof VirtualMdxCode)
 
   const snapshot = snapshotFromLines('This line is fixed', '')
-  plugin.updateVirtualFile(file, snapshot)
+  plugin.updateVirtualCode('/text.mdx', code, snapshot)
 
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -2222,10 +2176,10 @@ test('update virtual file', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [],
       snapshot: snapshotFromLines(
@@ -2256,14 +2210,11 @@ test('update virtual file', () => {
         '// @ts-ignore',
         '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
         ''
-      ),
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      }
+      )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {
@@ -2325,19 +2276,19 @@ test('compilation setting overrides', () => {
   })
 })
 
-test('support custom jsxImportSource', () => {
-  const plugin = createMdxLanguagePlugin(undefined, 'preact')
+test('support checkMdx', () => {
+  const plugin = createMdxLanguagePlugin(undefined, true)
 
   const snapshot = snapshotFromLines('')
 
-  const file = plugin.createVirtualFile('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
-  assert.ok(file instanceof VirtualMdxFile)
-  assert.equal(file.fileName, '/test.mdx')
-  assert.equal(file.languageId, 'mdx')
-  assert.ifError(file.error)
-  assert.equal(file.snapshot, snapshot)
-  assert.deepEqual(file.mappings, [
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
     {
       sourceOffsets: [0],
       generatedOffsets: [0],
@@ -2352,10 +2303,98 @@ test('support custom jsxImportSource', () => {
       }
     }
   ])
-  assert.deepEqual(file.embeddedFiles, [
+  assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.jsx',
+      embeddedCodes: [],
+      id: 'jsx',
+      languageId: 'javascriptreact',
+      mappings: [],
+      snapshot: snapshotFromLines(
+        '// @ts-check',
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
+        '',
+        '/**',
+        ' * @deprecated',
+        ' *   Do not use.',
+        ' *',
+        ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+        ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+        ' */',
+        'function _createMdxContent(props) {',
+        '  return <></>',
+        '}',
+        '',
+        '/**',
+        ' * Render the MDX contents.',
+        ' *',
+        ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+        ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+        ' */',
+        'export default function MDXContent(props) {',
+        '  return <_createMdxContent {...props} />',
+        '}',
+        '',
+        '// @ts-ignore',
+        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        ''
+      )
+    },
+    {
+      embeddedCodes: [],
+      id: 'md',
+      languageId: 'markdown',
+      mappings: [
+        {
+          sourceOffsets: [],
+          generatedOffsets: [],
+          lengths: [],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        }
+      ],
+      snapshot: snapshotFromLines('')
+    }
+  ])
+})
+
+test('support custom jsxImportSource', () => {
+  const plugin = createMdxLanguagePlugin(undefined, false, 'preact')
+
+  const snapshot = snapshotFromLines('')
+
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
+    {
+      sourceOffsets: [0],
+      generatedOffsets: [0],
+      lengths: [snapshot.getLength()],
+      data: {
+        completion: true,
+        format: true,
+        navigation: true,
+        semantic: true,
+        structure: true,
+        verification: true
+      }
+    }
+  ])
+  assert.deepEqual(code.embeddedCodes, [
+    {
+      embeddedCodes: [],
+      id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [],
       snapshot: snapshotFromLines(
@@ -2386,14 +2425,11 @@ test('support custom jsxImportSource', () => {
         '// @ts-ignore',
         '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
         ''
-      ),
-      typescript: {
-        scriptKind: typescript.ScriptKind.JSX
-      }
+      )
     },
     {
-      embeddedFiles: [],
-      fileName: '/test.mdx.md',
+      embeddedCodes: [],
+      id: 'md',
       languageId: 'markdown',
       mappings: [
         {

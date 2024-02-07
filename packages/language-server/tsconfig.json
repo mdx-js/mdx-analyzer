@@ -4,7 +4,8 @@
   "exclude": ["coverage/", "node_modules/"],
   "references": [{"path": "../language-service"}],
   "compilerOptions": {
-    "noEmit": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "resolveJsonModule": true
   }
 }

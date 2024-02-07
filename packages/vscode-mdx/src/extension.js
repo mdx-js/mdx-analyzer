@@ -125,13 +125,12 @@ async function startServer(context) {
           activateMdxToggleCommand('toggleDelete'),
           activateMdxToggleCommand('toggleEmphasis'),
           activateMdxToggleCommand('toggleInlineCode'),
-          activateMdxToggleCommand('toggleStrong'),
+          activateMdxToggleCommand('toggleStrong')
         )
       }
     )
   }
 }
-
 
 // Track https://github.com/microsoft/vscode/issues/200511
 try {
@@ -150,13 +149,13 @@ try {
         /** @type {string} */
         let text = readFileSync(...args)
 
-        // patch jsTsLanguageModes
+        // Patch jsTsLanguageModes
         text = text.replace(
           't.$u=[t.$r,t.$s,t.$p,t.$q]',
           (s) => s + '.concat("mdx")'
         )
 
-        // patch isSupportedLanguageMode
+        // Patch isSupportedLanguageMode
         text = text.replace(
           's.languages.match([t.$p,t.$q,t.$r,t.$s]',
           (s) => s + '.concat("mdx")'
@@ -205,4 +204,3 @@ function activateMdxToggleCommand(command) {
     workspace.applyEdit(workspaceEdit, {})
   })
 }
-

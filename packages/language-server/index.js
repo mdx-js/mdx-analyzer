@@ -7,28 +7,19 @@
  */
 
 import assert from 'node:assert'
-import path from 'node:path'
 import process from 'node:process'
-import {
-  createMdxLanguagePlugin,
-  createMdxServicePlugin,
-  resolveRemarkPlugins
-} from '@mdx-js/language-service'
+import {createMdxServicePlugin} from '@mdx-js/language-service'
 import {
   createConnection,
   createServer,
   createSimpleProjectProvider
 } from '@volar/language-server/node.js'
-import {loadPlugin} from 'load-plugin'
-import remarkFrontmatter from 'remark-frontmatter'
-import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
 import {create as createTypeScriptServicePlugin} from 'volar-service-typescript'
+import {loadMdxLanguagePlugin} from './lib/load-language-plugin.js'
 
 process.title = 'mdx-language-server'
 
-/** @type {PluggableList} */
-const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
 const connection = createConnection()
 const server = createServer(connection)
 
@@ -63,42 +54,7 @@ connection.onInitialize((parameters) =>
 
       const configFileName = projectContext?.typescript?.configFileName
 
-      /** @type {PluggableList | undefined} */
-      let plugins
-      let checkMdx = false
-      let jsxImportSource = 'react'
-
-      if (configFileName) {
-        const cwd = path.dirname(configFileName)
-        const configSourceFile = ts.readJsonConfigFile(
-          configFileName,
-          ts.sys.readFile
-        )
-        const commandLine = ts.parseJsonSourceFileConfigFileContent(
-          configSourceFile,
-          ts.sys,
-          cwd,
-          undefined,
-          configFileName
-        )
-        plugins = await resolveRemarkPlugins(
-          commandLine.raw?.mdx,
-          (name) =>
-            /** @type {Promise<Plugin>} */ (
-              loadPlugin(name, {prefix: 'remark', cwd})
-            )
-        )
-        checkMdx = Boolean(commandLine.raw?.mdx?.checkMdx)
-        jsxImportSource = commandLine.options.jsxImportSource || jsxImportSource
-      }
-
-      return [
-        createMdxLanguagePlugin(
-          plugins || defaultPlugins,
-          checkMdx,
-          jsxImportSource
-        )
-      ]
+      return [await loadMdxLanguagePlugin(ts, configFileName)]
     }
   })
 )

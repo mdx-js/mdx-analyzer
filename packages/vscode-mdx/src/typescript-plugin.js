@@ -1,8 +1,7 @@
-import {createAsyncTSServerPlugin} from '@volar/typescript/lib/quickstart/createAsyncTSServerPlugin.js'
-import {createMdxLanguagePlugin} from '@mdx-js/language-service'
-import {loadPlugins} from '../../language-server/lib/configuration.js'
+import {createAsyncLanguageServicePlugin} from '@volar/typescript/lib/quickstart/createAsyncLanguageServicePlugin.js'
+import {loadMdxLanguagePlugin} from '../../language-server/lib/load-language-plugin.js'
 
-module.exports = createAsyncTSServerPlugin(
+module.exports = createAsyncLanguageServicePlugin(
   ['.mdx'],
   2 /* JSX */,
   async (ts, info) => {
@@ -10,7 +9,6 @@ module.exports = createAsyncTSServerPlugin(
       info.project.projectKind === ts.server.ProjectKind.Configured
         ? info.project.getProjectName()
         : undefined
-    const plugins = await loadPlugins(configFileName, ts)
-    return [createMdxLanguagePlugin(plugins)]
+    return [await loadMdxLanguagePlugin(ts, configFileName)]
   }
 )

@@ -1382,9 +1382,9 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
-          sourceOffsets: [0, 57],
-          generatedOffsets: [322, 340],
-          lengths: [9, 8],
+          sourceOffsets: [0, 59],
+          generatedOffsets: [322, 336],
+          lengths: [5, 6],
           data: {
             completion: true,
             format: false,
@@ -1407,11 +1407,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
-        '  return <><div>',
-        '',
-        "  <>{''}</>",
-        '',
-        '</div></>',
+        "  return <><div><>{''}</></div></>",
         '}',
         '',
         '/**',
@@ -1435,9 +1431,9 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
       languageId: 'markdown',
       mappings: [
         {
-          sourceOffsets: [9, 65],
-          generatedOffsets: [0, 55],
-          lengths: [48, 1],
+          sourceOffsets: [5, 9, 65],
+          generatedOffsets: [0, 2, 59],
+          lengths: [2, 50, 1],
           data: {
             completion: true,
             format: false,
@@ -1449,7 +1445,11 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
         }
       ],
       snapshot: snapshotFromLines(
-        'This content should not be part of the JSX embed<!---->',
+        '',
+        '',
+        'This content should not be part of the JSX embed',
+        '',
+        '<!---->',
         ''
       )
     }

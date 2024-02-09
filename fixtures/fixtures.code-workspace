@@ -1,5 +1,7 @@
 {
   "settings": {
+    "editor.suggest.showWords": false,
+    "editor.wordBasedSuggestions": "off",
     "git.openRepositoryInParentFolders": "never",
     "mdx.server.enable": true,
     "mdx.trace.server.verbosity": "compact",

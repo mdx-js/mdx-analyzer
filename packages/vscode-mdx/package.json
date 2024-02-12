@@ -48,7 +48,7 @@
     "@volar/language-server": "~2.0.0",
     "@volar/vscode": "~2.0.0",
     "@vscode/vsce": "2.22.0",
-    "esbuild": "^0.19.0",
+    "esbuild": "^0.20.0",
     "ovsx": "^0.8.0"
   },
   "galleryBanner": {

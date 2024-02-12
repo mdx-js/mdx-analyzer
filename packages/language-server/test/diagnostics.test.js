@@ -79,7 +79,7 @@ test('type errors', async () => {
           version: 1
         },
         message:
-          "Property 'counter' may not exist on type '{ readonly count: number; }'. Did you mean 'count'?",
+          "Property 'counter' may not exist on type '{ readonly count: number; readonly components?: {}; }'. Did you mean 'count'?",
         range: {
           start: {line: 14, character: 51},
           end: {line: 14, character: 58}

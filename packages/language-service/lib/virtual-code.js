@@ -12,8 +12,10 @@
  */
 
 import {walk} from 'estree-walker'
+import {analyze} from 'periscopic'
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {ScriptSnapshot} from './script-snapshot.js'
+import {isInjectableComponent} from './jsx-utils.js'
 
 /**
  * Render the content that should be prefixed to the embedded JavaScript file.
@@ -51,8 +53,9 @@ const layoutJsDoc = (propsName) => `
 /**
  * @param {boolean} isAsync
  *   Whether or not the `_createMdxContent` should be async
+ * @param {string[]} variables
  */
-const componentStart = (isAsync) => `
+const componentStart = (isAsync, variables) => `
 /**
  * @deprecated
  *   Do not use.
@@ -61,6 +64,15 @@ const componentStart = (isAsync) => `
  *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.
  */
 ${isAsync ? 'async ' : ''}function _createMdxContent(props) {
+  /**
+   * @internal
+   *   **Do not use.** This is an MDX internal.
+   */
+  const _components = {
+    ...props.components,
+    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */
+    props${Array.from(variables, (name) => ',\n    /** {@link ' + name + '} */\n    ' + name).join('')}
+  }
   return `
 
 const componentEnd = `
@@ -77,11 +89,11 @@ export default function MDXContent(props) {
 }
 
 // @ts-ignore
-/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */
+/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */
 `
 
 const fallback =
-  jsPrefix(false, 'react') + componentStart(false) + '<></>' + componentEnd
+  jsPrefix(false, 'react') + componentStart(false, []) + '<></>' + componentEnd
 
 /**
  * Visit an mdast tree with and enter and exit callback.
@@ -379,6 +391,29 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
   let markdown = ''
   let nextMarkdownSourceStart = 0
 
+  /** @type {Program} */
+  const esmProgram = {
+    type: 'Program',
+    sourceType: 'module',
+    start: 0,
+    end: 0,
+    body: []
+  }
+
+  for (const child of ast.children) {
+    if (child.type !== 'mdxjsEsm') {
+      continue
+    }
+
+    const estree = child.data?.estree
+
+    if (estree) {
+      esmProgram.body.push(...estree.body)
+    }
+  }
+
+  const variables = [...analyze(esmProgram).scope.declarations.keys()].sort()
+
   /**
    * Update the **markdown** mappings from a start and end offset of a **JavaScript** chunk.
    *
@@ -487,7 +522,20 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
           }
 
           updateMarkdownFromOffsets(start, end)
-          jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+          if (isInjectableComponent(node.name, variables)) {
+            const openingStart = start + 1
+            jsx = addOffset(
+              jsxMapping,
+              mdx,
+              addOffset(jsxMapping, mdx, jsx, start, openingStart) +
+                '_components.',
+              openingStart,
+              end
+            )
+          } else {
+            jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+          }
+
           break
         }
 
@@ -533,7 +581,19 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
             const end = getNodeEndOffset(node)
 
             updateMarkdownFromOffsets(start, end)
-            jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+            if (isInjectableComponent(node.name, variables)) {
+              const closingStart = start + 2
+              jsx = addOffset(
+                jsxMapping,
+                mdx,
+                addOffset(jsxMapping, mdx, jsx, start, closingStart) +
+                  '_components.',
+                closingStart,
+                end
+              )
+            } else {
+              jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+            }
           }
 
           break
@@ -557,7 +617,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
   )
 
   updateMarkdownFromOffsets(mdx.length, mdx.length)
-  esm += componentStart(hasAwait)
+  esm += componentStart(hasAwait, variables)
 
   for (let i = 0; i < jsxMapping.generatedOffsets.length; i++) {
     jsxMapping.generatedOffsets[i] += esm.length

@@ -72,6 +72,17 @@ test('create virtual code w/ mdxjsEsm', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props,',
+        '    /** {@link Planet} */',
+        '    Planet',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -86,7 +97,7 @@ test('create virtual code w/ mdxjsEsm', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -175,6 +186,15 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -189,7 +209,7 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -279,6 +299,15 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -293,7 +322,7 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -386,6 +415,15 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -400,7 +438,7 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -493,6 +531,15 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -507,7 +554,7 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -610,6 +657,15 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -624,7 +680,7 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -730,6 +786,17 @@ test('create virtual code w/ MDX layout in case of a default exported function d
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props,',
+        '    /** {@link MDXLayout} */',
+        '    MDXLayout',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -744,7 +811,7 @@ test('create virtual code w/ MDX layout in case of a default exported function d
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -834,6 +901,15 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -848,7 +924,7 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -954,6 +1030,17 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props,',
+        '    /** {@link MDXLayout} */',
+        '    MDXLayout',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -968,7 +1055,7 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1076,6 +1163,19 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props,',
+        '    /** {@link MDXLayout} */',
+        '    MDXLayout,',
+        '    /** {@link named} */',
+        '    named',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -1090,7 +1190,7 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1198,6 +1298,19 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props,',
+        '    /** {@link MDXLayout} */',
+        '    MDXLayout,',
+        '    /** {@link named} */',
+        '    named',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -1212,7 +1325,7 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1275,7 +1388,7 @@ test('create virtual code w/ mdxFlowExpression', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [322],
+          generatedOffsets: [568],
           lengths: [9],
           data: {
             completion: true,
@@ -1299,6 +1412,15 @@ test('create virtual code w/ mdxFlowExpression', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <>{Math.PI}</>',
         '}',
         '',
@@ -1313,7 +1435,7 @@ test('create virtual code w/ mdxFlowExpression', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1345,11 +1467,23 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
   const plugin = createMdxLanguagePlugin()
 
   const snapshot = snapshotFromLines(
+    'export function Local() {}',
+    '',
     '<div>',
     '',
     '  This content should not be part of the JSX embed',
     '',
     '</div>',
+    '<Injected>',
+    '',
+    '  This content should not be part of the JSX embed',
+    '',
+    '</Injected>',
+    '<Local>',
+    '',
+    '  This content should not be part of the JSX embed',
+    '',
+    '</Local>',
     ''
   )
 
@@ -1382,9 +1516,22 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
-          sourceOffsets: [0, 59],
-          generatedOffsets: [322, 336],
-          lengths: [5, 6],
+          sourceOffsets: [0],
+          generatedOffsets: [51],
+          lengths: [27],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          sourceOffsets: [28, 87, 94, 95, 158, 160, 170, 231],
+          generatedOffsets: [632, 646, 652, 665, 683, 697, 706, 722],
+          lengths: [5, 6, 1, 9, 2, 9, 7, 8],
           data: {
             completion: true,
             format: false,
@@ -1398,6 +1545,8 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        'export function Local() {}',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -1407,7 +1556,18 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
-        "  return <><div><>{''}</></div></>",
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props,',
+        '    /** {@link Local} */',
+        '    Local',
+        '  }',
+        "  return <><div><>{''}</></div><_components.Injected><>{''}</></_components.Injected><Local><>{''}</></Local></>",
         '}',
         '',
         '/**',
@@ -1421,7 +1581,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1431,9 +1591,9 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
       languageId: 'markdown',
       mappings: [
         {
-          sourceOffsets: [5, 9, 65],
-          generatedOffsets: [0, 2, 59],
-          lengths: [2, 50, 1],
+          sourceOffsets: [26, 33, 37, 93, 104, 108, 169, 177, 181, 239],
+          generatedOffsets: [0, 9, 11, 68, 76, 78, 135, 143, 145, 202],
+          lengths: [2, 2, 50, 1, 2, 50, 1, 2, 50, 1],
           data: {
             completion: true,
             format: false,
@@ -1447,6 +1607,18 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
       snapshot: snapshotFromLines(
         '',
         '',
+        '<!---->',
+        '',
+        'This content should not be part of the JSX embed',
+        '',
+        '<!---->',
+        '<!---->',
+        '',
+        'This content should not be part of the JSX embed',
+        '',
+        '<!---->',
+        '<!---->',
+        '',
         'This content should not be part of the JSX embed',
         '',
         '<!---->',
@@ -1459,7 +1631,14 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
 test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
   const plugin = createMdxLanguagePlugin()
 
-  const snapshot = snapshotFromLines('<div />', '')
+  const snapshot = snapshotFromLines(
+    'export function Local() {}',
+    '',
+    '<div />',
+    '<Injected />',
+    '<Local />',
+    ''
+  )
 
   const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
@@ -1491,8 +1670,21 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [322],
-          lengths: [7],
+          generatedOffsets: [51],
+          lengths: [27],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          sourceOffsets: [28, 36, 37, 49],
+          generatedOffsets: [632, 639, 652, 663],
+          lengths: [7, 1, 11, 9],
           data: {
             completion: true,
             format: false,
@@ -1506,6 +1698,8 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        'export function Local() {}',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -1515,7 +1709,18 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
-        '  return <><div /></>',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props,',
+        '    /** {@link Local} */',
+        '    Local',
+        '  }',
+        '  return <><div /><_components.Injected /><Local /></>',
         '}',
         '',
         '/**',
@@ -1529,7 +1734,7 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1539,9 +1744,9 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
       languageId: 'markdown',
       mappings: [
         {
-          sourceOffsets: [7],
-          generatedOffsets: [0],
-          lengths: [1],
+          sourceOffsets: [26, 35, 48, 58],
+          generatedOffsets: [0, 9, 17, 25],
+          lengths: [2, 1, 1, 1],
           data: {
             completion: true,
             format: false,
@@ -1552,7 +1757,7 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
           }
         }
       ],
-      snapshot: snapshotFromLines('', '')
+      snapshot: snapshotFromLines('', '', '<!---->', '<!---->', '<!---->', '')
     }
   ])
 })
@@ -1560,7 +1765,14 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
 test('create virtual code w/ mdxJsxTextElement', () => {
   const plugin = createMdxLanguagePlugin()
 
-  const snapshot = snapshotFromLines('A <div />', '')
+  const snapshot = snapshotFromLines(
+    'export function Local() {}',
+    '',
+    'A <div />',
+    'An <Injected />',
+    'A <Local />',
+    ''
+  )
 
   const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
 
@@ -1591,9 +1803,22 @@ test('create virtual code w/ mdxJsxTextElement', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
-          sourceOffsets: [2],
-          generatedOffsets: [328],
-          lengths: [7],
+          sourceOffsets: [0],
+          generatedOffsets: [51],
+          lengths: [27],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          sourceOffsets: [30, 41, 42, 56],
+          generatedOffsets: [638, 649, 662, 677],
+          lengths: [7, 1, 11, 9],
           data: {
             completion: true,
             format: false,
@@ -1607,6 +1832,8 @@ test('create virtual code w/ mdxJsxTextElement', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        'export function Local() {}',
+        '',
         '',
         '/**',
         ' * @deprecated',
@@ -1616,7 +1843,18 @@ test('create virtual code w/ mdxJsxTextElement', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
-        "  return <><>{''}<div /></></>",
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props,',
+        '    /** {@link Local} */',
+        '    Local',
+        '  }',
+        "  return <><>{''}<div />{''}<_components.Injected />{''}<Local /></></>",
         '}',
         '',
         '/**',
@@ -1630,7 +1868,7 @@ test('create virtual code w/ mdxJsxTextElement', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1640,9 +1878,9 @@ test('create virtual code w/ mdxJsxTextElement', () => {
       languageId: 'markdown',
       mappings: [
         {
-          sourceOffsets: [0, 9],
-          generatedOffsets: [0, 9],
-          lengths: [2, 1],
+          sourceOffsets: [26, 37, 53, 65],
+          generatedOffsets: [0, 11, 22, 32],
+          lengths: [4, 4, 3, 1],
           data: {
             completion: true,
             format: false,
@@ -1653,7 +1891,14 @@ test('create virtual code w/ mdxJsxTextElement', () => {
           }
         }
       ],
-      snapshot: snapshotFromLines('A <!---->', '')
+      snapshot: snapshotFromLines(
+        '',
+        '',
+        'A <!---->',
+        'An <!---->',
+        'A <!---->',
+        ''
+      )
     }
   ])
 })
@@ -1692,7 +1937,7 @@ test('create virtual code w/ mdxTextExpression', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
-          generatedOffsets: [328],
+          generatedOffsets: [574],
           sourceOffsets: [4],
           lengths: [9],
           data: {
@@ -1717,6 +1962,15 @@ test('create virtual code w/ mdxTextExpression', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         "  return <><>{''}{Math.PI}{''}</></>",
         '}',
         '',
@@ -1731,7 +1985,7 @@ test('create virtual code w/ mdxTextExpression', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1796,7 +2050,7 @@ test('create virtual code w/ async mdxTextExpression', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
-          generatedOffsets: [334],
+          generatedOffsets: [580],
           sourceOffsets: [4],
           lengths: [32],
           data: {
@@ -1821,6 +2075,15 @@ test('create virtual code w/ async mdxTextExpression', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'async function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         "  return <><>{''}{await Promise.resolve(Math.PI)}{''}</></>",
         '}',
         '',
@@ -1835,7 +2098,7 @@ test('create virtual code w/ async mdxTextExpression', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1914,6 +2177,15 @@ test('create virtual code w/ dedented markdown content', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         "  return <><>{''}</></>",
         '}',
         '',
@@ -1928,7 +2200,7 @@ test('create virtual code w/ dedented markdown content', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2007,6 +2279,15 @@ test('create virtual code w/ syntax error', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -2021,7 +2302,7 @@ test('create virtual code w/ syntax error', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2080,6 +2361,15 @@ test('create virtual code w/ yaml frontmatter', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -2094,7 +2384,7 @@ test('create virtual code w/ yaml frontmatter', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2194,6 +2484,15 @@ test('update virtual code', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         "  return <><>{''}</></>",
         '}',
         '',
@@ -2208,7 +2507,7 @@ test('update virtual code', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2322,6 +2621,15 @@ test('support checkMdx', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -2336,7 +2644,7 @@ test('support checkMdx', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2409,6 +2717,15 @@ test('support custom jsxImportSource', () => {
         ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
         ' */',
         'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props',
+        '  }',
         '  return <></>',
         '}',
         '',
@@ -2423,7 +2740,7 @@ test('support custom jsxImportSource', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },

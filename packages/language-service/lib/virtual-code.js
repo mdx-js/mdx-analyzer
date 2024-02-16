@@ -73,9 +73,10 @@ ${isAsync ? 'async ' : ''}function _createMdxContent(props) {
     /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */
     props${Array.from(variables, (name) => ',\n    /** {@link ' + name + '} */\n    ' + name).join('')}
   }
-  return `
+  return <>`
 
 const componentEnd = `
+  </>
 }
 
 /**
@@ -92,8 +93,10 @@ export default function MDXContent(props) {
 /** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */
 `
 
+const jsxIndent = '\n    '
+
 const fallback =
-  jsPrefix(false, 'react') + componentStart(false, []) + '<></>' + componentEnd
+  jsPrefix(false, 'react') + componentStart(false, []) + componentEnd
 
 /**
  * Visit an mdast tree with and enter and exit callback.
@@ -527,13 +530,13 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
             jsx = addOffset(
               jsxMapping,
               mdx,
-              addOffset(jsxMapping, mdx, jsx, start, openingStart) +
+              addOffset(jsxMapping, mdx, jsx + jsxIndent, start, openingStart) +
                 '_components.',
               openingStart,
               end
             )
           } else {
-            jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+            jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, end)
           }
 
           break
@@ -545,7 +548,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
           const program = node.data?.estree
 
           if (program?.body.length === 0) {
-            jsx = addOffset(jsxMapping, mdx, jsx, start, start + 1)
+            jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, start + 1)
             jsx = addOffset(jsxMapping, mdx, jsx, end - 1, end)
             esm = addOffset(esmMapping, mdx, esm, start + 1, end - 1) + '\n'
           } else {
@@ -553,19 +556,23 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
               hasAwait ||= hasAwaitExpression(program)
             }
 
-            jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+            jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, end)
           }
 
           break
         }
 
+        case 'root': {
+          break
+        }
+
         case 'text': {
-          jsx += "{''}"
+          jsx += jsxIndent + "{''}"
           break
         }
 
         default: {
-          jsx += '<>'
+          jsx += jsxIndent + '<>'
           break
         }
       }
@@ -586,13 +593,18 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
               jsx = addOffset(
                 jsxMapping,
                 mdx,
-                addOffset(jsxMapping, mdx, jsx, start, closingStart) +
-                  '_components.',
+                addOffset(
+                  jsxMapping,
+                  mdx,
+                  jsx + jsxIndent,
+                  start,
+                  closingStart
+                ) + '_components.',
                 closingStart,
                 end
               )
             } else {
-              jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+              jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, end)
             }
           }
 
@@ -602,6 +614,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
         case 'mdxTextExpression':
         case 'mdxjsEsm':
         case 'mdxFlowExpression':
+        case 'root':
         case 'text':
         case 'toml':
         case 'yaml': {
@@ -609,7 +622,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
         }
 
         default: {
-          jsx += '</>'
+          jsx += jsxIndent + '</>'
           break
         }
       }

@@ -525,20 +525,55 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
           }
 
           updateMarkdownFromOffsets(start, end)
+
+          let lastIndex = start + 1
+          jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, lastIndex)
           if (isInjectableComponent(node.name, variables)) {
-            const openingStart = start + 1
+            jsx += '_components.'
+          }
+
+          if (node.name) {
             jsx = addOffset(
               jsxMapping,
               mdx,
-              addOffset(jsxMapping, mdx, jsx + jsxIndent, start, openingStart) +
-                '_components.',
-              openingStart,
-              end
+              jsx,
+              lastIndex,
+              lastIndex + node.name.length
             )
-          } else {
-            jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, end)
+            lastIndex += node.name.length
           }
 
+          for (const attribute of node.attributes) {
+            if (typeof attribute.value !== 'object') {
+              continue
+            }
+
+            const program = attribute.value?.data?.estree
+
+            if (!program) {
+              continue
+            }
+
+            hasAwait ||= hasAwaitExpression(program)
+            walk(program, {
+              enter(identifier) {
+                if (identifier.type !== 'JSXIdentifier') {
+                  return
+                }
+
+                if (!isInjectableComponent(identifier.name, variables)) {
+                  return
+                }
+
+                jsx =
+                  addOffset(jsxMapping, mdx, jsx, lastIndex, identifier.start) +
+                  '_components.'
+                lastIndex = identifier.start
+              }
+            })
+          }
+
+          jsx = addOffset(jsxMapping, mdx, jsx, lastIndex, end)
           break
         }
 

@@ -1628,6 +1628,156 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
   ])
 })
 
+test('create virtual code w/ prefixed JSX expressions in attributes', () => {
+  const plugin = createMdxLanguagePlugin()
+
+  const snapshot = snapshotFromLines(
+    'export function Local() {}',
+    '',
+    '<div local={<Local />} injected={<Injected />} string="string" boolean />',
+    '',
+    '<div local={<Local>{null}</Local>} injected={<Injected>{null}</Injected>} string="string" boolean>',
+    '  paragraph',
+    '</div>'
+  )
+
+  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.equal(code.id, 'mdx')
+  assert.equal(code.languageId, 'mdx')
+  assert.ifError(code.error)
+  assert.equal(code.snapshot, snapshot)
+  assert.deepEqual(code.mappings, [
+    {
+      sourceOffsets: [0],
+      generatedOffsets: [0],
+      lengths: [snapshot.getLength()],
+      data: {
+        completion: true,
+        format: true,
+        navigation: true,
+        semantic: true,
+        structure: true,
+        verification: true
+      }
+    }
+  ])
+  assert.deepEqual(code.embeddedCodes, [
+    {
+      embeddedCodes: [],
+      id: 'jsx',
+      languageId: 'javascriptreact',
+      mappings: [
+        {
+          sourceOffsets: [0],
+          generatedOffsets: [51],
+          lengths: [27],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          sourceOffsets: [28, 62, 103, 149, 166, 214],
+          generatedOffsets: [637, 683, 727, 785, 814, 878],
+          lengths: [34, 39, 46, 17, 35, 6],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        }
+      ],
+      snapshot: snapshotFromLines(
+        '/* @jsxRuntime automatic',
+        '@jsxImportSource react */',
+        'export function Local() {}',
+        '',
+        '',
+        '/**',
+        ' * @deprecated',
+        ' *   Do not use.',
+        ' *',
+        ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+        ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+        ' */',
+        'function _createMdxContent(props) {',
+        '  /**',
+        '   * @internal',
+        '   *   **Do not use.** This is an MDX internal.',
+        '   */',
+        '  const _components = {',
+        '    ...props.components,',
+        '    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */',
+        '    props,',
+        '    /** {@link Local} */',
+        '    Local',
+        '  }',
+        '  return <>',
+        '    <div local={<Local />} injected={<_components.Injected />} string="string" boolean />',
+        '    <div local={<Local>{null}</Local>} injected={<_components.Injected>{null}</_components.Injected>} string="string" boolean>',
+        '    <>',
+        "    {''}",
+        '    </>',
+        '    </div>',
+        '  </>',
+        '}',
+        '',
+        '/**',
+        ' * Render the MDX contents.',
+        ' *',
+        ' * @param {{readonly [K in keyof MDXContentProps]: MDXContentProps[K]}} props',
+        ' *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.',
+        ' */',
+        'export default function MDXContent(props) {',
+        '  return <_createMdxContent {...props} />',
+        '}',
+        '',
+        '// @ts-ignore',
+        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        ''
+      )
+    },
+    {
+      embeddedCodes: [],
+      id: 'md',
+      languageId: 'markdown',
+      mappings: [
+        {
+          sourceOffsets: [26, 101, 201, 204],
+          generatedOffsets: [0, 9, 18, 19],
+          lengths: [2, 2, 1, 10],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        }
+      ],
+      snapshot: snapshotFromLines(
+        '',
+        '',
+        '<!---->',
+        '',
+        '<!---->',
+        'paragraph',
+        '<!---->'
+      )
+    }
+  ])
+})
+
 test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
   const plugin = createMdxLanguagePlugin()
 

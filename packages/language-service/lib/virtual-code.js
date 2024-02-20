@@ -547,18 +547,34 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
           updateMarkdownFromNode(node)
           const program = node.data?.estree
 
-          if (program?.body.length === 0) {
+          if (!program?.body.length) {
             jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, start + 1)
             jsx = addOffset(jsxMapping, mdx, jsx, end - 1, end)
             esm = addOffset(esmMapping, mdx, esm, start + 1, end - 1) + '\n'
-          } else {
-            if (program) {
-              hasAwait ||= hasAwaitExpression(program)
-            }
-
-            jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, end)
+            break
           }
 
+          hasAwait ||= hasAwaitExpression(program)
+          jsx += jsxIndent
+          let lastIndex = start
+          walk(program, {
+            enter(identifier) {
+              if (identifier.type !== 'JSXIdentifier') {
+                return
+              }
+
+              if (!isInjectableComponent(identifier.name, variables)) {
+                return
+              }
+
+              jsx =
+                addOffset(jsxMapping, mdx, jsx, lastIndex, identifier.start) +
+                '_components.'
+              lastIndex = identifier.start
+            }
+          })
+
+          jsx = addOffset(jsxMapping, mdx, jsx, lastIndex, end)
           break
         }
 

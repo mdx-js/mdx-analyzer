@@ -50,7 +50,7 @@ test('create virtual code w/ mdxjsEsm', () => {
           lengths: [35],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -165,7 +165,7 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
           lengths: [34],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -278,7 +278,7 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
           lengths: [8, 21],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -395,7 +395,7 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
           lengths: [15, 21],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -512,7 +512,7 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
           lengths: [8, 27],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -626,7 +626,7 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
           lengths: [9],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -756,7 +756,7 @@ test('create virtual code w/ MDX layout in case of a default exported function d
           lengths: [24],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -885,7 +885,7 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
           lengths: [7],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -1002,7 +1002,7 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
           lengths: [34],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -1135,7 +1135,7 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
           lengths: [51],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -1271,7 +1271,7 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
           lengths: [27, 24],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -1524,7 +1524,7 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
           lengths: [27],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -1675,7 +1675,7 @@ test('create virtual code w/ prefixed JSX expressions in attributes', () => {
           lengths: [27],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -1836,7 +1836,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
           lengths: [27],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -2005,7 +2005,7 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
           lengths: [27],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,
@@ -2143,7 +2143,7 @@ test('create virtual code w/ mdxJsxTextElement', () => {
           lengths: [27],
           data: {
             completion: true,
-            format: false,
+            format: true,
             navigation: true,
             semantic: true,
             structure: true,

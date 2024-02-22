@@ -306,7 +306,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
     lengths: [],
     data: {
       completion: true,
-      format: false,
+      format: true,
       navigation: true,
       semantic: true,
       structure: true,

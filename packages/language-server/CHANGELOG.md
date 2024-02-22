@@ -1,5 +1,16 @@
 # @mdx-js/language-server
 
+## 0.3.2
+
+### Patch Changes
+
+- [#396](https://github.com/mdx-js/mdx-analyzer/pull/396) [`3b6c5a8`](https://github.com/mdx-js/mdx-analyzer/commit/3b6c5a8964f2dddb9b4d6b7ec8d304b506cc5cee) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support the `components` prop for MDX JSX tags and JSX expressions.
+
+- [`c1277b2`](https://github.com/mdx-js/mdx-analyzer/commit/c1277b22d8760ffa9ff999d2444c929c5cab81e9) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support formatting of MDX ESM
+
+- Updated dependencies [[`3b6c5a8`](https://github.com/mdx-js/mdx-analyzer/commit/3b6c5a8964f2dddb9b4d6b7ec8d304b506cc5cee), [`c1277b2`](https://github.com/mdx-js/mdx-analyzer/commit/c1277b22d8760ffa9ff999d2444c929c5cab81e9)]:
+  - @mdx-js/language-service@0.5.2
+
 ## 0.3.1
 
 ### Patch Changes

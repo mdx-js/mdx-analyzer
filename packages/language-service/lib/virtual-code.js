@@ -285,39 +285,6 @@ function processExports(mdx, node, mapping, esm) {
 }
 
 /**
- * @param {Program | undefined} expression
- * @returns {boolean}
- */
-function hasAwaitExpression(expression) {
-  let awaitExpression = false
-  if (expression) {
-    walk(expression, {
-      enter(node) {
-        if (
-          awaitExpression ||
-          node.type === 'ArrowFunctionExpression' ||
-          node.type === 'FunctionDeclaration' ||
-          node.type === 'FunctionExpression'
-        ) {
-          this.skip()
-          return
-        }
-
-        if (
-          node.type === 'AwaitExpression' ||
-          (node.type === 'ForOfStatement' && node.await)
-        ) {
-          awaitExpression = true
-          this.skip()
-        }
-      }
-    })
-  }
-
-  return awaitExpression
-}
-
-/**
  * @param {string} mdx
  * @param {Root} ast
  * @param {boolean} checkMdx
@@ -472,6 +439,73 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
     updateMarkdownFromOffsets(startOffset, endOffset)
   }
 
+  /**
+   * @param {Program} program
+   * @param {number} lastIndex
+   * @returns {number}
+   */
+  function processJsxExpression(program, lastIndex) {
+    let newIndex = lastIndex
+    let functionNesting = 0
+    walk(program, {
+      enter(node) {
+        switch (node.type) {
+          case 'JSXIdentifier': {
+            if (!isInjectableComponent(node.name, variables)) {
+              return
+            }
+
+            jsx =
+              addOffset(jsxMapping, mdx, jsx, newIndex, node.start) +
+              '_components.'
+            newIndex = node.start
+            break
+          }
+
+          case 'ArrowFunctionExpression':
+          case 'FunctionDeclaration':
+          case 'FunctionExpression': {
+            functionNesting++
+            break
+          }
+
+          case 'AwaitExpression': {
+            if (!functionNesting) {
+              hasAwait = true
+            }
+
+            break
+          }
+
+          case 'ForOfStatement': {
+            if (!functionNesting) {
+              hasAwait ||= node.await
+            }
+
+            break
+          }
+
+          default:
+        }
+      },
+
+      leave(node) {
+        switch (node.type) {
+          case 'ArrowFunctionExpression':
+          case 'FunctionDeclaration':
+          case 'FunctionExpression': {
+            functionNesting--
+            break
+          }
+
+          default:
+        }
+      }
+    })
+
+    return newIndex
+  }
+
   visit(
     ast,
     (node) => {
@@ -550,27 +584,9 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
 
             const program = attribute.value?.data?.estree
 
-            if (!program) {
-              continue
+            if (program) {
+              lastIndex = processJsxExpression(program, lastIndex)
             }
-
-            hasAwait ||= hasAwaitExpression(program)
-            walk(program, {
-              enter(identifier) {
-                if (identifier.type !== 'JSXIdentifier') {
-                  return
-                }
-
-                if (!isInjectableComponent(identifier.name, variables)) {
-                  return
-                }
-
-                jsx =
-                  addOffset(jsxMapping, mdx, jsx, lastIndex, identifier.start) +
-                  '_components.'
-                lastIndex = identifier.start
-              }
-            })
           }
 
           jsx = addOffset(jsxMapping, mdx, jsx, lastIndex, end)
@@ -581,35 +597,17 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
         case 'mdxTextExpression': {
           updateMarkdownFromNode(node)
           const program = node.data?.estree
+          jsx += jsxIndent
 
-          if (!program?.body.length) {
-            jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, start + 1)
+          if (program?.body.length) {
+            const newIndex = processJsxExpression(program, start)
+            jsx = addOffset(jsxMapping, mdx, jsx, newIndex, end)
+          } else {
+            jsx = addOffset(jsxMapping, mdx, jsx, start, start + 1)
             jsx = addOffset(jsxMapping, mdx, jsx, end - 1, end)
             esm = addOffset(esmMapping, mdx, esm, start + 1, end - 1) + '\n'
-            break
           }
 
-          hasAwait ||= hasAwaitExpression(program)
-          jsx += jsxIndent
-          let lastIndex = start
-          walk(program, {
-            enter(identifier) {
-              if (identifier.type !== 'JSXIdentifier') {
-                return
-              }
-
-              if (!isInjectableComponent(identifier.name, variables)) {
-                return
-              }
-
-              jsx =
-                addOffset(jsxMapping, mdx, jsx, lastIndex, identifier.start) +
-                '_components.'
-              lastIndex = identifier.start
-            }
-          })
-
-          jsx = addOffset(jsxMapping, mdx, jsx, lastIndex, end)
           break
         }
 

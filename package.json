@@ -44,6 +44,7 @@
   "xo": {
     "prettier": true,
     "rules": {
+      "complexity": "off",
       "max-params": "off",
       "unicorn/prevent-abbreviations": "off"
     }

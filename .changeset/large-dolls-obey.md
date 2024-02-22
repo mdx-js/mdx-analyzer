@@ -4,4 +4,4 @@
 "vscode-mdx": patch
 ---
 
-Support the `components` prop for MDX JSX tags.
+Support the `components` prop for MDX JSX tags and JSX expressions.

@@ -40,7 +40,6 @@ test('create virtual code w/ mdxjsEsm', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -103,7 +102,6 @@ test('create virtual code w/ mdxjsEsm', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -155,7 +153,6 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -216,7 +213,6 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -268,7 +264,6 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -330,7 +325,6 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -385,7 +379,6 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -447,7 +440,6 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -502,7 +494,6 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -564,7 +555,6 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -616,7 +606,6 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -691,7 +680,6 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -746,7 +734,6 @@ test('create virtual code w/ MDX layout in case of a default exported function d
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -823,7 +810,6 @@ test('create virtual code w/ MDX layout in case of a default exported function d
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -875,7 +861,6 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -937,7 +922,6 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -992,7 +976,6 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -1069,7 +1052,6 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -1125,7 +1107,6 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -1205,7 +1186,6 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -1261,7 +1241,6 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -1341,7 +1320,6 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -1393,7 +1371,6 @@ test('create virtual code w/ mdxFlowExpression', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -1453,7 +1430,6 @@ test('create virtual code w/ mdxFlowExpression', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -1514,7 +1490,6 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -1596,7 +1571,6 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -1665,7 +1639,6 @@ test('create virtual code w/ prefixed JSX expressions in attributes', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -1747,7 +1720,6 @@ test('create virtual code w/ prefixed JSX expressions in attributes', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -1826,7 +1798,6 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -1917,7 +1888,6 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -1995,7 +1965,6 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -2074,7 +2043,6 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -2133,7 +2101,6 @@ test('create virtual code w/ mdxJsxTextElement', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -2217,7 +2184,6 @@ test('create virtual code w/ mdxJsxTextElement', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -2276,7 +2242,6 @@ test('create virtual code w/ mdxTextExpression', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -2340,7 +2305,6 @@ test('create virtual code w/ mdxTextExpression', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -2395,7 +2359,6 @@ test('create virtual code w/ async mdxTextExpression', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [
@@ -2459,7 +2422,6 @@ test('create virtual code w/ async mdxTextExpression', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -2517,7 +2479,6 @@ test('create virtual code w/ dedented markdown content', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [],
@@ -2565,7 +2526,6 @@ test('create virtual code w/ dedented markdown content', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -2623,7 +2583,6 @@ test('create virtual code w/ syntax error', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [],
@@ -2668,7 +2627,6 @@ test('create virtual code w/ syntax error', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [],
@@ -2706,7 +2664,6 @@ test('create virtual code w/ yaml frontmatter', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [],
@@ -2751,7 +2708,6 @@ test('create virtual code w/ yaml frontmatter', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -2772,7 +2728,6 @@ test('create virtual code w/ yaml frontmatter', () => {
       snapshot: snapshotFromLines('---', 'hello: frontmatter', '---', '')
     },
     {
-      embeddedCodes: [],
       id: 'yaml',
       languageId: 'yaml',
       mappings: [
@@ -2830,7 +2785,6 @@ test('update virtual code', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [],
@@ -2878,7 +2832,6 @@ test('update virtual code', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -2970,7 +2923,6 @@ test('support checkMdx', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [],
@@ -3016,7 +2968,6 @@ test('support checkMdx', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [
@@ -3068,7 +3019,6 @@ test('support custom jsxImportSource', () => {
   ])
   assert.deepEqual(code.embeddedCodes, [
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: [],
@@ -3113,7 +3063,6 @@ test('support custom jsxImportSource', () => {
       )
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [

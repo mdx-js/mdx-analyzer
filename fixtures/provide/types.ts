@@ -1,7 +1,8 @@
 import {type Planet} from './components.js'
 
 declare global {
-  interface MDXProvidedComponents {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  type MDXProvidedComponents = {
     Planet: typeof Planet
   }
 }

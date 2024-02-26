@@ -522,7 +522,6 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
           const frontmatterWithFences = mdx.slice(start, end)
           const frontmatterStart = frontmatterWithFences.indexOf(node.value)
           virtualCodes.push({
-            embeddedCodes: [],
             id: node.type,
             languageId: node.type,
             mappings: [
@@ -697,14 +696,12 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
 
   virtualCodes.unshift(
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: jsMappings,
       snapshot: new ScriptSnapshot(esm)
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [markdownMapping],
@@ -824,14 +821,12 @@ export class VirtualMdxCode {
       this.ast = undefined
       this.embeddedCodes = [
         {
-          embeddedCodes: [],
           id: 'jsx',
           languageId: 'javascriptreact',
           mappings: [],
           snapshot: new ScriptSnapshot(fallback)
         },
         {
-          embeddedCodes: [],
           id: 'md',
           languageId: 'markdown',
           mappings: [],

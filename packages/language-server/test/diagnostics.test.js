@@ -135,3 +135,48 @@ test('does not resolve shadow content', async () => {
     kind: 'full'
   })
 })
+
+test('provided components', async () => {
+  const {uri} = await serverHandle.openTextDocument(
+    fixturePath('provide/solar-system.mdx'),
+    'mdx'
+  )
+  const diagnostics = await serverHandle.sendDocumentDiagnosticRequest(uri)
+
+  assert.deepEqual(diagnostics, {
+    items: [
+      {
+        code: 2741,
+        data: {
+          documentUri: fixtureUri('provide/solar-system.mdx?virtualCodeId=jsx'),
+          isFormat: false,
+          original: {},
+          serviceIndex: 2,
+          uri: fixtureUri('provide/solar-system.mdx'),
+          version: 1
+        },
+        message:
+          "Property 'distanceFromStar' is missing in type '{ name: string; radius: number; }' but required in type 'PlanetProps'.",
+        range: {
+          end: {character: 7, line: 2},
+          start: {character: 1, line: 2}
+        },
+        relatedInformation: [
+          {
+            location: {
+              range: {
+                end: {character: 18, line: 3},
+                start: {character: 2, line: 3}
+              },
+              uri: fixtureUri('provide/components.tsx')
+            },
+            message: "'distanceFromStar' is declared here."
+          }
+        ],
+        severity: 1,
+        source: 'ts'
+      }
+    ],
+    kind: 'full'
+  })
+})

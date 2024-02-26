@@ -11,6 +11,7 @@
     {"path": "demo"},
     {"path": "frontmatter"},
     {"path": "no-tsconfig"},
-    {"path": "node16"}
+    {"path": "node16"},
+    {"path": "provide"}
   ]
 }

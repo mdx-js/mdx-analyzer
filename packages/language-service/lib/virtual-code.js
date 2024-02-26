@@ -69,6 +69,8 @@ ${isAsync ? 'async ' : ''}function _createMdxContent(props) {
    *   **Do not use.** This is an MDX internal.
    */
   const _components = {
+    // @ts-ignore
+    .../** @type {0 extends 1 & MDXProvidedComponents ? {} : MDXProvidedComponents} */ ({}),
     ...props.components,
     /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */
     props${Array.from(variables, (name) => ',\n    /** {@link ' + name + '} */\n    ' + name).join('')}

@@ -7,6 +7,9 @@
     "mdx.trace.server.verbosity": "compact",
     "mdx.trace.server.format": "text"
   },
+  "extensions": {
+    "recommendations": ["johnsoncodehk.volarjs-labs"]
+  },
   "folders": [
     {"path": "demo"},
     {"path": "frontmatter"},

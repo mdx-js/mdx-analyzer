@@ -1,140 +1,84 @@
-# [Visual Studio Code](https://code.visualstudio.com) extension for [MDX][]
+# MDX for Visual Studio Code
 
-[![GitHub Actions](https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg)](https://github.com/mdx-js/mdx-analyzer/actions/workflows/main.yml)
-[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
-[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
-[![Open VSX Version](https://img.shields.io/open-vsx/v/unifiedjs/vscode-mdx)](https://open-vsx.org/extension/unifiedjs/vscode-mdx)
-[![Open VSX Downloads](https://img.shields.io/open-vsx/dt/unifiedjs/vscode-mdx)](https://open-vsx.org/extension/unifiedjs/vscode-mdx)
+[![Build][build-badge]][build]
+[![Coverage][coverage-badge]][coverage]
+[![Visual Studio Marketplace Downloads][marketplace-badge]][marketplace]
+[![Open VSX Downloads][openvsx-badge]][openvsx]
+[![Sponsors][sponsors-badge]][collective]
+[![Backers][backers-badge]][collective]
+[![Chat][chat-badge]][chat]
 
-Adds language support for [MDX][].
+[Visual Studio Code][vscode] extension to add language support for [MDX][].
+
+## Contents
+
+*   [Installation](#installation)
+*   [Settings](#settings)
+*   [TypeScript](#typescript)
+*   [Plugins](#plugins)
+*   [Syntax highlighting](#syntax-highlighting)
+*   [ESLint](#eslint)
+*   [Auto-close tags](#auto-close-tags)
+*   [Sponsor](#sponsor)
+*   [Changelog](#changelog)
+*   [License](#license)
 
 ## Installation
 
-You can install this extension from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx).
+[Get it on the VS Code Marketplace][marketplace] or install it by using Quick
+Open (<kbd>Ctrl</kbd> + <kbd>P</kbd>) and running the following:
+
+```txt
+ext install unifiedjs.vscode-remark
+```
 
 ## Settings
 
-This extension provides the following settings:
+All MDX language server configurations can be configured via
+[Visual Studio Code][vscode] settings.
+MDX for VSCode supports the following additional setting:
 
-*   `mdx.server.enable`: Enable the MDX language server.
-    (`boolean`, default: true)
+*   `mdx.server.enable` (`boolean`, default: `true`) —
+    Enable the MDX language server.
+
+## TypeScript
+
+This extension offers type safety for MDX files based on TypeScript’s
+[types in JSDoc][jsdoc].
+For MDX specific details, see the
+[TypeScript section](../language-server/README.md#typescript) of the MDX
+language server documentation.
 
 ## Plugins
 
-This extension supports remark syntax plugins.
-Plugins can be defined in an array of strings or string / options tuples.
-These plugins can be defined in `tsconfig.json` and will be resolved relative to
-that file.
+For information on plugin support, see the
+[Plugins section](../language-server/README.md#plugins) of the MDX language
+server documentation.
 
-For example, to support [frontmatter][] with YAML and TOML and [GFM][]:
+## Syntax highlighting
 
-```jsonc
-{
-  "compilerOptions": {
-    // …
-  },
-  "mdx": {
-    "plugins": [
-      [
-        "remark-frontmatter",
-        ["toml", "yaml"]
-      ],
-      "remark-gfm"
-    ]
-  }
-}
-```
+Syntax highlighting for MDX is based on the
+[MDX TextMate grammar](https://github.com/wooorm/markdown-tm-language).
 
-For a more complete list, see [remark plugins][].
+## ESLint
 
-## Integration With [VS Code ESLint](https://github.com/microsoft/vscode-eslint)
-
-1.  First of all, you need to enable [eslint-plugin-mdx][] which makes it
-    possible to lint `.mdx` or `.md` files with `ESLint`.
-
-2.  And then you will need to enable ESLint validation for `.mdx` and `.md`
-    files like following:
-
-    ```jsonc
-    // .vscode/settings.json
-    {
-      "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-      },
-      "eslint.options": {
-        "extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
-      },
-      "eslint.validate": [
-        "markdown",
-        "mdx",
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact"
-      ]
-    }
-    ```
-
-### Markdown Syntax
-
-Markdown Syntax could also be linted via [eslint-plugin-mdx][] and
-[remark-lint][] plugins.
-
-> it will read [remark][]’s
-> [configuration](https://github.com/remarkjs/remark/tree/main/packages/remark-cli#cli)
-> automatically via [unified-engine](https://github.com/unifiedjs/unified-engine).
-> But `.remarkignore` will not be respected, you should use `.eslintignore`
-> instead.
-
-More usage detail please refer to [eslint-plugin-mdx][]’s [documentation](https://github.com/mdx-js/eslint-mdx#toc-).
+You can lint MDX with [ESLint][] using [`eslint-plugin-mdx`][eslint-plugin-mdx].
+To integrate ESLint in Visual Studio Code, install the
+[VS Code ESLint extension][vscode-eslint].
 
 ## Auto-close tags
 
-If you want VS Code to automatically close tags while you type, you can install
-[Auto Close Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag)
-and configure it to also include the language `mdx`:
+If you want VS Code to automatically close tags while you type, install
+[Auto Close Tag][] and configure it to also include the `mdx` language:
 
-```json
-"auto-close-tag.activationOnLanguage": [
-  "xml",
-  "php",
-  "...",
-  "mdx"
-]
+```jsonc
+{
+  "auto-close-tag.activationOnLanguage": [
+    // …
+    "mdx"
+  ]
+}
 ```
-
-## Known `vscode-eslint` issues
-
-1.  `Fatal javascript OOM in GC during deserialization`
-
-    ESlint is using VS Code’s old, built-in version of NodeJS (v12) as provided
-    by Electron.
-    Please add the following setting to use system default Node runtime instead:
-
-    ```json
-    {
-      "eslint.runtime": "node"
-    }
-    ```
-
-    Please visit
-    [microsoft/vscode-eslint#1498 (comment)](https://github.com/microsoft/vscode-eslint/issues/1498#issuecomment-1175813839)
-    as reference for details.
-
-2.  `JavaScript heap out of memory`
-
-    The default memory limit of Node.js is `1G`, please add the following
-    setting to increase the limit:
-
-    ```json
-    {
-      "eslint.execArgv": ["--max_old_space_size=8192"]
-    }
-    ```
-
-    Please visit
-    [microsoft/vscode-eslint#733](https://github.com/microsoft/vscode-eslint/issues/733)
-    as reference for details.
 
 ## Sponsor
 
@@ -216,22 +160,48 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [1stg.me]: https://www.1stg.me
 
+[auto close tag]: https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag
+
+[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+
+[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
+
+[build]: https://github.com/mdx-js/mdx-analyzer/actions
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[chat]: https://github.com/mdx-js/mdx/discussions
+
+[collective]: https://opencollective.com/unified
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
+
+[coverage]: https://codecov.io/github/mdx-js/mdx-analyzer
+
 [eslint-plugin-mdx]: https://github.com/mdx-js/eslint-mdx
 
-[frontmatter]: https://github.com/remarkjs/remark-frontmatter
-
-[gfm]: https://github.com/remarkjs/remark-gfm
+[eslint]: https://eslint.org
 
 [jounqin]: https://GitHub.com/JounQin
 
-[mdx]: https://github.com/mdx-js/mdx
+[jsdoc]: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
+
+[marketplace-badge]: https://img.shields.io/visual-studio-marketplace/d/unifiedjs.vscode-mdx
+
+[marketplace]: https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx
+
+[mdx]: https://mdxjs.com
 
 [mit]: http://opensource.org/licenses/MIT
 
-[remark]: https://github.com/remarkjs/remark
+[openvsx-badge]: https://img.shields.io/open-vsx/dt/unifiedjs/vscode-mdx
 
-[remark-lint]: https://github.com/remarkjs/remark-lint
-
-[remark plugins]: https://github.com/remarkjs/remark/blob/main/doc/plugins.md
+[openvsx]: https://open-vsx.org/extension/unifiedjs/vscode-mdx
 
 [sponsor]: https://mdxjs.com/community/sponsor/
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[vscode-eslint]: https://github.com/microsoft/vscode-eslint
+
+[vscode]: https://code.visualstudio.com

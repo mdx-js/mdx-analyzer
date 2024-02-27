@@ -9,7 +9,7 @@ import {unified} from 'unified'
 import {VirtualMdxCode} from './virtual-code.js'
 
 /**
- * Create a [Volar](https://volarjs.dev) language module to support MDX.
+ * Create a [Volar](https://volarjs.dev) language plugin to support MDX.
  *
  * @param {PluggableList} [plugins]
  *   A list of remark syntax plugins. Only syntax plugins are supported.

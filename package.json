@@ -36,6 +36,10 @@
       "remark-frontmatter",
       "remark-preset-wooorm",
       [
+        "remark-lint-maximum-heading-length",
+        false
+      ],
+      [
         "remark-lint-no-html",
         false
       ]

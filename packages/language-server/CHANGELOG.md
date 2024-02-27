@@ -1,5 +1,16 @@
 # @mdx-js/language-server
 
+## 0.3.3
+
+### Patch Changes
+
+- [#402](https://github.com/mdx-js/mdx-analyzer/pull/402) [`cd59565`](https://github.com/mdx-js/mdx-analyzer/commit/cd59565dcc284adcebe738407e62022150bbca81) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support custom components provided via a provider
+
+- [#404](https://github.com/mdx-js/mdx-analyzer/pull/404) [`1eef65c`](https://github.com/mdx-js/mdx-analyzer/commit/1eef65c8a63b42aacf524189067b6c29aaae9e86) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update the documentation.
+
+- Updated dependencies [[`cd59565`](https://github.com/mdx-js/mdx-analyzer/commit/cd59565dcc284adcebe738407e62022150bbca81), [`1eef65c`](https://github.com/mdx-js/mdx-analyzer/commit/1eef65c8a63b42aacf524189067b6c29aaae9e86)]:
+  - @mdx-js/language-service@0.5.3
+
 ## 0.3.2
 
 ### Patch Changes

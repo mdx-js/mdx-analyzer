@@ -101,7 +101,7 @@
               "error"
             ],
             "default": "warning",
-            "markdownDescription": "Diagnostic level for fragments links to headers in the current file that don't exist, e.g. `[text](#no-such-header)`."
+            "markdownDescription": "Diagnostic level for fragments links to headers in the current file that don’t exist, e.g. `[text](#no-such-header)`."
           },
           "mdx.validate.validateFileLinks": {
             "enum": [
@@ -111,7 +111,7 @@
               "error"
             ],
             "default": "warning",
-            "markdownDescription": "Diagnostic level for links to local files that don't exist, e.g. `[text](./no-such-file.png)`."
+            "markdownDescription": "Diagnostic level for links to local files that don’t exist, e.g. `[text](./no-such-file.png)`."
           },
           "mdx.validate.validateMarkdownFileLinkFragments": {
             "enum": [
@@ -131,7 +131,7 @@
               "error"
             ],
             "default": "warning",
-            "markdownDescription": "Diagnostic level for link definitions that aren't used anywhere. `[never-used]: http://example.com`."
+            "markdownDescription": "Diagnostic level for link definitions that aren’t used anywhere. `[never-used]: http://example.com`."
           },
           "mdx.validate.validateDuplicateLinkDefinitions": {
             "enum": [

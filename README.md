@@ -1,21 +1,40 @@
 # MDX Analyzer
 
-[![GitHub Actions](https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg)](https://github.com/mdx-js/mdx-analyzer/actions/workflows/main.yml)
-[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
-[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/unifiedjs.vscode-mdx)](https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx)
-[![Open VSX Version](https://img.shields.io/open-vsx/v/unifiedjs/vscode-mdx)](https://open-vsx.org/extension/unifiedjs/vscode-mdx)
-[![Open VSX Downloads](https://img.shields.io/open-vsx/dt/unifiedjs/vscode-mdx)](https://open-vsx.org/extension/unifiedjs/vscode-mdx)
+[![Build][build-badge]][build]
+[![Coverage][coverage-badge]][coverage]
+[![Sponsors][sponsors-badge]][collective]
+[![Backers][backers-badge]][collective]
+[![Chat][chat-badge]][chat]
 
-This repository contains the code to provide IntelliSense for [MDX][].
+This repository contains the code to provide editor tooling support for [MDX][].
 
-It contains the following workspaces:
+## Contents
 
-*   [`@mdx-js/language-service`][] provides a TypeScript language service that
-    can handle MDX files.
-*   [`@mdx-js/language-server`][] provides MDX IntelliSense using the
+*   [Workspaces](#workspaces)
+*   [Contribute](#contribute)
+*   [Sponsor](#sponsor)
+*   [License](#license)
+
+## Workspaces
+
+This repository contains the following workspaces:
+
+*   [`@mdx-js/language-service`][] provides utilities to integrate MDX into
+    [Volar][].
+*   [`@mdx-js/language-server`][] provides an MDX language server using the
     [Language Server Protocol][].
-*   [`vscode-mdx`][] provides MDX IntelliSense and basic language support for
-    [Visual Studio Code][].
+*   [`vscode-mdx`][] integrates the MDX language server into
+    [Visual Studio Code][], but also provides some Visual Studio Code specific
+    features such as syntax highlighting.
+
+## Contribute
+
+See [§ Contribute][contribute] on our site for ways to get started.
+See [§ Support][support] for ways to get help.
+
+This project has a [code of conduct][coc].
+By interacting with this repository, organization, or community you agree to
+abide by its terms.
 
 ## Sponsor
 
@@ -99,6 +118,26 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 
 [1stg.me]: https://www.1stg.me
 
+[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+
+[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
+
+[build]: https://github.com/mdx-js/mdx-analyzer/actions
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[chat]: https://github.com/mdx-js/mdx/discussions
+
+[coc]: https://github.com/mdx-js/.github/blob/main/code-of-conduct.md
+
+[collective]: https://opencollective.com/unified
+
+[contribute]: ./contributing.md
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
+
+[coverage]: https://codecov.io/github/mdx-js/mdx-analyzer
+
 [jounqin]: https://GitHub.com/JounQin
 
 [language server protocol]: https://microsoft.github.io/language-server-protocol/
@@ -109,4 +148,10 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 
 [sponsor]: https://mdxjs.com/community/sponsor/
 
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[support]: https://mdxjs.com/community/support/
+
 [visual studio code]: https://code.visualstudio.com/
+
+[volar]: https://volarjs.dev

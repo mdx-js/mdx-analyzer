@@ -29,7 +29,7 @@
 Open (<kbd>Ctrl</kbd> + <kbd>P</kbd>) and running the following:
 
 ```txt
-ext install unifiedjs.vscode-remark
+ext install unifiedjs.vscode-mdx
 ```
 
 ## Settings

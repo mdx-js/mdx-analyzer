@@ -236,7 +236,7 @@ See \[§ Sponsor]\[sponsor] on our site for how to help financially.
 
 ## Changelog
 
-Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.md).
+Detailed changes for each release are documented in [changelog.md](./changelog.md).
 
 ## License
 
@@ -276,7 +276,7 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [mdx]: https://mdxjs.com
 
-[mit]: LICENSE
+[mit]: license
 
 [npm]: https://docs.npmjs.com/cli/install
 

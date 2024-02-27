@@ -358,7 +358,7 @@ See \[§ Sponsor]\[sponsor] on our site for how to help financially.
 
 ## Changelog
 
-Detailed changes for each release are documented in [changelog.md](./changelog.md).
+Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.md).
 
 ## License
 
@@ -400,7 +400,7 @@ Detailed changes for each release are documented in [changelog.md](./changelog.m
 
 [mdx]: https://mdxjs.com
 
-[mit]: license
+[mit]: LICENSE
 
 [next mdx]: https://nextjs.org/docs/pages/building-your-application/configuring/mdx
 

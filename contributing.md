@@ -101,7 +101,7 @@ Studio Code extension to the [marketplace][], and create GitHub releases.
 *   [Using pull requests](https://help.github.com/articles/about-pull-requests/)
 *   [GitHub help](https://help.github.com)
 
-[changeset]: https://github.com/changesets/changesets/blob/main/docs/common-questions.md
+[changeset]: ./.changeset/README.md
 
 [coc]: https://github.com/mdx-js/.github/blob/main/code-of-conduct.md
 

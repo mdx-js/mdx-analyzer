@@ -331,7 +331,7 @@
     ],
     "typescriptServerPlugins": [
       {
-        "name": "typescript-plugin-bundled",
+        "name": "@mdx-js/typescript-plugin",
         "enableForWorkspaceTypeScriptVersions": true,
         "configNamespace": "typescript",
         "languages": [

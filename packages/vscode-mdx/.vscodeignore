@@ -5,6 +5,5 @@
 *.ts
 *.tsbuildinfo
 fixtures/
-node_modules/
 packages/
 script/

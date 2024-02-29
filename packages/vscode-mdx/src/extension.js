@@ -83,7 +83,7 @@ export async function activate(context) {
   async function tryRestartServer() {
     await stopServer()
     if (workspace.getConfiguration('mdx').get('server.enable')) {
-      await startServer(context)
+      await startServer()
     }
   }
 }
@@ -105,11 +105,8 @@ async function stopServer() {
 
 /**
  * Start the language server and client integrations.
- *
- * @param {ExtensionContext} context
- *   The extension context as given by VSCode.
  */
-async function startServer(context) {
+async function startServer() {
   if (client.needsStart()) {
     await window.withProgress(
       {
@@ -131,43 +128,6 @@ async function startServer(context) {
     )
   }
 }
-
-// Track https://github.com/microsoft/vscode/issues/200511
-try {
-  const tsExtension = extensions.getExtension(
-    'vscode.typescript-language-features'
-  )
-  if (tsExtension) {
-    const readFileSync = require('node:fs').readFileSync
-    const extensionJsPath = require.resolve('./dist/extension.js', {
-      paths: [tsExtension.extensionPath]
-    })
-
-    // @ts-expect-error
-    require('node:fs').readFileSync = (...args) => {
-      if (args[0] === extensionJsPath) {
-        /** @type {string} */
-        let text = readFileSync(...args)
-
-        // Patch jsTsLanguageModes
-        text = text.replace(
-          't.$u=[t.$r,t.$s,t.$p,t.$q]',
-          (s) => s + '.concat("mdx")'
-        )
-
-        // Patch isSupportedLanguageMode
-        text = text.replace(
-          's.languages.match([t.$p,t.$q,t.$r,t.$s]',
-          (s) => s + '.concat("mdx")'
-        )
-
-        return text
-      }
-
-      return readFileSync(...args)
-    }
-  }
-} catch {}
 
 /**
  * @param {string} command

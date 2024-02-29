@@ -101,7 +101,7 @@ Studio Code extension to the [marketplace][], and create GitHub releases.
 *   [Using pull requests](https://help.github.com/articles/about-pull-requests/)
 *   [GitHub help](https://help.github.com)
 
-[changeset]: ./.changeset/README.md
+[changeset]: .changeset/README.md
 
 [coc]: https://github.com/mdx-js/.github/blob/main/code-of-conduct.md
 
@@ -109,9 +109,9 @@ Studio Code extension to the [marketplace][], and create GitHub releases.
 
 [project]: #project
 
-[sponsor]: /community/sponsor/
+[sponsor]: https://mdxjs.com/community/sponsor/
 
-[support]: /community/support/
+[support]: https://mdxjs.com/community/support/
 
 [unit-test]: https://twitter.com/sindresorhus/status/579306280495357953
 

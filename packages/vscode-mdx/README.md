@@ -12,7 +12,7 @@
 
 ## Contents
 
-*   [Installation](#installation)
+*   [Install](#install)
 *   [Settings](#settings)
 *   [TypeScript](#typescript)
 *   [Plugins](#plugins)
@@ -23,7 +23,7 @@
 *   [Changelog](#changelog)
 *   [License](#license)
 
-## Installation
+## Install
 
 [Get it on the VS Code Marketplace][marketplace] or install it by using Quick
 Open (<kbd>Ctrl</kbd> + <kbd>P</kbd>) and running the following:

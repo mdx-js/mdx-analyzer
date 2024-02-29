@@ -132,7 +132,7 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 
 [collective]: https://opencollective.com/unified
 
-[contribute]: ./contributing.md
+[contribute]: CONTRIBUTING.md
 
 [coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
 

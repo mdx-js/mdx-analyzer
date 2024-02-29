@@ -167,14 +167,14 @@ Based on an [Next.js][next mdx] example:
 // mdx-components.ts
 import { Planet } from './components/Planet.js'
 
-export type MDXProvidedComponents = {
-  Planet: typeof Planet
+const components = {
+  Planet
 }
 
+export type MDXProvidedComponents = typeof components
+
 export function useMDXComponents(): MDXProvidedComponents {
-  return {
-    Planet
-  }
+  return components
 }
 ```
 
@@ -196,16 +196,16 @@ Based on an [Next.js][next mdx] example:
 // mdx-components.ts
 import { Planet } from './components/Planet.js'
 
+const components = {
+  Planet
+}
+
 declare global {
-  type MDXProvidedComponents = {
-    Planet: typeof Planet
-  }
+  type MDXProvidedComponents = typeof components
 }
 
 export function useMDXComponents(): MDXProvidedComponents {
-  return {
-    Planet
-  }
+  return components
 }
 ```
 
@@ -288,7 +288,7 @@ abide by its terms.
 
 ## Sponsor
 
-See \[§ Sponsor]\[sponsor] on our site for how to help financially.
+See [§ Sponsor][sponsor] on our site for how to help financially.
 
 <table>
 <tr valign="middle">
@@ -413,6 +413,8 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 [remark plugins]: https://github.com/remarkjs/remark/blob/main/doc/plugins.md
 
 [remark-mdx-frontmatter]: https://github.com/remcohaszing/remark-mdx-frontmatter
+
+[sponsor]: https://mdxjs.com/community/sponsor/
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 

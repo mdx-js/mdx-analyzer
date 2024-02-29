@@ -11,6 +11,7 @@ let serverHandle
 
 beforeEach(async () => {
   serverHandle = createServer()
+  // @ts-expect-error https://github.com/volarjs/volar.js/pull/142
   await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 

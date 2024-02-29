@@ -45,7 +45,12 @@ const imageExtensions = new Set([
 /**
  * Create an Volar service plugin for MDX files.
  *
- * The service supports reporting diagnostics for parsing errors.
+ * The service supports:
+ *
+ * - Reporting diagnostics for parsing errors.
+ * - Document drop support for images.
+ * - Custom commands for toggling `delete`, `emphasis`, `inlineCode`, and
+ *   `strong` text.
  *
  * @returns {ServicePlugin}
  *   The Volar service plugin for MDX files.

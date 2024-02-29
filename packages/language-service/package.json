@@ -1,8 +1,8 @@
 {
   "name": "@mdx-js/language-service",
-  "version": "0.5.1",
+  "version": "0.5.3",
   "type": "module",
-  "description": "MDX Volar support",
+  "description": "MDX support for Volar",
   "repository": {
     "type": "git",
     "url": "https://github.com/mdx-js/mdx-analyzer.git",
@@ -34,10 +34,11 @@
     "@types/estree": "^1.0.0",
     "@types/mdast": "^4.0.0",
     "@types/unist": "^3.0.0",
-    "@volar/language-service": "~2.0.0",
+    "@volar/language-service": "~2.1.0",
     "estree-walker": "^3.0.0",
     "mdast-util-mdxjs-esm": "^2.0.0",
     "mdast-util-to-markdown": "^2.0.0",
+    "periscopic": "^3.0.0",
     "remark-mdx": "^3.0.0",
     "remark-parse": "^11.0.0",
     "unified": "^11.0.0",

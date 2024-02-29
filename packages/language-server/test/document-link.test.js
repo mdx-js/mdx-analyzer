@@ -10,6 +10,7 @@ let serverHandle
 
 beforeEach(async () => {
   serverHandle = createServer()
+  // @ts-expect-error https://github.com/volarjs/volar.js/pull/142
   await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 
@@ -31,9 +32,7 @@ test('resolve markdown link references', async () => {
         end: {line: 0, character: 12}
       },
       tooltip: 'Go to link definition',
-      target: fixtureUri(
-        'node16/link-reference.mdx?virtualCodeId=md#L3,8'
-      ).replace('%3A', ':'),
+      target: fixtureUri('node16/link-reference.mdx#L3,8').replace('%3A', ':'),
       data: {
         uri: fixtureUri('node16/link-reference.mdx'),
         original: {

@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "node16",
+    "strict": true
+  },
+  "mdx": {
+    "checkMdx": true
+  }
+}

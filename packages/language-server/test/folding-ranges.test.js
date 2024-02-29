@@ -10,6 +10,7 @@ let serverHandle
 
 beforeEach(async () => {
   serverHandle = createServer()
+  // @ts-expect-error https://github.com/volarjs/volar.js/pull/142
   await serverHandle.initialize(fixtureUri('node16'), {typescript: {tsdk}})
 })
 
@@ -43,12 +44,6 @@ test('resolve folding ranges', async () => {
       endLine: 12,
       startCharacter: 16,
       startLine: 11
-    },
-    {
-      endCharacter: 0,
-      endLine: 2,
-      startCharacter: 0,
-      startLine: 2
     },
     {
       endLine: 45,

@@ -12,8 +12,10 @@
  */
 
 import {walk} from 'estree-walker'
+import {analyze} from 'periscopic'
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {ScriptSnapshot} from './script-snapshot.js'
+import {isInjectableComponent} from './jsx-utils.js'
 
 /**
  * Render the content that should be prefixed to the embedded JavaScript file.
@@ -51,8 +53,9 @@ const layoutJsDoc = (propsName) => `
 /**
  * @param {boolean} isAsync
  *   Whether or not the `_createMdxContent` should be async
+ * @param {string[]} variables
  */
-const componentStart = (isAsync) => `
+const componentStart = (isAsync, variables) => `
 /**
  * @deprecated
  *   Do not use.
@@ -61,9 +64,21 @@ const componentStart = (isAsync) => `
  *   The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component.
  */
 ${isAsync ? 'async ' : ''}function _createMdxContent(props) {
-  return `
+  /**
+   * @internal
+   *   **Do not use.** This is an MDX internal.
+   */
+  const _components = {
+    // @ts-ignore
+    .../** @type {0 extends 1 & MDXProvidedComponents ? {} : MDXProvidedComponents} */ ({}),
+    ...props.components,
+    /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */
+    props${Array.from(variables, (name) => ',\n    /** {@link ' + name + '} */\n    ' + name).join('')}
+  }
+  return <>`
 
 const componentEnd = `
+  </>
 }
 
 /**
@@ -77,11 +92,13 @@ export default function MDXContent(props) {
 }
 
 // @ts-ignore
-/** @typedef {0 extends 1 & Props ? {} : Props} MDXContentProps */
+/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */
 `
 
+const jsxIndent = '\n    '
+
 const fallback =
-  jsPrefix(false, 'react') + componentStart(false) + '<></>' + componentEnd
+  jsPrefix(false, 'react') + componentStart(false, []) + componentEnd
 
 /**
  * Visit an mdast tree with and enter and exit callback.
@@ -270,39 +287,6 @@ function processExports(mdx, node, mapping, esm) {
 }
 
 /**
- * @param {Program | undefined} expression
- * @returns {boolean}
- */
-function hasAwaitExpression(expression) {
-  let awaitExpression = false
-  if (expression) {
-    walk(expression, {
-      enter(node) {
-        if (
-          awaitExpression ||
-          node.type === 'ArrowFunctionExpression' ||
-          node.type === 'FunctionDeclaration' ||
-          node.type === 'FunctionExpression'
-        ) {
-          this.skip()
-          return
-        }
-
-        if (
-          node.type === 'AwaitExpression' ||
-          (node.type === 'ForOfStatement' && node.await)
-        ) {
-          awaitExpression = true
-          this.skip()
-        }
-      }
-    })
-  }
-
-  return awaitExpression
-}
-
-/**
  * @param {string} mdx
  * @param {Root} ast
  * @param {boolean} checkMdx
@@ -324,7 +308,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
     lengths: [],
     data: {
       completion: true,
-      format: false,
+      format: true,
       navigation: true,
       semantic: true,
       structure: true,
@@ -378,6 +362,29 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
   let jsx = ''
   let markdown = ''
   let nextMarkdownSourceStart = 0
+
+  /** @type {Program} */
+  const esmProgram = {
+    type: 'Program',
+    sourceType: 'module',
+    start: 0,
+    end: 0,
+    body: []
+  }
+
+  for (const child of ast.children) {
+    if (child.type !== 'mdxjsEsm') {
+      continue
+    }
+
+    const estree = child.data?.estree
+
+    if (estree) {
+      esmProgram.body.push(...estree.body)
+    }
+  }
+
+  const variables = [...analyze(esmProgram).scope.declarations.keys()].sort()
 
   /**
    * Update the **markdown** mappings from a start and end offset of a **JavaScript** chunk.
@@ -434,6 +441,73 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
     updateMarkdownFromOffsets(startOffset, endOffset)
   }
 
+  /**
+   * @param {Program} program
+   * @param {number} lastIndex
+   * @returns {number}
+   */
+  function processJsxExpression(program, lastIndex) {
+    let newIndex = lastIndex
+    let functionNesting = 0
+    walk(program, {
+      enter(node) {
+        switch (node.type) {
+          case 'JSXIdentifier': {
+            if (!isInjectableComponent(node.name, variables)) {
+              return
+            }
+
+            jsx =
+              addOffset(jsxMapping, mdx, jsx, newIndex, node.start) +
+              '_components.'
+            newIndex = node.start
+            break
+          }
+
+          case 'ArrowFunctionExpression':
+          case 'FunctionDeclaration':
+          case 'FunctionExpression': {
+            functionNesting++
+            break
+          }
+
+          case 'AwaitExpression': {
+            if (!functionNesting) {
+              hasAwait = true
+            }
+
+            break
+          }
+
+          case 'ForOfStatement': {
+            if (!functionNesting) {
+              hasAwait ||= node.await
+            }
+
+            break
+          }
+
+          default:
+        }
+      },
+
+      leave(node) {
+        switch (node.type) {
+          case 'ArrowFunctionExpression':
+          case 'FunctionDeclaration':
+          case 'FunctionExpression': {
+            functionNesting--
+            break
+          }
+
+          default:
+        }
+      }
+    })
+
+    return newIndex
+  }
+
   visit(
     ast,
     (node) => {
@@ -450,7 +524,6 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
           const frontmatterWithFences = mdx.slice(start, end)
           const frontmatterStart = frontmatterWithFences.indexOf(node.value)
           virtualCodes.push({
-            embeddedCodes: [],
             id: node.type,
             languageId: node.type,
             mappings: [
@@ -483,11 +556,41 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
         case 'mdxJsxFlowElement':
         case 'mdxJsxTextElement': {
           if (node.children.length > 0) {
-            end = getNodeStartOffset(node.children[0])
+            end = mdx.lastIndexOf('>', getNodeStartOffset(node.children[0])) + 1
           }
 
           updateMarkdownFromOffsets(start, end)
-          jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+
+          let lastIndex = start + 1
+          jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, lastIndex)
+          if (isInjectableComponent(node.name, variables)) {
+            jsx += '_components.'
+          }
+
+          if (node.name) {
+            jsx = addOffset(
+              jsxMapping,
+              mdx,
+              jsx,
+              lastIndex,
+              lastIndex + node.name.length
+            )
+            lastIndex += node.name.length
+          }
+
+          for (const attribute of node.attributes) {
+            if (typeof attribute.value !== 'object') {
+              continue
+            }
+
+            const program = attribute.value?.data?.estree
+
+            if (program) {
+              lastIndex = processJsxExpression(program, lastIndex)
+            }
+          }
+
+          jsx = addOffset(jsxMapping, mdx, jsx, lastIndex, end)
           break
         }
 
@@ -495,29 +598,31 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
         case 'mdxTextExpression': {
           updateMarkdownFromNode(node)
           const program = node.data?.estree
+          jsx += jsxIndent
 
-          if (program?.body.length === 0) {
+          if (program?.body.length) {
+            const newIndex = processJsxExpression(program, start)
+            jsx = addOffset(jsxMapping, mdx, jsx, newIndex, end)
+          } else {
             jsx = addOffset(jsxMapping, mdx, jsx, start, start + 1)
             jsx = addOffset(jsxMapping, mdx, jsx, end - 1, end)
             esm = addOffset(esmMapping, mdx, esm, start + 1, end - 1) + '\n'
-          } else {
-            if (program) {
-              hasAwait ||= hasAwaitExpression(program)
-            }
-
-            jsx = addOffset(jsxMapping, mdx, jsx, start, end)
           }
 
           break
         }
 
+        case 'root': {
+          break
+        }
+
         case 'text': {
-          jsx += "{''}"
+          jsx += jsxIndent + "{''}"
           break
         }
 
         default: {
-          jsx += '<>'
+          jsx += jsxIndent + '<>'
           break
         }
       }
@@ -529,11 +634,28 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
           const child = node.children?.at(-1)
 
           if (child) {
-            const start = getNodeEndOffset(child)
+            const start = mdx.indexOf('<', getNodeEndOffset(child) - 1)
             const end = getNodeEndOffset(node)
 
             updateMarkdownFromOffsets(start, end)
-            jsx = addOffset(jsxMapping, mdx, jsx, start, end)
+            if (isInjectableComponent(node.name, variables)) {
+              const closingStart = start + 2
+              jsx = addOffset(
+                jsxMapping,
+                mdx,
+                addOffset(
+                  jsxMapping,
+                  mdx,
+                  jsx + jsxIndent,
+                  start,
+                  closingStart
+                ) + '_components.',
+                closingStart,
+                end
+              )
+            } else {
+              jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, end)
+            }
           }
 
           break
@@ -542,6 +664,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
         case 'mdxTextExpression':
         case 'mdxjsEsm':
         case 'mdxFlowExpression':
+        case 'root':
         case 'text':
         case 'toml':
         case 'yaml': {
@@ -549,7 +672,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
         }
 
         default: {
-          jsx += '</>'
+          jsx += jsxIndent + '</>'
           break
         }
       }
@@ -557,7 +680,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
   )
 
   updateMarkdownFromOffsets(mdx.length, mdx.length)
-  esm += componentStart(hasAwait)
+  esm += componentStart(hasAwait, variables)
 
   for (let i = 0; i < jsxMapping.generatedOffsets.length; i++) {
     jsxMapping.generatedOffsets[i] += esm.length
@@ -575,14 +698,12 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
 
   virtualCodes.unshift(
     {
-      embeddedCodes: [],
       id: 'jsx',
       languageId: 'javascriptreact',
       mappings: jsMappings,
       snapshot: new ScriptSnapshot(esm)
     },
     {
-      embeddedCodes: [],
       id: 'md',
       languageId: 'markdown',
       mappings: [markdownMapping],
@@ -702,14 +823,12 @@ export class VirtualMdxCode {
       this.ast = undefined
       this.embeddedCodes = [
         {
-          embeddedCodes: [],
           id: 'jsx',
           languageId: 'javascriptreact',
           mappings: [],
           snapshot: new ScriptSnapshot(fallback)
         },
         {
-          embeddedCodes: [],
           id: 'md',
           languageId: 'markdown',
           mappings: [],

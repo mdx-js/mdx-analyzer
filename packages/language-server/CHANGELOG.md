@@ -1,5 +1,11 @@
 # @mdx-js/language-server
 
+## 0.4.0
+
+### Minor Changes
+
+- [#371](https://github.com/mdx-js/mdx-analyzer/pull/371) [`7539a98`](https://github.com/mdx-js/mdx-analyzer/commit/7539a980ed08d625108bce93ebdfb6173e697891) Thanks [@johnsoncodehk](https://github.com/johnsoncodehk)! - Disable TypeScript support by default. The user can opt-in to TypeScript support by explicitly enabling the `typescript.enable` compiler option.
+
 ## 0.3.3
 
 ### Patch Changes

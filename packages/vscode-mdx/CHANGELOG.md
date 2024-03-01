@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.0
+
+### Minor Changes
+
+- [#371](https://github.com/mdx-js/mdx-analyzer/pull/371) [`7539a98`](https://github.com/mdx-js/mdx-analyzer/commit/7539a980ed08d625108bce93ebdfb6173e697891) Thanks [@johnsoncodehk](https://github.com/johnsoncodehk)! - Use a TypeScript plugin for TypeScript integration.
+
 ## 1.7.3
 
 ### Patch Changes

@@ -17,6 +17,7 @@ import {
 import {
   createConnection,
   createServer,
+  createSimpleProjectProviderFactory,
   createTypeScriptProjectProviderFactory,
   loadTsdkByPath
 } from '@volar/language-server/node.js'
@@ -35,19 +36,24 @@ const server = createServer(connection)
 
 connection.onInitialize((parameters) => {
   const tsdk = parameters.initializationOptions?.typescript?.tsdk
+  const tsEnabled = Boolean(
+    parameters.initializationOptions?.typescript?.enabled
+  )
   assert(
     typeof tsdk === 'string',
     'Missing initialization option typescript.tsdk'
   )
 
-  const {diagnosticMessages, typescript} = loadTsdkByPath(
+  const {typescript, diagnosticMessages} = loadTsdkByPath(
     tsdk,
     parameters.locale
   )
 
   return server.initialize(
     parameters,
-    createTypeScriptProjectProviderFactory(typescript, diagnosticMessages),
+    tsEnabled
+      ? createTypeScriptProjectProviderFactory(typescript, diagnosticMessages)
+      : createSimpleProjectProviderFactory(),
     {
       watchFileExtensions: [
         'cjs',
@@ -63,15 +69,20 @@ connection.onInitialize((parameters) => {
       ],
 
       getServicePlugins() {
-        return [
+        const plugins = [
           createMarkdownServicePlugin({
             getDiagnosticOptions(document, context) {
               return context.env.getConfiguration?.('mdx.validate')
             }
           }),
-          createMdxServicePlugin(),
-          createTypeScriptServicePlugin(typescript)
+          createMdxServicePlugin()
         ]
+
+        if (tsEnabled) {
+          plugins.push(createTypeScriptServicePlugin(typescript))
+        }
+
+        return plugins
       },
 
       async getLanguagePlugins(serviceEnvironment, projectContext) {

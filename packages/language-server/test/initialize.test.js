@@ -20,7 +20,7 @@ test('initialize', async () => {
   const {serverInfo, ...initializeResponse} = await serverHandle.initialize(
     fixtureUri('node16'),
     // @ts-expect-error https://github.com/volarjs/volar.js/pull/142
-    {typescript: {tsdk}}
+    {typescript: {enabled: true, tsdk}}
   )
   assert.deepEqual(initializeResponse, {
     capabilities: {

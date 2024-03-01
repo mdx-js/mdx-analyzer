@@ -8,12 +8,12 @@ import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {
   activateAutoInsertion,
   activateDocumentDropEdit,
-  activateTsVersionStatusItem,
   createLabsInfo,
   getTsdk
 } from '@volar/vscode'
 import {
   commands,
+  extensions,
   window,
   workspace,
   Disposable,
@@ -43,6 +43,8 @@ let disposable
  *   extension.
  */
 export async function activate(context) {
+  extensions.getExtension('vscode.typescript-language-features')?.activate()
+
   const {tsdk} = await getTsdk(context)
 
   client = new LanguageClient(
@@ -81,7 +83,7 @@ export async function activate(context) {
   async function tryRestartServer() {
     await stopServer()
     if (workspace.getConfiguration('mdx').get('server.enable')) {
-      await startServer(context)
+      await startServer()
     }
   }
 }
@@ -103,11 +105,8 @@ async function stopServer() {
 
 /**
  * Start the language server and client integrations.
- *
- * @param {ExtensionContext} context
- *   The extension context as given by VSCode.
  */
-async function startServer(context) {
+async function startServer() {
   if (client.needsStart()) {
     await window.withProgress(
       {
@@ -123,14 +122,7 @@ async function startServer(context) {
           activateMdxToggleCommand('toggleDelete'),
           activateMdxToggleCommand('toggleEmphasis'),
           activateMdxToggleCommand('toggleInlineCode'),
-          activateMdxToggleCommand('toggleStrong'),
-          activateTsVersionStatusItem(
-            'mdx',
-            'mdx.selectTypescriptVersion',
-            context,
-            client,
-            (text) => 'TS ' + text
-          )
+          activateMdxToggleCommand('toggleStrong')
         )
       }
     )

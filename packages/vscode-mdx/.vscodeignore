@@ -1,10 +1,14 @@
+# Workaround for https://github.com/microsoft/vscode-vsce/issues/580
+../../
+
 .*
 .*/
 *.log
 *.map
 *.ts
 *.tsbuildinfo
+node_modules/**
+!node_modules/@mdx-js/typescript-plugin.js
 fixtures/
-node_modules/
 packages/
 script/

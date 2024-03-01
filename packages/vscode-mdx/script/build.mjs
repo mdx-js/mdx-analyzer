@@ -11,13 +11,16 @@ const debug = process.argv.includes('debug')
 await build({
   bundle: true,
   entryPoints: {
-    extension: require.resolve('../src/extension.js'),
-    'language-server': require.resolve('@mdx-js/language-server')
+    'out/extension': require.resolve('../src/extension.js'),
+    'out/language-server': require.resolve('@mdx-js/language-server'),
+    'node_modules/@mdx-js/typescript-plugin': require.resolve(
+      '../src/typescript-plugin.js'
+    )
   },
   external: ['vscode'],
   logLevel: 'info',
   minify: !debug,
-  outdir: fileURLToPath(new URL('../out/', import.meta.url)),
+  outdir: fileURLToPath(new URL('../', import.meta.url)),
   platform: 'node',
   sourcemap: debug,
   target: 'node16',

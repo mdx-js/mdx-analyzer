@@ -34,9 +34,6 @@
     "onLanguage:typescript",
     "onLanguage:typescriptreact"
   ],
-  "vsce": {
-    "dependencies": false
-  },
   "scripts": {
     "build": "node ./script/build.mjs",
     "build:debug": "npm run build debug",
@@ -44,12 +41,16 @@
     "vscode:prepublish": "npm run build"
   },
   "devDependencies": {
+    "@mdx-js/language-service": "0.5.3",
     "@types/vscode": "^1.82.0",
     "@volar/language-server": "~2.1.0",
     "@volar/vscode": "~2.1.0",
     "@vscode/vsce": "^2.0.0",
     "esbuild": "^0.20.0",
-    "ovsx": "^0.8.0"
+    "load-plugin": "^5.0.0",
+    "ovsx": "^0.8.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.0"
   },
   "galleryBanner": {
     "color": "#fcb32c",
@@ -197,11 +198,6 @@
     ],
     "commands": [
       {
-        "command": "mdx.selectTypescriptVersion",
-        "title": "Select TypeScript version…",
-        "category": "MDX"
-      },
-      {
         "command": "mdx.toggleDelete",
         "title": "Toggle Delete",
         "category": "MDX"
@@ -223,12 +219,6 @@
       }
     ],
     "menus": {
-      "commandPalette": [
-        {
-          "command": "mdx.selectTypescriptVersion",
-          "when": "editorLangId == mdx"
-        }
-      ],
       "editor/context": [
         {
           "command": "mdx.toggleDelete",
@@ -309,6 +299,16 @@
         "embeddedLanguages": {
           "meta.embedded.block.mdx": "mdx"
         }
+      }
+    ],
+    "typescriptServerPlugins": [
+      {
+        "name": "@mdx-js/typescript-plugin",
+        "enableForWorkspaceTypeScriptVersions": true,
+        "configNamespace": "typescript",
+        "languages": [
+          "mdx"
+        ]
       }
     ]
   }

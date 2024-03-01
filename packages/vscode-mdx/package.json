@@ -221,11 +221,6 @@
     "menus": {
       "editor/context": [
         {
-          "command": "typescript.goToSourceDefinition",
-          "when": "tsSupportsSourceDefinition && resourceLangId == mdx",
-          "group": "navigation@9"
-        },
-        {
           "command": "mdx.toggleDelete",
           "when": "editorTextFocus && !editorReadonly && editorLangId == mdx",
           "group": "1_modification"
@@ -244,29 +239,6 @@
           "command": "mdx.toggleStrong",
           "when": "editorTextFocus && !editorReadonly && editorLangId == mdx",
           "group": "1_modification"
-        }
-      ],
-      "explorer/context": [
-        {
-          "command": "typescript.findAllFileReferences",
-          "when": "tsSupportsFileReferences && resourceLangId == mdx",
-          "group": "4_search"
-        }
-      ],
-      "editor/title/context": [
-        {
-          "command": "typescript.findAllFileReferences",
-          "when": "tsSupportsFileReferences && resourceLangId == mdx"
-        }
-      ],
-      "commandPalette": [
-        {
-          "command": "typescript.reloadProjects",
-          "when": "editorLangId == mdx && typescript.isManagedFile"
-        },
-        {
-          "command": "typescript.goToProjectConfig",
-          "when": "editorLangId == mdx"
         }
       ]
     },

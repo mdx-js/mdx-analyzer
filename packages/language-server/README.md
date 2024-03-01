@@ -69,6 +69,8 @@ features specific to MDX.
 
 MDX language server supports the following LSP initialization options:
 
+*   `typescript.enabled` (`boolean`, default: `false`) —
+    If true, enable TypeScript.
 *   `typescript.tsdk` (`string`, required) —
     The path from which to load TypeScript.
 *   `locale` (`string`, optional) —

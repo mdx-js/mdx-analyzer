@@ -18,12 +18,14 @@ import {
   createConnection,
   createServer,
   createSimpleProjectProviderFactory,
+  createTypeScriptProjectProviderFactory,
   loadTsdkByPath
 } from '@volar/language-server/node.js'
-import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
 import {loadPlugin} from 'load-plugin'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
+import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
+import {create as createTypeScriptServicePlugin} from 'volar-service-typescript'
 
 process.title = 'mdx-language-server'
 
@@ -34,79 +36,98 @@ const server = createServer(connection)
 
 connection.onInitialize((parameters) => {
   const tsdk = parameters.initializationOptions?.typescript?.tsdk
+  const tsEnabled = Boolean(
+    parameters.initializationOptions?.typescript?.enabled
+  )
   assert(
     typeof tsdk === 'string',
     'Missing initialization option typescript.tsdk'
   )
 
-  const {typescript} = loadTsdkByPath(tsdk, parameters.locale)
+  const {typescript, diagnosticMessages} = loadTsdkByPath(
+    tsdk,
+    parameters.locale
+  )
 
-  return server.initialize(parameters, createSimpleProjectProviderFactory(), {
-    watchFileExtensions: [
-      'cjs',
-      'cts',
-      'js',
-      'jsx',
-      'json',
-      'mdx',
-      'mjs',
-      'mts',
-      'ts',
-      'tsx'
-    ],
+  return server.initialize(
+    parameters,
+    tsEnabled
+      ? createTypeScriptProjectProviderFactory(typescript, diagnosticMessages)
+      : createSimpleProjectProviderFactory(),
+    {
+      watchFileExtensions: [
+        'cjs',
+        'cts',
+        'js',
+        'jsx',
+        'json',
+        'mdx',
+        'mjs',
+        'mts',
+        'ts',
+        'tsx'
+      ],
 
-    getServicePlugins() {
-      return [
-        createMarkdownServicePlugin({
-          getDiagnosticOptions(document, context) {
-            return context.env.getConfiguration?.('mdx.validate')
-          }
-        }),
-        createMdxServicePlugin()
-      ]
-    },
+      getServicePlugins() {
+        const plugins = [
+          createMarkdownServicePlugin({
+            getDiagnosticOptions(document, context) {
+              return context.env.getConfiguration?.('mdx.validate')
+            }
+          }),
+          createMdxServicePlugin()
+        ]
 
-    async getLanguagePlugins(serviceEnvironment, projectContext) {
-      const configFileName = projectContext?.typescript?.configFileName
+        if (tsEnabled) {
+          plugins.push(createTypeScriptServicePlugin(typescript))
+        }
 
-      /** @type {PluggableList | undefined} */
-      let plugins
-      let checkMdx = false
-      let jsxImportSource = 'react'
+        return plugins
+      },
 
-      if (configFileName) {
-        const cwd = path.dirname(configFileName)
-        const configSourceFile = typescript.readJsonConfigFile(
-          configFileName,
-          typescript.sys.readFile
-        )
-        const commandLine = typescript.parseJsonSourceFileConfigFileContent(
-          configSourceFile,
-          typescript.sys,
-          cwd,
-          undefined,
-          configFileName
-        )
-        plugins = await resolveRemarkPlugins(
-          commandLine.raw?.mdx,
-          (name) =>
-            /** @type {Promise<Plugin>} */ (
-              loadPlugin(name, {prefix: 'remark', cwd})
-            )
-        )
-        checkMdx = Boolean(commandLine.raw?.mdx?.checkMdx)
-        jsxImportSource = commandLine.options.jsxImportSource || jsxImportSource
+      async getLanguagePlugins(serviceEnvironment, projectContext) {
+        const configFileName = projectContext?.typescript?.configFileName
+
+        /** @type {PluggableList | undefined} */
+        let plugins
+        let checkMdx = false
+        let jsxImportSource = 'react'
+
+        if (configFileName) {
+          const cwd = path.dirname(configFileName)
+          const configSourceFile = typescript.readJsonConfigFile(
+            configFileName,
+            typescript.sys.readFile
+          )
+          const commandLine = typescript.parseJsonSourceFileConfigFileContent(
+            configSourceFile,
+            typescript.sys,
+            cwd,
+            undefined,
+            configFileName
+          )
+          plugins = await resolveRemarkPlugins(
+            commandLine.raw?.mdx,
+            (name) =>
+              /** @type {Promise<Plugin>} */ (
+                loadPlugin(name, {prefix: 'remark', cwd})
+              )
+          )
+          checkMdx = Boolean(commandLine.raw?.mdx?.checkMdx)
+          jsxImportSource =
+            commandLine.options.jsxImportSource || jsxImportSource
+        }
+
+        return [
+          createMdxLanguagePlugin(
+            plugins || defaultPlugins,
+            checkMdx,
+            jsxImportSource
+          )
+        ]
       }
-
-      return [
-        createMdxLanguagePlugin(
-          plugins || defaultPlugins,
-          checkMdx,
-          jsxImportSource
-        )
-      ]
     }
-  })
+  )
 })
 
 connection.onRequest('mdx/toggleDelete', async (parameters) => {

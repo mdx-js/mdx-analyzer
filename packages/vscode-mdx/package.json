@@ -35,10 +35,8 @@
     "onLanguage:typescriptreact"
   ],
   "scripts": {
-    "build": "node ./script/build.mjs",
-    "build:debug": "npm run build debug",
     "generate": "node --conditions development ./script/generate.mjs",
-    "vscode:prepublish": "npm run build"
+    "vscode:prepublish": "node ./script/build.mjs"
   },
   "devDependencies": {
     "@mdx-js/language-service": "0.5.3",

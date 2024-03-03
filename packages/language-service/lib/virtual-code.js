@@ -75,6 +75,7 @@ ${isAsync ? 'async ' : ''}function _createMdxContent(props) {
     /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */
     props${Array.from(variables, (name) => ',\n    /** {@link ' + name + '} */\n    ' + name).join('')}
   }
+  _components
   return <>`
 
 const componentEnd = `

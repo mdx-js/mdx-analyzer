@@ -1,5 +1,14 @@
 # @mdx-js/language-server
 
+## 0.4.1
+
+### Patch Changes
+
+- [`c1be27c`](https://github.com/mdx-js/mdx-analyzer/commit/c1be27c62d5741bd7938c6f80e86ff4c0c6b4418) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Always enable the Volar TypeScript service.
+
+- Updated dependencies [[`712f007`](https://github.com/mdx-js/mdx-analyzer/commit/712f007f459c2c8d3a25c8cab83176d97ecc8e89), [`712f007`](https://github.com/mdx-js/mdx-analyzer/commit/712f007f459c2c8d3a25c8cab83176d97ecc8e89)]:
+  - @mdx-js/language-service@0.5.4
+
 ## 0.4.0
 
 ### Minor Changes

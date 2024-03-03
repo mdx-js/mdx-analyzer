@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.1
+
+### Patch Changes
+
+- [`b112701`](https://github.com/mdx-js/mdx-analyzer/commit/b1127012c79e4c32c002fccceff355b1b62ae225) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add `tsconfig.json` JSON validation for more file patterns.
+
 ## 1.8.0
 
 ### Minor Changes

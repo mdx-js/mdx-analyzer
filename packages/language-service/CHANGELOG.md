@@ -1,5 +1,13 @@
 # @mdx-js/language-service
 
+## 0.5.4
+
+### Patch Changes
+
+- [#410](https://github.com/mdx-js/mdx-analyzer/pull/410) [`712f007`](https://github.com/mdx-js/mdx-analyzer/commit/712f007f459c2c8d3a25c8cab83176d97ecc8e89) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Mark MDX internals with `@internal`, not `@deprecated`.
+
+- [#410](https://github.com/mdx-js/mdx-analyzer/pull/410) [`712f007`](https://github.com/mdx-js/mdx-analyzer/commit/712f007f459c2c8d3a25c8cab83176d97ecc8e89) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Always mark the internal variable `_components` as used.
+
 ## 0.5.3
 
 ### Patch Changes

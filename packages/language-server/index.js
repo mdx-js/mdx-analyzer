@@ -75,12 +75,9 @@ connection.onInitialize((parameters) => {
               return context.env.getConfiguration?.('mdx.validate')
             }
           }),
-          createMdxServicePlugin()
+          createMdxServicePlugin(),
+          createTypeScriptServicePlugin(typescript)
         ]
-
-        if (tsEnabled) {
-          plugins.push(createTypeScriptServicePlugin(typescript))
-        }
 
         return plugins
       },

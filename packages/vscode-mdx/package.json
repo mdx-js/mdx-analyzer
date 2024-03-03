@@ -190,7 +190,13 @@
     ],
     "jsonValidation": [
       {
-        "fileMatch": "tsconfig.json",
+        "fileMatch": [
+          "tsconfig.json",
+          "tsconfig.*.json",
+          "tsconfig-*.json",
+          "jsconfig.json",
+          "jsconfig.*.json"
+        ],
         "url": "./tsconfig.schema.json"
       }
     ],

@@ -18,8 +18,8 @@ A [language server][lsp] for [MDX][].
     *   [Language server features](#language-server-features)
     *   [Initialize Options](#initialize-options)
     *   [Configuration](#configuration)
-    *   [TypeScript](#typescript)
-    *   [Plugins](#plugins)
+*   [TypeScript](#typescript)
+*   [Plugins](#plugins)
 *   [Examples](#examples)
     *   [Visual Studio Code](#visual-studio-code)
 *   [Compatibility](#compatibility)
@@ -109,145 +109,19 @@ MDX language server supports the following LSP configuration options:
 *   `mdx.validate.ignoreLinks` (`Array<string>`, optional) —
     Glob of links that should not be validated.
 
-### TypeScript
+## TypeScript
 
-[MDX][] doesn’t support TypeScript syntax, but it does support
+This extension offers type safety for MDX files based on TypeScript’s
 [types in JSDoc][jsdoc].
+For MDX specific details, see the
+[TypeScript section](https://github.com/mdx-js/mdx-analyzer#typescript) of the
+repository readme.
 
-MDX type checking support is similar to JavaScript support.
-By default, type hints are subtle.
-To enable strict type checking, you need to specify `mdx.checkMdx` in
-`tsconfig.json`:
+## Plugins
 
-```jsonc
-{
-  "compilerOptions": {
-    // …
-  },
-  "mdx": {
-    // Enable strict type checking in MDX files.
-    "checkMdx": true
-  }
-}
-```
-
-#### `Props`
-
-The `Props` type is a special type which is used to determine the type used for
-[`props`][props].
-For example:
-
-```mdx
-{/**
-  * @typedef Props
-  * @property {string} name
-  *   Who to greet.
-  */}
-
-# Hello {props.name}
-```
-
-#### `MDXProvidedComponents`
-
-The special type `MDXProvidedComponents` is used to determine which components
-are [provided][provider].
-For example:
-
-```mdx
-{/**
-  * @typedef MDXProvidedComponents
-  * @property {typeof import('../components/Planet.js').Planet} Planet
-  */}
-
-<Planet name="Earth" />
-```
-
-You can also define this type externally, and import it into your MDX file.
-Based on an [Next.js][next mdx] example:
-
-```typescript
-// mdx-components.ts
-import { Planet } from './components/Planet.js'
-
-const components = {
-  Planet
-}
-
-export type MDXProvidedComponents = typeof components
-
-export function useMDXComponents(): MDXProvidedComponents {
-  return components
-}
-```
-
-Then in your MDX file:
-
-```mdx
-{/**
-  * @typedef {import('../mdx-components.js').MDXProvidedComponents} MDXProvidedComponents
-  */}
-
-<Planet name="Earth" />
-```
-
-Another alternative is to define the `MDXProvidedComponents` type globally.
-This way you don’t have to define `MDXProvidedComponents` in each MDX file.
-Based on an [Next.js][next mdx] example:
-
-```typescript
-// mdx-components.ts
-import { Planet } from './components/Planet.js'
-
-const components = {
-  Planet
-}
-
-declare global {
-  type MDXProvidedComponents = typeof components
-}
-
-export function useMDXComponents(): MDXProvidedComponents {
-  return components
-}
-```
-
-Now you can write the following MDX with full type safety anywhere:
-
-```mdx
-<Planet name="Earth" />
-```
-
-### Plugins
-
-This extension supports remark parser plugins.
-Plugins can be defined in an array of strings or string / options tuples.
-These plugins can be defined in `tsconfig.json` and will be resolved relative to
-that file.
-Transformers such as [`remark-mdx-frontmatter`][remark-mdx-frontmatter] are not
-supported yet.
-Support is tracked in
-[#297](https://github.com/mdx-js/mdx-analyzer/issues/297).
-
-For example, to support [frontmatter][] with YAML and TOML and [GFM][]:
-
-```jsonc
-{
-  "compilerOptions": {
-    // …
-  },
-  "mdx": {
-    "plugins": [
-      [
-        "remark-frontmatter",
-        ["toml", "yaml"]
-      ],
-      "remark-gfm"
-    ]
-  }
-}
-```
-
-For a more complete list, see [remark plugins][].
+For information on plugin support, see the
+[Plugins section](https://github.com/mdx-js/mdx-analyzer#plugins) of the
+repository readme.
 
 ## Examples
 
@@ -392,10 +266,6 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [downloads]: https://www.npmjs.com/package/@mdx-js/language-server
 
-[frontmatter]: https://github.com/remarkjs/remark-frontmatter
-
-[gfm]: https://github.com/remarkjs/remark-gfm
-
 [jsdoc]: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
 
 [lsp]: https://microsoft.github.io/language-server-protocol
@@ -404,17 +274,7 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [mit]: LICENSE
 
-[next mdx]: https://nextjs.org/docs/pages/building-your-application/configuring/mdx
-
 [npm]: https://docs.npmjs.com/cli/install
-
-[props]: https://mdxjs.com/docs/using-mdx/#props
-
-[provider]: https://mdxjs.com/docs/using-mdx/#mdx-provider
-
-[remark plugins]: https://github.com/remarkjs/remark/blob/main/doc/plugins.md
-
-[remark-mdx-frontmatter]: https://github.com/remcohaszing/remark-mdx-frontmatter
 
 [sponsor]: https://mdxjs.com/community/sponsor/
 

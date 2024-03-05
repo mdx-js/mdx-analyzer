@@ -46,14 +46,14 @@ MDX for VSCode supports the following additional setting:
 This extension offers type safety for MDX files based on TypeScript’s
 [types in JSDoc][jsdoc].
 For MDX specific details, see the
-[TypeScript section](../language-server/README.md#typescript) of the MDX
-language server documentation.
+[TypeScript section](https://github.com/mdx-js/mdx-analyzer#typescript) of the
+repository readme.
 
 ## Plugins
 
 For information on plugin support, see the
-[Plugins section](../language-server/README.md#plugins) of the MDX language
-server documentation.
+[Plugins section](https://github.com/mdx-js/mdx-analyzer#plugins) of the
+repository readme.
 
 ## Syntax highlighting
 

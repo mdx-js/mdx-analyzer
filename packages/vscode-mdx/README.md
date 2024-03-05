@@ -34,7 +34,7 @@ ext install unifiedjs.vscode-mdx
 
 ## Settings
 
-All MDX language server configurations can be configured via
+All [MDX language server configurations][] can be configured via
 [Visual Studio Code][vscode] settings.
 MDX for VSCode supports the following additional setting:
 
@@ -191,6 +191,8 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 [marketplace]: https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx
 
 [mdx]: https://mdxjs.com
+
+[mdx language server configurations]: https://github.com/mdx-js/mdx-analyzer/blob/main/packages/language-server#configuration
 
 [mit]: http://opensource.org/licenses/MIT
 

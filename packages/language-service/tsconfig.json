@@ -1,9 +1,8 @@
 {
-  "extends": "..",
-  "include": ["**/*.js", "./types.d.ts"],
-  "exclude": ["coverage/", "node_modules/"],
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "declaration": true,
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "outDir": "types"
   }
 }

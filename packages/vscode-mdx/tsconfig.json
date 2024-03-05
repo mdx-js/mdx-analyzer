@@ -1,10 +1,10 @@
 {
-  "extends": "..",
-  "include": ["**/*.js"],
-  "exclude": ["coverage/", "node_modules/", "out/"],
+  "extends": "../../tsconfig.base.json",
+  "references": [{"path": "../language-service"}],
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "bundler",
-    "noEmit": true
+    "noEmit": true,
+    "skipLibCheck": true
   }
 }

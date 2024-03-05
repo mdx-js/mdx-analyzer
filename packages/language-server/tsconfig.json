@@ -1,7 +1,5 @@
 {
-  "extends": "..",
-  "include": ["**/*.js", "package.json"],
-  "exclude": ["coverage/", "node_modules/"],
+  "extends": "../../tsconfig.base.json",
   "references": [{"path": "../language-service"}],
   "compilerOptions": {
     "noEmit": true,

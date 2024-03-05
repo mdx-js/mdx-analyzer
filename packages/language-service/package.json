@@ -13,11 +13,18 @@
   "author": "Remco Haszing <remcohaszing@gmail.com>",
   "funding": "https://opencollective.com/unified",
   "license": "MIT",
-  "exports": "./index.js",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./index.js"
+    }
+  },
   "files": [
-    "*.d.ts",
-    "*.js",
-    "lib"
+    "index.js",
+    "lib",
+    "types",
+    "!types/test",
+    "!*.tsbuildinfo"
   ],
   "keywords": [
     "IntelliSense",

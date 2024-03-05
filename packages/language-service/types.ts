@@ -1,18 +1,22 @@
+/**
+ * @internal
+ */
 declare module 'estree' {
-  export interface BaseNode {
+  interface BaseNode {
     start: number
     end: number
   }
 }
 
+/**
+ * @internal
+ */
 declare module 'mdast' {
-  export interface TOML extends Literal {
+  interface TOML extends Literal {
     type: 'toml'
   }
 
-  export interface RootContentMap {
+  interface RootContentMap {
     toml: TOML
   }
 }
-
-export {}

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "composite": true,
+    "lib": ["es2021"],
+    "module": "node16",
+    "moduleDetection": "force",
+    "strict": true,
+    "stripInternal": true,
+    "target": "es2021"
+  }
+}

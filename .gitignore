@@ -3,6 +3,7 @@
 *.tsbuildinfo
 *.vsix
 .vscode-test/
+coverage/
 dist/
 node_modules/
 out/

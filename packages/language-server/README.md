@@ -18,8 +18,8 @@ A [language server][lsp] for [MDX][].
     *   [Language server features](#language-server-features)
     *   [Initialize Options](#initialize-options)
     *   [Configuration](#configuration)
-*   [TypeScript](#typescript)
-*   [Plugins](#plugins)
+    *   [TypeScript](#typescript)
+    *   [Plugins](#plugins)
 *   [Examples](#examples)
     *   [Visual Studio Code](#visual-studio-code)
 *   [Compatibility](#compatibility)
@@ -109,7 +109,7 @@ MDX language server supports the following LSP configuration options:
 *   `mdx.validate.ignoreLinks` (`Array<string>`, optional) —
     Glob of links that should not be validated.
 
-## TypeScript
+### TypeScript
 
 This extension offers type safety for MDX files based on TypeScript’s
 [types in JSDoc][jsdoc].
@@ -117,7 +117,7 @@ For MDX specific details, see the
 [TypeScript section](https://github.com/mdx-js/mdx-analyzer#typescript) of the
 repository readme.
 
-## Plugins
+### Plugins
 
 For information on plugin support, see the
 [Plugins section](https://github.com/mdx-js/mdx-analyzer#plugins) of the

@@ -1,28 +1,37 @@
+'use strict'
+
 /**
  * @typedef {import('typescript').TsConfigSourceFile} TsConfigSourceFile
- * @typedef {import('unified').PluggableList} PluggableList
- * @typedef {import('unified').Plugin} Plugin
+ * @typedef {import('unified', {with: {'resolution-mode': 'import'}}).Plugin} Plugin
  */
 
-import {
-  createMdxLanguagePlugin,
-  resolveRemarkPlugins
-} from '@mdx-js/language-service'
-import {createAsyncLanguageServicePlugin} from '@volar/typescript/lib/quickstart/createAsyncLanguageServicePlugin.js'
-import {loadPlugin} from 'load-plugin'
-import remarkFrontmatter from 'remark-frontmatter'
-import remarkGfm from 'remark-gfm'
+const {
+  createAsyncLanguageServicePlugin
+} = require('@volar/typescript/lib/quickstart/createAsyncLanguageServicePlugin.js')
 
-/** @type {PluggableList} */
-const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
-
-// eslint-disable-next-line unicorn/prefer-module
-module.exports = createAsyncLanguageServicePlugin(
+const plugin = createAsyncLanguageServicePlugin(
   ['.mdx'],
   2 /* JSX */,
   async (ts, info) => {
+    const [
+      {createMdxLanguagePlugin, resolveRemarkPlugins},
+      {loadPlugin},
+      {default: remarkFrontmatter},
+      {default: remarkGfm}
+    ] = await Promise.all([
+      import('@mdx-js/language-service'),
+      import('load-plugin'),
+      import('remark-frontmatter'),
+      import('remark-gfm')
+    ])
+
     if (info.project.projectKind !== ts.server.ProjectKind.Configured) {
-      return [createMdxLanguagePlugin(defaultPlugins)]
+      return [
+        createMdxLanguagePlugin([
+          [remarkFrontmatter, ['toml', 'yaml']],
+          remarkGfm
+        ])
+      ]
     }
 
     const cwd = info.project.getCurrentDirectory()
@@ -48,10 +57,12 @@ module.exports = createAsyncLanguageServicePlugin(
 
     return [
       createMdxLanguagePlugin(
-        plugins || defaultPlugins,
+        plugins || [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm],
         Boolean(commandLine.raw?.mdx?.checkMdx),
         commandLine.options.jsxImportSource
       )
     ]
   }
 )
+
+module.exports = plugin

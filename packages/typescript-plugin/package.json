@@ -1,0 +1,39 @@
+{
+  "name": "@mdx-js/typescript-plugin",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "A TypeScript plugin to support language features in MDX files",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdx-js/mdx-analyzer.git",
+    "directory": "packages/typescript-plugin"
+  },
+  "homepage": "https://mdxjs.com",
+  "bugs": "https://github.com/mdx-js/mdx-analyzer/issues",
+  "author": "Remco Haszing <remcohaszing@gmail.com>",
+  "funding": "https://opencollective.com/unified",
+  "license": "MIT",
+  "exports": "./index.cjs",
+  "files": [
+    "*.cjs"
+  ],
+  "keywords": [
+    "IntelliSense",
+    "mdx",
+    "typescript",
+    "unified"
+  ],
+  "scripts": {
+    "prepack": "tsc --build --clean && tsc --build",
+    "test-api": "node --test",
+    "test": "npm pack && npm run test-api"
+  },
+  "dependencies": {
+    "@mdx-js/language-service": "0.5.4",
+    "@volar/typescript": "~2.1.0",
+    "load-plugin": "^5.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.0"
+  },
+  "sideEffects": false
+}

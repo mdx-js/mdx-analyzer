@@ -166,7 +166,7 @@ abide by its terms.
 
 ## Sponsor
 
-See \[§ Sponsor]\[sponsor] on our site for how to help financially.
+See [§ Sponsor][sponsor] on our site for how to help financially.
 
 <table>
 <tr valign="middle">
@@ -285,6 +285,8 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 [size-badge]: https://img.shields.io/bundlejs/size/@mdx-js/language-service
 
 [size]: https://bundlejs.com/?q=@mdx-js/language-service
+
+[sponsor]: https://mdxjs.com/community/sponsor/
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 

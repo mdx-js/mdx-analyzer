@@ -1,7 +1,6 @@
 /**
  * @typedef {import('@volar/language-service').DataTransferItem} DataTransferItem
- * @typedef {import('@volar/language-service').ServicePlugin} ServicePlugin
- * @typedef {import('@volar/language-service').ServicePluginInstance<Provide>} ServicePluginInstance
+ * @typedef {import('@volar/language-service').ServicePlugin<Provide>} ServicePlugin
  * @typedef {import('./commands.js').SyntaxToggle} SyntaxToggle
  */
 
@@ -59,9 +58,6 @@ export function createMdxServicePlugin() {
   return {
     name: 'mdx',
 
-    /**
-     * @returns {ServicePluginInstance}
-     */
     create(context) {
       return {
         provide: {

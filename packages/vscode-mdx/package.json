@@ -78,6 +78,14 @@
             "default": "text",
             "description": "How to format traced MDX language server requests."
           },
+          "mdx.typescript.mode": {
+            "enum": [
+              "language-server",
+              "typescript-plugin"
+            ],
+            "default": "typescript-plugin",
+            "markdownDescription": "How to integrate TypeScript support. The default is `\"typescript-plugin\". Set this to `\"language-server\"` if the TypeScript plugin causes problems."
+          },
           "mdx.validate.validateReferences": {
             "enum": [
               "ignore",

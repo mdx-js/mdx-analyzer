@@ -8,6 +8,7 @@ import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {
   activateAutoInsertion,
   activateDocumentDropEdit,
+  activateTsVersionStatusItem,
   createLabsInfo,
   getTsdk
 } from '@volar/vscode'
@@ -43,7 +44,11 @@ let disposable
  *   extension.
  */
 export async function activate(context) {
-  extensions.getExtension('vscode.typescript-language-features')?.activate()
+  const tsExtension = extensions.getExtension(
+    'vscode.typescript-language-features'
+  )
+  await tsExtension?.activate()
+  const tsApi = tsExtension?.exports?.getAPI?.(0)
 
   const {tsdk} = await getTsdk(context)
 
@@ -65,11 +70,13 @@ export async function activate(context) {
     }
   )
 
-  tryRestartServer()
+  reload()
 
   context.subscriptions.push(
     workspace.onDidChangeConfiguration((event) => {
-      if (event.affectsConfiguration('mdx.server.enable')) {
+      if (event.affectsConfiguration('mdx.typescript.mode')) {
+        reload()
+      } else if (event.affectsConfiguration('mdx.server.enable')) {
         tryRestartServer()
       }
     })
@@ -80,10 +87,19 @@ export async function activate(context) {
 
   return volarLabs.extensionExports
 
+  function reload() {
+    const lsMode =
+      workspace.getConfiguration('mdx').get('typescript.mode') ===
+      'language-server'
+    client.clientOptions.initializationOptions.typescript.enabled = lsMode
+    tryRestartServer()
+    tsApi.configurePlugin('@mdx-js/typescript-plugin', {enabled: !lsMode})
+  }
+
   async function tryRestartServer() {
     await stopServer()
     if (workspace.getConfiguration('mdx').get('server.enable')) {
-      await startServer()
+      await startServer(context)
     }
   }
 }
@@ -105,8 +121,11 @@ async function stopServer() {
 
 /**
  * Start the language server and client integrations.
+ *
+ * @param {ExtensionContext} context
+ *   The extension context as given by VSCode.
  */
-async function startServer() {
+async function startServer(context) {
   if (client.needsStart()) {
     await window.withProgress(
       {
@@ -116,14 +135,28 @@ async function startServer() {
       async () => {
         await client.start()
 
-        disposable = Disposable.from(
+        const disposables = [
           activateAutoInsertion('mdx', client),
           activateDocumentDropEdit('mdx', client),
           activateMdxToggleCommand('toggleDelete'),
           activateMdxToggleCommand('toggleEmphasis'),
           activateMdxToggleCommand('toggleInlineCode'),
           activateMdxToggleCommand('toggleStrong')
-        )
+        ]
+
+        if (client.clientOptions.initializationOptions.typescript.enable) {
+          disposables.push(
+            activateTsVersionStatusItem(
+              'mdx',
+              'mdx.selectTypescriptVersion',
+              context,
+              client,
+              (text) => 'TS ' + text
+            )
+          )
+        }
+
+        disposable = Disposable.from(...disposables)
       }
     )
   }

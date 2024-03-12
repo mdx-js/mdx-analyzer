@@ -51,6 +51,11 @@
     "theme": "light"
   },
   "contributes": {
+    "breakpoints": [
+      {
+        "language": "mdx"
+      }
+    ],
     "configuration": [
       {
         "title": "MDX",

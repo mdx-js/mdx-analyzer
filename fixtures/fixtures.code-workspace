@@ -11,6 +11,7 @@
     "recommendations": ["johnsoncodehk.volarjs-labs"]
   },
   "folders": [
+    {"path": "debug"},
     {"path": "demo"},
     {"path": "frontmatter"},
     {"path": "no-tsconfig"},

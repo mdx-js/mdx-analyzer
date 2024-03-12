@@ -1,0 +1,65 @@
+{/**
+  * @typedef Step
+  * @property {React.ReactNode} description
+  * @property {boolean} [optional]
+  */}
+
+{/**
+  * @typedef ExampleProps
+  * @property {string} [reference]
+  */}
+
+# Debugging
+
+This fixture workspace contains some code to test if breakpoints work as expected.
+You can try this using Visual Studio Code.
+
+{/** @type {Step[]} */}
+export const steps = [
+  {
+    description: 'Open Visual Studio Code'
+  },
+  {
+    description: 'Grab some coffee',
+    optional: true
+  },
+  {
+    description: 'Set some breakpoints in this document'
+  },
+  {
+    description: 'Open the Visual Studio Code JavaScript Debug Terminal'
+  },
+  {
+    description: 'Navigate to the directory containing this document'
+  },
+  {
+    description: <>Run <code>./run.mjs</code></>
+  }
+]
+
+<ul>{steps.map((step, index) => {
+  const shouldRender = !step.optional
+
+  if(shouldRender) {
+    return <li key={index}>{step.description}</li>
+  }
+})}</ul>
+
+{/**
+  * @param {ExampleProps} props
+  */}
+export function Example({reference}) {
+  debugger
+  let string
+  if (reference) {
+    string = 'For example, see ' + reference
+  } else {
+    string = 'No example reference given'
+  }
+
+  return 'For example, see ' + reference
+}
+
+It works in custom components too.
+Also `debugger` expressions work.
+<Example reference="this example" />

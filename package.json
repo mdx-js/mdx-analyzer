@@ -14,10 +14,13 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.0.0",
+    "@mdx-js/node-loader": "^3.0.0",
     "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "c8": "^9.0.0",
     "prettier": "^3.0.0",
     "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "remark-cli": "^11.0.0",
     "remark-frontmatter": "^4.0.0",
     "remark-preset-wooorm": "^9.0.0",

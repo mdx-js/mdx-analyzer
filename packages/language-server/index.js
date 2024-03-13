@@ -25,7 +25,7 @@ import {loadPlugin} from 'load-plugin'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
-import {create as createTypeScriptServicePlugin} from 'volar-service-typescript'
+import {create as createTypeScriptSyntacticServicePlugin} from 'volar-service-typescript/lib/plugins/syntactic.js'
 
 process.title = 'mdx-language-server'
 
@@ -76,7 +76,7 @@ connection.onInitialize((parameters) => {
             }
           }),
           createMdxServicePlugin(),
-          createTypeScriptServicePlugin(typescript)
+          createTypeScriptSyntacticServicePlugin(typescript)
         ]
 
         return plugins

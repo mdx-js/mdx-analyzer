@@ -2,4 +2,4 @@
 "@mdx-js/language-server": patch
 ---
 
-Use syntax-only TypeScript plugin.
+Use syntax-only TypeScript service plugin.

@@ -25,7 +25,7 @@ import {loadPlugin} from 'load-plugin'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
-import {create as createTypeScriptServicePlugins} from 'volar-service-typescript'
+import {create as createTypeScriptServicePlugin} from 'volar-service-typescript'
 import {create as createTypeScriptSyntacticServicePlugin} from 'volar-service-typescript/lib/plugins/syntactic.js'
 
 process.title = 'mdx-language-server'
@@ -70,23 +70,17 @@ connection.onInitialize((parameters) => {
       ],
 
       getServicePlugins() {
-        let plugins = [
+        return [
           createMarkdownServicePlugin({
             getDiagnosticOptions(document, context) {
               return context.env.getConfiguration?.('mdx.validate')
             }
           }),
-          createMdxServicePlugin()
+          createMdxServicePlugin(),
+          tsEnabled
+            ? createTypeScriptServicePlugin(typescript, {})
+            : createTypeScriptSyntacticServicePlugin(typescript)
         ]
-
-        if (tsEnabled) {
-          plugins = plugins.concat(createTypeScriptServicePlugins(typescript, {}))
-        }
-        else {
-          plugins.push(createTypeScriptSyntacticServicePlugin(typescript))
-        }
-
-        return plugins
       },
 
       async getLanguagePlugins(serviceEnvironment, projectContext) {

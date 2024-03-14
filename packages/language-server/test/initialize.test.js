@@ -42,12 +42,16 @@ test('initialize', async () => {
       colorProvider: true,
       completionProvider: {
         resolveProvider: true,
-        triggerCharacters: ['.', '/', '#']
+        triggerCharacters: ['.', '/', '#', '"', "'", '`', '<', '@', ' ', '*']
       },
       definitionProvider: true,
       documentFormattingProvider: true,
       documentHighlightProvider: true,
       documentLinkProvider: {resolveProvider: true},
+      documentOnTypeFormattingProvider: {
+        firstTriggerCharacter: ';',
+        moreTriggerCharacter: ['}', '\n']
+      },
       documentRangeFormattingProvider: true,
       documentSymbolProvider: true,
       foldingRangeProvider: true,
@@ -102,8 +106,8 @@ test('initialize', async () => {
         range: true
       },
       signatureHelpProvider: {
-        retriggerCharacters: [],
-        triggerCharacters: []
+        retriggerCharacters: [')'],
+        triggerCharacters: ['(', ',', '<']
       },
       textDocumentSync: 2,
       typeDefinitionProvider: true,

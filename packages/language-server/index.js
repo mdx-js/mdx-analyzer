@@ -70,17 +70,22 @@ connection.onInitialize((parameters) => {
       ],
 
       getServicePlugins() {
-        return [
+        const plugins = [
           createMarkdownServicePlugin({
             getDiagnosticOptions(document, context) {
               return context.env.getConfiguration?.('mdx.validate')
             }
           }),
-          createMdxServicePlugin(),
-          tsEnabled
-            ? createTypeScriptServicePlugin(typescript, {})
-            : createTypeScriptSyntacticServicePlugin(typescript)
+          createMdxServicePlugin()
         ]
+
+        if (tsEnabled) {
+          plugins.push(...createTypeScriptServicePlugin(typescript, {}))
+        } else {
+          plugins.push(createTypeScriptSyntacticServicePlugin(typescript))
+        }
+
+        return plugins
       },
 
       async getLanguagePlugins(serviceEnvironment, projectContext) {

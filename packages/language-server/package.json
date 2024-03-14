@@ -37,8 +37,8 @@
     "load-plugin": "^5.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
-    "volar-service-markdown": "0.0.31",
-    "volar-service-typescript": "0.0.31",
+    "volar-service-markdown": "0.0.32",
+    "volar-service-typescript": "0.0.32",
     "vscode-uri": "^3.0.0"
   },
   "devDependencies": {

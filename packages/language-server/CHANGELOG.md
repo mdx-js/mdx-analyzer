@@ -1,5 +1,11 @@
 # @mdx-js/language-server
 
+## 0.4.2
+
+### Patch Changes
+
+- [#419](https://github.com/mdx-js/mdx-analyzer/pull/419) [`d56454d`](https://github.com/mdx-js/mdx-analyzer/commit/d56454d7bdec95b3d6da2ea28a5e693550ea8890) Thanks [@johnsoncodehk](https://github.com/johnsoncodehk)! - Use syntax-only TypeScript service plugin.
+
 ## 0.4.1
 
 ### Patch Changes

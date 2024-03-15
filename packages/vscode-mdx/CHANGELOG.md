@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.2
+
+### Patch Changes
+
+- [#416](https://github.com/mdx-js/mdx-analyzer/pull/416) [`a1bc3fb`](https://github.com/mdx-js/mdx-analyzer/commit/a1bc3fbadab95bc4c1ebdd7189edbd4ae58974b9) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Build the TypeScript plugin from the `@mdx-js/typescript-plugin` standalone package.
+
+- [#418](https://github.com/mdx-js/mdx-analyzer/pull/418) [`35c6b22`](https://github.com/mdx-js/mdx-analyzer/commit/35c6b229035796d6d80a571258315b242b31ee99) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add support for breakpoints.
+
 ## 1.8.1
 
 ### Patch Changes

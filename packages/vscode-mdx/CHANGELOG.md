@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.3
+
+### Patch Changes
+
+- [`a3e8a18`](https://github.com/mdx-js/mdx-analyzer/commit/a3e8a18785b34ba3eaa123b11173c92830634e80) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update Volar patch versions.
+
 ## 1.8.2
 
 ### Patch Changes

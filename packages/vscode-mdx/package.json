@@ -90,7 +90,7 @@
               "warning",
               "error"
             ],
-            "default": "warning",
+            "default": "ignore",
             "markdownDescription": "Diagnostic level for invalid reference links, e.g. `[text][no-such-ref]`."
           },
           "mdx.validate.validateFragmentLinks": {
@@ -100,7 +100,7 @@
               "warning",
               "error"
             ],
-            "default": "warning",
+            "default": "ignore",
             "markdownDescription": "Diagnostic level for fragments links to headers in the current file that don’t exist, e.g. `[text](#no-such-header)`."
           },
           "mdx.validate.validateFileLinks": {
@@ -110,7 +110,7 @@
               "warning",
               "error"
             ],
-            "default": "warning",
+            "default": "ignore",
             "markdownDescription": "Diagnostic level for links to local files that don’t exist, e.g. `[text](./no-such-file.png)`."
           },
           "mdx.validate.validateMarkdownFileLinkFragments": {
@@ -120,7 +120,7 @@
               "warning",
               "error"
             ],
-            "default": "warning",
+            "default": "ignore",
             "markdownDescription": "Diagnostic level for the fragment part of links to other local markdown files , e.g. `[text](./file.md#no-such-header)`."
           },
           "mdx.validate.validateUnusedLinkDefinitions": {
@@ -130,7 +130,7 @@
               "warning",
               "error"
             ],
-            "default": "warning",
+            "default": "ignore",
             "markdownDescription": "Diagnostic level for link definitions that aren’t used anywhere. `[never-used]: http://example.com`."
           },
           "mdx.validate.validateDuplicateLinkDefinitions": {
@@ -140,7 +140,7 @@
               "warning",
               "error"
             ],
-            "default": "warning",
+            "default": "ignore",
             "markdownDescription": "Diagnostic level for duplicate link definitions."
           },
           "mdx.validate.ignoreLinks": {

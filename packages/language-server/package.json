@@ -34,7 +34,7 @@
   "dependencies": {
     "@mdx-js/language-service": "0.5.4",
     "@volar/language-server": "~2.1.0",
-    "load-plugin": "^5.0.0",
+    "load-plugin": "^6.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
     "volar-service-markdown": "0.0.34",

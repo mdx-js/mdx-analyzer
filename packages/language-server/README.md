@@ -11,23 +11,23 @@ A [language server][lsp] for [MDX][].
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-    *   [Language server features](#language-server-features)
-    *   [Initialize Options](#initialize-options)
-    *   [Configuration](#configuration)
-    *   [TypeScript](#typescript)
-    *   [Plugins](#plugins)
-*   [Examples](#examples)
-    *   [Visual Studio Code](#visual-studio-code)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [Sponsor](#sponsor)
-*   [Changelog](#changelog)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+  * [Language server features](#language-server-features)
+  * [Initialize Options](#initialize-options)
+  * [Configuration](#configuration)
+  * [TypeScript](#typescript)
+  * [Plugins](#plugins)
+* [Examples](#examples)
+  * [Visual Studio Code](#visual-studio-code)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [Sponsor](#sponsor)
+* [Changelog](#changelog)
+* [License](#license)
 
 ## What is this?
 
@@ -69,45 +69,46 @@ features specific to MDX.
 
 MDX language server supports the following LSP initialization options:
 
-*   `typescript.enabled` (`boolean`, default: `false`) —
-    If true, enable TypeScript.
-*   `typescript.tsdk` (`string`, required) —
-    The path from which to load TypeScript.
-*   `locale` (`string`, optional) —
-    The locale to use for TypeScript error messages.
+* `typescript.enabled` (`boolean`, default: `false`) —
+  If true, enable TypeScript.
+* `typescript.tsdk` (`string`, required) —
+  The path from which to load TypeScript.
+* `locale` (`string`, optional) —
+  The locale to use for TypeScript error messages.
 
 ### Configuration
 
 MDX language server supports the following LSP configuration options:
 
-*   `mdx.trace.server.verbosity` (`"off"` | `"messages"` | `"compact"` |
-    `"verbose"`, default: `"off"`) —
-    Trace MDX language server requests in the output console.
-*   `mdx.trace.server.format` (`"text"` | `"json"`, default: `"text"`) —
-    How to format traced MDX language server requests.
-*   `mdx.validate.validateReferences` (`"ignore"` | `"hint"` | `"warning"` |
-    `"error"`, default: `"warning"`) —
-    Diagnostic level for invalid reference links, e.g. `[text][no-such-ref]`.
-*   `mdx.validate.validateFragmentLinks` (`"ignore"` | `"hint"` | `"warning"` |
-    `"error"`, default: `"warning"`) —
-    Diagnostic level for fragments links to headers in the current file that
-    don’t exist, e.g. `[text](#no-such-header)`
-*   `mdx.validate.validateFileLinks` (`"ignore"` | `"hint"` | `"warning"` |
-    `"error"`, default: `"warning"`) —
-    Diagnostic level for links to local files that don’t exist, e.g.
-    `[text](./no-such-file.png)`.
-*   `mdx.validate.validateMarkdownFileLinkFragments` (`"ignore"` | `"hint"` |
-    `"warning"` | `"error"`, default: `"warning"`) —
-    Diagnostic level for the fragment part of links to other local markdown
-    files , e.g. `[text](./no-such-file.png)`.
-*   `mdx.validate.validateUnusedLinkDefinitions` (`"ignore"` | `"hint"` |
-    `"warning"` | `"error"`, default: `"warning"`) —
-    Diagnostic level for link definitions that aren’t used anywhere.
-    `[never-used]: http://example.com`.
-*   `mdx.validate.validateDuplicateLinkDefinitions` (`"ignore"` | `"hint"` | `"warning"` | `"error"`, default: `"warning"`) —
-    Diagnostic level for duplicate link definitions.
-*   `mdx.validate.ignoreLinks` (`Array<string>`, optional) —
-    Glob of links that should not be validated.
+* `mdx.trace.server.verbosity` (`"off"` | `"messages"` | `"compact"` |
+  `"verbose"`, default: `"off"`) —
+  Trace MDX language server requests in the output console.
+* `mdx.trace.server.format` (`"text"` | `"json"`, default: `"text"`) —
+  How to format traced MDX language server requests.
+* `mdx.validate.validateReferences` (`"ignore"` | `"hint"` | `"warning"` |
+  `"error"`, default: `"warning"`) —
+  Diagnostic level for invalid reference links, e.g. `[text][no-such-ref]`.
+* `mdx.validate.validateFragmentLinks` (`"ignore"` | `"hint"` | `"warning"` |
+  `"error"`, default: `"warning"`) —
+  Diagnostic level for fragments links to headers in the current file that don’t
+  exist, e.g. `[text](#no-such-header)`
+* `mdx.validate.validateFileLinks` (`"ignore"` | `"hint"` | `"warning"` |
+  `"error"`, default: `"warning"`) —
+  Diagnostic level for links to local files that don’t exist, e.g.
+  `[text](./no-such-file.png)`.
+* `mdx.validate.validateMarkdownFileLinkFragments` (`"ignore"` | `"hint"` |
+  `"warning"` | `"error"`, default: `"warning"`) —
+  Diagnostic level for the fragment part of links to other local markdown files,
+  e.g. `[text](./no-such-file.png)`.
+* `mdx.validate.validateUnusedLinkDefinitions` (`"ignore"` | `"hint"` |
+  `"warning"` | `"error"`, default: `"warning"`) —
+  Diagnostic level for link definitions that aren’t used anywhere.
+  `[never-used]: http://example.com`.
+* `mdx.validate.validateDuplicateLinkDefinitions` (`"ignore"` | `"hint"` |
+  `"warning"` | `"error"`, default: `"warning"`) —
+  Diagnostic level for duplicate link definitions.
+* `mdx.validate.ignoreLinks` (`Array<string>`, optional) —
+  Glob of links that should not be validated.
 
 ### TypeScript
 

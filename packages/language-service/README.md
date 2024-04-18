@@ -12,21 +12,21 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`createMdxLanguagePlugin([plugins][, checkMdx][, jsxImportSource])`](#createmdxlanguagepluginplugins-checkmdx-jsximportsource)
-    *   [`createMdxServicePlugin()`](#createmdxserviceplugin)
-    *   [`resolveRemarkPlugins(mdxConfig, resolvePlugin)`](#resolveremarkpluginsmdxconfig-resolveplugin)
-*   [Compatibility](#compatibility)
-*   [Types](#types)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [Sponsor](#sponsor)
-*   [Changelog](#changelog)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`createMdxLanguagePlugin([plugins][, checkMdx][, jsxImportSource])`](#createmdxlanguagepluginplugins-checkmdx-jsximportsource)
+  * [`createMdxServicePlugin()`](#createmdxserviceplugin)
+  * [`resolveRemarkPlugins(mdxConfig, resolvePlugin)`](#resolveremarkpluginsmdxconfig-resolveplugin)
+* [Compatibility](#compatibility)
+* [Types](#types)
+* [Security](#security)
+* [Contribute](#contribute)
+* [Sponsor](#sponsor)
+* [Changelog](#changelog)
+* [License](#license)
 
 ## What is this?
 
@@ -90,14 +90,14 @@ Create a [Volar][] language plugin to support [MDX][].
 
 #### Parameters
 
-*   `plugins` ([`PluggableList`][pluggablelist], optional) —
-    A list of remark syntax plugins.
-    Only syntax plugins are supported.
-    Transformers are unused.
-*   `checkMdx` (`boolean`, default: `false`) —
-    If true, check MDX files strictly.
-*   `jsxImportSource` (`string`, default: `react`) —
-    The JSX import source to use in the embedded JavaScript file.
+* `plugins` ([`PluggableList`][pluggablelist], optional) —
+  A list of remark syntax plugins.
+  Only syntax plugins are supported.
+  Transformers are unused.
+* `checkMdx` (`boolean`, default: `false`) —
+  If true, check MDX files strictly.
+* `jsxImportSource` (`string`, default: `react`) —
+  The JSX import source to use in the embedded JavaScript file.
 
 #### Returns
 
@@ -108,10 +108,10 @@ A Volar language plugin to support MDX.
 Create a [Volar][] service module to support [MDX][].
 The service supports:
 
-*   Reporting diagnostics for parsing errors.
-*   Document drop support for images.
-*   Custom commands for toggling `delete`, `emphasis`, `inlineCode`, and
-    `strong` text.
+* Reporting diagnostics for parsing errors.
+* Document drop support for images.
+* Custom commands for toggling `delete`, `emphasis`, `inlineCode`, and `strong`
+  text.
 
 #### Parameters
 
@@ -127,10 +127,10 @@ Resolve remark plugins from TypeScript’s parsed command line options.
 
 #### Parameters
 
-*   `mdxConfig` (`unknown`) —
-    The parsed command line options from which to resolve plugins.
-*   `resolvePlugin` (`Function`) —
-    A function which takes a plugin name, and resolvs it to a remark plugin.
+* `mdxConfig` (`unknown`) —
+  The parsed command line options from which to resolve plugins.
+* `resolvePlugin` (`Function`) —
+  A function which takes a plugin name, and resolvs it to a remark plugin.
 
 #### Returns
 

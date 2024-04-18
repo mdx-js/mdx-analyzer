@@ -17,11 +17,7 @@
         "${workspaceFolder}/fixtures/fixtures.code-workspace"
       ],
       "outFiles": ["${workspaceFolder}/packages/vscode-mdx/out/**/*.js"],
-      "skipFiles": [
-        "<node_internals>/**",
-        "**/node_modules/vscode-*/**",
-        "**/typescript/**"
-      ],
+      "skipFiles": ["<node_internals>/**", "**/typescript/**"],
       "preLaunchTask": "build"
     }
   ]

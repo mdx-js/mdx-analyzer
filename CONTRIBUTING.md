@@ -33,32 +33,30 @@ bug or suggest a new feature before creating a pull request.
 
 ## Submitting an issue
 
-*   The issue tracker is for issues.
-    Use discussions for support
-*   Search the issue tracker (including closed issues) before opening a new
-    issue
-*   Ensure you’re using the latest version of our packages
-*   Use a clear and descriptive title
-*   Include as much information as possible: steps to reproduce the issue,
-    error message, version, operating system, etcetera
-*   The more time you put into an issue, the better we will be able to help you
-*   The best issue report is a [failing test][unit-test] proving it
+* The issue tracker is for issues.
+  Use discussions for support
+* Search the issue tracker (including closed issues) before opening a new issue
+* Ensure you’re using the latest version of our packages
+* Use a clear and descriptive title
+* Include as much information as possible: steps to reproduce the issue, error
+  message, version, operating system, etcetera
+* The more time you put into an issue, the better we will be able to help you
+* The best issue report is a [failing test][unit-test] proving it
 
 ## Submitting a pull request
 
-*   See [¶ Project][project] below for info on how the project is structured,
-    how to test, and how to build the site
-*   Non-trivial changes are often best discussed in an issue first, to prevent
-    you from doing unnecessary work
-*   For ambitious tasks, you should try to get your work in front of the
-    community for feedback as soon as possible
-*   New features should be accompanied by tests and documentation
-*   For significant changes, add a [changeset][] using the `npx changeset`
-    command
-*   Don’t include unrelated changes
-*   Test before submitting code by running `npm test`
-*   Write a convincing description of why we should land your pull request:
-    it’s your job to convince us
+* See [¶ Project][project] below for info on how the project is structured,
+  how to test, and how to build the site
+* Non-trivial changes are often best discussed in an issue first, to prevent you
+  from doing unnecessary work
+* For ambitious tasks, you should try to get your work in front of the community
+  for feedback as soon as possible
+* New features should be accompanied by tests and documentation
+* For significant changes, add a [changeset][] using the `npx changeset` command
+* Don’t include unrelated changes
+* Test before submitting code by running `npm test`
+* Write a convincing description of why we should land your pull request:
+  it’s your job to convince us
 
 ## Project
 
@@ -95,11 +93,11 @@ Studio Code extension to the [marketplace][], and create GitHub releases.
 
 ## Resources
 
-*   [Good first issues in the MDX repository](https://github.com/mdx-js/mdx-analyzer/labels/good%20first%20issue%20👋)
-*   [How to contribute to open source](https://opensource.guide/how-to-contribute/)
-*   [Making your first contribution](https://medium.com/@vadimdemedes/making-your-first-contribution-de6576ddb190)
-*   [Using pull requests](https://help.github.com/articles/about-pull-requests/)
-*   [GitHub help](https://help.github.com)
+* [Good first issues in the MDX repository](https://github.com/mdx-js/mdx-analyzer/labels/good%20first%20issue%20👋)
+* [How to contribute to open source](https://opensource.guide/how-to-contribute/)
+* [Making your first contribution](https://medium.com/@vadimdemedes/making-your-first-contribution-de6576ddb190)
+* [Using pull requests](https://help.github.com/articles/about-pull-requests/)
+* [GitHub help](https://help.github.com)
 
 [changeset]: .changeset/README.md
 

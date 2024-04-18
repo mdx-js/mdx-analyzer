@@ -9,6 +9,7 @@
 import assert from 'node:assert'
 import path from 'node:path'
 import process from 'node:process'
+import {pathToFileURL} from 'node:url'
 import {
   createMdxLanguagePlugin,
   createMdxServicePlugin,
@@ -113,7 +114,7 @@ connection.onInitialize((parameters) => {
             commandLine.raw?.mdx,
             (name) =>
               /** @type {Promise<Plugin>} */ (
-                loadPlugin(name, {prefix: 'remark', cwd})
+                loadPlugin(name, {prefix: 'remark', from: pathToFileURL(cwd)})
               )
           )
           checkMdx = Boolean(commandLine.raw?.mdx?.checkMdx)

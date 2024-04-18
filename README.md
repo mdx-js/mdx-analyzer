@@ -10,27 +10,27 @@ This repository contains the code to provide editor tooling support for [MDX][].
 
 ## Contents
 
-*   [Workspaces](#workspaces)
-*   [Use](#use)
-    *   [TypeScript](#typescript)
-    *   [Plugins](#plugins)
-*   [Contribute](#contribute)
-*   [Sponsor](#sponsor)
-*   [License](#license)
+* [Workspaces](#workspaces)
+* [Use](#use)
+  * [TypeScript](#typescript)
+  * [Plugins](#plugins)
+* [Contribute](#contribute)
+* [Sponsor](#sponsor)
+* [License](#license)
 
 ## Workspaces
 
 This repository contains the following workspaces:
 
-*   [`@mdx-js/language-service`][] provides utilities to integrate MDX into
-    [Volar][].
-*   [`@mdx-js/language-server`][] provides an MDX language server using the
-    [Language Server Protocol][].
-*   [`@mdx-js/typescript-plugin`][] provides a [TypeScript plugin][] to
-    integrate MDX in TypeScript editors.
-*   [`vscode-mdx`][] integrates the MDX language server into
-    [Visual Studio Code][], but also provides some Visual Studio Code specific
-    features such as syntax highlighting.
+* [`@mdx-js/language-service`][] provides utilities to integrate MDX into
+  [Volar][].
+* [`@mdx-js/language-server`][] provides an MDX language server using the
+  [Language Server Protocol][].
+* [`@mdx-js/typescript-plugin`][] provides a [TypeScript plugin][] to integrate
+  MDX in TypeScript editors.
+* [`vscode-mdx`][] integrates the MDX language server into
+  [Visual Studio Code][], but also provides some Visual Studio Code specific
+  features such as syntax highlighting.
 
 ## Use
 

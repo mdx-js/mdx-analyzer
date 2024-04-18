@@ -5,6 +5,7 @@
  * @typedef {import('unified', {with: {'resolution-mode': 'import'}}).Plugin} Plugin
  */
 
+const {pathToFileURL} = require('node:url')
 const {
   createAsyncLanguageServicePlugin
 } = require('@volar/typescript/lib/quickstart/createAsyncLanguageServicePlugin.js')
@@ -51,7 +52,7 @@ const plugin = createAsyncLanguageServicePlugin(
       commandLine.raw?.mdx,
       (name) =>
         /** @type {Promise<Plugin>} */ (
-          loadPlugin(name, {prefix: 'remark', cwd})
+          loadPlugin(name, {prefix: 'remark', from: pathToFileURL(cwd)})
         )
     )
 

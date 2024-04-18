@@ -12,16 +12,16 @@
 
 ## Contents
 
-*   [Install](#install)
-*   [Settings](#settings)
-*   [TypeScript](#typescript)
-*   [Plugins](#plugins)
-*   [Syntax highlighting](#syntax-highlighting)
-*   [ESLint](#eslint)
-*   [Auto-close tags](#auto-close-tags)
-*   [Sponsor](#sponsor)
-*   [Changelog](#changelog)
-*   [License](#license)
+* [Install](#install)
+* [Settings](#settings)
+* [TypeScript](#typescript)
+* [Plugins](#plugins)
+* [Syntax highlighting](#syntax-highlighting)
+* [ESLint](#eslint)
+* [Auto-close tags](#auto-close-tags)
+* [Sponsor](#sponsor)
+* [Changelog](#changelog)
+* [License](#license)
 
 ## Install
 
@@ -38,8 +38,8 @@ All [MDX language server configurations][] can be configured via
 [Visual Studio Code][vscode] settings.
 MDX for VSCode supports the following additional setting:
 
-*   `mdx.server.enable` (`boolean`, default: `true`) —
-    Enable the MDX language server.
+* `mdx.server.enable` (`boolean`, default: `true`) —
+  Enable the MDX language server.
 
 ## TypeScript
 

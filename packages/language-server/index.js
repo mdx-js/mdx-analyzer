@@ -35,12 +35,11 @@ process.title = 'mdx-language-server'
 const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
 const connection = createConnection()
 const server = createServer(connection)
+let tsEnabled = false
 
 connection.onInitialize(async (parameters) => {
   const tsdk = parameters.initializationOptions?.typescript?.tsdk
-  const tsEnabled = Boolean(
-    parameters.initializationOptions?.typescript?.enabled
-  )
+  tsEnabled = Boolean(parameters.initializationOptions?.typescript?.enabled)
   assert(
     typeof tsdk === 'string',
     'Missing initialization option typescript.tsdk'
@@ -146,21 +145,23 @@ connection.onRequest('mdx/toggleStrong', async (parameters) => {
 })
 
 connection.onInitialized(() => {
-  server.initialized()
-  server.watchFiles([
-    `**/*.{${[
+  const extensions = ['mdx']
+  if (tsEnabled) {
+    extensions.push(
       'cjs',
       'cts',
       'js',
       'jsx',
       'json',
-      'mdx',
       'mjs',
       'mts',
       'ts',
       'tsx'
-    ].join(',')}}`
-  ])
+    )
+  }
+
+  server.initialized()
+  server.watchFiles([`**/*.{${extensions.join(',')}}`])
 })
 
 connection.listen()

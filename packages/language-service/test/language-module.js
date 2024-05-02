@@ -16,7 +16,7 @@ test('create virtual code w/ mdxjsEsm', () => {
 
   const snapshot = snapshotFromLines('import {Planet} from "./Planet.js"', '')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -132,7 +132,7 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
 
   const snapshot = snapshotFromLines('export {named} from "./Layout.js"', '')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -246,7 +246,7 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
 
   const snapshot = snapshotFromLines('export {default} from "./Layout.js"', '')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -364,7 +364,7 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
     ''
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -482,7 +482,7 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
     ''
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -597,7 +597,7 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
 
   const snapshot = snapshotFromLines('export default () => {}', '')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -728,7 +728,7 @@ test('create virtual code w/ MDX layout in case of a default exported function d
     ''
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -858,7 +858,7 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
 
   const snapshot = snapshotFromLines('export default "main"', '')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -976,7 +976,7 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
     ''
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -1110,7 +1110,7 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
     ''
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -1247,7 +1247,7 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
     ''
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -1380,7 +1380,7 @@ test('create virtual code w/ mdxFlowExpression', () => {
 
   const snapshot = snapshotFromLines('{Math.PI}', '')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -1502,7 +1502,7 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
     '{<Local>{""}</Local>}'
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -1654,7 +1654,7 @@ test('create virtual code w/ prefixed JSX expressions in attributes', () => {
     '</div>'
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -1816,7 +1816,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
     ''
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -1986,7 +1986,7 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
     ''
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -2125,7 +2125,7 @@ test('create virtual code w/ mdxJsxTextElement', () => {
     ''
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -2269,7 +2269,7 @@ test('create virtual code w/ mdxTextExpression', () => {
 
   const snapshot = snapshotFromLines('3 < {Math.PI} < 4', '')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -2389,7 +2389,7 @@ test('create virtual code w/ async mdxTextExpression', () => {
     ''
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -2512,7 +2512,7 @@ test('create virtual code w/ dedented markdown content', () => {
     '| TypeScript |'
   )
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -2619,7 +2619,7 @@ test('create virtual code w/ syntax error', () => {
 
   const snapshot = snapshotFromLines('<', '')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -2703,7 +2703,7 @@ test('create virtual code w/ yaml frontmatter', () => {
 
   const snapshot = snapshotFromLines('---', 'hello: frontmatter', '---', '')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -2819,7 +2819,7 @@ test('create virtual code w/ yaml frontmatter', () => {
 test('update virtual code', () => {
   const plugin = createMdxLanguagePlugin()
 
-  const code = plugin.createVirtualCode(
+  const code = plugin.createVirtualCode?.(
     '/test.mdx',
     'mdx',
     snapshotFromLines('Tihs lne haz tyops', '')
@@ -2828,7 +2828,7 @@ test('update virtual code', () => {
   assert.ok(code instanceof VirtualMdxCode)
 
   const snapshot = snapshotFromLines('This line is fixed', '')
-  plugin.updateVirtualCode('/text.mdx', code, snapshot)
+  plugin.updateVirtualCode?.('/text.mdx', code, snapshot)
 
   assert.equal(code.id, 'mdx')
   assert.equal(code.languageId, 'mdx')
@@ -2968,7 +2968,7 @@ test('support checkMdx', () => {
 
   const snapshot = snapshotFromLines('')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')
@@ -3067,7 +3067,7 @@ test('support custom jsxImportSource', () => {
 
   const snapshot = snapshotFromLines('')
 
-  const code = plugin.createVirtualCode('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')

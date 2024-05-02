@@ -1,6 +1,6 @@
 /**
  * @typedef {import('@volar/language-service').DataTransferItem} DataTransferItem
- * @typedef {import('@volar/language-service').ServicePlugin<Provide>} ServicePlugin
+ * @typedef {import('@volar/language-service').LanguageServicePlugin<Provide>} LanguageServicePlugin
  * @typedef {import('./commands.js').SyntaxToggle} SyntaxToggle
  */
 
@@ -51,7 +51,7 @@ const imageExtensions = new Set([
  * - Custom commands for toggling `delete`, `emphasis`, `inlineCode`, and
  *   `strong` text.
  *
- * @returns {ServicePlugin}
+ * @returns {LanguageServicePlugin}
  *   The Volar service plugin for MDX files.
  */
 export function createMdxServicePlugin() {
@@ -158,13 +158,17 @@ export function createMdxServicePlugin() {
         },
 
         provideSemanticDiagnostics(document) {
-          const [file] = context.documents.getVirtualCodeByUri(document.uri)
+          const decoded = context.decodeEmbeddedDocumentUri(document.uri)
+          const sourceScript =
+            decoded && context.language.scripts.get(decoded[0])
+          const virtualCode =
+            decoded && sourceScript?.generated?.embeddedCodes.get(decoded[1])
 
-          if (!(file instanceof VirtualMdxCode)) {
+          if (!(virtualCode instanceof VirtualMdxCode)) {
             return
           }
 
-          const error = file.error
+          const error = virtualCode.error
 
           if (error) {
             return [

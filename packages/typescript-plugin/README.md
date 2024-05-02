@@ -12,19 +12,19 @@ A [TypeScript plugin][] to support language features in [MDX][] files.
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-    *   [TypeScript](#typescript)
-    *   [Plugins](#plugins)
-*   [API](#api)
-*   [Compatibility](#compatibility)
-*   [Security](#security)
-*   [Contribute](#contribute)
-*   [Sponsor](#sponsor)
-*   [Changelog](#changelog)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+  * [TypeScript](#typescript)
+  * [Plugins](#plugins)
+* [API](#api)
+* [Compatibility](#compatibility)
+* [Security](#security)
+* [Contribute](#contribute)
+* [Sponsor](#sponsor)
+* [Changelog](#changelog)
+* [License](#license)
 
 ## What is this?
 

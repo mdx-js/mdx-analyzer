@@ -45,12 +45,9 @@ test('resolve markdown link references', async () => {
               pathText: 'mdx',
               resource: {
                 $mid: 1,
-                path: fixturePath('node16/link-reference.mdx').replace(
-                  /^\/?/,
-                  '/'
-                ),
-                query: 'virtualCodeId=md',
-                scheme: 'file'
+                authority: 'md',
+                path: '/' + fixtureUri('node16/link-reference.mdx'),
+                scheme: 'volar-embedded-content'
               },
               range: {
                 start: {line: 0, character: 8},

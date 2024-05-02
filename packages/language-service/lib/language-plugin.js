@@ -34,7 +34,13 @@ export function createMdxLanguagePlugin(
   processor.freeze()
 
   return {
-    createVirtualCode(fileId, languageId, snapshot) {
+    getLanguageId(scriptId) {
+      if (scriptId.endsWith('.mdx')) {
+        return 'mdx'
+      }
+    },
+
+    createVirtualCode(scriptId, languageId, snapshot) {
       if (languageId === 'mdx') {
         return new VirtualMdxCode(
           snapshot,
@@ -45,7 +51,7 @@ export function createMdxLanguagePlugin(
       }
     },
 
-    updateVirtualCode(fileId, virtualCode, snapshot) {
+    updateVirtualCode(scriptId, virtualCode, snapshot) {
       virtualCode.update(snapshot)
       return virtualCode
     },
@@ -55,9 +61,9 @@ export function createMdxLanguagePlugin(
         {extension: 'mdx', isMixedContent: true, scriptKind: 7}
       ],
 
-      getScript(rootVirtualCode) {
+      getServiceScript(root) {
         return {
-          code: rootVirtualCode.embeddedCodes[0],
+          code: root.embeddedCodes[0],
           extension: '.jsx',
           scriptKind: 2
         }

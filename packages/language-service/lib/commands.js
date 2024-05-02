@@ -41,20 +41,20 @@ import {VirtualMdxCode} from './virtual-code.js'
  */
 export function createSyntaxToggle(context, type, separator) {
   return ({range, uri}) => {
-    const sourceFile = context.language.files.get(uri)
-    const file = sourceFile?.generated?.code
+    const sourceScript = context.language.scripts.get(uri)
+    const root = sourceScript?.generated?.root
 
-    if (!(file instanceof VirtualMdxCode)) {
+    if (!(root instanceof VirtualMdxCode)) {
       return
     }
 
-    const ast = file.ast
+    const ast = root.ast
 
     if (!ast) {
       return
     }
 
-    const doc = context.documents.get(uri, file.languageId, file.snapshot)
+    const doc = context.documents.get(uri, root.languageId, root.snapshot)
     const selectionStart = doc.offsetAt(range.start)
     const selectionEnd = doc.offsetAt(range.end)
 

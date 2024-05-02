@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.4
+
+### Patch Changes
+
+- [#431](https://github.com/mdx-js/mdx-analyzer/pull/431) [`186af69`](https://github.com/mdx-js/mdx-analyzer/commit/186af697b6244f2d3fac0707570c4753d925dd42) Thanks [@johnsoncodehk](https://github.com/johnsoncodehk)! - Update to Volar 2.2.
+
+- [#429](https://github.com/mdx-js/mdx-analyzer/pull/429) [`004b802`](https://github.com/mdx-js/mdx-analyzer/commit/004b8026573c14b3872029ad5869054acd7b47d0) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Set markdown validation defaults to `"ignore"`
+
 ## 1.8.3
 
 ### Patch Changes

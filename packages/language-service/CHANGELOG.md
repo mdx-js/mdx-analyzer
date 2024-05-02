@@ -1,5 +1,13 @@
 # @mdx-js/language-service
 
+## 0.5.5
+
+### Patch Changes
+
+- [#425](https://github.com/mdx-js/mdx-analyzer/pull/425) [`dcb89a9`](https://github.com/mdx-js/mdx-analyzer/commit/dcb89a9202449b28ae1cfb079b3f82ec9ba41afc) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix the file lookup in syntax toggles
+
+- [#431](https://github.com/mdx-js/mdx-analyzer/pull/431) [`186af69`](https://github.com/mdx-js/mdx-analyzer/commit/186af697b6244f2d3fac0707570c4753d925dd42) Thanks [@johnsoncodehk](https://github.com/johnsoncodehk)! - Update to Volar 2.2.
+
 ## 0.5.4
 
 ### Patch Changes

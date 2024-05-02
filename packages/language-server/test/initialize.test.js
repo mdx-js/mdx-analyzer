@@ -112,12 +112,9 @@ test('initialize', async () => {
       textDocumentSync: 2,
       typeDefinitionProvider: true,
       workspace: {
-        fileOperations: {
-          willRename: {
-            filters: [
-              {pattern: {glob: '**/*.{cjs,cts,js,jsx,json,mdx,mjs,mts,ts,tsx}'}}
-            ]
-          }
+        workspaceFolders: {
+          changeNotifications: true,
+          supported: true
         }
       },
       workspaceSymbolProvider: true

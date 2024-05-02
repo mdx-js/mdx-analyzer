@@ -35,12 +35,14 @@ test('parse errors', async () => {
           href: 'https://github.com/micromark/micromark-extension-mdxjs-esm#could-not-parse-importexports-with-acorn'
         },
         data: {
-          documentUri: fixtureUri('node16/syntax-error.mdx?virtualCodeId=mdx'),
+          documentUri:
+            'volar-embedded-content://mdx/' +
+            encodeURIComponent(fixtureUri('node16/syntax-error.mdx')),
           isFormat: false,
           original: {},
           serviceIndex: 1,
           uri: fixtureUri('node16/syntax-error.mdx'),
-          version: 1
+          version: 0
         },
         message: 'Could not parse import/exports with acorn',
         range: {
@@ -73,12 +75,14 @@ test('type errors', async () => {
       {
         code: 2568,
         data: {
-          documentUri: fixtureUri('node16/type-errors.mdx?virtualCodeId=jsx'),
+          documentUri:
+            'volar-embedded-content://jsx/' +
+            encodeURIComponent(fixtureUri('node16/type-errors.mdx')),
           isFormat: false,
           original: {},
           serviceIndex: 2,
           uri: fixtureUri('node16/type-errors.mdx'),
-          version: 1
+          version: 0
         },
         message:
           "Property 'counter' may not exist on type '{ readonly count: number; readonly components?: {}; }'. Did you mean 'count'?",
@@ -92,12 +96,14 @@ test('type errors', async () => {
       {
         code: 2568,
         data: {
-          documentUri: fixtureUri('node16/type-errors.mdx?virtualCodeId=jsx'),
+          documentUri:
+            'volar-embedded-content://jsx/' +
+            encodeURIComponent(fixtureUri('node16/type-errors.mdx')),
           isFormat: false,
           original: {},
           serviceIndex: 2,
           uri: fixtureUri('node16/type-errors.mdx'),
-          version: 1
+          version: 0
         },
         message:
           "Property 'counts' may not exist on type 'Props'. Did you mean 'count'?",
@@ -149,12 +155,14 @@ test('provided components', async () => {
       {
         code: 2741,
         data: {
-          documentUri: fixtureUri('provide/solar-system.mdx?virtualCodeId=jsx'),
+          documentUri:
+            'volar-embedded-content://jsx/' +
+            encodeURIComponent(fixtureUri('provide/solar-system.mdx')),
           isFormat: false,
           original: {},
           serviceIndex: 2,
           uri: fixtureUri('provide/solar-system.mdx'),
-          version: 1
+          version: 0
         },
         message:
           "Property 'distanceFromStar' is missing in type '{ name: string; radius: number; }' but required in type 'PlanetProps'.",

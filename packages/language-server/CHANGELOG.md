@@ -1,5 +1,11 @@
 # @mdx-js/language-server
 
+## 0.4.4
+
+### Patch Changes
+
+- [#432](https://github.com/mdx-js/mdx-analyzer/pull/432) [`7b7c0ae`](https://github.com/mdx-js/mdx-analyzer/commit/7b7c0ae49b3e8d6a413cc694b1a590d712c97fde) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Avoid redundant file watchers when TypeScript is disabled.
+
 ## 0.4.3
 
 ### Patch Changes

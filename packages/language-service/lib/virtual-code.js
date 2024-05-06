@@ -399,10 +399,6 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
     if (nextMarkdownSourceStart !== startOffset) {
       const slice = mdx.slice(nextMarkdownSourceStart, startOffset)
       for (const match of slice.matchAll(/^[\t ]*(.*\r?\n?)/gm)) {
-        if (match.index === undefined) {
-          continue
-        }
-
         const [line, lineContent] = match
         if (line.length === 0) {
           continue

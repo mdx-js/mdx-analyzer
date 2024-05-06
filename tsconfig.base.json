@@ -1,4 +1,5 @@
 {
+  "exclude": ["**/coverage/**"],
   "compilerOptions": {
     "checkJs": true,
     "composite": true,

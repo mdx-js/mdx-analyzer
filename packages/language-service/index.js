@@ -1,4 +1,5 @@
 /**
+ * @typedef {import('./lib/commands.js').SyntaxToggleParams} SyntaxToggleParams
  * @typedef {import('./lib/service-plugin.js').Commands} Commands
  */
 

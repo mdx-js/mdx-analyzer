@@ -18,7 +18,6 @@ import {
 import {
   createConnection,
   createServer,
-  createSimpleProjectProvider,
   createTypeScriptProjectProvider,
   loadTsdkByPath
 } from '@volar/language-server/node.js'
@@ -53,13 +52,11 @@ connection.onInitialize(async (parameters) => {
   return server.initialize(
     parameters,
     getLanguageServicePlugins(),
-    tsEnabled
-      ? createTypeScriptProjectProvider(
-          typescript,
-          diagnosticMessages,
-          (_, {configFileName}) => getLanguagePlugins(configFileName)
-        )
-      : createSimpleProjectProvider(await getLanguagePlugins(undefined))
+    createTypeScriptProjectProvider(
+      typescript,
+      diagnosticMessages,
+      (serviceEnv, {configFileName}) => getLanguagePlugins(configFileName)
+    )
   )
 
   function getLanguageServicePlugins() {

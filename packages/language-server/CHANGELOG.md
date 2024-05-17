@@ -1,5 +1,13 @@
 # @mdx-js/language-server
 
+## 0.4.5
+
+### Patch Changes
+
+- [#440](https://github.com/mdx-js/mdx-analyzer/pull/440) [`e547052`](https://github.com/mdx-js/mdx-analyzer/commit/e5470527213c7401042697cc57945f3226dc4a01) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix resolving MDX options from `tsconfig.json`.
+
+- [#437](https://github.com/mdx-js/mdx-analyzer/pull/437) [`a7bf12f`](https://github.com/mdx-js/mdx-analyzer/commit/a7bf12f9bf6dcc0005af31bfd52e477e4995bb70) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update to Volar services 0.0.45
+
 ## 0.4.4
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.6
+
+### Patch Changes
+
+- [`ea9d83b`](https://github.com/mdx-js/mdx-analyzer/commit/ea9d83b6274009eb48b0ccf5355939bd8004fd37) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update Volar services to 0.0.46
+
 ## 1.8.5
 
 ### Patch Changes
@@ -214,8 +220,8 @@
       // …
     },
     "mdx": {
-      "plugins": [["remark-frontmatter", ["toml", "yaml"]], "remark-gfm"],
-    },
+      "plugins": [["remark-frontmatter", ["toml", "yaml"]], "remark-gfm"]
+    }
   }
   ```
 
@@ -257,7 +263,7 @@
   In JSX, you can include JS expressions within tags, like:
 
   ```mdx
-  <Component>{doSomething("a", 7)}</Component>
+  <Component>{doSomething('a', 7)}</Component>
   ```
 
   This PR adds syntax highlighting for those expressions by adding a new pattern

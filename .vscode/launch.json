@@ -16,6 +16,9 @@
         "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-mdx",
         "${workspaceFolder}/fixtures/fixtures.code-workspace"
       ],
+      "env": {
+        "NODE_OPTIONS": "--enable-source-maps"
+      },
       "outFiles": ["${workspaceFolder}/packages/vscode-mdx/out/**/*.js"],
       "skipFiles": ["<node_internals>/**", "**/typescript/**"],
       "preLaunchTask": "build"

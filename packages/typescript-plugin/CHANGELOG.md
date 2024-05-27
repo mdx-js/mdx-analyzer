@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.2
+
+### Patch Changes
+
+- [`0e2e0e7`](https://github.com/mdx-js/mdx-analyzer/commit/0e2e0e7f373eda12a38af0a7ab3b3f816efffdd4) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix resolving remark plugins specified in `tsconfig.json`
+
 ## 0.0.1
 
 ### Patch Changes

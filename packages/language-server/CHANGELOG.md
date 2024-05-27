@@ -1,5 +1,13 @@
 # @mdx-js/language-server
 
+## 0.4.7
+
+### Patch Changes
+
+- [`0e2e0e7`](https://github.com/mdx-js/mdx-analyzer/commit/0e2e0e7f373eda12a38af0a7ab3b3f816efffdd4) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix resolving remark plugins specified in `tsconfig.json`
+
+- [`d6f3b3e`](https://github.com/mdx-js/mdx-analyzer/commit/d6f3b3e64987c57a1b13175926d1a01c686fb863) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Support path completions in image and link references
+
 ## 0.4.6
 
 ### Patch Changes

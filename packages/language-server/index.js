@@ -104,7 +104,7 @@ connection.onInitialize(async (parameters) => {
         commandLine.raw?.mdx,
         (name) =>
           /** @type {Promise<Plugin>} */ (
-            loadPlugin(name, {prefix: 'remark', from: pathToFileURL(cwd)})
+            loadPlugin(name, {prefix: 'remark', from: pathToFileURL(cwd) + '/'})
           )
       )
       checkMdx = Boolean(commandLine.raw?.mdx?.checkMdx)

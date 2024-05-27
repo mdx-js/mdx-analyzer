@@ -52,7 +52,7 @@ const plugin = createAsyncLanguageServicePlugin(
       commandLine.raw?.mdx,
       (name) =>
         /** @type {Promise<Plugin>} */ (
-          loadPlugin(name, {prefix: 'remark', from: pathToFileURL(cwd)})
+          loadPlugin(name, {prefix: 'remark', from: pathToFileURL(cwd) + '/'})
         )
     )
 

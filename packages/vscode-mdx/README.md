@@ -17,6 +17,7 @@
 * [TypeScript](#typescript)
 * [Plugins](#plugins)
 * [Syntax highlighting](#syntax-highlighting)
+  * [Custom Languages in Code Blocks](#custom-languages-in-code-blocks)
 * [ESLint](#eslint)
 * [Auto-close tags](#auto-close-tags)
 * [Sponsor](#sponsor)
@@ -59,6 +60,113 @@ repository readme.
 
 Syntax highlighting for MDX is based on the
 [MDX TextMate grammar](https://github.com/wooorm/markdown-tm-language).
+
+### Custom Languages in Code Blocks
+
+MDX for Visual Studio Code supports syntax highlighting for a number of
+well-known languages in code blocks.
+However, it’s impossible to support all languages within the MDX extension.
+Instead, if an extensions adds support for a language, it can add support for
+MDX code blocks.
+
+To support MDX code blocks in your Visual Studio Code extension, use the
+following template.
+Replace `LANGUAGE` with your actual language and remove comments.
+Save the file to `syntaxes/mdx.LANGUAGE.tmLanguage.json`.
+
+````jsonc
+{
+  "fileTypes": [],
+  // This can be something else.
+  "scopeName": "mdx.LANGUAGE.codeblock",
+  "injectionSelector": "L:source.mdx",
+  "patterns": [
+    {
+      // This references the repository key below.
+      "include": "#LANGUAGE-code-block"
+    }
+  ],
+  "repository": {
+    "LANGUAGE-code-block": {
+      "patterns": [
+        {
+          // This adds supports for code blocks using the ```LANGUAGE delimiter.
+          "begin": "(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:(?:.*\\.)?LANGUAGE))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)",
+          "beginCaptures": {
+            "1": {
+              "name": "string.other.begin.code.fenced.mdx"
+            },
+            "2": {
+              "name": "entity.name.function.mdx"
+            }
+          },
+          "contentName": "meta.embedded.LANGUAGE",
+          "end": "(\\1)(?:[\\t ]*$)",
+          "endCaptures": {
+            "1": {
+              "name": "string.other.end.code.fenced.mdx"
+            }
+          },
+          "name": "markup.code.LANGUAGE.mdx",
+          "patterns": [
+            {
+              "include": "source.LANGUAGE"
+            }
+          ]
+        },
+        {
+          // This adds support for code blocks using the ~~~LANGUAGE delimiter.
+          "begin": "(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:(?:.*\\.)?LANGUAGE))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)",
+          "beginCaptures": {
+            "1": {
+              "name": "string.other.begin.code.fenced.mdx"
+            },
+            "2": {
+              "name": "entity.name.function.mdx"
+            }
+          },
+          "contentName": "meta.embedded.LANGUAGE",
+          "end": "(\\1)(?:[\\t ]*$)",
+          "endCaptures": {
+            "1": {
+              "name": "string.other.end.code.fenced.mdx"
+            }
+          },
+          "name": "markup.code.LANGUAGE.mdx",
+          "patterns": [
+            {
+              "include": "source.LANGUAGE"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+````
+
+In `package.json`, add the following section.
+Replace `LANGUAGE` with your actual language and remove comments.
+
+```jsonc
+{
+  "contributes": {
+    "grammars": [
+      {
+        // This must match the scopeName in the tmLanguage file.
+        "scopeName": "mdx.LANGUAGE.codeblock",
+        "path": "./syntaxes/mdx.LANGUAGE.tmLanguage.json",
+        "injectTo": [
+          "source.mdx"
+        ],
+        "embeddedLanguages": {
+          "source.LANGUAGE": "LANGUAGE",
+        }
+      }
+    ]
+  }
+}
+```
 
 ## ESLint
 

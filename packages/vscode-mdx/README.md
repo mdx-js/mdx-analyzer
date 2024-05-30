@@ -74,7 +74,7 @@ following template.
 Replace `LANGUAGE` with your actual language and remove comments.
 Save the file to `syntaxes/mdx.LANGUAGE.tmLanguage.json`.
 
-````jsonc
+```jsonc
 {
   "fileTypes": [],
   // This can be something else.
@@ -82,68 +82,56 @@ Save the file to `syntaxes/mdx.LANGUAGE.tmLanguage.json`.
   "injectionSelector": "L:source.mdx",
   "patterns": [
     {
-      // This references the repository key below.
-      "include": "#LANGUAGE-code-block"
-    }
-  ],
-  "repository": {
-    "LANGUAGE-code-block": {
+      "begin": "(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:(?:.*\\.)?LANGUAGE))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)",
+      "beginCaptures": {
+        "1": {
+          "name": "string.other.begin.code.fenced.mdx"
+        },
+        "2": {
+          "name": "entity.name.function.mdx"
+        }
+      },
+      "contentName": "meta.embedded.LANGUAGE",
+      "end": "(\\1)(?:[\\t ]*$)",
+      "endCaptures": {
+        "1": {
+          "name": "string.other.end.code.fenced.mdx"
+        }
+      },
+      "name": "markup.code.LANGUAGE.mdx",
       "patterns": [
         {
-          // This adds supports for code blocks using the ```LANGUAGE delimiter.
-          "begin": "(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:(?:.*\\.)?LANGUAGE))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)",
-          "beginCaptures": {
-            "1": {
-              "name": "string.other.begin.code.fenced.mdx"
-            },
-            "2": {
-              "name": "entity.name.function.mdx"
-            }
-          },
-          "contentName": "meta.embedded.LANGUAGE",
-          "end": "(\\1)(?:[\\t ]*$)",
-          "endCaptures": {
-            "1": {
-              "name": "string.other.end.code.fenced.mdx"
-            }
-          },
-          "name": "markup.code.LANGUAGE.mdx",
-          "patterns": [
-            {
-              "include": "source.LANGUAGE"
-            }
-          ]
+          "include": "source.LANGUAGE"
+        }
+      ]
+    },
+    {
+      "begin": "(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:(?:.*\\.)?LANGUAGE))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)",
+      "beginCaptures": {
+        "1": {
+          "name": "string.other.begin.code.fenced.mdx"
         },
+        "2": {
+          "name": "entity.name.function.mdx"
+        }
+      },
+      "contentName": "meta.embedded.LANGUAGE",
+      "end": "(\\1)(?:[\\t ]*$)",
+      "endCaptures": {
+        "1": {
+          "name": "string.other.end.code.fenced.mdx"
+        }
+      },
+      "name": "markup.code.LANGUAGE.mdx",
+      "patterns": [
         {
-          // This adds support for code blocks using the ~~~LANGUAGE delimiter.
-          "begin": "(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:(?:.*\\.)?LANGUAGE))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)",
-          "beginCaptures": {
-            "1": {
-              "name": "string.other.begin.code.fenced.mdx"
-            },
-            "2": {
-              "name": "entity.name.function.mdx"
-            }
-          },
-          "contentName": "meta.embedded.LANGUAGE",
-          "end": "(\\1)(?:[\\t ]*$)",
-          "endCaptures": {
-            "1": {
-              "name": "string.other.end.code.fenced.mdx"
-            }
-          },
-          "name": "markup.code.LANGUAGE.mdx",
-          "patterns": [
-            {
-              "include": "source.LANGUAGE"
-            }
-          ]
+          "include": "source.LANGUAGE"
         }
       ]
     }
-  }
+  ]
 }
-````
+```
 
 In `package.json`, add the following section.
 Replace `LANGUAGE` with your actual language and remove comments.

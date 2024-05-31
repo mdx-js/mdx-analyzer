@@ -4,30 +4,30 @@
  * @typedef {import('@mdx-js/language-service').Commands} Commands
  * @typedef {import('unified').PluggableList} PluggableList
  * @typedef {import('unified').Plugin} Plugin
- * @typedef {import('vscode-uri').URI} URI
  */
 
 import assert from 'node:assert'
 import path from 'node:path'
 import process from 'node:process'
 import {pathToFileURL} from 'node:url'
-import {
-  createMdxLanguagePlugin,
-  createMdxServicePlugin,
-  resolveRemarkPlugins
-} from '@mdx-js/language-service'
+import {loadPlugin} from 'load-plugin'
 import {
   createConnection,
   createServer,
   createTypeScriptProject,
   loadTsdkByPath
 } from '@volar/language-server/node.js'
-import {loadPlugin} from 'load-plugin'
+import {
+  createMdxLanguagePlugin,
+  createMdxServicePlugin,
+  resolveRemarkPlugins
+} from '@mdx-js/language-service'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
 import {create as createTypeScriptServicePlugin} from 'volar-service-typescript'
 import {create as createTypeScriptSyntacticServicePlugin} from 'volar-service-typescript/lib/plugins/syntactic.js'
+import {URI} from 'vscode-uri'
 
 process.title = 'mdx-language-server'
 
@@ -165,10 +165,13 @@ connection.onInitialized(() => {
 connection.listen()
 
 /**
- * @param {URI} uri
+ * @param {string} uri
  * @returns {Promise<Commands>}
  */
 async function getCommands(uri) {
-  const service = await server.project.getLanguageService(server, uri)
+  const service = await server.project.getLanguageService(
+    server,
+    URI.parse(uri)
+  )
   return service.context.inject('mdxCommands')
 }

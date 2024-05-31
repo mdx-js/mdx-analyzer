@@ -24,9 +24,9 @@
  */
 
 import {visitParents} from 'unist-util-visit-parents'
+import {URI} from 'vscode-uri'
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {VirtualMdxCode} from './virtual-code.js'
-import { URI } from 'vscode-uri'
 
 /**
  * Create a function to toggle prose syntax based on the AST.
@@ -42,9 +42,8 @@ import { URI } from 'vscode-uri'
  */
 export function createSyntaxToggle(context, type, separator) {
   return ({range, uri}) => {
-    const parsedUri = URI.parse(uri);
-    const sourceScript = context.language.scripts.get(parsedUri)
-    const root = sourceScript?.generated?.root
+    const parsedUri = URI.parse(uri)
+    const root = context.language.scripts.get(parsedUri)?.generated?.root
 
     if (!(root instanceof VirtualMdxCode)) {
       return

@@ -4,6 +4,7 @@
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 import {CompletionItemKind, InsertTextFormat} from '@volar/language-server'
+import {URI} from 'vscode-uri'
 import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
 /** @type {LanguageServerHandle} */
@@ -36,20 +37,24 @@ test('support completion in ESM', async () => {
   assert.deepEqual(completion, {
     commitCharacters: ['.', ',', ';', '('],
     data: {
-      embeddedDocumentUri:
-        'volar-embedded-content://jsx/' +
-        encodeURIComponent(fixtureUri('node16/completion.mdx')),
+      embeddedDocumentUri: URI.from({
+        scheme: 'volar-embedded-content',
+        authority: 'jsx',
+        path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+      }).toString(),
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx'),
           offset: 81,
           originalItem: {name: 'Boolean'},
-          uri:
-            'volar-embedded-content://jsx/' +
-            encodeURIComponent(fixtureUri('node16/completion.mdx'))
+          uri: URI.from({
+            scheme: 'volar-embedded-content',
+            authority: 'jsx',
+            path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+          }).toString()
         }
       },
-      serviceIndex: 2,
+      pluginIndex: 2,
       uri: fixtureUri('node16/completion.mdx')
     },
     insertTextFormat: InsertTextFormat.PlainText,
@@ -65,9 +70,11 @@ test('support completion in ESM', async () => {
       fileName: fixturePath('node16/completion.mdx'),
       offset: 81,
       originalItem: {name: 'Boolean'},
-      uri:
-        'volar-embedded-content://jsx/' +
-        encodeURIComponent(fixtureUri('node16/completion.mdx'))
+      uri: URI.from({
+        scheme: 'volar-embedded-content',
+        authority: 'jsx',
+        path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+      }).toString()
     },
     detail: 'interface Boolean\nvar Boolean: BooleanConstructor',
     documentation: {kind: 'markdown', value: ''},
@@ -98,20 +105,24 @@ test('support completion in JSX', async () => {
   assert.deepEqual(completion, {
     commitCharacters: ['.', ',', ';', '('],
     data: {
-      embeddedDocumentUri:
-        'volar-embedded-content://jsx/' +
-        encodeURIComponent(fixtureUri('node16/completion.mdx')),
+      embeddedDocumentUri: URI.from({
+        scheme: 'volar-embedded-content',
+        authority: 'jsx',
+        path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+      }).toString(),
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx'),
           offset: 119,
           originalItem: {name: 'Boolean'},
-          uri:
-            'volar-embedded-content://jsx/' +
-            encodeURIComponent(fixtureUri('node16/completion.mdx'))
+          uri: URI.from({
+            scheme: 'volar-embedded-content',
+            authority: 'jsx',
+            path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+          }).toString()
         }
       },
-      serviceIndex: 2,
+      pluginIndex: 2,
       uri: fixtureUri('node16/completion.mdx')
     },
     insertTextFormat: InsertTextFormat.PlainText,
@@ -127,9 +138,11 @@ test('support completion in JSX', async () => {
       fileName: fixturePath('node16/completion.mdx'),
       offset: 119,
       originalItem: {name: 'Boolean'},
-      uri:
-        'volar-embedded-content://jsx/' +
-        encodeURIComponent(fixtureUri('node16/completion.mdx'))
+      uri: URI.from({
+        scheme: 'volar-embedded-content',
+        authority: 'jsx',
+        path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+      }).toString()
     },
     detail: 'interface Boolean\nvar Boolean: BooleanConstructor',
     documentation: {kind: 'markdown', value: ''},

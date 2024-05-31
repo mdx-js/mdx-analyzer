@@ -22,6 +22,13 @@ test('initialize', async () => {
     {typescript: {enabled: true, tsdk}}
   )
   assert.deepEqual(initializeResponse, {
+    autoInsertion: {
+      configurationSections: [
+        'javascript.autoClosingTags',
+        'typescript.autoClosingTags'
+      ],
+      triggerCharacters: ['>', '>']
+    },
     capabilities: {
       callHierarchyProvider: true,
       codeActionProvider: {
@@ -38,8 +45,6 @@ test('initialize', async () => {
         ],
         resolveProvider: true
       },
-      codeLensProvider: {resolveProvider: true},
-      colorProvider: true,
       completionProvider: {
         resolveProvider: true,
         triggerCharacters: ['.', '/', '#', '"', "'", '`', '<', '@', ' ', '*']
@@ -47,7 +52,9 @@ test('initialize', async () => {
       definitionProvider: true,
       documentFormattingProvider: true,
       documentHighlightProvider: true,
-      documentLinkProvider: {resolveProvider: true},
+      documentLinkProvider: {
+        resolveProvider: true
+      },
       documentOnTypeFormattingProvider: {
         firstTriggerCharacter: ';',
         moreTriggerCharacter: ['}', '\n']
@@ -57,10 +64,13 @@ test('initialize', async () => {
       foldingRangeProvider: true,
       hoverProvider: true,
       implementationProvider: true,
-      inlayHintProvider: {resolveProvider: true},
-      linkedEditingRangeProvider: true,
+      inlayHintProvider: {
+        resolveProvider: false
+      },
       referencesProvider: true,
-      renameProvider: {prepareProvider: true},
+      renameProvider: {
+        prepareProvider: true
+      },
       selectionRangeProvider: true,
       semanticTokensProvider: {
         full: false,

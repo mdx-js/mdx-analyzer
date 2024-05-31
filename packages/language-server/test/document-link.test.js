@@ -46,7 +46,9 @@ test('resolve markdown link references', async () => {
               resource: {
                 $mid: 1,
                 authority: 'md',
-                path: '/' + fixtureUri('node16/link-reference.mdx'),
+                path:
+                  '/' +
+                  encodeURIComponent(fixtureUri('node16/link-reference.mdx')),
                 scheme: 'volar-embedded-content'
               },
               range: {
@@ -65,7 +67,7 @@ test('resolve markdown link references', async () => {
             href: {kind: 2, ref: 'mdx'}
           }
         },
-        serviceIndex: 0
+        pluginIndex: 0
       }
     },
     {
@@ -74,7 +76,7 @@ test('resolve markdown link references', async () => {
       data: {
         uri: fixtureUri('node16/link-reference.mdx'),
         original: {},
-        serviceIndex: 0
+        pluginIndex: 0
       }
     }
   ])

@@ -1,6 +1,7 @@
 /**
- * @typedef {import('@volar/language-service').LanguagePlugin<VirtualMdxCode>} LanguagePlugin
+ * @typedef {import('@volar/language-service').LanguagePlugin<string | URI, VirtualMdxCode>} LanguagePlugin
  * @typedef {import('unified').PluggableList} PluggableList
+ * @typedef {import('vscode-uri').URI} URI
  */
 
 import remarkMdx from 'remark-mdx'
@@ -34,13 +35,14 @@ export function createMdxLanguagePlugin(
   processor.freeze()
 
   return {
-    getLanguageId(scriptId) {
-      if (scriptId.endsWith('.mdx')) {
+    getLanguageId(fileNameOrUri) {
+      const path = typeof fileNameOrUri === 'string' ? fileNameOrUri : fileNameOrUri.path
+      if (path.endsWith('.mdx')) {
         return 'mdx'
       }
     },
 
-    createVirtualCode(scriptId, languageId, snapshot) {
+    createVirtualCode(fileNameOrUri, languageId, snapshot) {
       if (languageId === 'mdx') {
         return new VirtualMdxCode(
           snapshot,
@@ -51,7 +53,7 @@ export function createMdxLanguagePlugin(
       }
     },
 
-    updateVirtualCode(scriptId, virtualCode, snapshot) {
+    updateVirtualCode(fileNameOrUri, virtualCode, snapshot) {
       virtualCode.update(snapshot)
       return virtualCode
     },

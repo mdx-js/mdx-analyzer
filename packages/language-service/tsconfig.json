@@ -1,5 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
+  "exclude": ["types"],
   "compilerOptions": {
     "declaration": true,
     "emitDeclarationOnly": true,

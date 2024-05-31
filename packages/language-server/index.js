@@ -4,6 +4,7 @@
  * @typedef {import('@mdx-js/language-service').Commands} Commands
  * @typedef {import('unified').PluggableList} PluggableList
  * @typedef {import('unified').Plugin} Plugin
+ * @typedef {import('vscode-uri').URI} URI
  */
 
 import assert from 'node:assert'
@@ -18,7 +19,7 @@ import {
 import {
   createConnection,
   createServer,
-  createTypeScriptProjectProvider,
+  createTypeScriptProject,
   loadTsdkByPath
 } from '@volar/language-server/node.js'
 import {loadPlugin} from 'load-plugin'
@@ -52,7 +53,7 @@ connection.onInitialize(async (parameters) => {
   return server.initialize(
     parameters,
     getLanguageServicePlugins(),
-    createTypeScriptProjectProvider(
+    createTypeScriptProject(
       typescript,
       diagnosticMessages,
       (serviceEnv, {configFileName}) => getLanguagePlugins(configFileName)
@@ -164,11 +165,10 @@ connection.onInitialized(() => {
 connection.listen()
 
 /**
- * @param {string} uri
+ * @param {URI} uri
  * @returns {Promise<Commands>}
  */
 async function getCommands(uri) {
-  const project = await server.projects.get.call(server, uri)
-  const service = project.getLanguageService()
+  const service = await server.project.getLanguageService(server, uri)
   return service.context.inject('mdxCommands')
 }

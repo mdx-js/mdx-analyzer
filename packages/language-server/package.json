@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@mdx-js/language-service": "0.5.5",
-    "@volar/language-server": "~2.3.0-alpha.3",
+    "@volar/language-server": "~2.3.0-alpha.4",
     "load-plugin": "^6.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "@volar/test-utils": "~2.3.0-alpha.3",
+    "@volar/test-utils": "~2.3.0-alpha.4",
     "unified": "^11.0.0"
   }
 }

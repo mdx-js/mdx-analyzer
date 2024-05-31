@@ -3,6 +3,7 @@
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
+import {URI} from 'vscode-uri'
 import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
 /** @type {LanguageServerHandle} */
@@ -33,7 +34,9 @@ test('resolve markdown link references', async () => {
         end: {line: 0, character: 12}
       },
       tooltip: 'Go to link definition',
-      target: fixtureUri('node16/link-reference.mdx#L3,8').replace('%3A', ':'),
+      target: URI.parse(fixtureUri('node16/link-reference.mdx'))
+        .with({fragment: 'L3,8'})
+        .toString(),
       data: {
         uri: fixtureUri('node16/link-reference.mdx'),
         original: {

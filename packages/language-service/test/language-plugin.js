@@ -3223,7 +3223,7 @@ test('create virtual code w/ yaml frontmatter', () => {
 test('update virtual code', () => {
   const plugin = createMdxLanguagePlugin()
 
-  const code = plugin.createVirtualCode?.(
+  let code = plugin.createVirtualCode?.(
     '/test.mdx',
     'mdx',
     snapshotFromLines('Tihs lne haz tyops', '')
@@ -3232,7 +3232,9 @@ test('update virtual code', () => {
   assert.ok(code instanceof VirtualMdxCode)
 
   const snapshot = snapshotFromLines('This line is fixed', '')
-  plugin.updateVirtualCode?.('/text.mdx', code, snapshot)
+  code = plugin.createVirtualCode?.('/text.mdx', 'mdx', snapshot)
+
+  assert.ok(code instanceof VirtualMdxCode)
 
   assert.equal(code.id, 'mdx')
   assert.equal(code.languageId, 'mdx')

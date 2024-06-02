@@ -776,17 +776,6 @@ export class VirtualMdxCode {
     this.#checkMdx = checkMdx
     this.#jsxImportSource = jsxImportSource
     this.snapshot = snapshot
-    this.update(snapshot)
-  }
-
-  /**
-   * Update the virtual file when it has changed.
-   *
-   * @param {IScriptSnapshot} snapshot
-   *   The new TypeScript snapshot.
-   * @returns {undefined}
-   */
-  update(snapshot) {
     this.snapshot = snapshot
     const length = snapshot.getLength()
     this.mappings[0] = {

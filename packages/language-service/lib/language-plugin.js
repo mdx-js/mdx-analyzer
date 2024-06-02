@@ -54,11 +54,6 @@ export function createMdxLanguagePlugin(
       }
     },
 
-    updateVirtualCode(fileNameOrUri, virtualCode, snapshot) {
-      virtualCode.update(snapshot)
-      return virtualCode
-    },
-
     typescript: {
       extraFileExtensions: [
         {extension: 'mdx', isMixedContent: true, scriptKind: 7}

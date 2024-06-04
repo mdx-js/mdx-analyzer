@@ -69,20 +69,21 @@ However, it’s impossible to support all languages within the MDX extension.
 Instead, if an extensions adds support for a language, it can add support for
 MDX code blocks.
 
-To support MDX code blocks in your Visual Studio Code extension, use the
-following template.
-Replace `LANGUAGE` with your actual language and remove comments.
-Save the file to `syntaxes/mdx.LANGUAGE.tmLanguage.json`.
+The following example adds support for syntax highlighting MDX code blocks
+tagged with `mermaid`.
+You can use this example and replace `mermaid` with the appropriate values to
+support your own language.
+Save the file to `syntaxes/mdx.mermaid.tmLanguage.json`.
 
 ```jsonc
 {
   "fileTypes": [],
   // This can be something else.
-  "scopeName": "mdx.LANGUAGE.codeblock",
+  "scopeName": "mdx.mermaid.codeblock",
   "injectionSelector": "L:source.mdx",
   "patterns": [
     {
-      "begin": "(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:(?:.*\\.)?LANGUAGE))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)",
+      "begin": "(?:^|\\G)[\\t ]*(`{3,})(?:[\\t ]*((?i:(?:.*\\.)?mermaid))(?:[\\t ]+((?:[^\\n\\r`])+))?)(?:[\\t ]*$)",
       "beginCaptures": {
         "1": {
           "name": "string.other.begin.code.fenced.mdx"
@@ -91,22 +92,22 @@ Save the file to `syntaxes/mdx.LANGUAGE.tmLanguage.json`.
           "name": "entity.name.function.mdx"
         }
       },
-      "contentName": "meta.embedded.LANGUAGE",
+      "contentName": "meta.embedded.mermaid",
       "end": "(\\1)(?:[\\t ]*$)",
       "endCaptures": {
         "1": {
           "name": "string.other.end.code.fenced.mdx"
         }
       },
-      "name": "markup.code.LANGUAGE.mdx",
+      "name": "markup.code.mermaid.mdx",
       "patterns": [
         {
-          "include": "source.LANGUAGE"
+          "include": "source.mermaid"
         }
       ]
     },
     {
-      "begin": "(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:(?:.*\\.)?LANGUAGE))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)",
+      "begin": "(?:^|\\G)[\\t ]*(~{3,})(?:[\\t ]*((?i:(?:.*\\.)?mermaid))(?:[\\t ]+((?:[^\\n\\r])+))?)(?:[\\t ]*$)",
       "beginCaptures": {
         "1": {
           "name": "string.other.begin.code.fenced.mdx"
@@ -115,17 +116,17 @@ Save the file to `syntaxes/mdx.LANGUAGE.tmLanguage.json`.
           "name": "entity.name.function.mdx"
         }
       },
-      "contentName": "meta.embedded.LANGUAGE",
+      "contentName": "meta.embedded.mermaid",
       "end": "(\\1)(?:[\\t ]*$)",
       "endCaptures": {
         "1": {
           "name": "string.other.end.code.fenced.mdx"
         }
       },
-      "name": "markup.code.LANGUAGE.mdx",
+      "name": "markup.code.mermaid.mdx",
       "patterns": [
         {
-          "include": "source.LANGUAGE"
+          "include": "source.mermaid"
         }
       ]
     }
@@ -134,7 +135,7 @@ Save the file to `syntaxes/mdx.LANGUAGE.tmLanguage.json`.
 ```
 
 In `package.json`, add the following section.
-Replace `LANGUAGE` with your actual language and remove comments.
+Replace `mermaid` with your actual language and remove comments.
 
 ```jsonc
 {
@@ -142,13 +143,13 @@ Replace `LANGUAGE` with your actual language and remove comments.
     "grammars": [
       {
         // This must match the scopeName in the tmLanguage file.
-        "scopeName": "mdx.LANGUAGE.codeblock",
-        "path": "./syntaxes/mdx.LANGUAGE.tmLanguage.json",
+        "scopeName": "mdx.mermaid.codeblock",
+        "path": "./syntaxes/mdx.mermaid.tmLanguage.json",
         "injectTo": [
           "source.mdx"
         ],
         "embeddedLanguages": {
-          "source.LANGUAGE": "LANGUAGE",
+          "source.mermaid": "mermaid",
         }
       }
     ]

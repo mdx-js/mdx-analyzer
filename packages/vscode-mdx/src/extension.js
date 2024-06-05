@@ -45,7 +45,7 @@ let disposable
 export async function activate(context) {
   extensions.getExtension('vscode.typescript-language-features')?.activate()
 
-  const {tsdk} = await getTsdk(context)
+  const {tsdk} = (await getTsdk(context)) ?? {tsdk: ''}
 
   client = new LanguageClient(
     'MDX',

@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.8
+
+### Patch Changes
+
+- [#444](https://github.com/mdx-js/mdx-analyzer/pull/444) [`f600a05`](https://github.com/mdx-js/mdx-analyzer/commit/f600a05cd3338bf55ac44bc4de1a45cefd27cfb2) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Document how to support custom languages in MDX code blocks.
+
+- [#448](https://github.com/mdx-js/mdx-analyzer/pull/448) [`52e38fa`](https://github.com/mdx-js/mdx-analyzer/commit/52e38fad3d1062eabb4ec19580e805cb889f79bb) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix virtual code if a child of a JSX node starts with a `>` character.
+
 ## 1.8.7
 
 ### Patch Changes

@@ -52,12 +52,12 @@ connection.onInitialize(async (parameters) => {
 
   return server.initialize(
     parameters,
-    getLanguageServicePlugins(),
     createTypeScriptProject(
       typescript,
       diagnosticMessages,
       (serviceEnv, {configFileName}) => getLanguagePlugins(configFileName)
-    )
+    ),
+    getLanguageServicePlugins()
   )
 
   function getLanguageServicePlugins() {
@@ -169,9 +169,6 @@ connection.listen()
  * @returns {Promise<Commands>}
  */
 async function getCommands(uri) {
-  const service = await server.project.getLanguageService(
-    server,
-    URI.parse(uri)
-  )
+  const service = await server.project.getLanguageService(URI.parse(uri))
   return service.context.inject('mdxCommands')
 }

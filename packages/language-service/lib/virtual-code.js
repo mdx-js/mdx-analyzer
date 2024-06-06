@@ -553,7 +553,8 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
         case 'mdxJsxFlowElement':
         case 'mdxJsxTextElement': {
           if (node.children.length > 0) {
-            end = mdx.lastIndexOf('>', getNodeStartOffset(node.children[0])) + 1
+            end =
+              mdx.lastIndexOf('>', getNodeStartOffset(node.children[0]) - 1) + 1
           }
 
           updateMarkdownFromOffsets(start, end)

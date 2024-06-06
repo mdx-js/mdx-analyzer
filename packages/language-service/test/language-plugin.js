@@ -2243,7 +2243,9 @@ test('create virtual code w/ mdxJsxFlowElement w/ blockquote child', () => {
 
   const snapshot = snapshotFromLines('<div>', '>', '</div>', '<div>></div>', '')
 
-  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot)
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
+    getAssociatedScript: () => undefined
+  })
 
   assert.ok(code instanceof VirtualMdxCode)
   assert.equal(code.id, 'mdx')

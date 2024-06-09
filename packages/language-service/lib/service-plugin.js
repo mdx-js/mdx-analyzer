@@ -59,7 +59,7 @@ export function createMdxServicePlugin() {
     name: 'mdx',
 
     capabilities: {
-      diagnosticProvider: true
+      diagnosticProvider: {}
     },
 
     create(context) {

@@ -27,12 +27,14 @@ const plugin = createAsyncLanguageServicePlugin(
     ])
 
     if (info.project.projectKind !== ts.server.ProjectKind.Configured) {
-      return [
-        createMdxLanguagePlugin([
-          [remarkFrontmatter, ['toml', 'yaml']],
-          remarkGfm
-        ])
-      ]
+      return {
+        languagePlugins: [
+          createMdxLanguagePlugin([
+            [remarkFrontmatter, ['toml', 'yaml']],
+            remarkGfm
+          ])
+        ]
+      }
     }
 
     const cwd = info.project.getCurrentDirectory()
@@ -56,13 +58,15 @@ const plugin = createAsyncLanguageServicePlugin(
         )
     )
 
-    return [
-      createMdxLanguagePlugin(
-        plugins || [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm],
-        Boolean(commandLine.raw?.mdx?.checkMdx),
-        commandLine.options.jsxImportSource
-      )
-    ]
+    return {
+      languagePlugins: [
+        createMdxLanguagePlugin(
+          plugins || [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm],
+          Boolean(commandLine.raw?.mdx?.checkMdx),
+          commandLine.options.jsxImportSource
+        )
+      ]
+    }
   }
 )
 

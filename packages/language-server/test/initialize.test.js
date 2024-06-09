@@ -64,9 +64,7 @@ test('initialize', async () => {
       foldingRangeProvider: true,
       hoverProvider: true,
       implementationProvider: true,
-      inlayHintProvider: {
-        resolveProvider: false
-      },
+      inlayHintProvider: {},
       referencesProvider: true,
       renameProvider: {
         prepareProvider: true

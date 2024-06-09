@@ -36,9 +36,7 @@ export function createMdxLanguagePlugin(
 
   return {
     getLanguageId(fileNameOrUri) {
-      const path =
-        typeof fileNameOrUri === 'string' ? fileNameOrUri : fileNameOrUri.path
-      if (path.endsWith('.mdx')) {
+      if (String(fileNameOrUri).endsWith('.mdx')) {
         return 'mdx'
       }
     },

@@ -52,9 +52,7 @@ test('initialize', async () => {
       definitionProvider: true,
       documentFormattingProvider: true,
       documentHighlightProvider: true,
-      documentLinkProvider: {
-        resolveProvider: true
-      },
+      documentLinkProvider: {resolveProvider: true},
       documentOnTypeFormattingProvider: {
         firstTriggerCharacter: ';',
         moreTriggerCharacter: ['}', '\n']
@@ -66,9 +64,7 @@ test('initialize', async () => {
       implementationProvider: true,
       inlayHintProvider: {},
       referencesProvider: true,
-      renameProvider: {
-        prepareProvider: true
-      },
+      renameProvider: {prepareProvider: true},
       selectionRangeProvider: true,
       semanticTokensProvider: {
         full: false,

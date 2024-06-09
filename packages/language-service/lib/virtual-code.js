@@ -777,7 +777,6 @@ export class VirtualMdxCode {
     this.#checkMdx = checkMdx
     this.#jsxImportSource = jsxImportSource
     this.snapshot = snapshot
-    this.snapshot = snapshot
     const length = snapshot.getLength()
     this.mappings[0] = {
       sourceOffsets: [0],

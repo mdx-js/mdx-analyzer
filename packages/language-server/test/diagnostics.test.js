@@ -36,12 +36,14 @@ test('parse errors', async () => {
           href: 'https://github.com/micromark/micromark-extension-mdxjs-esm#could-not-parse-importexports-with-acorn'
         },
         data: {
-          documentUri: URI.from({
-            scheme: 'volar-embedded-content',
-            authority: 'mdx',
-            path:
-              '/' + encodeURIComponent(fixtureUri('node16/syntax-error.mdx'))
-          }).toString(),
+          documentUri: String(
+            URI.from({
+              scheme: 'volar-embedded-content',
+              authority: 'mdx',
+              path:
+                '/' + encodeURIComponent(fixtureUri('node16/syntax-error.mdx'))
+            })
+          ),
           isFormat: false,
           original: {},
           pluginIndex: 1,
@@ -79,11 +81,14 @@ test('type errors', async () => {
       {
         code: 2568,
         data: {
-          documentUri: URI.from({
-            scheme: 'volar-embedded-content',
-            authority: 'jsx',
-            path: '/' + encodeURIComponent(fixtureUri('node16/type-errors.mdx'))
-          }).toString(),
+          documentUri: String(
+            URI.from({
+              scheme: 'volar-embedded-content',
+              authority: 'jsx',
+              path:
+                '/' + encodeURIComponent(fixtureUri('node16/type-errors.mdx'))
+            })
+          ),
           isFormat: false,
           original: {},
           pluginIndex: 2,
@@ -102,11 +107,14 @@ test('type errors', async () => {
       {
         code: 2568,
         data: {
-          documentUri: URI.from({
-            scheme: 'volar-embedded-content',
-            authority: 'jsx',
-            path: '/' + encodeURIComponent(fixtureUri('node16/type-errors.mdx'))
-          }).toString(),
+          documentUri: String(
+            URI.from({
+              scheme: 'volar-embedded-content',
+              authority: 'jsx',
+              path:
+                '/' + encodeURIComponent(fixtureUri('node16/type-errors.mdx'))
+            })
+          ),
           isFormat: false,
           original: {},
           pluginIndex: 2,
@@ -163,12 +171,14 @@ test('provided components', async () => {
       {
         code: 2741,
         data: {
-          documentUri: URI.from({
-            scheme: 'volar-embedded-content',
-            authority: 'jsx',
-            path:
-              '/' + encodeURIComponent(fixtureUri('provide/solar-system.mdx'))
-          }).toString(),
+          documentUri: String(
+            URI.from({
+              scheme: 'volar-embedded-content',
+              authority: 'jsx',
+              path:
+                '/' + encodeURIComponent(fixtureUri('provide/solar-system.mdx'))
+            })
+          ),
           isFormat: false,
           original: {},
           pluginIndex: 2,

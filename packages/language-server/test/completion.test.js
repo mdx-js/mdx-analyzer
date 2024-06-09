@@ -37,21 +37,26 @@ test('support completion in ESM', async () => {
   assert.deepEqual(completion, {
     commitCharacters: ['.', ',', ';', '('],
     data: {
-      embeddedDocumentUri: URI.from({
-        scheme: 'volar-embedded-content',
-        authority: 'jsx',
-        path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
-      }).toString(),
+      embeddedDocumentUri: String(
+        URI.from({
+          scheme: 'volar-embedded-content',
+          authority: 'jsx',
+          path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+        })
+      ),
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx'),
           offset: 81,
           originalItem: {name: 'Boolean'},
-          uri: URI.from({
-            scheme: 'volar-embedded-content',
-            authority: 'jsx',
-            path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
-          }).toString()
+          uri: String(
+            URI.from({
+              scheme: 'volar-embedded-content',
+              authority: 'jsx',
+              path:
+                '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+            })
+          )
         }
       },
       pluginIndex: 2,
@@ -70,11 +75,13 @@ test('support completion in ESM', async () => {
       fileName: fixturePath('node16/completion.mdx'),
       offset: 81,
       originalItem: {name: 'Boolean'},
-      uri: URI.from({
-        scheme: 'volar-embedded-content',
-        authority: 'jsx',
-        path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
-      }).toString()
+      uri: String(
+        URI.from({
+          scheme: 'volar-embedded-content',
+          authority: 'jsx',
+          path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+        })
+      )
     },
     detail: 'interface Boolean\nvar Boolean: BooleanConstructor',
     documentation: {kind: 'markdown', value: ''},
@@ -105,21 +112,26 @@ test('support completion in JSX', async () => {
   assert.deepEqual(completion, {
     commitCharacters: ['.', ',', ';', '('],
     data: {
-      embeddedDocumentUri: URI.from({
-        scheme: 'volar-embedded-content',
-        authority: 'jsx',
-        path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
-      }).toString(),
+      embeddedDocumentUri: String(
+        URI.from({
+          scheme: 'volar-embedded-content',
+          authority: 'jsx',
+          path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+        })
+      ),
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx'),
           offset: 119,
           originalItem: {name: 'Boolean'},
-          uri: URI.from({
-            scheme: 'volar-embedded-content',
-            authority: 'jsx',
-            path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
-          }).toString()
+          uri: String(
+            URI.from({
+              scheme: 'volar-embedded-content',
+              authority: 'jsx',
+              path:
+                '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+            })
+          )
         }
       },
       pluginIndex: 2,
@@ -138,11 +150,13 @@ test('support completion in JSX', async () => {
       fileName: fixturePath('node16/completion.mdx'),
       offset: 119,
       originalItem: {name: 'Boolean'},
-      uri: URI.from({
-        scheme: 'volar-embedded-content',
-        authority: 'jsx',
-        path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
-      }).toString()
+      uri: String(
+        URI.from({
+          scheme: 'volar-embedded-content',
+          authority: 'jsx',
+          path: '/' + encodeURIComponent(fixtureUri('node16/completion.mdx'))
+        })
+      )
     },
     detail: 'interface Boolean\nvar Boolean: BooleanConstructor',
     documentation: {kind: 'markdown', value: ''},

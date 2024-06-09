@@ -43,7 +43,8 @@ import {VirtualMdxCode} from './virtual-code.js'
 export function createSyntaxToggle(context, type, separator) {
   return ({range, uri}) => {
     const parsedUri = URI.parse(uri)
-    const root = context.language.scripts.get(parsedUri)?.generated?.root
+    const sourceScript = context.language.scripts.get(parsedUri)
+    const root = sourceScript?.generated?.root
 
     if (!(root instanceof VirtualMdxCode)) {
       return

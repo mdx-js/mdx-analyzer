@@ -34,9 +34,11 @@ test('resolve markdown link references', async () => {
         end: {line: 0, character: 12}
       },
       tooltip: 'Go to link definition',
-      target: URI.parse(fixtureUri('node16/link-reference.mdx'))
-        .with({fragment: 'L3,8'})
-        .toString(),
+      target: String(
+        URI.parse(fixtureUri('node16/link-reference.mdx')).with({
+          fragment: 'L3,8'
+        })
+      ),
       data: {
         uri: fixtureUri('node16/link-reference.mdx'),
         original: {

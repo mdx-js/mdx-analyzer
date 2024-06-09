@@ -10,18 +10,18 @@ import assert from 'node:assert'
 import path from 'node:path'
 import process from 'node:process'
 import {pathToFileURL} from 'node:url'
-import {loadPlugin} from 'load-plugin'
+import {
+  createMdxLanguagePlugin,
+  createMdxServicePlugin,
+  resolveRemarkPlugins
+} from '@mdx-js/language-service'
 import {
   createConnection,
   createServer,
   createTypeScriptProject,
   loadTsdkByPath
 } from '@volar/language-server/node.js'
-import {
-  createMdxLanguagePlugin,
-  createMdxServicePlugin,
-  resolveRemarkPlugins
-} from '@mdx-js/language-service'
+import {loadPlugin} from 'load-plugin'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'

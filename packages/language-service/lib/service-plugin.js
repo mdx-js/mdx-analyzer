@@ -58,6 +58,10 @@ export function createMdxServicePlugin() {
   return {
     name: 'mdx',
 
+    capabilities: {
+      diagnosticProvider: {}
+    },
+
     create(context) {
       return {
         provide: {
@@ -158,7 +162,9 @@ export function createMdxServicePlugin() {
         },
 
         provideSemanticDiagnostics(document) {
-          const decoded = context.decodeEmbeddedDocumentUri(document.uri)
+          const decoded = context.decodeEmbeddedDocumentUri(
+            URI.parse(document.uri)
+          )
           const sourceScript =
             decoded && context.language.scripts.get(decoded[0])
           const virtualCode =

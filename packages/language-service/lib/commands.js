@@ -1,6 +1,6 @@
 /**
  * @typedef {import('@volar/language-service').Range} Range
- * @typedef {import('@volar/language-service').ServiceContext} ServiceContext
+ * @typedef {import('@volar/language-service').LanguageServiceContext} LanguageServiceContext
  * @typedef {import('@volar/language-service').TextEdit} TextEdit
  * @typedef {import('mdast').Nodes} Nodes
  */
@@ -24,13 +24,14 @@
  */
 
 import {visitParents} from 'unist-util-visit-parents'
+import {URI} from 'vscode-uri'
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {VirtualMdxCode} from './virtual-code.js'
 
 /**
  * Create a function to toggle prose syntax based on the AST.
  *
- * @param {ServiceContext} context
+ * @param {LanguageServiceContext} context
  *   The Volar service context.
  * @param {Nodes['type']} type
  *   The type of the mdast node to toggle.
@@ -41,7 +42,8 @@ import {VirtualMdxCode} from './virtual-code.js'
  */
 export function createSyntaxToggle(context, type, separator) {
   return ({range, uri}) => {
-    const sourceScript = context.language.scripts.get(uri)
+    const parsedUri = URI.parse(uri)
+    const sourceScript = context.language.scripts.get(parsedUri)
     const root = sourceScript?.generated?.root
 
     if (!(root instanceof VirtualMdxCode)) {
@@ -54,7 +56,7 @@ export function createSyntaxToggle(context, type, separator) {
       return
     }
 
-    const doc = context.documents.get(uri, root.languageId, root.snapshot)
+    const doc = context.documents.get(parsedUri, root.languageId, root.snapshot)
     const selectionStart = doc.offsetAt(range.start)
     const selectionEnd = doc.offsetAt(range.end)
 

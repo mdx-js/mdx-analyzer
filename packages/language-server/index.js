@@ -18,7 +18,7 @@ import {
 import {
   createConnection,
   createServer,
-  createTypeScriptProjectProvider,
+  createTypeScriptProject,
   loadTsdkByPath
 } from '@volar/language-server/node.js'
 import {loadPlugin} from 'load-plugin'
@@ -27,6 +27,7 @@ import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
 import {create as createTypeScriptServicePlugin} from 'volar-service-typescript'
 import {create as createTypeScriptSyntacticServicePlugin} from 'volar-service-typescript/lib/plugins/syntactic.js'
+import {URI} from 'vscode-uri'
 
 process.title = 'mdx-language-server'
 
@@ -51,12 +52,12 @@ connection.onInitialize(async (parameters) => {
 
   return server.initialize(
     parameters,
-    getLanguageServicePlugins(),
-    createTypeScriptProjectProvider(
+    createTypeScriptProject(
       typescript,
       diagnosticMessages,
       (serviceEnv, {configFileName}) => getLanguagePlugins(configFileName)
-    )
+    ),
+    getLanguageServicePlugins()
   )
 
   function getLanguageServicePlugins() {
@@ -168,7 +169,6 @@ connection.listen()
  * @returns {Promise<Commands>}
  */
 async function getCommands(uri) {
-  const project = await server.projects.get.call(server, uri)
-  const service = project.getLanguageService()
+  const service = await server.project.getLanguageService(URI.parse(uri))
   return service.context.inject('mdxCommands')
 }

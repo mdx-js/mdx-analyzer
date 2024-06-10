@@ -3,6 +3,7 @@
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
+import {URI} from 'vscode-uri'
 import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
 /** @type {LanguageServerHandle} */
@@ -33,7 +34,11 @@ test('resolve markdown link references', async () => {
         end: {line: 0, character: 12}
       },
       tooltip: 'Go to link definition',
-      target: fixtureUri('node16/link-reference.mdx#L3,8').replace('%3A', ':'),
+      target: String(
+        URI.parse(fixtureUri('node16/link-reference.mdx')).with({
+          fragment: 'L3,8'
+        })
+      ),
       data: {
         uri: fixtureUri('node16/link-reference.mdx'),
         original: {
@@ -46,7 +51,9 @@ test('resolve markdown link references', async () => {
               resource: {
                 $mid: 1,
                 authority: 'md',
-                path: '/' + fixtureUri('node16/link-reference.mdx'),
+                path:
+                  '/' +
+                  encodeURIComponent(fixtureUri('node16/link-reference.mdx')),
                 scheme: 'volar-embedded-content'
               },
               range: {
@@ -65,7 +72,7 @@ test('resolve markdown link references', async () => {
             href: {kind: 2, ref: 'mdx'}
           }
         },
-        serviceIndex: 0
+        pluginIndex: 0
       }
     },
     {
@@ -74,7 +81,7 @@ test('resolve markdown link references', async () => {
       data: {
         uri: fixtureUri('node16/link-reference.mdx'),
         original: {},
-        serviceIndex: 0
+        pluginIndex: 0
       }
     }
   ])

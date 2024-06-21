@@ -1,7 +1,3 @@
-/**
- * @typedef {import('@volar/language-service').VirtualCode} VirtualCode
- */
-
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
 import {createMdxLanguagePlugin} from '@mdx-js/language-service'

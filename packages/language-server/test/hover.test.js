@@ -1,5 +1,5 @@
 /**
- * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
+ * @import {LanguageServerHandle} from '@volar/test-utils'
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'

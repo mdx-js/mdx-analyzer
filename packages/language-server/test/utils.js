@@ -1,8 +1,3 @@
-/**
- * @typedef {import('@volar/language-server').TextDocumentItem} TextDocumentItem
- * @typedef {import('@volar/language-server').PublishDiagnosticsParams} PublishDiagnosticsParams
- */
-
 import {createRequire} from 'node:module'
 import path from 'node:path'
 import {URI, Utils} from 'vscode-uri'

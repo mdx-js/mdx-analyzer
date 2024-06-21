@@ -1,5 +1,5 @@
 /**
- * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
+ * @import {IScriptSnapshot} from 'typescript'
  */
 
 /**

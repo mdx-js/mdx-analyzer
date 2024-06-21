@@ -1,7 +1,10 @@
 'use strict'
 
 /**
- * @typedef {import('typescript').TsConfigSourceFile} TsConfigSourceFile
+ * @import {TsConfigSourceFile} from 'typescript'
+ */
+
+/**
  * @typedef {import('unified', {with: {'resolution-mode': 'import'}}).Plugin} Plugin
  */
 

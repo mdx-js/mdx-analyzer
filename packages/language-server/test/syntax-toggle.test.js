@@ -1,6 +1,6 @@
 /**
- * @typedef {import('@volar/test-utils').LanguageServerHandle} LanguageServerHandle
- * @typedef {import('@mdx-js/language-service').SyntaxToggleParams} SyntaxToggleParams
+ * @import {LanguageServerHandle} from '@volar/test-utils'
+ * @import {SyntaxToggleParams} from '@mdx-js/language-service'
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'

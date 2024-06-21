@@ -1,8 +1,5 @@
 /**
- * @typedef {import('typescript').ParsedCommandLine} ParsedCommandLine
- * @typedef {import('unified').Pluggable} Pluggable
- * @typedef {import('unified').PluggableList} PluggableList
- * @typedef {import('unified').Plugin} Plugin
+ * @import {Pluggable, PluggableList, Plugin} from 'unified'
  */
 
 /**

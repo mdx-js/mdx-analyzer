@@ -1,7 +1,6 @@
 /**
- * @typedef {import('@volar/language-service').DataTransferItem} DataTransferItem
- * @typedef {import('@volar/language-service').LanguageServicePlugin<Provide>} LanguageServicePlugin
- * @typedef {import('./commands.js').SyntaxToggle} SyntaxToggle
+ * @import {DataTransferItem, LanguageServicePlugin} from '@volar/language-service'
+ * @import {SyntaxToggle} from './commands.js'
  */
 
 /**

@@ -1,8 +1,6 @@
 /**
- * @typedef {import('@volar/language-service').Range} Range
- * @typedef {import('@volar/language-service').LanguageServiceContext} LanguageServiceContext
- * @typedef {import('@volar/language-service').TextEdit} TextEdit
- * @typedef {import('mdast').Nodes} Nodes
+ * @import {LanguageServiceContext, Range, TextEdit} from '@volar/language-service'
+ * @import {Nodes} from 'mdast'
  */
 
 /**

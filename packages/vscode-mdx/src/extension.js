@@ -1,7 +1,6 @@
 /**
- * @typedef {import('@volar/language-server').TextEdit} TextEdit
- * @typedef {import('@volar/vscode').LabsInfo} LabsInfo
- * @typedef {import('vscode').ExtensionContext} ExtensionContext
+ * @import {LabsInfo, TextEdit} from '@volar/vscode'
+ * @import {ExtensionContext} from 'vscode'
  */
 
 import * as languageServerProtocol from '@volar/language-server/protocol.js'

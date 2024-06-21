@@ -1,14 +1,11 @@
 /**
- * @typedef {import('@volar/language-service').CodeMapping} CodeMapping
- * @typedef {import('@volar/language-service').VirtualCode} VirtualCode
- * @typedef {import('estree').ExportDefaultDeclaration} ExportDefaultDeclaration
- * @typedef {import('estree').Program} Program
- * @typedef {import('mdast').Nodes} Nodes
- * @typedef {import('mdast').Root} Root
- * @typedef {import('mdast-util-mdxjs-esm').MdxjsEsm} MdxjsEsm
- * @typedef {import('typescript').IScriptSnapshot} IScriptSnapshot
- * @typedef {import('unified').Processor<Root>} Processor
- * @typedef {import('vfile-message').VFileMessage} VFileMessage
+ * @import {CodeMapping, VirtualCode} from '@volar/language-service'
+ * @import {ExportDefaultDeclaration, Program} from 'estree'
+ * @import {Nodes, Root} from 'mdast'
+ * @import {MdxjsEsm} from 'mdast-util-mdxjs-esm'
+ * @import {IScriptSnapshot} from 'typescript'
+ * @import {Processor} from 'unified'
+ * @import {VFileMessage} from 'vfile-message'
  */
 
 import {walk} from 'estree-walker'
@@ -765,7 +762,7 @@ export class VirtualMdxCode {
   /**
    * @param {IScriptSnapshot} snapshot
    *   The original TypeScript snapshot.
-   * @param {Processor} processor
+   * @param {Processor<Root>} processor
    *   The unified processor to use for parsing.
    * @param {boolean} checkMdx
    *   If true, insert a `@check-js` comment into the virtual JavaScript code.

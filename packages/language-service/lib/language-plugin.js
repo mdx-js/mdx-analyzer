@@ -1,7 +1,7 @@
 /**
- * @typedef {import('@volar/language-service').LanguagePlugin<string | URI, VirtualMdxCode>} LanguagePlugin
- * @typedef {import('unified').PluggableList} PluggableList
- * @typedef {import('vscode-uri').URI} URI
+ * @import {LanguagePlugin} from '@volar/language-service'
+ * @import {PluggableList} from 'unified'
+ * @import {URI} from 'vscode-uri'
  */
 
 import remarkMdx from 'remark-mdx'
@@ -19,7 +19,7 @@ import {VirtualMdxCode} from './virtual-code.js'
  *   If true, check MDX files strictly.
  * @param {string} jsxImportSource
  *   The JSX import source to use in the embedded JavaScript file.
- * @returns {LanguagePlugin}
+ * @returns {LanguagePlugin<string | URI, VirtualMdxCode>}
  *   A Volar language plugin to support MDX.
  */
 export function createMdxLanguagePlugin(

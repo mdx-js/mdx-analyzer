@@ -1,7 +1,6 @@
 /**
- * @typedef {import('mdast').Nodes} Nodes
- * @typedef {import('unist').Point} Point
- * @typedef {import('unist').Position} Position
+ * @import {Nodes} from 'mdast'
+ * @import {Point, Position} from 'unist'
  */
 
 /**

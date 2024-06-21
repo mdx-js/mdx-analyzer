@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * @typedef {import('@mdx-js/language-service').Commands} Commands
- * @typedef {import('unified').PluggableList} PluggableList
- * @typedef {import('unified').Plugin} Plugin
+ * @import {Commands} from '@mdx-js/language-service'
+ * @import {PluggableList, Plugin} from 'unified'
  */
 
 import assert from 'node:assert'

@@ -1,5 +1,5 @@
 /**
- * @typedef {import('unified').Plugin} Plugin
+ * @import {Plugin} from 'unified'
  */
 
 import assert from 'node:assert/strict'

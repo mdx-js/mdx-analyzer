@@ -1,5 +1,16 @@
 # @mdx-js/language-server
 
+## 0.4.9
+
+### Patch Changes
+
+- [#450](https://github.com/mdx-js/mdx-analyzer/pull/450) [`9767738`](https://github.com/mdx-js/mdx-analyzer/commit/976773851618fcc2018671d56d7902216873ceb6) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Solve a regression caused by TypeScript 5.5
+
+- [#446](https://github.com/mdx-js/mdx-analyzer/pull/446) [`044776e`](https://github.com/mdx-js/mdx-analyzer/commit/044776e8e156cb5fd42e4f016215b9eefec894bd) Thanks [@johnsoncodehk](https://github.com/johnsoncodehk)! - Update to Volar 2.3.
+
+- Updated dependencies [[`9767738`](https://github.com/mdx-js/mdx-analyzer/commit/976773851618fcc2018671d56d7902216873ceb6), [`044776e`](https://github.com/mdx-js/mdx-analyzer/commit/044776e8e156cb5fd42e4f016215b9eefec894bd)]:
+  - @mdx-js/language-service@0.5.7
+
 ## 0.4.8
 
 ### Patch Changes

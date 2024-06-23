@@ -98,7 +98,7 @@ test('create virtual code w/ mdxjsEsm', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -216,7 +216,7 @@ test('create virtual code w/ mdxjsEsm and CRLF', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -332,7 +332,7 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -449,7 +449,7 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -569,7 +569,7 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -689,7 +689,7 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -819,7 +819,7 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -954,7 +954,7 @@ test('create virtual code w/ MDX layout in case of a default exported function d
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1071,7 +1071,7 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1206,7 +1206,7 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1345,7 +1345,7 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1484,7 +1484,7 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1599,7 +1599,7 @@ test('create virtual code w/ mdxFlowExpression', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1715,7 +1715,7 @@ test('create virtual code w/ empty mdxFlowExpression', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -1861,7 +1861,7 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2015,7 +2015,7 @@ test('create virtual code w/ prefixed JSX expressions in attributes', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2188,7 +2188,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2330,7 +2330,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ blockquote child', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2471,7 +2471,7 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2617,7 +2617,7 @@ test('create virtual code w/ mdxJsxTextElement', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2743,7 +2743,7 @@ test('create virtual code w/ mdxTextExpression', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -2865,7 +2865,7 @@ test('create virtual code w/ async mdxTextExpression', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -3030,7 +3030,7 @@ test('ignore async functions in props or expressions', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -3150,7 +3150,7 @@ test('create virtual code w/ dedented markdown content', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -3256,7 +3256,7 @@ test('create virtual code w/ syntax error', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -3342,7 +3342,7 @@ test('create virtual code w/ yaml frontmatter', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -3474,7 +3474,7 @@ test('update virtual code', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -3615,7 +3615,7 @@ test('support checkMdx', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },
@@ -3715,7 +3715,7 @@ test('support custom jsxImportSource', () => {
         '}',
         '',
         '// @ts-ignore',
-        '/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
         ''
       )
     },

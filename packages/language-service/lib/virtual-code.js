@@ -90,7 +90,7 @@ export default function MDXContent(props) {
 }
 
 // @ts-ignore
-/** @typedef {(0 extends 1 & Props ? {} : Props) & {components?: {}}} MDXContentProps */
+/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */
 `
 
 const jsxIndent = '\n    '

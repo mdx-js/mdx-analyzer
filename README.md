@@ -75,7 +75,8 @@ For example:
 #### JSDoc in MDX with Prettier
 
 If you’re using Prettier, you’ll need to ignore any JSDoc comments until it is
-supported (issues [MDX 3](https://github.com/prettier/prettier/issues/12209)):
+supported (more info in
+[the MDX 3 issue](https://github.com/prettier/prettier/issues/12209)):
 
 ```mdx
 {/* prettier-ignore-start */}

@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@mdx-js/language-service": "0.5.7",
-    "@volar/typescript": "~2.3.0",
+    "@volar/typescript": "~2.4.0-alpha.17",
     "load-plugin": "^6.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0"

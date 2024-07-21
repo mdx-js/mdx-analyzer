@@ -22,20 +22,14 @@ test('initialize', async () => {
     {typescript: {enabled: true, tsdk}}
   )
   assert.deepEqual(initializeResponse, {
-    autoInsertion: {
-      configurationSections: [
-        'javascript.autoClosingTags',
-        'typescript.autoClosingTags'
-      ],
-      triggerCharacters: ['>', '>']
-    },
     capabilities: {
       callHierarchyProvider: true,
       codeActionProvider: {
         codeActionKinds: [
-          '',
+          'source.organizeLinkDefinitions',
           'quickfix',
           'refactor',
+          '',
           'refactor.extract',
           'refactor.inline',
           'refactor.rewrite',
@@ -52,59 +46,58 @@ test('initialize', async () => {
       definitionProvider: true,
       documentFormattingProvider: true,
       documentHighlightProvider: true,
-      documentLinkProvider: {resolveProvider: true},
+      documentLinkProvider: {
+        resolveProvider: true
+      },
       documentOnTypeFormattingProvider: {
         firstTriggerCharacter: ';',
         moreTriggerCharacter: ['}', '\n']
       },
       documentRangeFormattingProvider: true,
       documentSymbolProvider: true,
+      experimental: {
+        autoInsertionProvider: {
+          configurationSections: [
+            ['javascript.autoClosingTags', 'typescript.autoClosingTags']
+          ],
+          triggerCharacters: ['>']
+        },
+        fileReferencesProvider: true,
+        fileRenameProvider: true
+      },
       foldingRangeProvider: true,
       hoverProvider: true,
       implementationProvider: true,
       inlayHintProvider: {},
       referencesProvider: true,
-      renameProvider: {prepareProvider: true},
+      renameProvider: {
+        prepareProvider: true
+      },
       selectionRangeProvider: true,
       semanticTokensProvider: {
         full: false,
         legend: {
           tokenModifiers: [
             'declaration',
-            'definition',
             'readonly',
             'static',
-            'deprecated',
-            'abstract',
             'async',
-            'modification',
-            'documentation',
-            'defaultLibrary'
+            'defaultLibrary',
+            'local'
           ],
           tokenTypes: [
             'namespace',
             'class',
             'enum',
             'interface',
-            'struct',
             'typeParameter',
             'type',
             'parameter',
             'variable',
             'property',
             'enumMember',
-            'decorator',
-            'event',
             'function',
-            'method',
-            'macro',
-            'label',
-            'comment',
-            'string',
-            'keyword',
-            'number',
-            'regexp',
-            'operator'
+            'method'
           ]
         },
         range: true
@@ -121,7 +114,7 @@ test('initialize', async () => {
           supported: true
         }
       },
-      workspaceSymbolProvider: true
+      workspaceSymbolProvider: {}
     }
   })
 })

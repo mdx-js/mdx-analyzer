@@ -54,9 +54,15 @@ connection.onInitialize(async (parameters) => {
     createTypeScriptProject(
       typescript,
       diagnosticMessages,
-      (serviceEnv, {configFileName}) => getLanguagePlugins(configFileName)
+      async ({configFileName}) => ({
+        languagePlugins: await getLanguagePlugins(configFileName)
+      })
     ),
-    getLanguageServicePlugins()
+    getLanguageServicePlugins(),
+    {
+      pullModelDiagnostics:
+        parameters.initializationOptions?.pullModelDiagnostics
+    }
   )
 
   function getLanguageServicePlugins() {

@@ -108,7 +108,7 @@ test('resolve document symbols', async () => {
           children: []
         },
         {
-          name: '## > ## Heading inside a block quote',
+          name: '## Heading inside a block quote',
           kind: SymbolKind.String,
           range: {
             start: {line: 43, character: 0},

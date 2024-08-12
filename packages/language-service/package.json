@@ -55,7 +55,7 @@
     "vscode-uri": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^22.0.0",
     "remark-frontmatter": "^5.0.0"
   },
   "sideEffects": false

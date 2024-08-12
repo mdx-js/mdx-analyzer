@@ -2,10 +2,7 @@
 
 /**
  * @import {TsConfigSourceFile} from 'typescript'
- */
-
-/**
- * @typedef {import('unified', {with: {'resolution-mode': 'import'}}).Plugin} Plugin
+ * @import {Plugin} from 'unified' with {'resolution-mode': 'import'}
  */
 
 const {pathToFileURL} = require('node:url')

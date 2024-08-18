@@ -10,9 +10,19 @@ let serverHandle
 
 beforeEach(async () => {
   serverHandle = createServer()
-  await serverHandle.initialize(fixtureUri('node16'), {
-    typescript: {enabled: true, tsdk}
-  })
+  await serverHandle.initialize(
+    fixtureUri('node16'),
+    {
+      typescript: {enabled: true, tsdk}
+    },
+    {
+      textDocument: {
+        definition: {
+          linkSupport: true
+        }
+      }
+    }
+  )
 })
 
 afterEach(() => {
@@ -127,5 +137,5 @@ test('ignore non-existent mdx files', async () => {
     character: 15
   })
 
-  assert.deepEqual(result, null)
+  assert.deepEqual(result, [])
 })

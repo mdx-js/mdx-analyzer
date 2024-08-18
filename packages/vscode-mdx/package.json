@@ -41,8 +41,8 @@
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.82.0",
-    "@volar/language-server": "~2.4.0-alpha.18",
-    "@volar/vscode": "~2.4.0-alpha.18",
+    "@volar/language-server": "~2.4.0-alpha.19",
+    "@volar/vscode": "~2.4.0-alpha.19",
     "@vscode/vsce": "^2.0.0",
     "esbuild": "^0.21.0",
     "ovsx": "^0.9.0"

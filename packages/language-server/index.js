@@ -58,11 +58,7 @@ connection.onInitialize(async (parameters) => {
         languagePlugins: await getLanguagePlugins(configFileName)
       })
     ),
-    getLanguageServicePlugins(),
-    {
-      pullModelDiagnostics:
-        parameters.initializationOptions?.pullModelDiagnostics
-    }
+    getLanguageServicePlugins()
   )
 
   function getLanguageServicePlugins() {
@@ -164,7 +160,7 @@ connection.onInitialized(() => {
   }
 
   server.initialized()
-  server.watchFiles([`**/*.{${extensions.join(',')}}`])
+  server.fileWatcher.watchFiles([`**/*.{${extensions.join(',')}}`])
 })
 
 connection.listen()

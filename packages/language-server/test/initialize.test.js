@@ -62,8 +62,9 @@ test('initialize', async () => {
           ],
           triggerCharacters: ['>']
         },
+        documentDropEditsProvider: true,
         fileReferencesProvider: true,
-        fileRenameProvider: true
+        fileRenameEditsProvider: true
       },
       foldingRangeProvider: true,
       hoverProvider: true,

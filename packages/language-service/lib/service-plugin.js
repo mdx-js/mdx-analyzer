@@ -58,7 +58,11 @@ export function createMdxServicePlugin() {
     name: 'mdx',
 
     capabilities: {
-      diagnosticProvider: {}
+      diagnosticProvider: {
+        interFileDependencies: false,
+        workspaceDiagnostics: false
+      },
+      documentDropEditsProvider: true
     },
 
     create(context) {
@@ -160,7 +164,7 @@ export function createMdxServicePlugin() {
           }
         },
 
-        provideSemanticDiagnostics(document) {
+        provideDiagnostics(document) {
           const decoded = context.decodeEmbeddedDocumentUri(
             URI.parse(document.uri)
           )

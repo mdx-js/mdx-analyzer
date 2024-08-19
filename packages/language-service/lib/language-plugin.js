@@ -1,3 +1,5 @@
+/// <reference types="@volar/typescript" />
+
 /**
  * @import {LanguagePlugin} from '@volar/language-service'
  * @import {PluggableList} from 'unified'
@@ -58,10 +60,12 @@ export function createMdxLanguagePlugin(
       ],
 
       getServiceScript(root) {
-        return {
-          code: root.embeddedCodes[0],
-          extension: '.jsx',
-          scriptKind: 2
+        if (root.embeddedCodes) {
+          return {
+            code: root.embeddedCodes[0],
+            extension: '.jsx',
+            scriptKind: 2
+          }
         }
       },
 

@@ -54,7 +54,9 @@ connection.onInitialize(async (parameters) => {
     createTypeScriptProject(
       typescript,
       diagnosticMessages,
-      (serviceEnv, {configFileName}) => getLanguagePlugins(configFileName)
+      async ({configFileName}) => ({
+        languagePlugins: await getLanguagePlugins(configFileName)
+      })
     ),
     getLanguageServicePlugins()
   )
@@ -158,7 +160,7 @@ connection.onInitialized(() => {
   }
 
   server.initialized()
-  server.watchFiles([`**/*.{${extensions.join(',')}}`])
+  server.fileWatcher.watchFiles([`**/*.{${extensions.join(',')}}`])
 })
 
 connection.listen()

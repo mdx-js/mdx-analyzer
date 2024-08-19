@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.10
+
+### Patch Changes
+
+- [#460](https://github.com/mdx-js/mdx-analyzer/pull/460) [`163f4bc`](https://github.com/mdx-js/mdx-analyzer/commit/163f4bc8368122fb97ff1d7c7a52f9edecd265a8) Thanks [@johnsoncodehk](https://github.com/johnsoncodehk)! - Update to Volar 2.4
+
+- [#469](https://github.com/mdx-js/mdx-analyzer/pull/469) [`f77645b`](https://github.com/mdx-js/mdx-analyzer/commit/f77645b84387a01ae5f989c2bf67ff13377d6bca) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update the MDX grammar
+
 ## 1.8.9
 
 ### Patch Changes

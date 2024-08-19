@@ -1,5 +1,11 @@
 # @mdx-js/language-service
 
+## 0.5.8
+
+### Patch Changes
+
+- [#460](https://github.com/mdx-js/mdx-analyzer/pull/460) [`163f4bc`](https://github.com/mdx-js/mdx-analyzer/commit/163f4bc8368122fb97ff1d7c7a52f9edecd265a8) Thanks [@johnsoncodehk](https://github.com/johnsoncodehk)! - Update to Volar 2.4
+
 ## 0.5.7
 
 ### Patch Changes

@@ -17,7 +17,7 @@
     "@mdx-js/node-loader": "^3.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "c8": "^9.0.0",
+    "c8": "^10.0.0",
     "prettier": "^3.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -25,7 +25,7 @@
     "remark-frontmatter": "^5.0.0",
     "remark-preset-wooorm": "^10.0.0",
     "typescript": "^5.0.0",
-    "xo": "^0.58.0"
+    "xo": "^0.59.0"
   },
   "prettier": {
     "tabWidth": 2,

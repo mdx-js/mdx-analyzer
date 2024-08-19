@@ -716,42 +716,36 @@ export class VirtualMdxCode {
   #processor
   #checkMdx
   #jsxImportSource
-
   /**
    * The mdast of the document, but only if it’s valid.
    *
    * @type {Root | undefined}
    */
   ast
-
   /**
    * The virtual files embedded in the MDX file.
    *
    * @type {VirtualCode[]}
    */
   embeddedCodes = []
-
   /**
    * The error that was throw while parsing.
    *
    * @type {VFileMessage | undefined}
    */
   error
-
   /**
    * The file ID.
    *
    * @type {'mdx'}
    */
   id = 'mdx'
-
   /**
    * The language ID.
    *
    * @type {'mdx'}
    */
   languageId = 'mdx'
-
   /**
    * The code mappings of the MDX file. There is always only one mapping.
    *

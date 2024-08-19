@@ -109,7 +109,7 @@ Then in your MDX file:
 
 ```mdx
 {/**
-  * @typedef {import('../mdx-components.js').MDXProvidedComponents} MDXProvidedComponents
+  * @import {MDXProvidedComponents} from '../mdx-components.js'
   */}
 
 <Planet name="Earth" />

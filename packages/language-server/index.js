@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 /**
- * @import {Commands} from '@mdx-js/language-service'
  * @import {PluggableList, Plugin} from 'unified'
  */
 
@@ -26,7 +25,6 @@ import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
 import {create as createTypeScriptServicePlugin} from 'volar-service-typescript'
 import {create as createTypeScriptSyntacticServicePlugin} from 'volar-service-typescript/lib/plugins/syntactic.js'
-import {URI} from 'vscode-uri'
 
 process.title = 'mdx-language-server'
 
@@ -123,26 +121,6 @@ connection.onInitialize(async (parameters) => {
   }
 })
 
-connection.onRequest('mdx/toggleDelete', async (parameters) => {
-  const commands = await getCommands(parameters.uri)
-  return commands.toggleDelete(parameters)
-})
-
-connection.onRequest('mdx/toggleEmphasis', async (parameters) => {
-  const commands = await getCommands(parameters.uri)
-  return commands.toggleEmphasis(parameters)
-})
-
-connection.onRequest('mdx/toggleInlineCode', async (parameters) => {
-  const commands = await getCommands(parameters.uri)
-  return commands.toggleInlineCode(parameters)
-})
-
-connection.onRequest('mdx/toggleStrong', async (parameters) => {
-  const commands = await getCommands(parameters.uri)
-  return commands.toggleStrong(parameters)
-})
-
 connection.onInitialized(() => {
   const extensions = ['mdx']
   if (tsEnabled) {
@@ -164,12 +142,3 @@ connection.onInitialized(() => {
 })
 
 connection.listen()
-
-/**
- * @param {string} uri
- * @returns {Promise<Commands>}
- */
-async function getCommands(uri) {
-  const service = await server.project.getLanguageService(URI.parse(uri))
-  return service.context.inject('mdxCommands')
-}

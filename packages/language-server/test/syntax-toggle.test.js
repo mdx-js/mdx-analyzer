@@ -1,7 +1,8 @@
 /**
  * @import {LanguageServerHandle} from '@volar/test-utils'
- * @import {SyntaxToggleParams} from '@mdx-js/language-service'
+ * @import {Range} from '@volar/language-server'
  */
+
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 import {createServer, fixtureUri, tsdk} from './utils.js'
@@ -22,12 +23,13 @@ afterEach(() => {
 
 test('delete', async () => {
   await serverHandle.openInMemoryDocument('memory://1', 'mdx', 'Hello\n')
-  const result = await serverHandle.connection.sendRequest(
-    'mdx/toggleDelete',
-    /** @satisfies {SyntaxToggleParams} */ ({
-      uri: 'memory://1',
-      range: {end: {character: 3, line: 0}, start: {character: 3, line: 0}}
-    })
+  const result = await serverHandle.sendExecuteCommandRequest(
+    'mdx.toggleDelete',
+    [
+      'memory://1',
+      /** @satisfies {Range} */
+      ({end: {character: 3, line: 0}, start: {character: 3, line: 0}})
+    ]
   )
 
   assert.deepEqual(result, [
@@ -44,12 +46,13 @@ test('delete', async () => {
 
 test('emphasis', async () => {
   await serverHandle.openInMemoryDocument('memory://1', 'mdx', 'Hello\n')
-  const result = await serverHandle.connection.sendRequest(
-    'mdx/toggleEmphasis',
-    /** @satisfies {SyntaxToggleParams} */ ({
-      uri: 'memory://1',
-      range: {end: {character: 3, line: 0}, start: {character: 3, line: 0}}
-    })
+  const result = await serverHandle.sendExecuteCommandRequest(
+    'mdx.toggleEmphasis',
+    [
+      'memory://1',
+      /** @satisfies {Range} */
+      ({end: {character: 3, line: 0}, start: {character: 3, line: 0}})
+    ]
   )
 
   assert.deepEqual(result, [
@@ -66,12 +69,13 @@ test('emphasis', async () => {
 
 test('inlineCode', async () => {
   await serverHandle.openInMemoryDocument('memory://1', 'mdx', 'Hello\n')
-  const result = await serverHandle.connection.sendRequest(
-    'mdx/toggleInlineCode',
-    /** @satisfies {SyntaxToggleParams} */ ({
-      uri: 'memory://1',
-      range: {end: {character: 3, line: 0}, start: {character: 3, line: 0}}
-    })
+  const result = await serverHandle.sendExecuteCommandRequest(
+    'mdx.toggleInlineCode',
+    [
+      'memory://1',
+      /** @satisfies {Range} */
+      ({end: {character: 3, line: 0}, start: {character: 3, line: 0}})
+    ]
   )
 
   assert.deepEqual(result, [
@@ -88,12 +92,13 @@ test('inlineCode', async () => {
 
 test('strong', async () => {
   await serverHandle.openInMemoryDocument('memory://1', 'mdx', 'Hello\n')
-  const result = await serverHandle.connection.sendRequest(
-    'mdx/toggleStrong',
-    /** @satisfies {SyntaxToggleParams} */ ({
-      uri: 'memory://1',
-      range: {end: {character: 3, line: 0}, start: {character: 3, line: 0}}
-    })
+  const result = await serverHandle.sendExecuteCommandRequest(
+    'mdx.toggleStrong',
+    [
+      'memory://1',
+      /** @satisfies {Range} */
+      ({end: {character: 3, line: 0}, start: {character: 3, line: 0}})
+    ]
   )
 
   assert.deepEqual(result, [

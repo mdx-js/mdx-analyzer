@@ -4,19 +4,14 @@
  */
 
 /**
- * @typedef SyntaxToggleParams
- *   The request parameters for LSP toggle requests.
- * @property {string} uri
- *   The URI of the document the request is for.
- * @property {Range} range
- *   The range that is selected by the user.
- */
-
-/**
  * @callback SyntaxToggle
  *   A function to toggle prose markdown syntax based on the AST.
- * @param {SyntaxToggleParams} params
- *   The input parameters from the LSP request.
+ * @param {LanguageServiceContext} context
+ *   The Volar service context.
+ * @param {string} uri
+ *   The URI of the document the request is for.
+ * @param {Range} range
+ *   The range that is selected by the user.
  * @returns {TextEdit[] | undefined}
  *   LSP text edits that should be made.
  */
@@ -29,8 +24,6 @@ import {VirtualMdxCode} from './virtual-code.js'
 /**
  * Create a function to toggle prose syntax based on the AST.
  *
- * @param {LanguageServiceContext} context
- *   The Volar service context.
  * @param {Nodes['type']} type
  *   The type of the mdast node to toggle.
  * @param {string} separator
@@ -38,8 +31,8 @@ import {VirtualMdxCode} from './virtual-code.js'
  * @returns {SyntaxToggle}
  *   An LSP based syntax toggle function.
  */
-export function createSyntaxToggle(context, type, separator) {
-  return ({range, uri}) => {
+function createSyntaxToggle(type, separator) {
+  return (context, uri, range) => {
     const parsedUri = URI.parse(uri)
     const sourceScript = context.language.scripts.get(parsedUri)
     const root = sourceScript?.generated?.root
@@ -146,3 +139,12 @@ export function createSyntaxToggle(context, type, separator) {
     }
   }
 }
+
+export const implementations = {
+  'mdx.toggleDelete': createSyntaxToggle('delete', '~'),
+  'mdx.toggleEmphasis': createSyntaxToggle('emphasis', '_'),
+  'mdx.toggleInlineCode': createSyntaxToggle('inlineCode', '`'),
+  'mdx.toggleStrong': createSyntaxToggle('strong', '**')
+}
+
+export const commands = Object.keys(implementations)

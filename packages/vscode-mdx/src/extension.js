@@ -1,8 +1,9 @@
 /**
- * @import {LabsInfo, TextEdit} from '@volar/vscode'
+ * @import {ExecuteCommandSignature, LabsInfo, TextEdit} from '@volar/vscode'
  * @import {ExtensionContext} from 'vscode'
  */
 
+import {commands} from '@mdx-js/language-service'
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {
   activateAutoInsertion,
@@ -11,7 +12,6 @@ import {
   getTsdk
 } from '@volar/vscode'
 import {
-  commands,
   extensions,
   window,
   workspace,
@@ -60,7 +60,8 @@ export async function activate(context) {
       markdown: {
         isTrusted: true,
         supportHtml: true
-      }
+      },
+      middleware: {executeCommand}
     }
   )
 
@@ -117,11 +118,7 @@ async function startServer() {
 
         disposable = Disposable.from(
           activateAutoInsertion('mdx', client),
-          activateDocumentDropEdit('mdx', client),
-          activateMdxToggleCommand('toggleDelete'),
-          activateMdxToggleCommand('toggleEmphasis'),
-          activateMdxToggleCommand('toggleInlineCode'),
-          activateMdxToggleCommand('toggleStrong')
+          activateDocumentDropEdit('mdx', client)
         )
       }
     )
@@ -129,37 +126,47 @@ async function startServer() {
 }
 
 /**
- * @param {string} command
- * @returns {Disposable}
+ * Execute a command with correct arguments.
+ *
+ * @param {string} name
+ *   The name of the command to execute.
+ * @param {unknown[]} args
+ *   The original arguments passed to the command.
+ * @param {ExecuteCommandSignature} next
+ *   The next middleware to execute.
+ * @returns {Promise<unknown>}
+ *   The command result.
  */
-function activateMdxToggleCommand(command) {
-  return commands.registerCommand('mdx.' + command, async () => {
-    const editor = window.activeTextEditor
-    if (!editor) {
-      return
-    }
+async function executeCommand(name, args, next) {
+  if (!commands.includes(name)) {
+    return next(name, args)
+  }
 
-    const document = editor.document
-    const beforeVersion = document.version
+  const editor = window.activeTextEditor
+  if (!editor) {
+    return
+  }
 
-    /** @type {TextEdit[] | undefined} */
-    const response = await client.sendRequest('mdx/' + command, {
-      uri: String(document.uri),
-      range: client.code2ProtocolConverter.asRange(editor.selection)
-    })
+  const document = editor.document
+  const beforeVersion = document.version
 
-    if (!response?.length) {
-      return
-    }
+  /** @type {TextEdit[] | undefined} */
+  const response = await next(name, [
+    String(document.uri),
+    client.code2ProtocolConverter.asRange(editor.selection)
+  ])
 
-    const textEdits = await client.protocol2CodeConverter.asTextEdits(response)
+  if (!response?.length) {
+    return
+  }
 
-    if (beforeVersion !== document.version) {
-      return
-    }
+  const textEdits = await client.protocol2CodeConverter.asTextEdits(response)
 
-    const workspaceEdit = new WorkspaceEdit()
-    workspaceEdit.set(document.uri, textEdits)
-    workspace.applyEdit(workspaceEdit, {})
-  })
+  if (beforeVersion !== document.version) {
+    return
+  }
+
+  const workspaceEdit = new WorkspaceEdit()
+  workspaceEdit.set(document.uri, textEdits)
+  workspace.applyEdit(workspaceEdit, {})
 }

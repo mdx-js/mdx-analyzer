@@ -1,26 +1,12 @@
 /**
- * @import {DataTransferItem, LanguageServicePlugin} from '@volar/language-service'
- * @import {SyntaxToggle} from './commands.js'
- */
-
-/**
- * @typedef Commands
- * @property {SyntaxToggle} toggleDelete
- * @property {SyntaxToggle} toggleEmphasis
- * @property {SyntaxToggle} toggleInlineCode
- * @property {SyntaxToggle} toggleStrong
- */
-
-/**
- * @typedef Provide
- * @property {() => Commands} mdxCommands
+ * @import {DataTransferItem, LanguageServicePlugin, Range} from '@volar/language-service'
  */
 
 import path from 'node:path/posix'
 import {toMarkdown} from 'mdast-util-to-markdown'
 import {fromPlace} from 'unist-util-lsp'
 import {URI, Utils} from 'vscode-uri'
-import {createSyntaxToggle} from './commands.js'
+import {commands, implementations} from './commands.js'
 import {VirtualMdxCode} from './virtual-code.js'
 
 // https://github.com/microsoft/vscode/blob/1.83.1/extensions/markdown-language-features/src/languageFeatures/copyFiles/shared.ts#L29-L41
@@ -62,19 +48,22 @@ export function createMdxServicePlugin() {
         interFileDependencies: false,
         workspaceDiagnostics: false
       },
+      executeCommandProvider: {
+        commands
+      },
       documentDropEditsProvider: true
     },
 
     create(context) {
       return {
-        provide: {
-          mdxCommands() {
-            return {
-              toggleDelete: createSyntaxToggle(context, 'delete', '~'),
-              toggleEmphasis: createSyntaxToggle(context, 'emphasis', '_'),
-              toggleInlineCode: createSyntaxToggle(context, 'inlineCode', '`'),
-              toggleStrong: createSyntaxToggle(context, 'strong', '**')
-            }
+        executeCommand(command, args) {
+          if (
+            command in implementations &&
+            Object.hasOwn(implementations, command)
+          ) {
+            const fn =
+              implementations[/** @type {keyof implementations} */ (command)]
+            return fn(context, .../** @type {[string, Range]} */ (args))
           }
         },
 

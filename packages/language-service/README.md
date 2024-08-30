@@ -110,8 +110,22 @@ The service supports:
 
 * Reporting diagnostics for parsing errors.
 * Document drop support for images.
-* Custom commands for toggling `delete`, `emphasis`, `inlineCode`, and `strong`
-  text.
+* Custom commands.
+
+The following commands are supported:
+
+* `mdx.toggleDelete` — Toggle delete syntax at the cursor position.
+  This takes the URI as its first argument, and the LSP selection range as its
+  second argument.
+* `mdx.toggleEmphasis` — Toggle emphasis syntax at the cursor position.
+  This takes the URI as its first argument, and the LSP selection range as its
+  second argument.
+* `mdx.toggleInlineCode` — Toggle inline code syntax at the cursor position.
+  This takes the URI as its first argument, and the LSP selection range as its
+  second argument.
+* `mdx.toggleStrong` — Toggle strong syntax at the cursor position.
+  This takes the URI as its first argument, and the LSP selection range as its
+  second argument.
 
 #### Parameters
 

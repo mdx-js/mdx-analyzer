@@ -20,7 +20,9 @@ A [language server][lsp] for [MDX][].
   * [Configuration](#configuration)
   * [TypeScript](#typescript)
   * [Plugins](#plugins)
-* [Examples](#examples)
+* [Editors](#editors)
+  * [Emacs](#emacs)
+  * [Neovim](#neovim)
   * [Visual Studio Code](#visual-studio-code)
 * [Compatibility](#compatibility)
 * [Security](#security)
@@ -124,16 +126,33 @@ For information on plugin support, see the
 [Plugins section](https://github.com/mdx-js/mdx-analyzer#plugins) of the
 repository readme.
 
-## Examples
+## Editors
 
-MDX language server can be integrated with any server that supports
+MDX language server can be integrated with any editor that supports
 [language servers][lsp].
 Does your editor support MDX language server, but is it not in this list?
 Feel free to add it.
 
+### Emacs
+
+Use [`lsp-mode`][lsp-mode] to use the MDX language server with Emacs.
+
+### Neovim
+
+You can add MDX support to MDX via [`nvim-lspconfig`][nvim-lspconfig].
+After installing MDX language server, add the language server setup to your
+`init.lua`.
+
+```lua
+require'lspconfig'.mdx_analyzer.setup{}
+```
+
+For more details, see the
+[`nvim-lspconfig` MDX analyzer][nvim-lspconfig mdx-analyzer] documentation.
+
 ### Visual Studio Code
 
-Use `unifiedjs.vscode-mdx` to use the MDX language server with
+Use [`unifiedjs.vscode-mdx`][vscode-mdx] to use the MDX language server with
 [Visual Studio Code][vscode].
 
 ## Compatibility
@@ -271,11 +290,17 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [lsp]: https://microsoft.github.io/language-server-protocol
 
+[lsp-mode]: https://github.com/emacs-lsp/lsp-mode
+
 [mdx]: https://mdxjs.com
 
 [mit]: LICENSE
 
 [npm]: https://docs.npmjs.com/cli/install
+
+[nvim-lspconfig]: https://github.com/neovim/nvim-lspconfig
+
+[nvim-lspconfig mdx-analyzer]: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#mdx_analyzer
 
 [sponsor]: https://mdxjs.com/community/sponsor/
 
@@ -294,3 +319,5 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 [vscode-languageserver]: https://github.com/microsoft/vscode-languageserver-node/tree/main/server
 
 [vscode]: https://code.visualstudio.com
+
+[vscode-mdx]: https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx

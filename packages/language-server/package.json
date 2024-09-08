@@ -38,12 +38,12 @@
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
     "volar-service-markdown": "0.0.61",
-    "volar-service-typescript": "0.0.61",
-    "vscode-uri": "^3.0.0"
+    "volar-service-typescript": "0.0.61"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@volar/test-utils": "~2.4.0",
-    "unified": "^11.0.0"
+    "unified": "^11.0.0",
+    "vscode-uri": "^3.0.0"
   }
 }

@@ -18,7 +18,7 @@
 * [Use](#use)
 * [API](#api)
   * [`createMdxLanguagePlugin([plugins][, checkMdx][, jsxImportSource])`](#createmdxlanguagepluginplugins-checkmdx-jsximportsource)
-  * [`createMdxServicePlugin()`](#createmdxserviceplugin)
+  * [`createMdxServicePlugin(options)`](#createmdxservicepluginoptions)
   * [`resolveRemarkPlugins(mdxConfig, resolvePlugin)`](#resolveremarkpluginsmdxconfig-resolveplugin)
 * [Compatibility](#compatibility)
 * [Types](#types)
@@ -103,7 +103,7 @@ Create a [Volar][] language plugin to support [MDX][].
 
 A Volar language plugin to support MDX.
 
-### `createMdxServicePlugin()`
+### `createMdxServicePlugin(options)`
 
 Create a [Volar][] service module to support [MDX][].
 The service supports:
@@ -129,7 +129,8 @@ The following commands are supported:
 
 #### Parameters
 
-This function doesn’t take any parameters.
+* `options` — An object with the following properties:
+  * `applyEdit` — A function to apply an LSP workspace edit.
 
 #### Returns
 

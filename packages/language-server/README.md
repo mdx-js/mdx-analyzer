@@ -69,18 +69,61 @@ features specific to MDX.
 
 The language server supports the following [LSP commands][]:
 
-* `mdx.toggleDelete` — Toggle delete syntax at the cursor position.
-  This takes the URI as its first argument, and the LSP selection range as its
-  second argument.
-* `mdx.toggleEmphasis` — Toggle emphasis syntax at the cursor position.
-  This takes the URI as its first argument, and the LSP selection range as its
-  second argument.
-* `mdx.toggleInlineCode` — Toggle inline code syntax at the cursor position.
-  This takes the URI as its first argument, and the LSP selection range as its
-  second argument.
-* `mdx.toggleStrong` — Toggle strong syntax at the cursor position.
-  This takes the URI as its first argument, and the LSP selection range as its
-  second argument.
+##### `mdx.toggleDelete`
+
+Toggle delete syntax at the cursor position.
+It uses the `workspace/applyEdit` command to apply edits.
+
+###### Arguments
+
+* `uri` — The URI of the document to apply changes to.
+* `range` — The current selection range of the user.
+
+###### Returns
+
+`null`
+
+##### `mdx.toggleEmphasis`
+
+Toggle emphasis syntax at the cursor position.
+It uses the `workspace/applyEdit` command to apply edits.
+
+###### Arguments
+
+* `uri` — The URI of the document to apply changes to.
+* `range` — The current selection range of the user.
+
+###### Returns
+
+`null`
+
+##### `mdx.toggleInlineCode`
+
+Toggle inline code syntax at the cursor position.
+It uses the `workspace/applyEdit` command to apply edits.
+
+###### Arguments
+
+* `uri` — The URI of the document to apply changes to.
+* `range` — The current selection range of the user.
+
+###### Returns
+
+`null`
+
+##### `mdx.toggleStrong`
+
+Toggle strong syntax at the cursor position.
+It uses the `workspace/applyEdit` command to apply edits.
+
+###### Arguments
+
+* `uri` — The URI of the document to apply changes to.
+* `range` — The current selection range of the user.
+
+###### Returns
+
+`null`
 
 ### Initialize Options
 

@@ -6,7 +6,7 @@ import path from 'node:path/posix'
 import {toMarkdown} from 'mdast-util-to-markdown'
 import {fromPlace} from 'unist-util-lsp'
 import {URI, Utils} from 'vscode-uri'
-import {commands, implementations} from './commands.js'
+import {toggleSyntax} from './commands.js'
 import {VirtualMdxCode} from './virtual-code.js'
 
 // https://github.com/microsoft/vscode/blob/1.83.1/extensions/markdown-language-features/src/languageFeatures/copyFiles/shared.ts#L29-L41
@@ -49,7 +49,12 @@ export function createMdxServicePlugin() {
         workspaceDiagnostics: false
       },
       executeCommandProvider: {
-        commands
+        commands: [
+          'mdx.toggleDelete',
+          'mdx.toggleEmphasis',
+          'mdx.toggleInlineCode',
+          'mdx.toggleStrong'
+        ]
       },
       documentDropEditsProvider: true
     },
@@ -57,13 +62,26 @@ export function createMdxServicePlugin() {
     create(context) {
       return {
         executeCommand(command, args) {
-          if (
-            command in implementations &&
-            Object.hasOwn(implementations, command)
-          ) {
-            const fn =
-              implementations[/** @type {keyof implementations} */ (command)]
-            return fn(context, .../** @type {[string, Range]} */ (args))
+          switch (command) {
+            case 'mdx.toggleDelete': {
+              return toggleSyntax(context, 'delete', '~', args[0], args[1])
+            }
+
+            case 'mdx.toggleEmphasis': {
+              return toggleSyntax(context, 'emphasis', '_', args[0], args[1])
+            }
+
+            case 'mdx.toggleInlineCode': {
+              return toggleSyntax(context, 'inlineCode', '`', args[0], args[1])
+            }
+
+            case 'mdx.toggleStrong': {
+              return toggleSyntax(context, 'strong', '**', args[0], args[1])
+            }
+
+            default: {
+              throw new Error('Unknown command: ' + command)
+            }
           }
         },
 

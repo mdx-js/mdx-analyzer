@@ -3,7 +3,6 @@
  * @import {ExtensionContext} from 'vscode'
  */
 
-import {commands} from '@mdx-js/language-service'
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {
   activateAutoInsertion,
@@ -128,7 +127,7 @@ async function startServer() {
 /**
  * Execute a command with correct arguments.
  *
- * @param {string} name
+ * @param {string} command
  *   The name of the command to execute.
  * @param {unknown[]} args
  *   The original arguments passed to the command.
@@ -137,36 +136,45 @@ async function startServer() {
  * @returns {Promise<unknown>}
  *   The command result.
  */
-async function executeCommand(name, args, next) {
-  if (!commands.includes(name)) {
-    return next(name, args)
+async function executeCommand(command, args, next) {
+  switch (command) {
+    case 'mdx.toggleDelete':
+    case 'mdx.toggleEmphasis':
+    case 'mdx.toggleInlineCode':
+    case 'mdx.toggleStrong': {
+      const editor = window.activeTextEditor
+      if (!editor) {
+        return
+      }
+
+      const document = editor.document
+      const beforeVersion = document.version
+
+      /** @type {TextEdit[] | undefined} */
+      const response = await next(command, [
+        String(document.uri),
+        client.code2ProtocolConverter.asRange(editor.selection)
+      ])
+
+      if (!response?.length) {
+        return
+      }
+
+      const textEdits =
+        await client.protocol2CodeConverter.asTextEdits(response)
+
+      if (beforeVersion !== document.version) {
+        return
+      }
+
+      const workspaceEdit = new WorkspaceEdit()
+      workspaceEdit.set(document.uri, textEdits)
+      workspace.applyEdit(workspaceEdit, {})
+      return
+    }
+
+    default: {
+      return next(command, args)
+    }
   }
-
-  const editor = window.activeTextEditor
-  if (!editor) {
-    return
-  }
-
-  const document = editor.document
-  const beforeVersion = document.version
-
-  /** @type {TextEdit[] | undefined} */
-  const response = await next(name, [
-    String(document.uri),
-    client.code2ProtocolConverter.asRange(editor.selection)
-  ])
-
-  if (!response?.length) {
-    return
-  }
-
-  const textEdits = await client.protocol2CodeConverter.asTextEdits(response)
-
-  if (beforeVersion !== document.version) {
-    return
-  }
-
-  const workspaceEdit = new WorkspaceEdit()
-  workspaceEdit.set(document.uri, textEdits)
-  workspace.applyEdit(workspaceEdit, {})
 }

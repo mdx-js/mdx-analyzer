@@ -41,14 +41,14 @@ test('delete', async () => {
       changes: {
         'memory://1': [
           {
-            newText: '~',
+            newText: '~~',
             range: {
               end: {character: 0, line: 0},
               start: {character: 0, line: 0}
             }
           },
           {
-            newText: '~',
+            newText: '~~',
             range: {
               end: {character: 5, line: 0},
               start: {character: 5, line: 0}

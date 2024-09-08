@@ -15,8 +15,7 @@ import {
   window,
   workspace,
   Disposable,
-  ProgressLocation,
-  WorkspaceEdit
+  ProgressLocation
 } from 'vscode'
 import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
 
@@ -147,30 +146,10 @@ async function executeCommand(command, args, next) {
         return
       }
 
-      const document = editor.document
-      const beforeVersion = document.version
-
-      /** @type {TextEdit[] | undefined} */
-      const response = await next(command, [
-        String(document.uri),
+      return next(command, [
+        String(editor.document.uri),
         client.code2ProtocolConverter.asRange(editor.selection)
       ])
-
-      if (!response?.length) {
-        return
-      }
-
-      const textEdits =
-        await client.protocol2CodeConverter.asTextEdits(response)
-
-      if (beforeVersion !== document.version) {
-        return
-      }
-
-      const workspaceEdit = new WorkspaceEdit()
-      workspaceEdit.set(document.uri, textEdits)
-      workspace.applyEdit(workspaceEdit, {})
-      return
     }
 
     default: {

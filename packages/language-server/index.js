@@ -66,7 +66,7 @@ connection.onInitialize(async (parameters) => {
           return context.env.getConfiguration?.('mdx.validate')
         }
       }),
-      createMdxServicePlugin()
+      createMdxServicePlugin(connection.workspace)
     ]
 
     if (tsEnabled) {

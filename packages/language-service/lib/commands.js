@@ -1,6 +1,7 @@
 /**
  * @import {LanguageServiceContext, Range, TextEdit} from '@volar/language-service'
  * @import {Nodes} from 'mdast'
+ * @import {createMdxServicePlugin} from './service-plugin.js'
  */
 
 import {visitParents} from 'unist-util-visit-parents'
@@ -13,6 +14,8 @@ import {VirtualMdxCode} from './virtual-code.js'
  *
  * @param {LanguageServiceContext} context
  *   The Volar service context.
+ * @param {createMdxServicePlugin.Options} options
+ *   The options to use for applying workspace edits.
  * @param {Nodes['type']} type
  *   The type of the mdast node to toggle.
  * @param {string} separator
@@ -21,10 +24,16 @@ import {VirtualMdxCode} from './virtual-code.js'
  *   The URI of the document the request is for.
  * @param {Range} range
  *   The range that is selected by the user.
- * @returns {TextEdit[] | undefined}
- *   LSP text edits that should be made.
+ * @returns {Promise<undefined>}
  */
-export function toggleSyntax(context, type, separator, uri, range) {
+export async function toggleSyntax(
+  context,
+  options,
+  type,
+  separator,
+  uri,
+  range
+) {
   const parsedUri = URI.parse(uri)
   const sourceScript = context.language.scripts.get(parsedUri)
   const root = sourceScript?.generated?.root
@@ -126,7 +135,7 @@ export function toggleSyntax(context, type, separator, uri, range) {
     }
   })
 
-  if (edits) {
-    return edits
+  if (edits.length > 0) {
+    await options.applyEdit({changes: {[uri]: edits}})
   }
 }

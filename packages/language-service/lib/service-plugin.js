@@ -1,5 +1,5 @@
 /**
- * @import {DataTransferItem, LanguageServicePlugin, Range} from '@volar/language-service'
+ * @import {DataTransferItem, LanguageServicePlugin, WorkspaceEdit} from '@volar/language-service'
  */
 
 import path from 'node:path/posix'
@@ -8,6 +8,19 @@ import {fromPlace} from 'unist-util-lsp'
 import {URI, Utils} from 'vscode-uri'
 import {toggleSyntax} from './commands.js'
 import {VirtualMdxCode} from './virtual-code.js'
+
+/**
+ * @callback ApplyEdit
+ * @param {WorkspaceEdit} edit
+ *   The workspace edit to apply.
+ * @returns {PromiseLike<unknown>}
+ */
+
+/**
+ * @typedef createMdxServicePlugin.Options
+ * @property {ApplyEdit} applyEdit
+ *   A function to apply workspace edits.
+ */
 
 // https://github.com/microsoft/vscode/blob/1.83.1/extensions/markdown-language-features/src/languageFeatures/copyFiles/shared.ts#L29-L41
 const imageExtensions = new Set([
@@ -36,10 +49,12 @@ const imageExtensions = new Set([
  * - Custom commands for toggling `delete`, `emphasis`, `inlineCode`, and
  *   `strong` text.
  *
+ * @param {createMdxServicePlugin.Options} options
+ *   Options to configure the MDX language service.
  * @returns {LanguageServicePlugin}
  *   The Volar service plugin for MDX files.
  */
-export function createMdxServicePlugin() {
+export function createMdxServicePlugin(options) {
   return {
     name: 'mdx',
 
@@ -64,19 +79,47 @@ export function createMdxServicePlugin() {
         executeCommand(command, args) {
           switch (command) {
             case 'mdx.toggleDelete': {
-              return toggleSyntax(context, 'delete', '~', args[0], args[1])
+              return toggleSyntax(
+                context,
+                options,
+                'delete',
+                '~',
+                args[0],
+                args[1]
+              )
             }
 
             case 'mdx.toggleEmphasis': {
-              return toggleSyntax(context, 'emphasis', '_', args[0], args[1])
+              return toggleSyntax(
+                context,
+                options,
+                'emphasis',
+                '_',
+                args[0],
+                args[1]
+              )
             }
 
             case 'mdx.toggleInlineCode': {
-              return toggleSyntax(context, 'inlineCode', '`', args[0], args[1])
+              return toggleSyntax(
+                context,
+                options,
+                'inlineCode',
+                '`',
+                args[0],
+                args[1]
+              )
             }
 
             case 'mdx.toggleStrong': {
-              return toggleSyntax(context, 'strong', '**', args[0], args[1])
+              return toggleSyntax(
+                context,
+                options,
+                'strong',
+                '**',
+                args[0],
+                args[1]
+              )
             }
 
             default: {

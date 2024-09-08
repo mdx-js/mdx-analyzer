@@ -23,6 +23,9 @@ afterEach(() => {
 
 test('delete', async () => {
   await serverHandle.openInMemoryDocument('memory://1', 'mdx', 'Hello\n')
+  const editsPromise = new Promise((resolve) => {
+    serverHandle.connection.onRequest('workspace/applyEdit', resolve)
+  })
   const result = await serverHandle.sendExecuteCommandRequest(
     'mdx.toggleDelete',
     [
@@ -32,20 +35,36 @@ test('delete', async () => {
     ]
   )
 
-  assert.deepEqual(result, [
-    {
-      newText: '~',
-      range: {end: {character: 0, line: 0}, start: {character: 0, line: 0}}
-    },
-    {
-      newText: '~',
-      range: {end: {character: 5, line: 0}, start: {character: 5, line: 0}}
+  assert.equal(result, null)
+  assert.deepEqual(await editsPromise, {
+    edit: {
+      changes: {
+        'memory://1': [
+          {
+            newText: '~',
+            range: {
+              end: {character: 0, line: 0},
+              start: {character: 0, line: 0}
+            }
+          },
+          {
+            newText: '~',
+            range: {
+              end: {character: 5, line: 0},
+              start: {character: 5, line: 0}
+            }
+          }
+        ]
+      }
     }
-  ])
+  })
 })
 
 test('emphasis', async () => {
   await serverHandle.openInMemoryDocument('memory://1', 'mdx', 'Hello\n')
+  const editsPromise = new Promise((resolve) => {
+    serverHandle.connection.onRequest('workspace/applyEdit', resolve)
+  })
   const result = await serverHandle.sendExecuteCommandRequest(
     'mdx.toggleEmphasis',
     [
@@ -55,20 +74,36 @@ test('emphasis', async () => {
     ]
   )
 
-  assert.deepEqual(result, [
-    {
-      newText: '_',
-      range: {end: {character: 0, line: 0}, start: {character: 0, line: 0}}
-    },
-    {
-      newText: '_',
-      range: {end: {character: 5, line: 0}, start: {character: 5, line: 0}}
+  assert.equal(result, null)
+  assert.deepEqual(await editsPromise, {
+    edit: {
+      changes: {
+        'memory://1': [
+          {
+            newText: '_',
+            range: {
+              end: {character: 0, line: 0},
+              start: {character: 0, line: 0}
+            }
+          },
+          {
+            newText: '_',
+            range: {
+              end: {character: 5, line: 0},
+              start: {character: 5, line: 0}
+            }
+          }
+        ]
+      }
     }
-  ])
+  })
 })
 
 test('inlineCode', async () => {
   await serverHandle.openInMemoryDocument('memory://1', 'mdx', 'Hello\n')
+  const editsPromise = new Promise((resolve) => {
+    serverHandle.connection.onRequest('workspace/applyEdit', resolve)
+  })
   const result = await serverHandle.sendExecuteCommandRequest(
     'mdx.toggleInlineCode',
     [
@@ -78,20 +113,36 @@ test('inlineCode', async () => {
     ]
   )
 
-  assert.deepEqual(result, [
-    {
-      newText: '`',
-      range: {end: {character: 0, line: 0}, start: {character: 0, line: 0}}
-    },
-    {
-      newText: '`',
-      range: {end: {character: 5, line: 0}, start: {character: 5, line: 0}}
+  assert.equal(result, null)
+  assert.deepEqual(await editsPromise, {
+    edit: {
+      changes: {
+        'memory://1': [
+          {
+            newText: '`',
+            range: {
+              end: {character: 0, line: 0},
+              start: {character: 0, line: 0}
+            }
+          },
+          {
+            newText: '`',
+            range: {
+              end: {character: 5, line: 0},
+              start: {character: 5, line: 0}
+            }
+          }
+        ]
+      }
     }
-  ])
+  })
 })
 
 test('strong', async () => {
   await serverHandle.openInMemoryDocument('memory://1', 'mdx', 'Hello\n')
+  const editsPromise = new Promise((resolve) => {
+    serverHandle.connection.onRequest('workspace/applyEdit', resolve)
+  })
   const result = await serverHandle.sendExecuteCommandRequest(
     'mdx.toggleStrong',
     [
@@ -101,14 +152,27 @@ test('strong', async () => {
     ]
   )
 
-  assert.deepEqual(result, [
-    {
-      newText: '**',
-      range: {end: {character: 0, line: 0}, start: {character: 0, line: 0}}
-    },
-    {
-      newText: '**',
-      range: {end: {character: 5, line: 0}, start: {character: 5, line: 0}}
+  assert.equal(result, null)
+  assert.deepEqual(await editsPromise, {
+    edit: {
+      changes: {
+        'memory://1': [
+          {
+            newText: '**',
+            range: {
+              end: {character: 0, line: 0},
+              start: {character: 0, line: 0}
+            }
+          },
+          {
+            newText: '**',
+            range: {
+              end: {character: 5, line: 0},
+              start: {character: 5, line: 0}
+            }
+          }
+        ]
+      }
     }
-  ])
+  })
 })

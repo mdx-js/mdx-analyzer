@@ -55,6 +55,14 @@ test('initialize', async () => {
       },
       documentRangeFormattingProvider: true,
       documentSymbolProvider: true,
+      executeCommandProvider: {
+        commands: [
+          'mdx.toggleDelete',
+          'mdx.toggleEmphasis',
+          'mdx.toggleInlineCode',
+          'mdx.toggleStrong'
+        ]
+      },
       experimental: {
         autoInsertionProvider: {
           configurationSections: [

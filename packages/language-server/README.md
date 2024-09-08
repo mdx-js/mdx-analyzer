@@ -65,6 +65,66 @@ This language server supports all features supported by
 [`volar-service-typescript`][volar-service-typescript], plus some additional
 features specific to MDX.
 
+#### Commands
+
+The language server supports the following [LSP commands][]:
+
+##### `mdx.toggleDelete`
+
+Toggle delete syntax at the cursor position.
+It uses the `workspace/applyEdit` command to apply edits.
+
+###### Arguments
+
+* `uri` — The URI of the document to apply changes to.
+* `range` — The current selection range of the user.
+
+###### Returns
+
+`null`
+
+##### `mdx.toggleEmphasis`
+
+Toggle emphasis syntax at the cursor position.
+It uses the `workspace/applyEdit` command to apply edits.
+
+###### Arguments
+
+* `uri` — The URI of the document to apply changes to.
+* `range` — The current selection range of the user.
+
+###### Returns
+
+`null`
+
+##### `mdx.toggleInlineCode`
+
+Toggle inline code syntax at the cursor position.
+It uses the `workspace/applyEdit` command to apply edits.
+
+###### Arguments
+
+* `uri` — The URI of the document to apply changes to.
+* `range` — The current selection range of the user.
+
+###### Returns
+
+`null`
+
+##### `mdx.toggleStrong`
+
+Toggle strong syntax at the cursor position.
+It uses the `workspace/applyEdit` command to apply edits.
+
+###### Arguments
+
+* `uri` — The URI of the document to apply changes to.
+* `range` — The current selection range of the user.
+
+###### Returns
+
+`null`
+
 ### Initialize Options
 
 MDX language server supports the following LSP initialization options:
@@ -270,6 +330,8 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 [jsdoc]: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
 
 [lsp]: https://microsoft.github.io/language-server-protocol
+
+[lsp commands]: https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#command
 
 [mdx]: https://mdxjs.com
 

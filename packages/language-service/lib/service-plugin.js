@@ -83,7 +83,7 @@ export function createMdxServicePlugin(options) {
                 context,
                 options,
                 'delete',
-                '~',
+                '~~',
                 args[0],
                 args[1]
               )

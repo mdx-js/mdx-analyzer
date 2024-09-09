@@ -80,14 +80,14 @@ test('emphasis', async () => {
       changes: {
         'memory://1': [
           {
-            newText: '_',
+            newText: '*',
             range: {
               end: {character: 0, line: 0},
               start: {character: 0, line: 0}
             }
           },
           {
-            newText: '_',
+            newText: '*',
             range: {
               end: {character: 5, line: 0},
               start: {character: 5, line: 0}

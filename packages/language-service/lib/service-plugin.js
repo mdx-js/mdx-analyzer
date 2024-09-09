@@ -94,7 +94,7 @@ export function createMdxServicePlugin(options) {
                 context,
                 options,
                 'emphasis',
-                '_',
+                '*',
                 args[0],
                 args[1]
               )

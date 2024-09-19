@@ -1,9 +1,13 @@
 {
   "extends": "../../tsconfig.base.json",
+  "include": ["lib"],
   "references": [{"path": "../language-service/tsconfig.build.json"}],
   "compilerOptions": {
-    "noEmit": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
     // https://github.com/microsoft/TypeScript/issues/57652
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "outDir": "types",
+    "rootDir": "lib"
   }
 }

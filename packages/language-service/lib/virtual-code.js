@@ -260,7 +260,11 @@ function processExports(mdx, node, mapping, esm) {
       const {specifiers} = child
       for (let index = 0; index < specifiers.length; index++) {
         const specifier = specifiers[index]
-        if (specifier.local.name === 'default') {
+        if (
+          specifier.local.type === 'Identifier'
+            ? specifier.local.name === 'default'
+            : specifier.local.value === 'default'
+        ) {
           esm = addOffset(mapping, mdx, esm, start, specifier.start)
           const nextPosition =
             index === specifiers.length - 1
@@ -269,7 +273,9 @@ function processExports(mdx, node, mapping, esm) {
           return (
             addOffset(mapping, mdx, esm, nextPosition, end, true) +
             '\nimport {' +
-            specifier.exported.name +
+            (specifier.exported.type === 'Identifier'
+              ? specifier.exported.name
+              : JSON.stringify(specifier.exported.value)) +
             ' as MDXLayout} from ' +
             JSON.stringify(child.source.value) +
             '\n'

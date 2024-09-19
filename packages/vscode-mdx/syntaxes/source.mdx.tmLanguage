@@ -7,7 +7,7 @@
     Once accepted there, it can be pulled into this project (`vscode-mdx`) with
     `script/generate.mjs`, and released.
 
-    Version from SHA: 403f851b6ff7b52f3dbf5fc3b3e5b215c8e505a2.
+    Version from SHA: 5caa71e2bbddea59b27c6a5a346881cd10fa0f5f.
   -->
   <dict>
     <key>fileTypes</key>
@@ -2330,7 +2330,7 @@
       <key>extension-mdx-expression-flow</key>
       <dict>
         <key>begin</key>
-        <string>(?:^|\G)[\t ]*(\{)</string>
+        <string>(?:^|\G)[\t ]*(\{)(?!.*\}[\t ]*.)</string>
         <key>beginCaptures</key>
         <dict>
           <key>1</key>

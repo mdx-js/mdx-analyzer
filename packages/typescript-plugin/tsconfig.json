@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
-  "references": [{"path": "../language-service"}],
+  "references": [{"path": "../language-service/tsconfig.build.json"}],
   "compilerOptions": {
     "noEmit": true,
     // https://github.com/microsoft/TypeScript/issues/57652

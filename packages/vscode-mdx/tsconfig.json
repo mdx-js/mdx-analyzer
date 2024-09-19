@@ -1,7 +1,7 @@
 {
   "exclude": ["out"],
   "extends": "../../tsconfig.base.json",
-  "references": [{"path": "../language-service"}],
+  "references": [{"path": "../language-service/tsconfig.build.json"}],
   "compilerOptions": {
     "module": "preserve",
     "moduleResolution": "bundler",

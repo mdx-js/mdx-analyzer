@@ -13,9 +13,9 @@
   "author": "Remco Haszing <remcohaszing@gmail.com>",
   "funding": "https://opencollective.com/unified",
   "license": "MIT",
-  "exports": "./index.cjs",
+  "exports": "./lib/index.cjs",
   "files": [
-    "*.cjs"
+    "lib"
   ],
   "keywords": [
     "IntelliSense",

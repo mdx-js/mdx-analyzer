@@ -14,7 +14,7 @@ await build({
     'out/extension': require.resolve('../src/extension.js'),
     'out/language-server': require.resolve('@mdx-js/language-server'),
     'node_modules/@mdx-js/typescript-plugin': require.resolve(
-      '../../typescript-plugin/index.cjs'
+      '../../typescript-plugin/lib/index.cjs'
     )
   },
   external: ['vscode'],

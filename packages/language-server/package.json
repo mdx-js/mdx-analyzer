@@ -13,12 +13,11 @@
   "author": "Remco Haszing <remcohaszing@gmail.com>",
   "funding": "https://opencollective.com/unified",
   "license": "MIT",
-  "exports": "./index.js",
+  "exports": "./lib/index.js",
   "bin": {
-    "mdx-language-server": "./index.js"
+    "mdx-language-server": "./lib/index.js"
   },
   "files": [
-    "*.js",
     "lib"
   ],
   "keywords": [

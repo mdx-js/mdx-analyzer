@@ -1,9 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "exclude": ["types"],
+  "exclude": ["lib"],
+  "references": [{"path": "./tsconfig.build.json"}],
   "compilerOptions": {
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "outDir": "types"
+    "noEmit": true
   }
 }

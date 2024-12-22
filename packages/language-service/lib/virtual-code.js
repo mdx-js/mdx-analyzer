@@ -1,6 +1,6 @@
 /**
  * @import {CodeMapping, VirtualCode} from '@volar/language-service'
- * @import {ExportDefaultDeclaration, Program} from 'estree'
+ * @import {ExportDefaultDeclaration, JSXClosingElement, JSXOpeningElement, Program} from 'estree-jsx'
  * @import {Nodes, Root} from 'mdast'
  * @import {MdxjsEsm} from 'mdast-util-mdxjs-esm'
  * @import {IScriptSnapshot} from 'typescript'
@@ -449,18 +449,32 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
   function processJsxExpression(program, lastIndex) {
     let newIndex = lastIndex
     let functionNesting = 0
+
+    /**
+     * @param {JSXClosingElement | JSXOpeningElement} node
+     * @returns {undefined}
+     */
+    function processJsxTag(node) {
+      const {name} = node
+
+      if (name.type !== 'JSXIdentifier') {
+        return
+      }
+
+      if (!isInjectableComponent(name.name, variables)) {
+        return
+      }
+
+      jsx =
+        addOffset(jsxMapping, mdx, jsx, newIndex, name.start) + '_components.'
+      newIndex = name.start
+    }
+
     walk(program, {
       enter(node) {
         switch (node.type) {
-          case 'JSXIdentifier': {
-            if (!isInjectableComponent(node.name, variables)) {
-              return
-            }
-
-            jsx =
-              addOffset(jsxMapping, mdx, jsx, newIndex, node.start) +
-              '_components.'
-            newIndex = node.start
+          case 'JSXElement': {
+            processJsxTag(node.openingElement)
             break
           }
 
@@ -497,6 +511,16 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
           case 'FunctionDeclaration':
           case 'FunctionExpression': {
             functionNesting--
+            break
+          }
+
+          case 'JSXElement': {
+            const {closingElement} = node
+
+            if (closingElement) {
+              processJsxTag(closingElement)
+            }
+
             break
           }
 

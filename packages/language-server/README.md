@@ -300,7 +300,7 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [nvim-lspconfig]: https://github.com/neovim/nvim-lspconfig
 
-[nvim-lspconfig mdx-analyzer]: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#mdx_analyzer
+[nvim-lspconfig mdx-analyzer]: https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#mdx_analyzer
 
 [sponsor]: https://mdxjs.com/community/sponsor/
 

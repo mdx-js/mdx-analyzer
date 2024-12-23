@@ -1,4 +1,8 @@
 /**
+ * @import {Scope} from 'estree-util-scope'
+ */
+
+/**
  * Check if a name belongs to a JSX component that can be injected.
  *
  * These are components whose name start with an upper case character. They may
@@ -6,7 +10,7 @@
  *
  * @param {string | null} name
  *   The name of the component to check.
- * @param {string[]} scope
+ * @param {Scope} scope
  *  The variable names available in the scope.
  * @returns {boolean}
  *   Whether or not the given name is that of an injectable JSX component.
@@ -21,5 +25,5 @@ export function isInjectableComponent(name, scope) {
     return false
   }
 
-  return !scope.includes(name)
+  return !scope.defined.includes(name)
 }

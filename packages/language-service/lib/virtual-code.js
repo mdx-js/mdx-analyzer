@@ -8,8 +8,8 @@
  * @import {VFileMessage} from 'vfile-message'
  */
 
+import {createVisitors} from 'estree-util-scope'
 import {walk} from 'estree-walker'
-import {analyze} from 'periscopic'
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {ScriptSnapshot} from './script-snapshot.js'
 import {isInjectableComponent} from './jsx-utils.js'
@@ -367,14 +367,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
   let markdown = ''
   let nextMarkdownSourceStart = 0
 
-  /** @type {Program} */
-  const esmProgram = {
-    type: 'Program',
-    sourceType: 'module',
-    start: 0,
-    end: 0,
-    body: []
-  }
+  const visitors = createVisitors()
 
   for (const child of ast.children) {
     if (child.type !== 'mdxjsEsm') {
@@ -384,11 +377,25 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
     const estree = child.data?.estree
 
     if (estree) {
-      esmProgram.body.push(...estree.body)
+      walk(estree, {
+        enter(node) {
+          visitors.enter(node)
+
+          if (
+            node.type === 'ArrowFunctionExpression' ||
+            node.type === 'FunctionDeclaration' ||
+            node.type === 'FunctionExpression'
+          ) {
+            this.skip()
+            visitors.exit(node)
+          }
+        },
+        leave: visitors.exit
+      })
     }
   }
 
-  const variables = [...analyze(esmProgram).scope.declarations.keys()].sort()
+  const variables = [...visitors.scopes[0].defined].sort()
 
   /**
    * Update the **markdown** mappings from a start and end offset of a **JavaScript** chunk.

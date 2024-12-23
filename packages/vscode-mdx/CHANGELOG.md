@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.12
+
+### Patch Changes
+
+- [`d73050c`](https://github.com/mdx-js/mdx-analyzer/commit/d73050c19d9a17330005de2eaf3173c94d8efccb) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update the TextMate grammar
+
 ## 1.8.11
 
 ### Patch Changes

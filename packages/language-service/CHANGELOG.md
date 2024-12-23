@@ -1,5 +1,11 @@
 # @mdx-js/language-service
 
+## 0.6.1
+
+### Patch Changes
+
+- [#486](https://github.com/mdx-js/mdx-analyzer/pull/486) [`b2e9706`](https://github.com/mdx-js/mdx-analyzer/commit/b2e970609b7c3cf8516d62ca78c43f24d993cdba) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix bug in virtual code generation for JSX closing elements
+
 ## 0.6.0
 
 ### Minor Changes

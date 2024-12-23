@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated dependencies [[`b2e9706`](https://github.com/mdx-js/mdx-analyzer/commit/b2e970609b7c3cf8516d62ca78c43f24d993cdba)]:
+  - @mdx-js/language-service@0.6.1
+
 ## 0.0.6
 
 ### Patch Changes

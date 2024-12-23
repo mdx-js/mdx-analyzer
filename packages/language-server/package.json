@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/language-server",
-  "version": "0.4.10",
+  "version": "0.5.0",
   "type": "module",
   "description": "A language server for MDX",
   "repository": {
@@ -13,12 +13,11 @@
   "author": "Remco Haszing <remcohaszing@gmail.com>",
   "funding": "https://opencollective.com/unified",
   "license": "MIT",
-  "exports": "./index.js",
+  "exports": "./lib/index.js",
   "bin": {
-    "mdx-language-server": "./index.js"
+    "mdx-language-server": "./lib/index.js"
   },
   "files": [
-    "*.js",
     "lib"
   ],
   "keywords": [
@@ -32,18 +31,18 @@
     "test": "npm run test-api"
   },
   "dependencies": {
-    "@mdx-js/language-service": "0.5.8",
+    "@mdx-js/language-service": "0.6.0",
     "@volar/language-server": "~2.4.0",
     "load-plugin": "^6.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
     "volar-service-markdown": "0.0.61",
-    "volar-service-typescript": "0.0.61",
-    "vscode-uri": "^3.0.0"
+    "volar-service-typescript": "0.0.61"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@volar/test-utils": "~2.4.0",
-    "unified": "^11.0.0"
+    "unified": "^11.0.0",
+    "vscode-uri": "^3.0.0"
   }
 }

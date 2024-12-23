@@ -1,27 +1,26 @@
 /**
- * @import {DataTransferItem, LanguageServicePlugin} from '@volar/language-service'
- * @import {SyntaxToggle} from './commands.js'
- */
-
-/**
- * @typedef Commands
- * @property {SyntaxToggle} toggleDelete
- * @property {SyntaxToggle} toggleEmphasis
- * @property {SyntaxToggle} toggleInlineCode
- * @property {SyntaxToggle} toggleStrong
- */
-
-/**
- * @typedef Provide
- * @property {() => Commands} mdxCommands
+ * @import {DataTransferItem, LanguageServicePlugin, WorkspaceEdit} from '@volar/language-service'
  */
 
 import path from 'node:path/posix'
 import {toMarkdown} from 'mdast-util-to-markdown'
 import {fromPlace} from 'unist-util-lsp'
 import {URI, Utils} from 'vscode-uri'
-import {createSyntaxToggle} from './commands.js'
+import {toggleSyntax} from './commands.js'
 import {VirtualMdxCode} from './virtual-code.js'
+
+/**
+ * @callback ApplyEdit
+ * @param {WorkspaceEdit} edit
+ *   The workspace edit to apply.
+ * @returns {PromiseLike<unknown>}
+ */
+
+/**
+ * @typedef createMdxServicePlugin.Options
+ * @property {ApplyEdit} applyEdit
+ *   A function to apply workspace edits.
+ */
 
 // https://github.com/microsoft/vscode/blob/1.83.1/extensions/markdown-language-features/src/languageFeatures/copyFiles/shared.ts#L29-L41
 const imageExtensions = new Set([
@@ -50,10 +49,12 @@ const imageExtensions = new Set([
  * - Custom commands for toggling `delete`, `emphasis`, `inlineCode`, and
  *   `strong` text.
  *
+ * @param {createMdxServicePlugin.Options} options
+ *   Options to configure the MDX language service.
  * @returns {LanguageServicePlugin}
  *   The Volar service plugin for MDX files.
  */
-export function createMdxServicePlugin() {
+export function createMdxServicePlugin(options) {
   return {
     name: 'mdx',
 
@@ -62,18 +63,67 @@ export function createMdxServicePlugin() {
         interFileDependencies: false,
         workspaceDiagnostics: false
       },
+      executeCommandProvider: {
+        commands: [
+          'mdx.toggleDelete',
+          'mdx.toggleEmphasis',
+          'mdx.toggleInlineCode',
+          'mdx.toggleStrong'
+        ]
+      },
       documentDropEditsProvider: true
     },
 
     create(context) {
       return {
-        provide: {
-          mdxCommands() {
-            return {
-              toggleDelete: createSyntaxToggle(context, 'delete', '~'),
-              toggleEmphasis: createSyntaxToggle(context, 'emphasis', '_'),
-              toggleInlineCode: createSyntaxToggle(context, 'inlineCode', '`'),
-              toggleStrong: createSyntaxToggle(context, 'strong', '**')
+        executeCommand(command, args) {
+          switch (command) {
+            case 'mdx.toggleDelete': {
+              return toggleSyntax(
+                context,
+                options,
+                'delete',
+                '~~',
+                args[0],
+                args[1]
+              )
+            }
+
+            case 'mdx.toggleEmphasis': {
+              return toggleSyntax(
+                context,
+                options,
+                'emphasis',
+                '*',
+                args[0],
+                args[1]
+              )
+            }
+
+            case 'mdx.toggleInlineCode': {
+              return toggleSyntax(
+                context,
+                options,
+                'inlineCode',
+                '`',
+                args[0],
+                args[1]
+              )
+            }
+
+            case 'mdx.toggleStrong': {
+              return toggleSyntax(
+                context,
+                options,
+                'strong',
+                '**',
+                args[0],
+                args[1]
+              )
+            }
+
+            default: {
+              throw new Error('Unknown command: ' + command)
             }
           }
         },

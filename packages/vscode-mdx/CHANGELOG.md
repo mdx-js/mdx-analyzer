@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.11
+
+### Patch Changes
+
+- [#478](https://github.com/mdx-js/mdx-analyzer/pull/478) [`3b135e8`](https://github.com/mdx-js/mdx-analyzer/commit/3b135e82607f0d5d19f9cf27e6bb465543c7c841) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Use an asterisk to toggle emphasis
+
+- [#479](https://github.com/mdx-js/mdx-analyzer/pull/479) [`feab086`](https://github.com/mdx-js/mdx-analyzer/commit/feab0867b715e966f7fc0ceec42fdccca1e316b8) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update the MDX grammar
+
+- [#477](https://github.com/mdx-js/mdx-analyzer/pull/477) [`ed87d22`](https://github.com/mdx-js/mdx-analyzer/commit/ed87d226bdc18afb60332bc55f0fd687efd98d42) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Use two tildes to toggle delete syntax
+
 ## 1.8.10
 
 ### Patch Changes

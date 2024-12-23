@@ -1,5 +1,17 @@
 # @mdx-js/language-service
 
+## 0.6.0
+
+### Minor Changes
+
+- [#473](https://github.com/mdx-js/mdx-analyzer/pull/473) [`2854c38`](https://github.com/mdx-js/mdx-analyzer/commit/2854c38ceaf9202a9a3aa5ae33e50ca2a8c41f1e) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Convert the custom MDX syntax toggle request types into LSP commands.
+
+### Patch Changes
+
+- [#478](https://github.com/mdx-js/mdx-analyzer/pull/478) [`3b135e8`](https://github.com/mdx-js/mdx-analyzer/commit/3b135e82607f0d5d19f9cf27e6bb465543c7c841) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Use an asterisk to toggle emphasis
+
+- [#477](https://github.com/mdx-js/mdx-analyzer/pull/477) [`ed87d22`](https://github.com/mdx-js/mdx-analyzer/commit/ed87d226bdc18afb60332bc55f0fd687efd98d42) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Use two tildes to toggle delete syntax
+
 ## 0.5.8
 
 ### Patch Changes

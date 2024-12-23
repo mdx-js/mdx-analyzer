@@ -1,6 +1,6 @@
 /**
  * @import {CodeMapping, VirtualCode} from '@volar/language-service'
- * @import {ExportDefaultDeclaration, Program} from 'estree'
+ * @import {ExportDefaultDeclaration, JSXClosingElement, JSXOpeningElement, Program} from 'estree-jsx'
  * @import {Nodes, Root} from 'mdast'
  * @import {MdxjsEsm} from 'mdast-util-mdxjs-esm'
  * @import {IScriptSnapshot} from 'typescript'
@@ -8,8 +8,8 @@
  * @import {VFileMessage} from 'vfile-message'
  */
 
+import {createVisitors} from 'estree-util-scope'
 import {walk} from 'estree-walker'
-import {analyze} from 'periscopic'
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {ScriptSnapshot} from './script-snapshot.js'
 import {isInjectableComponent} from './jsx-utils.js'
@@ -260,7 +260,11 @@ function processExports(mdx, node, mapping, esm) {
       const {specifiers} = child
       for (let index = 0; index < specifiers.length; index++) {
         const specifier = specifiers[index]
-        if (specifier.local.name === 'default') {
+        if (
+          specifier.local.type === 'Identifier'
+            ? specifier.local.name === 'default'
+            : specifier.local.value === 'default'
+        ) {
           esm = addOffset(mapping, mdx, esm, start, specifier.start)
           const nextPosition =
             index === specifiers.length - 1
@@ -269,7 +273,9 @@ function processExports(mdx, node, mapping, esm) {
           return (
             addOffset(mapping, mdx, esm, nextPosition, end, true) +
             '\nimport {' +
-            specifier.exported.name +
+            (specifier.exported.type === 'Identifier'
+              ? specifier.exported.name
+              : JSON.stringify(specifier.exported.value)) +
             ' as MDXLayout} from ' +
             JSON.stringify(child.source.value) +
             '\n'
@@ -361,14 +367,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
   let markdown = ''
   let nextMarkdownSourceStart = 0
 
-  /** @type {Program} */
-  const esmProgram = {
-    type: 'Program',
-    sourceType: 'module',
-    start: 0,
-    end: 0,
-    body: []
-  }
+  const visitors = createVisitors()
 
   for (const child of ast.children) {
     if (child.type !== 'mdxjsEsm') {
@@ -378,11 +377,25 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
     const estree = child.data?.estree
 
     if (estree) {
-      esmProgram.body.push(...estree.body)
+      walk(estree, {
+        enter(node) {
+          visitors.enter(node)
+
+          if (
+            node.type === 'ArrowFunctionExpression' ||
+            node.type === 'FunctionDeclaration' ||
+            node.type === 'FunctionExpression'
+          ) {
+            this.skip()
+            visitors.exit(node)
+          }
+        },
+        leave: visitors.exit
+      })
     }
   }
 
-  const variables = [...analyze(esmProgram).scope.declarations.keys()].sort()
+  const variables = [...visitors.scopes[0].defined].sort()
 
   /**
    * Update the **markdown** mappings from a start and end offset of a **JavaScript** chunk.
@@ -443,18 +456,32 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
   function processJsxExpression(program, lastIndex) {
     let newIndex = lastIndex
     let functionNesting = 0
+
+    /**
+     * @param {JSXClosingElement | JSXOpeningElement} node
+     * @returns {undefined}
+     */
+    function processJsxTag(node) {
+      const {name} = node
+
+      if (name.type !== 'JSXIdentifier') {
+        return
+      }
+
+      if (!isInjectableComponent(name.name, variables)) {
+        return
+      }
+
+      jsx =
+        addOffset(jsxMapping, mdx, jsx, newIndex, name.start) + '_components.'
+      newIndex = name.start
+    }
+
     walk(program, {
       enter(node) {
         switch (node.type) {
-          case 'JSXIdentifier': {
-            if (!isInjectableComponent(node.name, variables)) {
-              return
-            }
-
-            jsx =
-              addOffset(jsxMapping, mdx, jsx, newIndex, node.start) +
-              '_components.'
-            newIndex = node.start
+          case 'JSXElement': {
+            processJsxTag(node.openingElement)
             break
           }
 
@@ -491,6 +518,16 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
           case 'FunctionDeclaration':
           case 'FunctionExpression': {
             functionNesting--
+            break
+          }
+
+          case 'JSXElement': {
+            const {closingElement} = node
+
+            if (closingElement) {
+              processJsxTag(closingElement)
+            }
+
             break
           }
 

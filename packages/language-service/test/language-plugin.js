@@ -1752,8 +1752,12 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
     '{<div>{""}</div>}',
     '{<Injected />}',
     '{<Injected>{""}</Injected>}',
+    '{<Injected><Injected>{""}</Injected></Injected>}',
     '{<Local />}',
-    '{<Local>{""}</Local>}'
+    '{<Local>{""}</Local>}',
+    '{<Local><Local>{""}</Local></Local>}',
+    '{<Local><Injected>{""}</Injected></Local>}',
+    '{<Injected><Local>{""}</Local></Injected>}'
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
@@ -1799,9 +1803,18 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
           }
         },
         {
-          sourceOffsets: [28, 38, 56, 58, 71, 73, 88, 99, 111],
-          generatedOffsets: [843, 857, 879, 893, 910, 924, 951, 966, 982],
-          lengths: [9, 17, 2, 12, 2, 15, 10, 11, 21],
+          sourceOffsets: [
+            28, 38, 56, 58, 71, 73, 88, 99, 101, 111, 126, 137, 148, 160, 182,
+            219, 228, 243, 262, 264, 294
+          ],
+          generatedOffsets: [
+            843, 857, 879, 893, 910, 924, 951, 966, 980, 1002, 1029, 1052, 1067,
+            1083, 1109, 1150, 1171, 1198, 1221, 1235, 1277
+          ],
+          lengths: [
+            9, 17, 2, 12, 2, 15, 10, 2, 10, 15, 11, 10, 11, 21, 36, 9, 15, 18,
+            2, 30, 10
+          ],
           data: {
             completion: true,
             format: false,
@@ -1845,8 +1858,12 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
         '    {<div>{""}</div>}',
         '    {<_components.Injected />}',
         '    {<_components.Injected>{""}</_components.Injected>}',
+        '    {<_components.Injected><_components.Injected>{""}</_components.Injected></_components.Injected>}',
         '    {<Local />}',
         '    {<Local>{""}</Local>}',
+        '    {<Local><Local>{""}</Local></Local>}',
+        '    {<Local><_components.Injected>{""}</_components.Injected></Local>}',
+        '    {<_components.Injected><Local>{""}</Local></_components.Injected>}',
         '  </>',
         '}',
         '',
@@ -1870,9 +1887,9 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
       languageId: 'markdown',
       mappings: [
         {
-          sourceOffsets: [26, 37, 55, 70, 98, 110],
-          generatedOffsets: [0, 9, 17, 25, 33, 41],
-          lengths: [2, 1, 1, 1, 1, 1],
+          sourceOffsets: [26, 37, 55, 70, 98, 147, 159, 181, 218, 261],
+          generatedOffsets: [0, 9, 17, 25, 33, 41, 49, 57, 65, 73],
+          lengths: [2, 1, 1, 1, 1, 1, 1, 1, 1, 1],
           data: {
             completion: true,
             format: false,
@@ -1886,6 +1903,10 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
       snapshot: snapshotFromLines(
         '',
         '',
+        '<!---->',
+        '<!---->',
+        '<!---->',
+        '<!---->',
         '<!---->',
         '<!---->',
         '<!---->',

@@ -1,5 +1,5 @@
 /**
- * @import {LabsInfo, TextEdit} from '@volar/vscode'
+ * @import {ExecuteCommandSignature, LabsInfo, TextEdit} from '@volar/vscode'
  * @import {ExtensionContext} from 'vscode'
  */
 
@@ -11,13 +11,11 @@ import {
   getTsdk
 } from '@volar/vscode'
 import {
-  commands,
   extensions,
   window,
   workspace,
   Disposable,
-  ProgressLocation,
-  WorkspaceEdit
+  ProgressLocation
 } from 'vscode'
 import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
 
@@ -60,7 +58,8 @@ export async function activate(context) {
       markdown: {
         isTrusted: true,
         supportHtml: true
-      }
+      },
+      middleware: {executeCommand}
     }
   )
 
@@ -117,11 +116,7 @@ async function startServer() {
 
         disposable = Disposable.from(
           activateAutoInsertion('mdx', client),
-          activateDocumentDropEdit('mdx', client),
-          activateMdxToggleCommand('toggleDelete'),
-          activateMdxToggleCommand('toggleEmphasis'),
-          activateMdxToggleCommand('toggleInlineCode'),
-          activateMdxToggleCommand('toggleStrong')
+          activateDocumentDropEdit('mdx', client)
         )
       }
     )
@@ -129,37 +124,36 @@ async function startServer() {
 }
 
 /**
+ * Execute a command with correct arguments.
+ *
  * @param {string} command
- * @returns {Disposable}
+ *   The name of the command to execute.
+ * @param {unknown[]} args
+ *   The original arguments passed to the command.
+ * @param {ExecuteCommandSignature} next
+ *   The next middleware to execute.
+ * @returns {Promise<unknown>}
+ *   The command result.
  */
-function activateMdxToggleCommand(command) {
-  return commands.registerCommand('mdx.' + command, async () => {
-    const editor = window.activeTextEditor
-    if (!editor) {
-      return
+async function executeCommand(command, args, next) {
+  switch (command) {
+    case 'mdx.toggleDelete':
+    case 'mdx.toggleEmphasis':
+    case 'mdx.toggleInlineCode':
+    case 'mdx.toggleStrong': {
+      const editor = window.activeTextEditor
+      if (!editor) {
+        return
+      }
+
+      return next(command, [
+        String(editor.document.uri),
+        client.code2ProtocolConverter.asRange(editor.selection)
+      ])
     }
 
-    const document = editor.document
-    const beforeVersion = document.version
-
-    /** @type {TextEdit[] | undefined} */
-    const response = await client.sendRequest('mdx/' + command, {
-      uri: String(document.uri),
-      range: client.code2ProtocolConverter.asRange(editor.selection)
-    })
-
-    if (!response?.length) {
-      return
+    default: {
+      return next(command, args)
     }
-
-    const textEdits = await client.protocol2CodeConverter.asTextEdits(response)
-
-    if (beforeVersion !== document.version) {
-      return
-    }
-
-    const workspaceEdit = new WorkspaceEdit()
-    workspaceEdit.set(document.uri, textEdits)
-    workspace.applyEdit(workspaceEdit, {})
-  })
+  }
 }

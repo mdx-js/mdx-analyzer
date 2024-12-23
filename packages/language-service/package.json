@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/language-service",
-  "version": "0.5.8",
+  "version": "0.6.0",
   "type": "module",
   "description": "MDX support for Volar",
   "repository": {
@@ -16,15 +16,12 @@
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
-      "default": "./index.js"
+      "default": "./lib/index.js"
     }
   },
   "files": [
-    "index.js",
     "lib",
-    "types",
-    "!types/test",
-    "!*.tsbuildinfo"
+    "types"
   ],
   "keywords": [
     "IntelliSense",
@@ -42,10 +39,10 @@
     "@types/mdast": "^4.0.0",
     "@types/unist": "^3.0.0",
     "@volar/language-service": "~2.4.0",
+    "estree-util-scope": "^1.0.0",
     "estree-walker": "^3.0.0",
     "mdast-util-mdxjs-esm": "^2.0.0",
     "mdast-util-to-markdown": "^2.0.0",
-    "periscopic": "^3.0.0",
     "remark-mdx": "^3.0.0",
     "remark-parse": "^11.0.0",
     "unified": "^11.0.0",

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.0.6
+
+### Patch Changes
+
+- [`6c12960`](https://github.com/mdx-js/mdx-analyzer/commit/6c129606addae4885830f04ba1e18e50fc8b58c6) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add the main field
+
+- [`6c12960`](https://github.com/mdx-js/mdx-analyzer/commit/6c129606addae4885830f04ba1e18e50fc8b58c6) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Emit type declarations
+
+- Updated dependencies [[`3b135e8`](https://github.com/mdx-js/mdx-analyzer/commit/3b135e82607f0d5d19f9cf27e6bb465543c7c841), [`ed87d22`](https://github.com/mdx-js/mdx-analyzer/commit/ed87d226bdc18afb60332bc55f0fd687efd98d42), [`2854c38`](https://github.com/mdx-js/mdx-analyzer/commit/2854c38ceaf9202a9a3aa5ae33e50ca2a8c41f1e)]:
+  - @mdx-js/language-service@0.6.0
+
 ## 0.0.5
 
 ### Patch Changes

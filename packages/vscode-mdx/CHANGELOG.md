@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.13
+
+### Patch Changes
+
+- [`0693cd2`](https://github.com/mdx-js/mdx-analyzer/commit/0693cd24b8c2857d71ab1a49970f8e4e216fb1c2) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update dev dependencies
+
 ## 1.8.12
 
 ### Patch Changes

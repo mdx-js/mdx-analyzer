@@ -1,5 +1,14 @@
 # @mdx-js/language-server
 
+## 0.5.2
+
+### Patch Changes
+
+- [`0693cd2`](https://github.com/mdx-js/mdx-analyzer/commit/0693cd24b8c2857d71ab1a49970f8e4e216fb1c2) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update dev dependencies
+
+- Updated dependencies [[`4aca67f`](https://github.com/mdx-js/mdx-analyzer/commit/4aca67fd6e19e91175829aea68cfa92cb0bf33d4)]:
+  - @mdx-js/language-service@0.6.2
+
 ## 0.5.1
 
 ### Patch Changes

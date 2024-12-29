@@ -1,5 +1,11 @@
 # @mdx-js/language-service
 
+## 0.6.2
+
+### Patch Changes
+
+- [#488](https://github.com/mdx-js/mdx-analyzer/pull/488) [`4aca67f`](https://github.com/mdx-js/mdx-analyzer/commit/4aca67fd6e19e91175829aea68cfa92cb0bf33d4) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Handle components defined in a local scope
+
 ## 0.6.1
 
 ### Patch Changes

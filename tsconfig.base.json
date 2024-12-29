@@ -9,6 +9,7 @@
     "moduleDetection": "force",
     "strict": true,
     "stripInternal": true,
-    "target": "es2022"
+    "target": "es2022",
+    "types": ["node"]
   }
 }

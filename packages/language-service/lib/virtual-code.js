@@ -1,6 +1,6 @@
 /**
  * @import {CodeMapping, VirtualCode} from '@volar/language-service'
- * @import {ExportDefaultDeclaration, JSXClosingElement, JSXOpeningElement, Program} from 'estree-jsx'
+ * @import {ExportDefaultDeclaration, JSXClosingElement, JSXOpeningElement, Node, Program} from 'estree-jsx'
  * @import {Scope} from 'estree-util-scope'
  * @import {Nodes, Root} from 'mdast'
  * @import {MdxjsEsm} from 'mdast-util-mdxjs-esm'
@@ -13,7 +13,7 @@ import {createVisitors} from 'estree-util-scope'
 import {walk} from 'estree-walker'
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {ScriptSnapshot} from './script-snapshot.js'
-import {isInjectableComponent} from './jsx-utils.js'
+import {isInjectableComponent, isInjectableEstree} from './jsx-utils.js'
 
 /**
  * Render the content that should be prefixed to the embedded JavaScript file.
@@ -458,6 +458,10 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
    * @returns {number}
    */
   function processJsxExpression(program, lastIndex) {
+    /** @type {Map<Node, Scope | undefined>} */
+    const localScopes = new Map()
+    /** @type {Map<Node, Node | null>} */
+    const parents = new Map()
     let newIndex = lastIndex
     let functionNesting = 0
 
@@ -472,7 +476,7 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
         return
       }
 
-      if (!isInjectableComponent(name.name, programScope)) {
+      if (!isInjectableEstree(name, localScopes, parents)) {
         return
       }
 
@@ -480,6 +484,25 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
         addOffset(jsxMapping, mdx, jsx, newIndex, name.start) + '_components.'
       newIndex = name.start
     }
+
+    walk(program, {
+      enter(node, parent) {
+        if (node.type === 'Program') {
+          return
+        }
+
+        visitors.enter(node)
+        localScopes.set(node, visitors.scopes.at(-1))
+        parents.set(node, parent)
+      },
+      leave(node) {
+        if (node.type === 'Program') {
+          return
+        }
+
+        visitors.exit(node)
+      }
+    })
 
     walk(program, {
       enter(node) {

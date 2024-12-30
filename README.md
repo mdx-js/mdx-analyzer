@@ -72,6 +72,26 @@ For example:
 # Hello {props.name}
 ```
 
+#### JSDoc in MDX with Prettier
+
+If you’re using Prettier, you’ll need to ignore any JSDoc comments until it is
+supported (more info in
+[the MDX 3 issue](https://github.com/prettier/prettier/issues/12209)):
+
+```mdx
+{/* prettier-ignore-start */}
+
+{/**
+  * @typedef Props
+  * @property {string} name
+  *   Who to greet.
+  */}
+
+{/* prettier-ignore-end */}
+
+# Hello {props.name}
+```
+
 #### `MDXProvidedComponents`
 
 The special type `MDXProvidedComponents` is used to determine which components

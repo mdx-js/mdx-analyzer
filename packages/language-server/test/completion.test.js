@@ -47,7 +47,7 @@ test('support completion in ESM', async () => {
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx'),
-          offset: 81,
+          offset: 108,
           originalItem: {name: 'Boolean'},
           uri: String(
             URI.from({
@@ -110,7 +110,7 @@ test('support completion in JSX', async () => {
       original: {
         data: {
           fileName: fixturePath('node16/completion.mdx'),
-          offset: 119,
+          offset: 146,
           originalItem: {name: 'Boolean'},
           uri: String(
             URI.from({

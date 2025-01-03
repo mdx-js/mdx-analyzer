@@ -28,6 +28,7 @@ const jsPrefix = (
   jsxImportSource
 ) => `${tsCheck ? '// @ts-check\n' : ''}/* @jsxRuntime automatic
 @jsxImportSource ${jsxImportSource} */
+import '${jsxImportSource}/jsx-runtime'
 `
 
 /**
@@ -295,6 +296,21 @@ function processExports(mdx, node, mapping, esm) {
 }
 
 /**
+ * Pad the generated offsets of a Volar code mapping.
+ *
+ * @param {CodeMapping} mapping
+ *   The mapping whose generated offsets to pad.
+ * @param {number} padding
+ *   The padding to append to the generated offsets.
+ * @returns {undefined}
+ */
+function padOffsets(mapping, padding) {
+  for (let i = 0; i < mapping.generatedOffsets.length; i++) {
+    mapping.generatedOffsets[i] += padding
+  }
+}
+
+/**
  * @param {string} mdx
  * @param {Root} ast
  * @param {boolean} checkMdx
@@ -302,6 +318,13 @@ function processExports(mdx, node, mapping, esm) {
  * @returns {VirtualCode[]}
  */
 function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
+  let hasAwait = false
+  let esm = jsPrefix(checkMdx, jsxImportSource)
+  let jsx = ''
+  let jsxVariables = ''
+  let markdown = ''
+  let nextMarkdownSourceStart = 0
+
   /** @type {CodeMapping[]} */
   const jsMappings = []
 
@@ -311,9 +334,11 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
    * @type {CodeMapping}
    */
   const esmMapping = {
-    sourceOffsets: [],
-    generatedOffsets: [],
-    lengths: [],
+    // The empty mapping makes sure there’s always a valid mapping to insert
+    // auto-imports.
+    sourceOffsets: [0],
+    generatedOffsets: [esm.length],
+    lengths: [0],
     data: {
       completion: true,
       format: true,
@@ -330,6 +355,20 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
    * @type {CodeMapping}
    */
   const jsxMapping = {
+    sourceOffsets: [],
+    generatedOffsets: [],
+    lengths: [],
+    data: {
+      completion: true,
+      format: false,
+      navigation: true,
+      semantic: true,
+      structure: true,
+      verification: true
+    }
+  }
+
+  const jsxVariablesMapping = {
     sourceOffsets: [],
     generatedOffsets: [],
     lengths: [],
@@ -364,13 +403,6 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
 
   /** @type {VirtualCode[]} */
   const virtualCodes = []
-
-  let hasAwait = false
-  let esm = jsPrefix(checkMdx, jsxImportSource)
-  let jsx = ''
-  let markdown = ''
-  let nextMarkdownSourceStart = 0
-
   const visitors = createVisitors()
 
   for (const child of ast.children) {
@@ -482,6 +514,17 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
 
       jsx =
         addOffset(jsxMapping, mdx, jsx, newIndex, name.start) + '_components.'
+      if (node.name && node.type === 'JSXOpeningElement') {
+        jsxVariables =
+          addOffset(
+            jsxVariablesMapping,
+            mdx,
+            jsxVariables + '// @ts-ignore\n',
+            name.start,
+            name.end
+          ) + '\n'
+      }
+
       newIndex = name.start
     }
 
@@ -624,6 +667,16 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
           jsx = addOffset(jsxMapping, mdx, jsx + jsxIndent, start, lastIndex)
           if (isInjectableComponent(node.name, programScope)) {
             jsx += '_components.'
+            if (node.name) {
+              jsxVariables =
+                addOffset(
+                  jsxVariablesMapping,
+                  mdx,
+                  jsxVariables + '// @ts-ignore\n',
+                  lastIndex,
+                  lastIndex + node.name.length
+                ) + '\n'
+            }
           }
 
           if (node.name) {
@@ -741,11 +794,11 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
   updateMarkdownFromOffsets(mdx.length, mdx.length)
   esm += componentStart(hasAwait, programScope)
 
-  for (let i = 0; i < jsxMapping.generatedOffsets.length; i++) {
-    jsxMapping.generatedOffsets[i] += esm.length
-  }
-
+  padOffsets(jsxMapping, esm.length)
   esm += jsx + componentEnd
+
+  padOffsets(jsxVariablesMapping, esm.length)
+  esm += jsxVariables
 
   if (esmMapping.sourceOffsets.length > 0) {
     jsMappings.push(esmMapping)
@@ -753,6 +806,10 @@ function getEmbeddedCodes(mdx, ast, checkMdx, jsxImportSource) {
 
   if (jsxMapping.sourceOffsets.length > 0) {
     jsMappings.push(jsxMapping)
+  }
+
+  if (jsxVariablesMapping.sourceOffsets.length > 0) {
+    jsMappings.push(jsxVariablesMapping)
   }
 
   virtualCodes.unshift(

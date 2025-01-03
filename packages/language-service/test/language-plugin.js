@@ -43,7 +43,7 @@ test('create virtual code w/ mdxjsEsm', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [51],
+          generatedOffsets: [78],
           lengths: [35],
           data: {
             completion: true,
@@ -58,6 +58,7 @@ test('create virtual code w/ mdxjsEsm', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'import {Planet} from "./Planet.js"',
         '',
         '',
@@ -161,7 +162,7 @@ test('create virtual code w/ mdxjsEsm and CRLF', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [51],
+          generatedOffsets: [78],
           lengths: [36],
           data: {
             completion: true,
@@ -176,6 +177,7 @@ test('create virtual code w/ mdxjsEsm and CRLF', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'import {Planet} from "./Planet.js"\r',
         '',
         '',
@@ -279,7 +281,7 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [51],
+          generatedOffsets: [78],
           lengths: [34],
           data: {
             completion: true,
@@ -294,6 +296,7 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export {named} from "./Layout.js"',
         '',
         '',
@@ -395,7 +398,7 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
       mappings: [
         {
           sourceOffsets: [0, 15],
-          generatedOffsets: [51, 59],
+          generatedOffsets: [78, 86],
           lengths: [8, 21],
           data: {
             completion: true,
@@ -410,6 +413,7 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export {} from "./Layout.js"',
         '',
         'import {default as MDXLayout} from "./Layout.js"',
@@ -515,7 +519,7 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
       mappings: [
         {
           sourceOffsets: [0, 22],
-          generatedOffsets: [51, 66],
+          generatedOffsets: [78, 93],
           lengths: [15, 21],
           data: {
             completion: true,
@@ -530,6 +534,7 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export {named, } from "./Layout.js"',
         '',
         'import {default as MDXLayout} from "./Layout.js"',
@@ -635,7 +640,7 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
       mappings: [
         {
           sourceOffsets: [0, 16],
-          generatedOffsets: [51, 59],
+          generatedOffsets: [78, 86],
           lengths: [8, 27],
           data: {
             completion: true,
@@ -650,6 +655,7 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export { named} from "./Layout.js"',
         '',
         'import {default as MDXLayout} from "./Layout.js"',
@@ -751,9 +757,9 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
       languageId: 'javascriptreact',
       mappings: [
         {
-          sourceOffsets: [15],
-          generatedOffsets: [721],
-          lengths: [9],
+          sourceOffsets: [0, 15],
+          generatedOffsets: [78, 748],
+          lengths: [0, 9],
           data: {
             completion: true,
             format: true,
@@ -767,6 +773,7 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
         '',
@@ -884,9 +891,9 @@ test('create virtual code w/ MDX layout in case of a default exported function d
       languageId: 'javascriptreact',
       mappings: [
         {
-          sourceOffsets: [15],
-          generatedOffsets: [721],
-          lengths: [24],
+          sourceOffsets: [0, 15],
+          generatedOffsets: [78, 748],
+          lengths: [0, 24],
           data: {
             completion: true,
             format: true,
@@ -900,6 +907,7 @@ test('create virtual code w/ MDX layout in case of a default exported function d
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
         '',
@@ -1016,9 +1024,9 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
       languageId: 'javascriptreact',
       mappings: [
         {
-          sourceOffsets: [15],
-          generatedOffsets: [70],
-          lengths: [7],
+          sourceOffsets: [0, 15],
+          generatedOffsets: [78, 97],
+          lengths: [0, 7],
           data: {
             completion: true,
             format: true,
@@ -1032,6 +1040,7 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         'const MDXLayout = "main"',
         '',
@@ -1136,9 +1145,9 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
-          sourceOffsets: [15],
-          generatedOffsets: [726],
-          lengths: [34],
+          sourceOffsets: [0, 15],
+          generatedOffsets: [78, 753],
+          lengths: [0, 34],
           data: {
             completion: true,
             format: true,
@@ -1152,6 +1161,7 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
         '',
@@ -1272,9 +1282,9 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
       languageId: 'javascriptreact',
       mappings: [
         {
-          sourceOffsets: [15],
-          generatedOffsets: [721],
-          lengths: [51],
+          sourceOffsets: [0, 15],
+          generatedOffsets: [78, 748],
+          lengths: [0, 51],
           data: {
             completion: true,
             format: true,
@@ -1288,6 +1298,7 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
         '',
@@ -1412,7 +1423,7 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
       mappings: [
         {
           sourceOffsets: [0, 42],
-          generatedOffsets: [51, 748],
+          generatedOffsets: [78, 775],
           lengths: [27, 24],
           data: {
             completion: true,
@@ -1427,6 +1438,7 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export function named() {}',
         '',
         '/** @typedef {MDXContentProps & { children: JSX.Element }} MDXLayoutProps */',
@@ -1547,7 +1559,20 @@ test('create virtual code w/ mdxFlowExpression', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [779],
+          generatedOffsets: [78],
+          lengths: [0],
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          sourceOffsets: [0],
+          generatedOffsets: [806],
           lengths: [9],
           data: {
             completion: true,
@@ -1562,6 +1587,7 @@ test('create virtual code w/ mdxFlowExpression', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/**',
         ' * @internal',
@@ -1662,7 +1688,20 @@ test('create virtual code w/ empty mdxFlowExpression', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [780],
+          generatedOffsets: [78],
+          lengths: [0],
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          sourceOffsets: [0],
+          generatedOffsets: [807],
           lengths: [2],
           data: {
             completion: true,
@@ -1677,6 +1716,7 @@ test('create virtual code w/ empty mdxFlowExpression', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '',
         '/**',
@@ -1791,7 +1831,7 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [51],
+          generatedOffsets: [78],
           lengths: [27],
           data: {
             completion: true,
@@ -1808,8 +1848,8 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
             219, 228, 243, 262, 264, 294
           ],
           generatedOffsets: [
-            843, 857, 879, 893, 910, 924, 951, 966, 980, 1002, 1029, 1052, 1067,
-            1083, 1109, 1150, 1171, 1198, 1221, 1235, 1277
+            870, 884, 906, 920, 937, 951, 978, 993, 1007, 1029, 1056, 1079,
+            1094, 1110, 1136, 1177, 1198, 1225, 1248, 1262, 1304
           ],
           lengths: [
             9, 17, 2, 12, 2, 15, 10, 2, 10, 15, 11, 10, 11, 21, 36, 9, 15, 18,
@@ -1823,11 +1863,25 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
             structure: true,
             verification: true
           }
+        },
+        {
+          generatedOffsets: [1748, 1771, 1794, 1817, 1840, 1863],
+          lengths: [8, 8, 8, 8, 8, 8],
+          sourceOffsets: [58, 73, 101, 111, 228, 264],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
         }
       ],
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export function Local() {}',
         '',
         '',
@@ -1879,6 +1933,18 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
         '',
         '// @ts-ignore',
         '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '// @ts-ignore',
+        'Injected',
+        '// @ts-ignore',
+        'Injected',
+        '// @ts-ignore',
+        'Injected',
+        '// @ts-ignore',
+        'Injected',
+        '// @ts-ignore',
+        'Injected',
+        '// @ts-ignore',
+        'Injected',
         ''
       )
     },
@@ -1962,7 +2028,7 @@ test('create virtual code w/ prefixed JSX expressions in attributes', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [51],
+          generatedOffsets: [78],
           lengths: [27],
           data: {
             completion: true,
@@ -1975,8 +2041,21 @@ test('create virtual code w/ prefixed JSX expressions in attributes', () => {
         },
         {
           sourceOffsets: [28, 62, 103, 149, 166, 214],
-          generatedOffsets: [843, 889, 933, 991, 1020, 1084],
+          generatedOffsets: [870, 916, 960, 1018, 1047, 1111],
           lengths: [34, 39, 46, 17, 35, 6],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          generatedOffsets: [1551, 1574],
+          lengths: [8, 8],
+          sourceOffsets: [62, 149],
           data: {
             completion: true,
             format: false,
@@ -1990,6 +2069,7 @@ test('create virtual code w/ prefixed JSX expressions in attributes', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export function Local() {}',
         '',
         '',
@@ -2037,6 +2117,10 @@ test('create virtual code w/ prefixed JSX expressions in attributes', () => {
         '',
         '// @ts-ignore',
         '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '// @ts-ignore',
+        'Injected',
+        '// @ts-ignore',
+        'Injected',
         ''
       )
     },
@@ -2126,7 +2210,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [51],
+          generatedOffsets: [78],
           lengths: [27],
           data: {
             completion: true,
@@ -2139,7 +2223,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
         },
         {
           sourceOffsets: [28, 87, 94, 95, 158, 160, 170, 231],
-          generatedOffsets: [843, 877, 888, 901, 939, 953, 967, 1003],
+          generatedOffsets: [870, 904, 915, 928, 966, 980, 994, 1030],
           lengths: [5, 6, 1, 9, 2, 9, 7, 8],
           data: {
             completion: true,
@@ -2149,11 +2233,25 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
             structure: true,
             verification: true
           }
+        },
+        {
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          },
+          generatedOffsets: [1472],
+          lengths: [8],
+          sourceOffsets: [95]
         }
       ],
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export function Local() {}',
         '',
         '',
@@ -2210,6 +2308,8 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
         '',
         '// @ts-ignore',
         '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '// @ts-ignore',
+        'Injected',
         ''
       )
     },
@@ -2290,8 +2390,21 @@ test('create virtual code w/ mdxJsxFlowElement w/ blockquote child', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
+          sourceOffsets: [0],
+          generatedOffsets: [78],
+          lengths: [0],
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
           sourceOffsets: [0, 8, 15, 21],
-          generatedOffsets: [779, 804, 822, 841],
+          generatedOffsets: [806, 831, 849, 868],
           lengths: [5, 6, 5, 6],
           data: {
             completion: true,
@@ -2306,6 +2419,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ blockquote child', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/**',
         ' * @internal',
@@ -2421,7 +2535,7 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [51],
+          generatedOffsets: [78],
           lengths: [27],
           data: {
             completion: true,
@@ -2434,8 +2548,21 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
         },
         {
           sourceOffsets: [28, 36, 37, 49],
-          generatedOffsets: [843, 855, 868, 884],
+          generatedOffsets: [870, 882, 895, 911],
           lengths: [7, 1, 11, 9],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          generatedOffsets: [1354],
+          lengths: [8],
+          sourceOffsets: [37],
           data: {
             completion: true,
             format: false,
@@ -2449,6 +2576,7 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export function Local() {}',
         '',
         '',
@@ -2493,6 +2621,8 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
         '',
         '// @ts-ignore',
         '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '// @ts-ignore',
+        'Injected',
         ''
       )
     },
@@ -2562,7 +2692,7 @@ test('create virtual code w/ mdxJsxTextElement', () => {
       mappings: [
         {
           sourceOffsets: [0],
-          generatedOffsets: [51],
+          generatedOffsets: [78],
           lengths: [27],
           data: {
             completion: true,
@@ -2575,8 +2705,21 @@ test('create virtual code w/ mdxJsxTextElement', () => {
         },
         {
           sourceOffsets: [30, 41, 42, 56],
-          generatedOffsets: [859, 880, 893, 918],
+          generatedOffsets: [886, 907, 920, 945],
           lengths: [7, 1, 11, 9],
+          data: {
+            completion: true,
+            format: false,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          generatedOffsets: [1396],
+          lengths: [8],
+          sourceOffsets: [42],
           data: {
             completion: true,
             format: false,
@@ -2590,6 +2733,7 @@ test('create virtual code w/ mdxJsxTextElement', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export function Local() {}',
         '',
         '',
@@ -2639,6 +2783,8 @@ test('create virtual code w/ mdxJsxTextElement', () => {
         '',
         '// @ts-ignore',
         '/** @typedef {(void extends Props ? {} : Props) & {components?: {}}} MDXContentProps */',
+        '// @ts-ignore',
+        'Injected',
         ''
       )
     },
@@ -2707,7 +2853,20 @@ test('create virtual code w/ mdxTextExpression', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
-          generatedOffsets: [795],
+          generatedOffsets: [78],
+          lengths: [0],
+          sourceOffsets: [0],
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          generatedOffsets: [822],
           sourceOffsets: [4],
           lengths: [9],
           data: {
@@ -2723,6 +2882,7 @@ test('create virtual code w/ mdxTextExpression', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/**',
         ' * @internal',
@@ -2829,7 +2989,20 @@ test('create virtual code w/ async mdxTextExpression', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
-          generatedOffsets: [801],
+          generatedOffsets: [78],
+          sourceOffsets: [0],
+          lengths: [0],
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          }
+        },
+        {
+          generatedOffsets: [828],
           sourceOffsets: [4],
           lengths: [32],
           data: {
@@ -2845,6 +3018,7 @@ test('create virtual code w/ async mdxTextExpression', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/**',
         ' * @internal',
@@ -2965,7 +3139,7 @@ test('ignore async functions in props or expressions', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
-          generatedOffsets: [51, 117, 193],
+          generatedOffsets: [78, 144, 220],
           sourceOffsets: [0, 66, 142],
           lengths: [65, 75, 62],
           data: {
@@ -2978,7 +3152,7 @@ test('ignore async functions in props or expressions', () => {
           }
         },
         {
-          generatedOffsets: [1138, 1186, 1239],
+          generatedOffsets: [1165, 1213, 1266],
           sourceOffsets: [205, 249, 298],
           lengths: [43, 48, 54],
           data: {
@@ -2994,6 +3168,7 @@ test('ignore async functions in props or expressions', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         'export const arrow = async () => {',
         '  await Promise.resolve(42)',
         '}',
@@ -3126,7 +3301,20 @@ test('support locally scoped components', () => {
       languageId: 'javascriptreact',
       mappings: [
         {
-          generatedOffsets: [779],
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          },
+          generatedOffsets: [78],
+          lengths: [0],
+          sourceOffsets: [0]
+        },
+        {
+          generatedOffsets: [806],
           sourceOffsets: [0],
           lengths: [30],
           data: {
@@ -3142,6 +3330,7 @@ test('support locally scoped components', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/**',
         ' * @internal',
@@ -3245,10 +3434,25 @@ test('create virtual code w/ dedented markdown content', () => {
     {
       id: 'jsx',
       languageId: 'javascriptreact',
-      mappings: [],
+      mappings: [
+        {
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          },
+          generatedOffsets: [78],
+          lengths: [0],
+          sourceOffsets: [0]
+        }
+      ],
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/**',
         ' * @internal',
@@ -3358,6 +3562,7 @@ test('create virtual code w/ syntax error', () => {
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/**',
         ' * @internal',
@@ -3440,10 +3645,25 @@ test('create virtual code w/ yaml frontmatter', () => {
     {
       id: 'jsx',
       languageId: 'javascriptreact',
-      mappings: [],
+      mappings: [
+        {
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          },
+          generatedOffsets: [78],
+          lengths: [0],
+          sourceOffsets: [0]
+        }
+      ],
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/**',
         ' * @internal',
@@ -3569,10 +3789,25 @@ test('update virtual code', () => {
     {
       id: 'jsx',
       languageId: 'javascriptreact',
-      mappings: [],
+      mappings: [
+        {
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          },
+          generatedOffsets: [78],
+          lengths: [0],
+          sourceOffsets: [0]
+        }
+      ],
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/**',
         ' * @internal',
@@ -3712,11 +3947,26 @@ test('support checkMdx', () => {
     {
       id: 'jsx',
       languageId: 'javascriptreact',
-      mappings: [],
+      mappings: [
+        {
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          },
+          generatedOffsets: [91],
+          lengths: [0],
+          sourceOffsets: [0]
+        }
+      ],
       snapshot: snapshotFromLines(
         '// @ts-check',
         '/* @jsxRuntime automatic',
         '@jsxImportSource react */',
+        "import 'react/jsx-runtime'",
         '',
         '/**',
         ' * @internal',
@@ -3813,10 +4063,25 @@ test('support custom jsxImportSource', () => {
     {
       id: 'jsx',
       languageId: 'javascriptreact',
-      mappings: [],
+      mappings: [
+        {
+          data: {
+            completion: true,
+            format: true,
+            navigation: true,
+            semantic: true,
+            structure: true,
+            verification: true
+          },
+          generatedOffsets: [80],
+          lengths: [0],
+          sourceOffsets: [0]
+        }
+      ],
       snapshot: snapshotFromLines(
         '/* @jsxRuntime automatic',
         '@jsxImportSource preact */',
+        "import 'preact/jsx-runtime'",
         '',
         '/**',
         ' * @internal',

@@ -41,7 +41,7 @@ bug or suggest a new feature before creating a pull request.
 * Include as much information as possible: steps to reproduce the issue, error
   message, version, operating system, etcetera
 * The more time you put into an issue, the better we will be able to help you
-* The best issue report is a [failing test][unit-test] proving it
+* The best issue report is a failing test proving it
 
 ## Submitting a pull request
 
@@ -110,8 +110,6 @@ Studio Code extension to the [marketplace][], and create GitHub releases.
 [sponsor]: https://mdxjs.com/community/sponsor/
 
 [support]: https://mdxjs.com/community/support/
-
-[unit-test]: https://twitter.com/sindresorhus/status/579306280495357953
 
 [volar labs]: https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volarjs-labs
 

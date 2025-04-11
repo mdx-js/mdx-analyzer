@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 /**
+ * @import {VirtualCodePlugin} from '@mdx-js/language-service'
  * @import {PluggableList} from 'unified'
  */
 
@@ -10,7 +11,7 @@ import process from 'node:process'
 import {
   createMdxLanguagePlugin,
   createMdxServicePlugin,
-  resolveRemarkPlugins
+  resolvePlugins
 } from '@mdx-js/language-service'
 import {
   createConnection,
@@ -82,7 +83,9 @@ connection.onInitialize(async (parameters) => {
    */
   function getLanguagePlugins(tsconfig) {
     /** @type {PluggableList | undefined} */
-    let plugins
+    let remarkPlugins
+    /** @type {VirtualCodePlugin[] | undefined} */
+    let virtualCodePlugins
     let checkMdx = false
     let jsxImportSource = 'react'
 
@@ -101,7 +104,7 @@ connection.onInitialize(async (parameters) => {
       )
       const jiti = createJiti(tsconfig)
 
-      plugins = resolveRemarkPlugins(
+      ;[remarkPlugins, virtualCodePlugins] = resolvePlugins(
         commandLine.raw?.mdx,
         (name) => jiti(name).default
       )
@@ -111,7 +114,8 @@ connection.onInitialize(async (parameters) => {
 
     return [
       createMdxLanguagePlugin(
-        plugins || defaultPlugins,
+        remarkPlugins || defaultPlugins,
+        virtualCodePlugins,
         checkMdx,
         jsxImportSource
       )

@@ -4,42 +4,42 @@
 
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
-import {resolveRemarkPlugins} from '@mdx-js/language-service'
+import {resolvePlugins} from '@mdx-js/language-service'
 
 test('ignore null', () => {
-  const result = resolveRemarkPlugins(null, () => () => {})
+  const result = resolvePlugins(null, () => () => {})
 
-  assert.equal(result, undefined)
+  assert.deepEqual(result, [])
 })
 
 test('ignore non-objects', () => {
-  const result = resolveRemarkPlugins('string', () => () => {})
+  const result = resolvePlugins('string', () => () => {})
 
-  assert.equal(result, undefined)
+  assert.deepEqual(result, [])
 })
 
 test('ignore objects without `plugins` key', () => {
-  const result = resolveRemarkPlugins({}, () => () => {})
+  const result = resolvePlugins({}, () => () => {})
 
-  assert.equal(result, undefined)
+  assert.deepEqual(result, [])
 })
 
 test('ignore null plugins', () => {
-  const result = resolveRemarkPlugins({plugins: null}, () => () => {})
+  const result = resolvePlugins({plugins: null}, () => () => {})
 
-  assert.equal(result, undefined)
+  assert.deepEqual(result, [])
 })
 
 test('ignore non-object plugins', () => {
-  const result = resolveRemarkPlugins({plugins: 'string'}, () => () => {})
+  const result = resolvePlugins({plugins: 'string'}, () => () => {})
 
-  assert.equal(result, undefined)
+  assert.deepEqual(result, [])
 })
 
 test('ignore empty plugins', () => {
-  const result = resolveRemarkPlugins({plugins: []}, () => () => {})
+  const result = resolvePlugins({plugins: []}, () => () => {})
 
-  assert.equal(result, undefined)
+  assert.deepEqual(result, [])
 })
 
 test('load array of plugin tuples', () => {
@@ -49,12 +49,12 @@ test('load array of plugin tuples', () => {
     b() {}
   }
 
-  const result = resolveRemarkPlugins(
+  const result = resolvePlugins(
     {plugins: ['a', ['b', 'b options'], 42]},
     (name) => plugins[name]
   )
 
-  assert.deepEqual(result, [[plugins.a], [plugins.b, 'b options']])
+  assert.deepEqual(result, [[[plugins.a], [plugins.b, 'b options']], []])
 })
 
 test('load object plugin mappings', () => {
@@ -64,13 +64,16 @@ test('load object plugin mappings', () => {
     b() {}
   }
 
-  const result = resolveRemarkPlugins(
-    {plugins: {a: undefined, b: 'b options'}},
+  const result = resolvePlugins(
+    {plugins: {a: [], b: 'b options'}},
     (name) => plugins[name]
   )
 
   assert.deepEqual(result, [
-    [plugins.a, undefined],
-    [plugins.b, 'b options']
+    [
+      [plugins.a, []],
+      [plugins.b, 'b options']
+    ],
+    []
   ])
 })

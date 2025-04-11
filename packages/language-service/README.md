@@ -19,7 +19,7 @@
 * [API](#api)
   * [`createMdxLanguagePlugin([plugins][, checkMdx][, jsxImportSource])`](#createmdxlanguagepluginplugins-checkmdx-jsximportsource)
   * [`createMdxServicePlugin(options)`](#createmdxservicepluginoptions)
-  * [`resolveRemarkPlugins(mdxConfig, resolvePlugin)`](#resolveremarkpluginsmdxconfig-resolveplugin)
+  * [`resolvePlugins(mdxConfig, resolvePlugin)`](#resolvepluginsmdxconfig-resolveplugin)
 * [Compatibility](#compatibility)
 * [Types](#types)
 * [Security](#security)
@@ -57,7 +57,7 @@ In Deno with [`esm.sh`][esmsh]:
 import {
   createMdxLanguagePlugin,
   createMdxServicePlugin,
-  resolveRemarkPlugins
+  resolvePlugins
 } from 'https://esm.sh/@mdx-js/language-service'
 ```
 
@@ -68,7 +68,7 @@ In browsers with [`esm.sh`][esmsh]:
   import {
     createMdxLanguagePlugin,
     createMdxServicePlugin,
-    resolveRemarkPlugins
+    resolvePlugins
   } from 'https://esm.sh/@mdx-js/language-service?bundle'
 </script>
 ```
@@ -136,9 +136,9 @@ The following commands are supported:
 
 The Volar service plugin for MDX files.
 
-### `resolveRemarkPlugins(mdxConfig, resolvePlugin)`
+### `resolvePlugins(mdxConfig, resolvePlugin)`
 
-Resolve remark plugins from TypeScript’s parsed command line options.
+Resolve plugins from TypeScript’s parsed command line options.
 
 #### Parameters
 
@@ -149,8 +149,14 @@ Resolve remark plugins from TypeScript’s parsed command line options.
 
 #### Returns
 
-An array of resolved plugins, or `undefined` in case of an invalid
-configuration.
+A tuple where the first item is n array of resolved plugins,
+or `undefined` in case of an invalid configuration.
+The second item is an array of supported transformer plugins.
+The supported transformer plugins are:
+
+* [`recma-export-filepath`](https://github.com/remcohaszing/recma-export-filepath)
+* [`rehype-mdx-title`](https://github.com/remcohaszing/rehype-mdx-title)
+* [`remark-mdx-frontmatter`](https://github.com/remcohaszing/remark-mdx-frontmatter)
 
 ## Compatibility
 

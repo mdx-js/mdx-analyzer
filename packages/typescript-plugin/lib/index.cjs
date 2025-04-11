@@ -6,7 +6,7 @@
 
 const {
   createMdxLanguagePlugin,
-  resolveRemarkPlugins
+  resolvePlugins
 } = require('@mdx-js/language-service')
 const {
   createLanguageServicePlugin
@@ -42,7 +42,7 @@ const plugin = createLanguageServicePlugin((ts, info) => {
 
   const jiti = createJiti(configFile.fileName)
 
-  const plugins = resolveRemarkPlugins(
+  const [remarkPlugins, virtualCodePlugins] = resolvePlugins(
     commandLine.raw?.mdx,
     (name) => jiti(name).default
   )
@@ -50,7 +50,8 @@ const plugin = createLanguageServicePlugin((ts, info) => {
   return {
     languagePlugins: [
       createMdxLanguagePlugin(
-        plugins || [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm],
+        remarkPlugins || [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm],
+        virtualCodePlugins,
         Boolean(commandLine.raw?.mdx?.checkMdx),
         commandLine.options.jsxImportSource
       )

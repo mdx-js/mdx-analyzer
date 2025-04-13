@@ -36,8 +36,8 @@
     "load-plugin": "^6.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
-    "volar-service-markdown": "0.0.62",
-    "volar-service-typescript": "0.0.62"
+    "volar-service-markdown": "0.0.64",
+    "volar-service-typescript": "0.0.64"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

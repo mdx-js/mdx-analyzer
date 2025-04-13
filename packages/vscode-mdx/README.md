@@ -29,7 +29,7 @@
 [Get it on the VS Code Marketplace][marketplace] or install it by using Quick
 Open (<kbd>Ctrl</kbd> + <kbd>P</kbd>) and running the following:
 
-```txt
+```text
 ext install unifiedjs.vscode-mdx
 ```
 
@@ -261,31 +261,31 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
-
 [build]: https://github.com/mdx-js/mdx-analyzer/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
 
 [chat]: https://github.com/mdx-js/mdx/discussions
 
-[collective]: https://opencollective.com/unified
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
+[collective]: https://opencollective.com/unified
 
 [coverage]: https://codecov.io/github/mdx-js/mdx-analyzer
 
-[eslint-plugin-mdx]: https://github.com/mdx-js/eslint-mdx
+[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
 
 [eslint]: https://eslint.org
+
+[eslint-plugin-mdx]: https://github.com/mdx-js/eslint-mdx
 
 [jounqin]: https://GitHub.com/JounQin
 
 [jsdoc]: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
 
-[marketplace-badge]: https://img.shields.io/visual-studio-marketplace/d/unifiedjs.vscode-mdx
-
 [marketplace]: https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx
+
+[marketplace-badge]: https://img.shields.io/visual-studio-marketplace/d/unifiedjs.vscode-mdx
 
 [mdx]: https://mdxjs.com
 
@@ -293,14 +293,14 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [mit]: http://opensource.org/licenses/MIT
 
-[openvsx-badge]: https://img.shields.io/open-vsx/dt/unifiedjs/vscode-mdx
-
 [openvsx]: https://open-vsx.org/extension/unifiedjs/vscode-mdx
+
+[openvsx-badge]: https://img.shields.io/open-vsx/dt/unifiedjs/vscode-mdx
 
 [sponsor]: https://mdxjs.com/community/sponsor/
 
 [sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
 
-[vscode-eslint]: https://github.com/microsoft/vscode-eslint
-
 [vscode]: https://code.visualstudio.com
+
+[vscode-eslint]: https://github.com/microsoft/vscode-eslint

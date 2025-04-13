@@ -76,7 +76,7 @@ In browsers with [`esm.sh`][esmsh]:
 ## Use
 
 This package exports functions for use with [Volar][].
-See the [API](#api) documentation for each function to see what it does.
+See the [API][] documentation for each function to see what it does.
 
 ## API
 
@@ -257,17 +257,19 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [MIT][] © [Remco Haszing][author]
 
+[api]: #api
+
 [author]: https://github.com/remcohaszing
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
-
 [build]: https://github.com/mdx-js/mdx-analyzer/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
 
 [chat]: https://github.com/mdx-js/mdx/discussions
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
 
 [code of conduct]: https://github.com/mdx-js/.github/blob/main/code-of-conduct.md
 
@@ -275,21 +277,21 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [contribute]: https://mdxjs.com/community/contribute/
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
-
 [coverage]: https://codecov.io/github/mdx-js/mdx-analyzer
 
-[downloads-badge]: https://img.shields.io/npm/dm/@mdx-js/language-service.svg
+[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
 
 [downloads]: https://www.npmjs.com/package/@mdx-js/language-service
+
+[downloads-badge]: https://img.shields.io/npm/dm/@mdx-js/language-service.svg
 
 [esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 
 [esmsh]: https://esm.sh
 
-[mdx-language-server]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/language-server
-
 [mdx]: https://mdxjs.com
+
+[mdx-language-server]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/language-server
 
 [mit]: LICENSE
 
@@ -297,9 +299,9 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [pluggablelist]: https://github.com/unifiedjs/unified?tab=readme-ov-file#pluggablelist
 
-[size-badge]: https://img.shields.io/bundlejs/size/@mdx-js/language-service
-
 [size]: https://bundlejs.com/?q=@mdx-js/language-service
+
+[size-badge]: https://img.shields.io/bundlejs/size/@mdx-js/language-service
 
 [sponsor]: https://mdxjs.com/community/sponsor/
 
@@ -309,6 +311,6 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [typescript]: https://typescriptlang.org
 
-[volar-monaco]: https://github.com/volarjs/volar.js/tree/master/packages/monaco
-
 [volar]: https://volarjs.dev
+
+[volar-monaco]: https://github.com/volarjs/volar.js/tree/master/packages/monaco

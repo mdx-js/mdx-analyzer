@@ -23,7 +23,7 @@
     "react-dom": "^19.0.0",
     "remark-cli": "^12.0.0",
     "remark-frontmatter": "^5.0.0",
-    "remark-preset-wooorm": "^10.0.0",
+    "remark-preset-wooorm": "^11.0.0",
     "typescript": "^5.0.0",
     "xo": "^0.60.0"
   },

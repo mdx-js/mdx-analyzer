@@ -257,6 +257,8 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 
 [MIT][] © [JounQin][]@[1stG.me][]
 
+[1stg.me]: https://www.1stg.me
+
 [`@mdx-js/language-server`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/language-server
 
 [`@mdx-js/language-service`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/language-service
@@ -265,17 +267,15 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 
 [`vscode-mdx`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/vscode-mdx
 
-[1stg.me]: https://www.1stg.me
-
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
 
 [build]: https://github.com/mdx-js/mdx-analyzer/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
 
 [chat]: https://github.com/mdx-js/mdx/discussions
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
 
 [coc]: https://github.com/mdx-js/.github/blob/main/code-of-conduct.md
 
@@ -283,9 +283,9 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 
 [contribute]: CONTRIBUTING.md
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
-
 [coverage]: https://codecov.io/github/mdx-js/mdx-analyzer
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
 
 [frontmatter]: https://github.com/remarkjs/remark-frontmatter
 

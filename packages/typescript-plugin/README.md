@@ -191,13 +191,13 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
-
 [build]: https://github.com/mdx-js/mdx-analyzer/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
 
 [chat]: https://github.com/mdx-js/mdx/discussions
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
 
 [code of conduct]: https://github.com/mdx-js/.github/blob/main/code-of-conduct.md
 
@@ -205,13 +205,13 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [contribute]: https://mdxjs.com/community/contribute/
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
-
 [coverage]: https://codecov.io/github/mdx-js/mdx-analyzer
 
-[downloads-badge]: https://img.shields.io/npm/dm/@mdx-js/language-service.svg
+[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
 
 [downloads]: https://www.npmjs.com/package/@mdx-js/language-service
+
+[downloads-badge]: https://img.shields.io/npm/dm/@mdx-js/language-service.svg
 
 [mdx]: https://mdxjs.com
 
@@ -219,9 +219,9 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [npm]: https://docs.npmjs.com/cli/install
 
-[size-badge]: https://img.shields.io/bundlejs/size/@mdx-js/language-service
-
 [size]: https://bundlejs.com/?q=@mdx-js/language-service
+
+[size-badge]: https://img.shields.io/bundlejs/size/@mdx-js/language-service
 
 [sponsor]: https://mdxjs.com/community/sponsor/
 

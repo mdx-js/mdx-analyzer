@@ -324,13 +324,13 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [backers-badge]: https://opencollective.com/unified/backers/badge.svg
 
-[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
-
 [build]: https://github.com/mdx-js/mdx-analyzer/actions
 
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+[build-badge]: https://github.com/mdx-js/mdx-analyzer/workflows/main/badge.svg
 
 [chat]: https://github.com/mdx-js/mdx/discussions
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
 
 [code of conduct]: https://github.com/mdx-js/.github/blob/main/code-of-conduct.md
 
@@ -338,13 +338,13 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [contribute]: https://mdxjs.com/community/contribute/
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
-
 [coverage]: https://codecov.io/github/mdx-js/mdx-analyzer
 
-[downloads-badge]: https://img.shields.io/npm/dm/@mdx-js/language-server.svg
+[coverage-badge]: https://img.shields.io/codecov/c/github/mdx-js/mdx-analyzer/main.svg
 
 [downloads]: https://www.npmjs.com/package/@mdx-js/language-server
+
+[downloads-badge]: https://img.shields.io/npm/dm/@mdx-js/language-server.svg
 
 [jsdoc]: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
 
@@ -372,14 +372,14 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [typescript]: https://typescriptlang.org
 
+[volar]: https://volarjs.dev
+
 [volar-service-markdown]: https://github.com/volarjs/services/tree/master/packages/markdown
 
 [volar-service-typescript]: https://github.com/volarjs/services/tree/master/packages/typescript
 
-[volar]: https://volarjs.dev
+[vscode]: https://code.visualstudio.com
 
 [vscode-languageserver]: https://github.com/microsoft/vscode-languageserver-node/tree/main/server
-
-[vscode]: https://code.visualstudio.com
 
 [vscode-mdx]: https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx

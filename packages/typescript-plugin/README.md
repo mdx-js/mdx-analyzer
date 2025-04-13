@@ -88,10 +88,7 @@ This is not intended for programmatic use.
 
 ## Compatibility
 
-Projects maintained by the unified collective are compatible with all maintained
-versions of Node.js.
-As of now, that is Node.js and 16.0+.
-Our projects sometimes work with older versions, but this is not guaranteed.
+This project is compatible Node.js 20.19+.
 
 ## Security
 

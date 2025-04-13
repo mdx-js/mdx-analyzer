@@ -2,30 +2,25 @@
 
 /**
  * @import {TsConfigSourceFile} from 'typescript'
- * @import {Plugin} from 'unified' with {'resolution-mode': 'import'}
+ * @import {Plugin} from 'unified'
  */
 
 const {pathToFileURL} = require('node:url')
 const {
+  createMdxLanguagePlugin,
+  resolveRemarkPlugins
+} = require('@mdx-js/language-service')
+const {
   createAsyncLanguageServicePlugin
 } = require('@volar/typescript/lib/quickstart/createAsyncLanguageServicePlugin.js')
+const {loadPlugin} = require('load-plugin')
+const {default: remarkFrontmatter} = require('remark-frontmatter')
+const {default: remarkGfm} = require('remark-gfm')
 
 const plugin = createAsyncLanguageServicePlugin(
   ['.mdx'],
   2 /* JSX */,
   async (ts, info) => {
-    const [
-      {createMdxLanguagePlugin, resolveRemarkPlugins},
-      {loadPlugin},
-      {default: remarkFrontmatter},
-      {default: remarkGfm}
-    ] = await Promise.all([
-      import('@mdx-js/language-service'),
-      import('load-plugin'),
-      import('remark-frontmatter'),
-      import('remark-gfm')
-    ])
-
     if (info.project.projectKind !== ts.server.ProjectKind.Configured) {
       return {
         languagePlugins: [

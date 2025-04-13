@@ -15,7 +15,7 @@ jobs:
       - run: npm install
       - run: npm test
       - uses: codecov/codecov-action@v4
-        if: ${{matrix.os == 'ubuntu-latest' && matrix.node == 20}}
+        if: ${{matrix.os == 'ubuntu-latest' && matrix.node == 22}}
     strategy:
       matrix:
         os:
@@ -24,3 +24,4 @@ jobs:
         node:
           - 18
           - 20
+          - 22

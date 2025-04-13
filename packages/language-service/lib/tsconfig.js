@@ -7,13 +7,13 @@
  *
  * @param {unknown} mdxConfig
  *   The parsed command line options from which to resolve plugins.
- * @param {(name: string) => Plugin | PromiseLike<Plugin>} resolvePlugin
+ * @param {(name: string) => Plugin} resolvePlugin
  *   A function which takes a plugin name, and resolvs it to a remark plugin.
- * @returns {Promise<PluggableList | undefined>}
+ * @returns {PluggableList | undefined}
  *   An array of resolved plugins, or `undefined` in case of an invalid
  *   configuration.
  */
-export async function resolveRemarkPlugins(mdxConfig, resolvePlugin) {
+export function resolveRemarkPlugins(mdxConfig, resolvePlugin) {
   if (
     typeof mdxConfig !== 'object' ||
     !mdxConfig ||
@@ -36,7 +36,7 @@ export async function resolveRemarkPlugins(mdxConfig, resolvePlugin) {
     return
   }
 
-  /** @type {Promise<Pluggable>[]} */
+  /** @type {Pluggable[]} */
   const plugins = []
   for (const maybeTuple of pluginArray) {
     const [name, ...options] = Array.isArray(maybeTuple)
@@ -47,12 +47,8 @@ export async function resolveRemarkPlugins(mdxConfig, resolvePlugin) {
       continue
     }
 
-    plugins.push(
-      Promise.resolve(name)
-        .then(resolvePlugin)
-        .then((plugin) => [plugin, ...options])
-    )
+    plugins.push([resolvePlugin(name), ...options])
   }
 
-  return Promise.all(plugins)
+  return plugins
 }

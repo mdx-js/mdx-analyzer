@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
 /**
- * @import {PluggableList, Plugin} from 'unified'
+ * @import {PluggableList} from 'unified'
  */
 
 import assert from 'node:assert'
 import path from 'node:path'
 import process from 'node:process'
-import {pathToFileURL} from 'node:url'
 import {
   createMdxLanguagePlugin,
   createMdxServicePlugin,
@@ -19,7 +18,7 @@ import {
   createTypeScriptProject,
   loadTsdkByPath
 } from '@volar/language-server/node.js'
-import {loadPlugin} from 'load-plugin'
+import {createJiti} from 'jiti'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
@@ -52,8 +51,8 @@ connection.onInitialize(async (parameters) => {
     createTypeScriptProject(
       typescript,
       diagnosticMessages,
-      async ({configFileName}) => ({
-        languagePlugins: await getLanguagePlugins(configFileName)
+      ({configFileName}) => ({
+        languagePlugins: getLanguagePlugins(configFileName)
       })
     ),
     getLanguageServicePlugins()
@@ -81,7 +80,7 @@ connection.onInitialize(async (parameters) => {
   /**
    * @param {string | undefined} tsconfig
    */
-  async function getLanguagePlugins(tsconfig) {
+  function getLanguagePlugins(tsconfig) {
     /** @type {PluggableList | undefined} */
     let plugins
     let checkMdx = false
@@ -100,12 +99,11 @@ connection.onInitialize(async (parameters) => {
         undefined,
         tsconfig
       )
-      plugins = await resolveRemarkPlugins(
+      const jiti = createJiti(tsconfig)
+
+      plugins = resolveRemarkPlugins(
         commandLine.raw?.mdx,
-        (name) =>
-          /** @type {Promise<Plugin>} */ (
-            loadPlugin(name, {prefix: 'remark', from: pathToFileURL(cwd) + '/'})
-          )
+        (name) => jiti(name).default
       )
       checkMdx = Boolean(commandLine.raw?.mdx?.checkMdx)
       jsxImportSource = commandLine.options.jsxImportSource || jsxImportSource

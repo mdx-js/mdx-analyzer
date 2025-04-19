@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.14
+
+### Patch Changes
+
+- [#491](https://github.com/mdx-js/mdx-analyzer/pull/491) [`8f6c987`](https://github.com/mdx-js/mdx-analyzer/commit/8f6c9875647f203f8ebe693cb3603fc94f84d42e) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Enhance support for auto-imports
+
+- [#501](https://github.com/mdx-js/mdx-analyzer/pull/501) [`9b3b9ce`](https://github.com/mdx-js/mdx-analyzer/commit/9b3b9ce426c614760441f35e27d1f4ddf9f26c80) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add support for `recma-export-filepath`, `rehype-mdx-title`, and `remark-mdx-frontmatter`
+
 ## 1.8.13
 
 ### Patch Changes

@@ -4,6 +4,7 @@
  * @import {LanguagePlugin} from '@volar/language-service'
  * @import {PluggableList} from 'unified'
  * @import {URI} from 'vscode-uri'
+ * @import {VirtualCodePlugin} from './plugins/plugin.js'
  */
 
 import remarkMdx from 'remark-mdx'
@@ -14,9 +15,10 @@ import {VirtualMdxCode} from './virtual-code.js'
 /**
  * Create a [Volar](https://volarjs.dev) language plugin to support MDX.
  *
- * @param {PluggableList} [plugins]
+ * @param {PluggableList} [remarkPlugins]
  *   A list of remark syntax plugins. Only syntax plugins are supported.
  *   Transformers are unused.
+ * @param {VirtualCodePlugin[]} [virtualCodePlugins]
  * @param {boolean} checkMdx
  *   If true, check MDX files strictly.
  * @param {string} jsxImportSource
@@ -25,13 +27,14 @@ import {VirtualMdxCode} from './virtual-code.js'
  *   A Volar language plugin to support MDX.
  */
 export function createMdxLanguagePlugin(
-  plugins,
+  remarkPlugins,
+  virtualCodePlugins,
   checkMdx = false,
   jsxImportSource = 'react'
 ) {
   const processor = unified().use(remarkParse).use(remarkMdx)
-  if (plugins) {
-    processor.use(plugins)
+  if (remarkPlugins) {
+    processor.use(remarkPlugins)
   }
 
   processor.freeze()
@@ -48,6 +51,7 @@ export function createMdxLanguagePlugin(
         return new VirtualMdxCode(
           snapshot,
           processor,
+          virtualCodePlugins || [],
           checkMdx,
           jsxImportSource
         )

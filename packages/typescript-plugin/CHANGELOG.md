@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.1.0
+
+### Minor Changes
+
+- [#500](https://github.com/mdx-js/mdx-analyzer/pull/500) [`48d74c8`](https://github.com/mdx-js/mdx-analyzer/commit/48d74c8147c1d5fc6d5c079d06f8d6076939afd6) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Make the plugin synchronous
+
+- [#499](https://github.com/mdx-js/mdx-analyzer/pull/499) [`d440c79`](https://github.com/mdx-js/mdx-analyzer/commit/d440c794badd83ba100e86cde9c19c819005116b) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Remove support for Node.js 18
+
+- [#500](https://github.com/mdx-js/mdx-analyzer/pull/500) [`48d74c8`](https://github.com/mdx-js/mdx-analyzer/commit/48d74c8147c1d5fc6d5c079d06f8d6076939afd6) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Use jiti to load ESM synchronously
+
+### Patch Changes
+
+- [#491](https://github.com/mdx-js/mdx-analyzer/pull/491) [`8f6c987`](https://github.com/mdx-js/mdx-analyzer/commit/8f6c9875647f203f8ebe693cb3603fc94f84d42e) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Enhance support for auto-imports
+
+- [#501](https://github.com/mdx-js/mdx-analyzer/pull/501) [`9b3b9ce`](https://github.com/mdx-js/mdx-analyzer/commit/9b3b9ce426c614760441f35e27d1f4ddf9f26c80) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add support for `recma-export-filepath`, `rehype-mdx-title`, and `remark-mdx-frontmatter`
+
+- Updated dependencies [[`d440c79`](https://github.com/mdx-js/mdx-analyzer/commit/d440c794badd83ba100e86cde9c19c819005116b), [`9b3b9ce`](https://github.com/mdx-js/mdx-analyzer/commit/9b3b9ce426c614760441f35e27d1f4ddf9f26c80), [`8f6c987`](https://github.com/mdx-js/mdx-analyzer/commit/8f6c9875647f203f8ebe693cb3603fc94f84d42e), [`9b3b9ce`](https://github.com/mdx-js/mdx-analyzer/commit/9b3b9ce426c614760441f35e27d1f4ddf9f26c80), [`48d74c8`](https://github.com/mdx-js/mdx-analyzer/commit/48d74c8147c1d5fc6d5c079d06f8d6076939afd6)]:
+  - @mdx-js/language-service@0.7.0
+
 ## 0.0.8
 
 ### Patch Changes

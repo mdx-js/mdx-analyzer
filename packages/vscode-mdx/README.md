@@ -20,6 +20,7 @@
   * [Custom Languages in Code Blocks](#custom-languages-in-code-blocks)
 * [ESLint](#eslint)
 * [Auto-close tags](#auto-close-tags)
+* [Prettier](#prettier)
 * [Sponsor](#sponsor)
 * [Changelog](#changelog)
 * [License](#license)
@@ -177,6 +178,17 @@ If you want VS Code to automatically close tags while you type, install
 }
 ```
 
+## Prettier
+
+[Prettier][] supports MDX 1, but MDX 2 and 3
+[are not officially supported][prettier issue] yet.
+We recommend against formatting MDX files with Prettier.
+To opt out, add the following line to your `.prettierignore` file:
+
+```ignore
+*.mdx
+```
+
 ## Sponsor
 
 See [§ Sponsor][sponsor] on our site for how to help financially.
@@ -296,6 +308,10 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 [openvsx]: https://open-vsx.org/extension/unifiedjs/vscode-mdx
 
 [openvsx-badge]: https://img.shields.io/open-vsx/dt/unifiedjs/vscode-mdx
+
+[prettier]: https://prettier.io
+
+[prettier issue]: https://github.com/prettier/prettier/issues/12209
 
 [sponsor]: https://mdxjs.com/community/sponsor/
 

@@ -42,7 +42,7 @@ export async function toggleSyntax(
     return
   }
 
-  const ast = root.ast
+  const {ast} = root
 
   if (!ast) {
     return

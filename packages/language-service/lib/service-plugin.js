@@ -227,7 +227,7 @@ export function createMdxServicePlugin(options) {
             return
           }
 
-          const error = virtualCode.error
+          const {error} = virtualCode
 
           if (error) {
             return [

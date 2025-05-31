@@ -46,8 +46,8 @@ test('resolve markdown link references', async () => {
             kind: 1,
             source: {
               isAngleBracketLink: false,
+              hrefPathText: 'mdx',
               hrefText: 'mdx',
-              pathText: 'mdx',
               resource: {
                 $mid: 1,
                 authority: 'md',
@@ -61,8 +61,8 @@ test('resolve markdown link references', async () => {
                 end: {line: 0, character: 15}
               },
               targetRange: {
-                start: {line: 0, character: 9},
-                end: {line: 0, character: 12}
+                start: {line: 0, character: 8},
+                end: {line: 0, character: 13}
               },
               hrefRange: {
                 start: {line: 0, character: 9},

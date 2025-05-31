@@ -37,7 +37,7 @@ let tsEnabled = false
 connection.onInitialize(async (parameters) => {
   const tsdk = parameters.initializationOptions?.typescript?.tsdk
   tsEnabled = Boolean(parameters.initializationOptions?.typescript?.enabled)
-  assert(
+  assert.ok(
     typeof tsdk === 'string',
     'Missing initialization option typescript.tsdk'
   )

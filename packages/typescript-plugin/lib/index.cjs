@@ -28,6 +28,7 @@ const plugin = createLanguageServicePlugin((ts, info) => {
   }
 
   const cwd = info.project.getCurrentDirectory()
+  // eslint-disable-next-line prefer-destructuring
   const configFile = /** @type {TsConfigSourceFile} */ (
     info.project.getCompilerOptions().configFile
   )

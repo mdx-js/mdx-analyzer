@@ -1,13 +1,12 @@
 import {createRequire} from 'node:module'
 import path from 'node:path'
 import {URI, Utils} from 'vscode-uri'
-// eslint-disable-next-line import/order
 import {startLanguageServer} from '@volar/test-utils'
+import pkg from '../package.json' with {type: 'json'}
 
 const require = createRequire(import.meta.url)
 const pkgPath = new URL('../package.json', import.meta.url)
 const pkgRequire = createRequire(pkgPath)
-const pkg = require('../package.json')
 
 const bin = pkgRequire.resolve(pkg.bin['mdx-language-server'])
 

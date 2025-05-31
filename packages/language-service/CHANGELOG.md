@@ -1,5 +1,11 @@
 # @mdx-js/language-service
 
+## 0.7.1
+
+### Patch Changes
+
+- [#507](https://github.com/mdx-js/mdx-analyzer/pull/507) [`2e69f94`](https://github.com/mdx-js/mdx-analyzer/commit/2e69f9483fc333994f626f25f14655298cf0172a) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix organizing imports
+
 ## 0.7.0
 
 ### Minor Changes

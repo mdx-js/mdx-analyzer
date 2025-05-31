@@ -24,12 +24,8 @@ import {isInjectableComponent, isInjectableEstree} from './jsx-utils.js'
  * @param {string} jsxImportSource
  *   The string to use for the JSX import source tag.
  */
-const jsPrefix = (
-  tsCheck,
-  jsxImportSource
-) => `${tsCheck ? '// @ts-check\n' : ''}/* @jsxRuntime automatic
+const jsPrefix = (tsCheck, jsxImportSource) => `/* @jsxRuntime automatic
 @jsxImportSource ${jsxImportSource} */
-import '${jsxImportSource}/jsx-runtime'
 `
 
 /**
@@ -217,86 +213,6 @@ function getPropsName(node) {
 }
 
 /**
- * Process exports of an MDX ESM node.
- *
- * @param {string} mdx
- *   The full MDX code to process.
- * @param {MdxjsEsm} node
- *   The MDX ESM node to process.
- * @param {CodeMapping} mapping
- *   The Volar mapping to add offsets to.
- * @param {string} esm
- *   The virtual ESM code up to the point this function was called.
- * @returns {string}
- *   The updated virtual ESM code.
- */
-function processExports(mdx, node, mapping, esm) {
-  const start = node.position?.start?.offset
-  const end = node.position?.end?.offset
-
-  if (start === undefined || end === undefined) {
-    return esm
-  }
-
-  const body = node.data?.estree?.body
-
-  if (!body?.length) {
-    return addOffset(mapping, mdx, esm, start, end, true)
-  }
-
-  for (const child of body) {
-    if (child.type === 'ExportDefaultDeclaration') {
-      const propsName = getPropsName(child)
-      if (propsName) {
-        esm += layoutJsDoc(propsName)
-      }
-
-      esm = addOffset(
-        mapping,
-        mdx,
-        esm + '\nconst MDXLayout = ',
-        child.declaration.start,
-        child.end,
-        true
-      )
-      continue
-    }
-
-    if (child.type === 'ExportNamedDeclaration' && child.source) {
-      const {specifiers} = child
-      for (let index = 0; index < specifiers.length; index++) {
-        const specifier = specifiers[index]
-        if (
-          specifier.local.type === 'Identifier'
-            ? specifier.local.name === 'default'
-            : specifier.local.value === 'default'
-        ) {
-          esm = addOffset(mapping, mdx, esm, start, specifier.start)
-          const nextPosition =
-            index === specifiers.length - 1
-              ? specifier.end
-              : mdx.indexOf(',', specifier.end) + 1
-          return (
-            addOffset(mapping, mdx, esm, nextPosition, end, true) +
-            '\nimport {' +
-            (specifier.exported.type === 'Identifier'
-              ? specifier.exported.name
-              : JSON.stringify(specifier.exported.value)) +
-            ' as MDXLayout} from ' +
-            JSON.stringify(child.source.value) +
-            '\n'
-          )
-        }
-      }
-    }
-
-    esm = addOffset(mapping, mdx, esm, child.start, child.end, true)
-  }
-
-  return esm + '\n'
-}
-
-/**
  * Pad the generated offsets of a Volar code mapping.
  *
  * @param {CodeMapping} mapping
@@ -327,6 +243,7 @@ function getEmbeddedCodes(
   jsxImportSource
 ) {
   let hasAwait = false
+  let hasImports = false
   let esm = jsPrefix(checkMdx, jsxImportSource)
   let jsx = ''
   let jsxVariables = ''
@@ -345,9 +262,9 @@ function getEmbeddedCodes(
   const esmMapping = {
     // The empty mapping makes sure there’s always a valid mapping to insert
     // auto-imports.
-    sourceOffsets: [0],
-    generatedOffsets: [esm.length],
-    lengths: [0],
+    sourceOffsets: [],
+    generatedOffsets: [],
+    lengths: [],
     data: {
       completion: true,
       format: true,
@@ -491,6 +408,83 @@ function getEmbeddedCodes(
     const endOffset = getNodeEndOffset(node)
 
     updateMarkdownFromOffsets(startOffset, endOffset)
+  }
+
+  /**
+   * Process exports of an MDX ESM node.
+   *
+   * @param {MdxjsEsm} node
+   *   The MDX ESM node to process.
+   * @returns {undefined}
+   */
+  function processExports(node) {
+    const start = node.position?.start?.offset
+    const end = node.position?.end?.offset
+
+    if (start === undefined || end === undefined) {
+      return
+    }
+
+    const body = node.data?.estree?.body
+
+    if (!body?.length) {
+      esm = addOffset(esmMapping, mdx, esm, start, end, true)
+      return
+    }
+
+    bodyLoop: for (const child of body) {
+      if (child.type === 'ExportDefaultDeclaration') {
+        const propsName = getPropsName(child)
+        if (propsName) {
+          esm += layoutJsDoc(propsName)
+        }
+
+        esm = addOffset(
+          esmMapping,
+          mdx,
+          esm + '\nconst MDXLayout = ',
+          child.declaration.start,
+          child.end,
+          true
+        )
+        continue
+      }
+
+      if (child.type === 'ExportNamedDeclaration' && child.source) {
+        const {specifiers} = child
+        for (let index = 0; index < specifiers.length; index++) {
+          const specifier = specifiers[index]
+          if (
+            specifier.local.type === 'Identifier'
+              ? specifier.local.name === 'default'
+              : specifier.local.value === 'default'
+          ) {
+            esm = addOffset(esmMapping, mdx, esm, start, specifier.start)
+            const nextPosition =
+              index === specifiers.length - 1
+                ? specifier.end
+                : mdx.indexOf(',', specifier.end) + 1
+            esm =
+              addOffset(esmMapping, mdx, esm, nextPosition, end, true) +
+              '\nimport {' +
+              (specifier.exported.type === 'Identifier'
+                ? specifier.exported.name
+                : JSON.stringify(specifier.exported.value)) +
+              ' as MDXLayout} from ' +
+              JSON.stringify(child.source.value)
+            continue bodyLoop
+          }
+        }
+      }
+
+      if (child.type === 'ImportDeclaration') {
+        hasImports = true
+      }
+
+      esm = addOffset(esmMapping, mdx, esm, child.start, child.end, true)
+    }
+
+    esm += '\n'
   }
 
   /**
@@ -663,7 +657,7 @@ function getEmbeddedCodes(
 
         case 'mdxjsEsm': {
           updateMarkdownFromNode(node)
-          esm = processExports(mdx, node, esmMapping, esm)
+          processExports(node)
           break
         }
 
@@ -806,6 +800,25 @@ function getEmbeddedCodes(
 
   for (const plugin of plugins) {
     esm += '\n' + plugin.finalize() + '\n'
+  }
+
+  let prefix = ''
+  if (checkMdx) {
+    prefix += '// @ts-check\n'
+  }
+  if (!hasImports) {
+    prefix += `import '${jsxImportSource}/jsx-runtime'\n`
+  }
+
+  if (prefix) {
+    padOffsets(esmMapping, prefix.length)
+    esm = prefix + esm
+  }
+
+  if (!hasImports) {
+    esmMapping.sourceOffsets.unshift(0)
+    esmMapping.generatedOffsets.unshift(prefix.length)
+    esmMapping.lengths.unshift(0)
   }
 
   updateMarkdownFromOffsets(mdx.length, mdx.length)

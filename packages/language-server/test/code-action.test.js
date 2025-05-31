@@ -43,9 +43,9 @@ test('organize imports', async () => {
   const codeAction = codeActions
     .filter((c) => CodeAction.is(c))
     .find((c) => c.kind === 'source.organizeImports')
+  delete codeAction?.data
 
-  assert.partialDeepStrictEqual(codeAction, {
-    data: {},
+  assert.deepEqual(codeAction, {
     diagnostics: [],
     edit: {
       documentChanges: [

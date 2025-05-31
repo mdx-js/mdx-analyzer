@@ -806,6 +806,7 @@ function getEmbeddedCodes(
   if (checkMdx) {
     prefix += '// @ts-check\n'
   }
+
   if (!hasImports) {
     prefix += `import '${jsxImportSource}/jsx-runtime'\n`
   }

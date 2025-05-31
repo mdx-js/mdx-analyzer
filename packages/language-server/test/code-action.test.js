@@ -41,7 +41,7 @@ test('organize imports', async () => {
 
   assert.ok(codeActions)
   const codeAction = codeActions
-    .filter(CodeAction.is)
+    .filter((c) => CodeAction.is(c))
     .find((c) => c.kind === 'source.organizeImports')
 
   assert.partialDeepStrictEqual(codeAction, {

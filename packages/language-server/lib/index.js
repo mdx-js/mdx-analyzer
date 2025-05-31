@@ -6,6 +6,7 @@
  */
 
 import assert from 'node:assert'
+import {createRequire} from 'node:module'
 import path from 'node:path'
 import process from 'node:process'
 import {
@@ -19,7 +20,6 @@ import {
   createTypeScriptProject,
   loadTsdkByPath
 } from '@volar/language-server/node.js'
-import {createJiti} from 'jiti'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
@@ -102,11 +102,12 @@ connection.onInitialize(async (parameters) => {
         undefined,
         tsconfig
       )
-      const jiti = createJiti(tsconfig)
+
+      const require = createRequire(tsconfig)
 
       ;[remarkPlugins, virtualCodePlugins] = resolvePlugins(
         commandLine.raw?.mdx,
-        (name) => jiti(name).default
+        (name) => require(name).default
       )
       checkMdx = Boolean(commandLine.raw?.mdx?.checkMdx)
       jsxImportSource = commandLine.options.jsxImportSource || jsxImportSource

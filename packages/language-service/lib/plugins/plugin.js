@@ -15,3 +15,5 @@
  * @typedef {() => VirtualCodePluginObject} VirtualCodePlugin
  *   An internal plugin for MDX analyzer that represents an MDX plugin.
  */
+
+export {}

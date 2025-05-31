@@ -15,9 +15,9 @@ const branches =
     await branchesResponse.json()
   )
 const main = branches.find((d) => d.name === branch)
-assert(main, 'expected `' + branch + '` branch')
+assert.ok(main, 'expected `' + branch + '` branch')
 
-const sha = main.commit.sha
+const {sha} = main.commit
 
 const blobResponse = await fetch(
   `https://raw.githubusercontent.com/${repo}/${branch}/${filename}`
@@ -39,7 +39,7 @@ blob = blob.replace(/<dict>/, ($0) => {
   ${$0}`
 })
 
-assert(injected, 'expected to find a dict')
+assert.ok(injected, 'expected to find a dict')
 
 await fs.writeFile(
   new URL('../syntaxes/source.mdx.tmLanguage', import.meta.url),

@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict'
 import {spawnSync} from 'node:child_process'
-// eslint-disable-next-line import/order
-import {createRequire} from 'node:module'
-
-const require = createRequire(import.meta.url)
-const pkg = require('../packages/vscode-mdx/package.json')
+import pkg from '../packages/vscode-mdx/package.json' with {type: 'json'}
 
 const tag = `${pkg.name}@${pkg.version}`
 

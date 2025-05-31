@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
-import {createMdxLanguagePlugin} from '@mdx-js/language-service'
 import remarkFrontmatter from 'remark-frontmatter'
 import typescript from 'typescript'
 import {VFileMessage} from 'vfile-message'
@@ -9,6 +8,7 @@ import {VirtualMdxCode} from '../lib/virtual-code.js'
 import {recmaExportFilepath} from '../lib/plugins/recma-export-filepath.js'
 import {rehypeMdxTitle} from '../lib/plugins/rehype-mdx-title.js'
 import {remarkMdxFrontmatter} from '../lib/plugins/remark-mdx-frontmatter.js'
+import {createMdxLanguagePlugin} from '@mdx-js/language-service'
 
 test('create virtual code w/ mdxjsEsm', () => {
   const plugin = createMdxLanguagePlugin()

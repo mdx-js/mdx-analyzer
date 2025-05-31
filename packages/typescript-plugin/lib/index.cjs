@@ -4,6 +4,7 @@
  * @import {TsConfigSourceFile} from 'typescript'
  */
 
+const {createRequire} = require('node:module')
 const {
   createMdxLanguagePlugin,
   resolvePlugins
@@ -11,7 +12,6 @@ const {
 const {
   createLanguageServicePlugin
 } = require('@volar/typescript/lib/quickstart/createLanguageServicePlugin.js')
-const {createJiti} = require('jiti')
 const {default: remarkFrontmatter} = require('remark-frontmatter')
 const {default: remarkGfm} = require('remark-gfm')
 
@@ -40,11 +40,11 @@ const plugin = createLanguageServicePlugin((ts, info) => {
     configFile.fileName
   )
 
-  const jiti = createJiti(configFile.fileName)
+  const require = createRequire(configFile.fileName)
 
   const [remarkPlugins, virtualCodePlugins] = resolvePlugins(
     commandLine.raw?.mdx,
-    (name) => jiti(name).default
+    (name) => require(name).default
   )
 
   return {

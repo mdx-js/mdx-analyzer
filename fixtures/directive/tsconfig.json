@@ -6,6 +6,6 @@
     "strict": true
   },
   "mdx": {
-    "plugins": ["remark-frontmatter"]
+    "plugins": ["remark-directive"]
   }
 }

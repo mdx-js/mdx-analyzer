@@ -14,7 +14,7 @@
   "folders": [
     {"path": "debug"},
     {"path": "demo"},
-    {"path": "frontmatter"},
+    {"path": "directive"},
     {"path": "no-tsconfig"},
     {"path": "node16"},
     {"path": "provide"}

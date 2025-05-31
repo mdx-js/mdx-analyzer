@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.1
+
+### Patch Changes
+
+- [#505](https://github.com/mdx-js/mdx-analyzer/pull/505) [`f55d647`](https://github.com/mdx-js/mdx-analyzer/commit/f55d6471224c5df25d7d4a71c5c4806cd06e6859) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Replace jiti with native require.
+
+- [#507](https://github.com/mdx-js/mdx-analyzer/pull/507) [`2e69f94`](https://github.com/mdx-js/mdx-analyzer/commit/2e69f9483fc333994f626f25f14655298cf0172a) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix organizing imports
+
+- Updated dependencies [[`2e69f94`](https://github.com/mdx-js/mdx-analyzer/commit/2e69f9483fc333994f626f25f14655298cf0172a)]:
+  - @mdx-js/language-service@0.7.1
+
 ## 0.1.0
 
 ### Minor Changes

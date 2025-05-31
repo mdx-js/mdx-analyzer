@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/language-server",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "type": "module",
   "description": "A language server for MDX",
   "repository": {
@@ -31,7 +31,7 @@
     "test": "npm run test-api"
   },
   "dependencies": {
-    "@mdx-js/language-service": "0.7.0",
+    "@mdx-js/language-service": "0.7.1",
     "@volar/language-server": "~2.4.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",

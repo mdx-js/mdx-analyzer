@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.15
+
+### Patch Changes
+
+- [#505](https://github.com/mdx-js/mdx-analyzer/pull/505) [`f55d647`](https://github.com/mdx-js/mdx-analyzer/commit/f55d6471224c5df25d7d4a71c5c4806cd06e6859) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Require at least VSCode 1.100.
+
+- [#507](https://github.com/mdx-js/mdx-analyzer/pull/507) [`2e69f94`](https://github.com/mdx-js/mdx-analyzer/commit/2e69f9483fc333994f626f25f14655298cf0172a) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix organizing imports
+
 ## 1.8.14
 
 ### Patch Changes

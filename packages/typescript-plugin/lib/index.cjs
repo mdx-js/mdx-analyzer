@@ -16,6 +16,23 @@ const {default: remarkFrontmatter} = require('remark-frontmatter')
 const {default: remarkGfm} = require('remark-gfm')
 
 const plugin = createLanguageServicePlugin((ts, info) => {
+  const {getAllProjectErrors} = info.project
+
+  // Filter out the message “No inputs were found in config file …” if the
+  // project contains MDX files.
+  info.project.getAllProjectErrors = () => {
+    const diagnostics = getAllProjectErrors.call(info.project)
+    const fileNames = info.project.getFileNames(true, true)
+
+    const hasMdx = fileNames.some((fileName) => fileName.endsWith('.mdx'))
+
+    if (hasMdx) {
+      diagnostics.filter((diagnostic) => diagnostic.code !== 18003)
+    }
+
+    return diagnostics
+  }
+
   if (info.project.projectKind !== ts.server.ProjectKind.Configured) {
     return {
       languagePlugins: [

@@ -7,7 +7,7 @@
  * @import {IScriptSnapshot} from 'typescript'
  * @import {Processor} from 'unified'
  * @import {VFileMessage} from 'vfile-message'
- * @import {VirtualCodePlugin, VirtualCodePluginObject} from './plugins/plugin.js'
+ * @import {VirtualCodePlugin} from './plugins/plugin.js'
  */
 
 import {createVisitors} from 'estree-util-scope'
@@ -19,12 +19,10 @@ import {isInjectableComponent, isInjectableEstree} from './jsx-utils.js'
 /**
  * Render the content that should be prefixed to the embedded JavaScript file.
  *
- * @param {boolean} tsCheck
- *   If true, insert a `@check-js` comment into the virtual JavaScript code.
  * @param {string} jsxImportSource
  *   The string to use for the JSX import source tag.
  */
-const jsPrefix = (tsCheck, jsxImportSource) => `/* @jsxRuntime automatic
+const jsPrefix = (jsxImportSource) => `/* @jsxRuntime automatic
 @jsxImportSource ${jsxImportSource} */
 `
 
@@ -98,7 +96,7 @@ export default function MDXContent(props) {
 
 const jsxIndent = '\n    '
 
-const fallback = jsPrefix(false, 'react') + componentStart(false) + componentEnd
+const fallback = jsPrefix('react') + componentStart(false) + componentEnd
 
 /**
  * Visit an mdast tree with and enter and exit callback.
@@ -244,7 +242,7 @@ function getEmbeddedCodes(
 ) {
   let hasAwait = false
   let hasImports = false
-  let esm = jsPrefix(checkMdx, jsxImportSource)
+  let esm = jsPrefix(jsxImportSource)
   let jsx = ''
   let jsxVariables = ''
   let markdown = ''

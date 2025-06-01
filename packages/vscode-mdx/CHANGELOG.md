@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.16
+
+### Patch Changes
+
+- [#508](https://github.com/mdx-js/mdx-analyzer/pull/508) [`bf88035`](https://github.com/mdx-js/mdx-analyzer/commit/bf880355d603962e803955c2fd504753ba8f6053) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix `tsconfig.json` diagnostics if only MDX inputs are found
+
 ## 1.8.15
 
 ### Patch Changes

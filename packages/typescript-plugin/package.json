@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/typescript-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "A TypeScript plugin to support language features in MDX files",
   "repository": {

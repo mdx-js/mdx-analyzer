@@ -127,17 +127,6 @@ It uses the `workspace/applyEdit` command to apply edits.
 
 `null`
 
-### Initialize Options
-
-MDX language server supports the following LSP initialization options:
-
-* `typescript.enabled` (`boolean`, default: `false`) —
-  If true, enable TypeScript.
-* `typescript.tsdk` (`string`, required) —
-  The path from which to load TypeScript.
-* `locale` (`string`, optional) —
-  The locale to use for TypeScript error messages.
-
 ### Configuration
 
 MDX language server supports the following LSP configuration options:

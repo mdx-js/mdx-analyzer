@@ -38,6 +38,9 @@
     "volar-service-markdown": "0.0.64",
     "volar-service-typescript": "0.0.64"
   },
+  "peerDependencies": {
+    "typescript": "*"
+  },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@volar/test-utils": "~2.4.0",

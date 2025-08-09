@@ -84,7 +84,7 @@ test('initialize', async () => {
       },
       selectionRangeProvider: true,
       semanticTokensProvider: {
-        full: false,
+        full: true,
         legend: {
           tokenModifiers: [
             'declaration',

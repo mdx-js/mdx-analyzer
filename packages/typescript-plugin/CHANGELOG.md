@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.2
+
+### Patch Changes
+
+- [#508](https://github.com/mdx-js/mdx-analyzer/pull/508) [`bf88035`](https://github.com/mdx-js/mdx-analyzer/commit/bf880355d603962e803955c2fd504753ba8f6053) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix `tsconfig.json` diagnostics if only MDX inputs are found
+
+- [`456687a`](https://github.com/mdx-js/mdx-analyzer/commit/456687a032f757ea007fdd6450b2534b74dd0c8d) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update Volar dependencies
+
+- Updated dependencies [[`456687a`](https://github.com/mdx-js/mdx-analyzer/commit/456687a032f757ea007fdd6450b2534b74dd0c8d)]:
+  - @mdx-js/language-service@0.7.2
+
 ## 0.1.1
 
 ### Patch Changes

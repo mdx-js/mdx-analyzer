@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.16
+
+### Patch Changes
+
+- [#508](https://github.com/mdx-js/mdx-analyzer/pull/508) [`bf88035`](https://github.com/mdx-js/mdx-analyzer/commit/bf880355d603962e803955c2fd504753ba8f6053) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix `tsconfig.json` diagnostics if only MDX inputs are found
+
+- [`456687a`](https://github.com/mdx-js/mdx-analyzer/commit/456687a032f757ea007fdd6450b2534b74dd0c8d) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update Volar dependencies
+
 ## 1.8.15
 
 ### Patch Changes
@@ -302,7 +310,6 @@
 - [#279](https://github.com/mdx-js/mdx-analyzer/pull/279) [`2a8b266`](https://github.com/mdx-js/mdx-analyzer/commit/2a8b266fe3b1a8a6b982a4a92ab26a147d5b3552) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix a crash of neither `allowJs` not `checkJs` is true in `tsconfig.json`.
 
 - [#281](https://github.com/mdx-js/mdx-analyzer/pull/281) [`b0bc3a1`](https://github.com/mdx-js/mdx-analyzer/commit/b0bc3a1feb1509730447c021e841a60be05d0d39) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Fix a crash that occurs if:
-
   - no `tsconfig.json` exists.
   - `tsconfig.json` specifies `includes`, but doesn’t include the MDX file.
   - `tsconfig.json` specifies `excludes` and excludes the MDX file.

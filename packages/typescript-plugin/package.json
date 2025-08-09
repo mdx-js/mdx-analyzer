@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/typescript-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "A TypeScript plugin to support language features in MDX files",
   "repository": {
@@ -34,7 +34,7 @@
     "test": "npm pack && npm run test-api"
   },
   "dependencies": {
-    "@mdx-js/language-service": "0.7.1",
+    "@mdx-js/language-service": "0.7.2",
     "@volar/typescript": "~2.4.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0"

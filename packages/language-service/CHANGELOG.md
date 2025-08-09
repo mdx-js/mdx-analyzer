@@ -1,5 +1,11 @@
 # @mdx-js/language-service
 
+## 0.7.2
+
+### Patch Changes
+
+- [`456687a`](https://github.com/mdx-js/mdx-analyzer/commit/456687a032f757ea007fdd6450b2534b74dd0c8d) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Update Volar dependencies
+
 ## 0.7.1
 
 ### Patch Changes

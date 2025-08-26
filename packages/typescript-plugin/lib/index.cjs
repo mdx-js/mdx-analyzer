@@ -27,7 +27,7 @@ const plugin = createLanguageServicePlugin((ts, info) => {
     const hasMdx = fileNames.some((fileName) => fileName.endsWith('.mdx'))
 
     if (hasMdx) {
-      diagnostics.filter((diagnostic) => diagnostic.code !== 18003)
+      diagnostics.filter((diagnostic) => diagnostic.code !== 18_003)
     }
 
     return diagnostics

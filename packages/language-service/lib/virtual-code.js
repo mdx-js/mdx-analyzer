@@ -24,6 +24,25 @@ import {isInjectableComponent, isInjectableEstree} from './jsx-utils.js'
  */
 const jsPrefix = (jsxImportSource) => `/* @jsxRuntime automatic
 @jsxImportSource ${jsxImportSource} */
+
+/**
+ * @internal
+ * @template T
+ * @typedef {void extends MDX.IntrinsicElements ? any : T extends keyof MDX.IntrinsicElements ? MDX.IntrinsicElements[T] : any} _MDXProps
+ */
+
+/**
+ * @internal
+ * @typedef {void extends MDX.Element ? JSX.Element : MDX.Element} _MDXElement
+ */
+
+/**
+ * @internal
+ * @type {{
+ *   [Name in keyof _MDXNodeNames]: (props: _MDXProps<Name>) => _MDXElement
+ * }}
+ */
+const _MDXNodes = /** @type {any} */(0);
 `
 
 /**
@@ -247,6 +266,8 @@ function getEmbeddedCodes(
   let jsxVariables = ''
   let markdown = ''
   let nextMarkdownSourceStart = 0
+  /** @type {Set<string>} */
+  const foundMdxNodeNames = new Set()
 
   const plugins = virtualCodePlugins.map((plugin) => plugin())
   /** @type {CodeMapping[]} */
@@ -739,7 +760,8 @@ function getEmbeddedCodes(
         }
 
         default: {
-          jsx += jsxIndent + '<>'
+          foundMdxNodeNames.add(node.type)
+          jsx += jsxIndent + `<_MDXNodes.${node.type}>`
           break
         }
       }
@@ -789,7 +811,7 @@ function getEmbeddedCodes(
         }
 
         default: {
-          jsx += jsxIndent + '</>'
+          jsx += jsxIndent + `</_MDXNodes.${node.type}>`
           break
         }
       }
@@ -819,6 +841,12 @@ function getEmbeddedCodes(
     esmMapping.generatedOffsets.unshift(prefix.length)
     esmMapping.lengths.unshift(0)
   }
+
+  esm += `/**
+ * @typedef {object} _MDXNodeNames
+${[...foundMdxNodeNames].map((name) => ` * @property {unknown} ${name}`).join('\n')}
+ */
+`
 
   updateMarkdownFromOffsets(mdx.length, mdx.length)
   esm += componentStart(hasAwait, programScope)

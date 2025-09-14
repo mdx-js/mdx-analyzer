@@ -254,15 +254,19 @@ function getJsxNodeNameForMdast(node) {
   if (node.type === 'code') {
     return ['pre', 'code']
   }
+
   if (node.type === 'heading') {
     return ['h' + node.depth]
   }
+
   if (node.type === 'list') {
     return node.ordered ? ['ol'] : ['ul']
   }
+
   if (mdastElementNodeNameMap[node.type]) {
     return [/** @type string */ (mdastElementNodeNameMap[node.type])]
   }
+
   // JSX Fragment
   return ['']
 }
@@ -781,7 +785,11 @@ function getEmbeddedCodes(
         }
 
         default: {
-          jsx += jsxIndent + getJsxNodeNameForMdast(node).map((name) => `<${name}>`).join('')
+          jsx +=
+            jsxIndent +
+            getJsxNodeNameForMdast(node)
+              .map((name) => `<${name}>`)
+              .join('')
           break
         }
       }
@@ -831,7 +839,12 @@ function getEmbeddedCodes(
         }
 
         default: {
-          jsx += jsxIndent + getJsxNodeNameForMdast(node).map((name) => `</${name}>`).join('')
+          jsx +=
+            jsxIndent +
+            getJsxNodeNameForMdast(node)
+              .reverse()
+              .map((name) => `</${name}>`)
+              .join('')
           break
         }
       }

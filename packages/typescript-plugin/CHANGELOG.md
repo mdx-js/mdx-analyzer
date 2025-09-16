@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.3
+
+### Patch Changes
+
+- [#515](https://github.com/mdx-js/mdx-analyzer/pull/515) [`3f266d4`](https://github.com/mdx-js/mdx-analyzer/commit/3f266d4fda5750c1d8a3cdd0e37d263bb6a03566) Thanks [@guyutongxue](https://github.com/guyutongxue)! - Make Markdown syntax nodes typed with `JSX.IntrinsicElements`.
+
+- Updated dependencies [[`3f266d4`](https://github.com/mdx-js/mdx-analyzer/commit/3f266d4fda5750c1d8a3cdd0e37d263bb6a03566)]:
+  - @mdx-js/language-service@0.7.3
+
 ## 0.1.2
 
 ### Patch Changes

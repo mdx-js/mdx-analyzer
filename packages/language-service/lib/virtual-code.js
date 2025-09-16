@@ -225,6 +225,52 @@ function padOffsets(mapping, padding) {
   }
 }
 
+/** @type {Partial<Record<Nodes["type"], string>>} */
+const mdastElementNodeNameMap = {
+  blockquote: 'blockquote',
+  break: 'br',
+  delete: 'del',
+  emphasis: 'em',
+  html: 'html',
+  image: 'img',
+  imageReference: 'img',
+  inlineCode: 'code',
+  link: 'a',
+  linkReference: 'a',
+  listItem: 'li',
+  paragraph: 'p',
+  strong: 'strong',
+  table: 'table',
+  tableCell: 'td',
+  tableRow: 'tr',
+  thematicBreak: 'hr'
+}
+/**
+ * Get the JSX node names for a given AST node.
+ * @param {Nodes} node
+ * @returns {string[]}
+ */
+function getJsxNodeNameForMdast(node) {
+  if (node.type === 'code') {
+    return ['pre', 'code']
+  }
+
+  if (node.type === 'heading') {
+    return ['h' + node.depth]
+  }
+
+  if (node.type === 'list') {
+    return node.ordered ? ['ol'] : ['ul']
+  }
+
+  if (mdastElementNodeNameMap[node.type]) {
+    return [/** @type string */ (mdastElementNodeNameMap[node.type])]
+  }
+
+  // JSX Fragment
+  return ['']
+}
+
 /**
  * @param {string} mdx
  * @param {Root} ast
@@ -739,7 +785,11 @@ function getEmbeddedCodes(
         }
 
         default: {
-          jsx += jsxIndent + '<>'
+          jsx +=
+            jsxIndent +
+            getJsxNodeNameForMdast(node)
+              .map((name) => `<${name}>`)
+              .join('')
           break
         }
       }
@@ -789,7 +839,12 @@ function getEmbeddedCodes(
         }
 
         default: {
-          jsx += jsxIndent + '</>'
+          jsx +=
+            jsxIndent +
+            getJsxNodeNameForMdast(node)
+              .reverse()
+              .map((name) => `</${name}>`)
+              .join('')
           break
         }
       }

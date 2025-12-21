@@ -10,6 +10,13 @@
         },
         "plugins": {
           "$ref": "https://json.schemastore.org/remarkrc.json#/properties/plugins"
+        },
+        "languagePlugins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "markdownDescription": "Volar language plugins to load. Each entry is an import specifier that exports a getLanguagePlugin() function."
         }
       }
     }

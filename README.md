@@ -14,6 +14,7 @@ This repository contains the code to provide editor tooling support for [MDX][].
 * [Use](#use)
   * [TypeScript](#typescript)
   * [Plugins](#plugins)
+  * [Language Plugins](#language-plugins)
 * [Contribute](#contribute)
 * [Sponsor](#sponsor)
 * [License](#license)
@@ -173,6 +174,83 @@ For example, to support [frontmatter][] with YAML and TOML and [GFM][]:
 ```
 
 For a more complete list, see [remark plugins][].
+
+### Language Plugins
+
+MDX Analyzer supports importing components from other frameworks like Vue,
+Svelte, and Astro in your MDX files with full type checking and IntelliSense.
+
+Configure language plugins in `tsconfig.json` using framework shorthands or
+custom module specifiers:
+
+```jsonc
+{
+  "compilerOptions": {
+    // …
+  },
+  "mdx": {
+    "languagePlugins": [
+      "vue",      // Framework shorthand
+      "svelte",   // Framework shorthand
+      "astro",    // Framework shorthand
+      "./my-custom-plugin.js"  // Custom plugin (relative path)
+    ]
+  }
+}
+```
+
+#### Supported Frameworks
+
+* **`"vue"`** — Import Vue components (requires `@vue/language-core`)
+* **`"svelte"`** — Import Svelte components (requires `svelte2tsx`)
+* **`"astro"`** — Import Astro components (requires `@astrojs/ts-plugin`)
+
+For built-in frameworks, the analyzer will automatically:
+
+1. Validate that required dependencies are installed
+2. Show helpful error messages with install commands if dependencies are missing
+3. Provide full IntelliSense and type checking for imported components
+
+You can also provide custom module specifiers (relative paths like `"./my-plugin.js"`
+or npm packages like `"@my-org/my-plugin"`) to load your own language plugins.
+
+Custom plugins must export a `getLanguagePlugin()` function that returns a
+[Volar LanguagePlugin][volar].
+For type checking support, the plugin must include:
+
+* `getLanguageId()` method (required)
+* `typescript.getServiceScript()` method (required for type checking, added via
+  `@volar/typescript`)
+
+#### Example: Vue Components
+
+Install the required peer dependency:
+
+```bash
+npm install @vue/language-core
+```
+
+Configure in `tsconfig.json`:
+
+```jsonc
+{
+  "mdx": {
+    "languagePlugins": ["vue"]
+  }
+}
+```
+
+Now you can import Vue components in MDX:
+
+```mdx
+import Counter from './Counter.vue'
+
+<Counter initialCount={5} />
+```
+
+If a language plugin fails to load (missing dependencies, module not found,
+etc.), an error will be shown in the `tsconfig.json` file with helpful
+instructions.
 
 ## Contribute
 

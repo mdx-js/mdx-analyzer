@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "lib": ["es2022", "dom"],
+    "skipLibCheck": true
+  },
+  "include": ["lib/language-plugins/plugins/*.cjs"]
+}

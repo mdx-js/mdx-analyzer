@@ -38,6 +38,7 @@
     "@types/estree": "^1.0.0",
     "@types/mdast": "^4.0.0",
     "@types/unist": "^3.0.0",
+    "@volar/language-core": "^2.4.27",
     "@volar/language-service": "~2.4.0",
     "estree-util-scope": "^1.0.0",
     "estree-walker": "^3.0.0",
@@ -52,8 +53,11 @@
     "vscode-uri": "^3.0.0"
   },
   "devDependencies": {
+    "@astrojs/ts-plugin": "^1.0.0",
     "@types/node": "^22.0.0",
+    "@vue/language-core": "^2.0.0",
     "remark-frontmatter": "^5.0.0",
+    "svelte2tsx": "^0.7.0",
     "typescript": "^5.0.0"
   },
   "sideEffects": false

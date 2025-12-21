@@ -16,6 +16,7 @@
 * [Settings](#settings)
 * [TypeScript](#typescript)
 * [Plugins](#plugins)
+* [Language Plugins](#language-plugins)
 * [Syntax highlighting](#syntax-highlighting)
   * [Custom Languages in Code Blocks](#custom-languages-in-code-blocks)
 * [ESLint](#eslint)
@@ -56,6 +57,17 @@ repository readme.
 For information on plugin support, see the
 [Plugins section](https://github.com/mdx-js/mdx-analyzer#plugins) of the
 repository readme.
+
+## Language Plugins
+
+MDX for VSCode supports Volar language plugins for other file types like
+`.astro`, `.vue`, or `.svelte`.
+The language plugins for these frameworks are bundled with the extension,
+so no additional installation is required.
+
+For information on configuring language plugins, see the
+[Language Plugins section](https://github.com/mdx-js/mdx-analyzer#language-plugins)
+of the repository readme.
 
 ## Syntax highlighting
 

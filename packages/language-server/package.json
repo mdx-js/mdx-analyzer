@@ -36,7 +36,8 @@
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
     "volar-service-markdown": "0.0.65",
-    "volar-service-typescript": "0.0.65"
+    "volar-service-typescript": "0.0.65",
+    "vscode-languageserver": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

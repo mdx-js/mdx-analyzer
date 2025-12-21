@@ -79,3 +79,6 @@ export function resolvePlugins(mdxConfig, resolvePlugin) {
 
   return [remarkPlugins, virtualCodePlugins]
 }
+
+// Re-export resolveLanguagePlugins from the modular implementation
+export {resolveLanguagePlugins} from './language-plugins/resolver.js'

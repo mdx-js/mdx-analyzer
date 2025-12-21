@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * @import {VirtualCodePlugin} from '@mdx-js/language-service'
+ * @import {LanguagePluginLoadError, VirtualCodePlugin} from '@mdx-js/language-service'
+ * @import {LanguagePlugin} from '@volar/language-core'
+ * @import {Diagnostic} from 'vscode-languageserver'
  * @import {PluggableList} from 'unified'
  */
 
@@ -12,7 +14,8 @@ import process from 'node:process'
 import {
   createMdxLanguagePlugin,
   createMdxServicePlugin,
-  resolvePlugins
+  resolvePlugins,
+  resolveLanguagePlugins
 } from '@mdx-js/language-service'
 import {
   createConnection,
@@ -25,6 +28,8 @@ import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
 import {create as createTypeScriptServicePlugin} from 'volar-service-typescript'
 import {create as createTypeScriptSyntacticServicePlugin} from 'volar-service-typescript/lib/plugins/syntactic.js'
+import {DiagnosticSeverity} from 'vscode-languageserver'
+import {URI} from 'vscode-uri'
 
 process.title = 'mdx-language-server'
 
@@ -33,6 +38,10 @@ const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
 const connection = createConnection()
 const server = createServer(connection)
 let tsEnabled = false
+/** @type {string[]} */
+const extraExtensions = []
+/** @type {Map<string, LanguagePluginLoadError[]>} */
+const pluginErrorsByTsconfig = new Map()
 
 connection.onInitialize(async (parameters) => {
   const tsdk = parameters.initializationOptions?.typescript?.tsdk
@@ -89,6 +98,9 @@ connection.onInitialize(async (parameters) => {
     let checkMdx = false
     let jsxImportSource = 'react'
 
+    /** @type {LanguagePlugin<URI>[]} */
+    const languagePlugins = []
+
     if (tsconfig) {
       const cwd = path.dirname(tsconfig)
       const configSourceFile = typescript.readJsonConfigFile(
@@ -111,16 +123,55 @@ connection.onInitialize(async (parameters) => {
       )
       checkMdx = Boolean(commandLine.raw?.mdx?.checkMdx)
       jsxImportSource = commandLine.options.jsxImportSource || jsxImportSource
+
+      // Resolve external language plugins
+      const {plugins: externalPlugins, errors} = resolveLanguagePlugins(
+        commandLine.raw?.mdx,
+        (name) => require(name)
+      )
+
+      if (externalPlugins.length > 0) {
+        // External plugins are validated at runtime; cast is safe as URI extends string behavior
+        languagePlugins.push(
+          .../** @type {LanguagePlugin<URI>[]} */ (externalPlugins)
+        )
+      }
+
+      // Store errors for diagnostics (will be published in onInitialized)
+      if (errors.length > 0) {
+        pluginErrorsByTsconfig.set(tsconfig, errors)
+
+        // Also log to console for visibility
+        for (const error of errors) {
+          connection.console.error(`[MDX] ${error.message}`)
+        }
+      }
     }
 
-    return [
+    // Add MDX language plugin
+    languagePlugins.push(
       createMdxLanguagePlugin(
         remarkPlugins || defaultPlugins,
         virtualCodePlugins,
         checkMdx,
         jsxImportSource
       )
-    ]
+    )
+
+    // Collect extra file extensions from all plugins
+    for (const plugin of languagePlugins) {
+      const extraFileExtensions = /** @type {any} */ (plugin).typescript
+        ?.extraFileExtensions
+      if (Array.isArray(extraFileExtensions)) {
+        for (const ext of extraFileExtensions) {
+          if (ext.extension && !extraExtensions.includes(ext.extension)) {
+            extraExtensions.push(ext.extension)
+          }
+        }
+      }
+    }
+
+    return languagePlugins
   }
 })
 
@@ -138,6 +189,32 @@ connection.onInitialized(() => {
       'ts',
       'tsx'
     )
+  }
+
+  // Update extensions based on loaded plugins
+  for (const ext of extraExtensions) {
+    if (!extensions.includes(ext)) {
+      extensions.push(ext)
+    }
+  }
+
+  // Publish diagnostics for any language plugin loading errors
+  for (const [tsconfig, errors] of pluginErrorsByTsconfig) {
+    /** @type {Diagnostic[]} */
+    const diagnostics = errors.map((error) => ({
+      severity: DiagnosticSeverity.Error,
+      range: {
+        start: {line: 0, character: 0},
+        end: {line: 0, character: 0}
+      },
+      message: error.message,
+      source: 'mdx'
+    }))
+
+    connection.sendDiagnostics({
+      uri: URI.file(tsconfig).toString(),
+      diagnostics
+    })
   }
 
   server.initialized()

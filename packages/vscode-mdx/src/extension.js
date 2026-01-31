@@ -39,7 +39,10 @@ let disposable
  *   extension.
  */
 export async function activate(context) {
-  extensions.getExtension('vscode.typescript-language-features')?.activate()
+  const tsExtension = extensions.getExtension(
+    'vscode.typescript-language-features'
+  )
+  await tsExtension?.activate()
 
   client = new LanguageClient(
     'MDX',
@@ -110,11 +113,50 @@ async function startServer() {
 
         disposable = Disposable.from(
           activateAutoInsertion('mdx', client),
-          activateDocumentDropEdit('mdx', client)
+          activateDocumentDropEdit('mdx', client),
+          activateTsServerBridge()
         )
       }
     )
   }
+}
+
+/**
+ * Activate the TypeScript server bridge for language server communication.
+ *
+ * @returns {Disposable}
+ *   A disposable to clean up the bridge.
+ */
+function activateTsServerBridge() {
+  const tsExtension = extensions.getExtension(
+    'vscode.typescript-language-features'
+  )
+  if (!tsExtension) {
+    return Disposable.from()
+  }
+
+  const api = tsExtension.exports?.getAPI?.(0)
+  if (!api) {
+    return Disposable.from()
+  }
+
+  // Forward tsserver requests from language server to TypeScript extension
+  const requestDisposable = client.onNotification(
+    'tsserver/request',
+    /**
+     * @param {[number, string, unknown]} params
+     */
+    async ([id, command, args]) => {
+      try {
+        const response = await api.executeCommand(command, args)
+        client.sendNotification('tsserver/response', [id, response])
+      } catch {
+        client.sendNotification('tsserver/response', [id, null])
+      }
+    }
+  )
+
+  return Disposable.from(requestDisposable)
 }
 
 /**

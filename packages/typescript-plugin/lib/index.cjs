@@ -18,7 +18,7 @@ const {default: remarkGfm} = require('remark-gfm')
 const plugin = createLanguageServicePlugin((ts, info) => {
   const {getAllProjectErrors} = info.project
 
-  // Filter out the message “No inputs were found in config file …” if the
+  // Filter out the message "No inputs were found in config file …" if the
   // project contains MDX files.
   info.project.getAllProjectErrors = () => {
     const diagnostics = getAllProjectErrors.call(info.project)
@@ -32,6 +32,9 @@ const plugin = createLanguageServicePlugin((ts, info) => {
 
     return diagnostics
   }
+
+  // Add MDX custom commands for language server communication
+  addMdxCommands(ts, info)
 
   if (info.project.projectKind !== ts.server.ProjectKind.Configured) {
     return {
@@ -76,5 +79,49 @@ const plugin = createLanguageServicePlugin((ts, info) => {
     ]
   }
 })
+
+/**
+ * Add MDX custom commands for language server communication
+ * @param {typeof import('typescript')} ts
+ * @param {import('typescript').server.PluginCreateInfo} info
+ */
+function addMdxCommands(ts, info) {
+  const {projectService} = info.project
+  projectService.logger.info(
+    'MDX: called handler processing ' + info.project.projectKind
+  )
+
+  if (!info.session) {
+    projectService.logger.info('MDX: there is no session in info.')
+    return
+  }
+
+  const {session} = info
+
+  if (!(/** @type {Function | undefined} */ (session.addProtocolHandler))) {
+    projectService.logger.info('MDX: there is no addProtocolHandler method.')
+    return
+  }
+
+  /** @type {Map<string, (request: import('typescript').server.protocol.Request) => import('typescript').server.HandlerResponse> | undefined} */
+  // @ts-ignore - handlers is a private property
+  const {handlers} = session
+
+  if (!handlers || handlers.has('_mdx:projectInfo')) {
+    return
+  }
+
+  const projectInfoHandler = handlers.get('projectInfo')
+  if (!projectInfoHandler) {
+    return
+  }
+
+  // Forward projectInfo request to get tsconfig path for a file
+  session.addProtocolHandler('_mdx:projectInfo', (request) =>
+    projectInfoHandler(request)
+  )
+
+  projectService.logger.info('MDX: registered custom commands')
+}
 
 module.exports = plugin

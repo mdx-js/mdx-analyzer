@@ -30,7 +30,6 @@ test('parse errors', async () => {
     'mdx'
   )
   const diagnostics = await serverHandle.sendDocumentDiagnosticRequest(uri)
-
   assert.deepEqual(diagnostics, {
     kind: 'full',
     items: [
@@ -78,7 +77,6 @@ test('does not resolve shadow content', async () => {
     'mdx'
   )
   const diagnostics = await serverHandle.sendDocumentDiagnosticRequest(uri)
-
   assert.deepEqual(diagnostics, {
     items: [],
     kind: 'full'

@@ -26,7 +26,6 @@ afterEach(() => {
 
 test('return empty code actions for non-existent file', async () => {
   const uri = fixtureUri('node16/non-existent.mdx')
-
   const codeActions = await serverHandle.sendCodeActionsRequest(
     uri,
     {
@@ -39,6 +38,5 @@ test('return empty code actions for non-existent file', async () => {
       triggerKind: CodeActionTriggerKind.Invoked
     }
   )
-
   assert.deepEqual(codeActions, [])
 })

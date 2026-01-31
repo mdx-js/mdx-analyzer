@@ -42,7 +42,6 @@ test('does not resolve shadow content', async () => {
     line: 0,
     character: 37
   })
-
   assert.deepEqual(result, [])
 })
 
@@ -52,6 +51,5 @@ test('ignore non-existent mdx files', async () => {
     line: 7,
     character: 15
   })
-
   assert.deepEqual(result, [])
 })

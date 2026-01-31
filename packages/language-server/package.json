@@ -28,7 +28,8 @@
   ],
   "scripts": {
     "test-api": "node --test 'test/*.test.js'",
-    "test": "npm run test-api"
+    "test-ts": "node --test 'test/ts/*.test.js'",
+    "test": "npm run test-api && npm run test-ts"
   },
   "dependencies": {
     "@mdx-js/language-service": "0.7.2",

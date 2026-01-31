@@ -16,7 +16,6 @@ A [language server][lsp] for [MDX][].
 * [Install](#install)
 * [Use](#use)
   * [Language server features](#language-server-features)
-  * [Initialize Options](#initialize-options)
   * [Configuration](#configuration)
   * [TypeScript](#typescript)
   * [Plugins](#plugins)

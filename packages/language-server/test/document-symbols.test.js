@@ -4,16 +4,14 @@
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 import {SymbolKind} from '@volar/language-server'
-import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
+import {createServer, fixturePath, fixtureUri} from './utils.js'
 
 /** @type {LanguageServerHandle} */
 let serverHandle
 
 beforeEach(async () => {
   serverHandle = createServer()
-  await serverHandle.initialize(fixtureUri('node16'), {
-    typescript: {enabled: true, tsdk}
-  })
+  await serverHandle.initialize(fixtureUri('node16'), {})
 })
 
 afterEach(() => {

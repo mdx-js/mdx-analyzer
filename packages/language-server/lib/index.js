@@ -7,7 +7,7 @@
 import process from 'node:process'
 import {
   createMdxLanguagePlugin,
-  createMdxServicePlugin,
+  createMdxServicePlugin
 } from '@mdx-js/language-service'
 import {
   createConnection,
@@ -27,8 +27,8 @@ const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
 const connection = createConnection()
 const server = createServer(connection)
 
-connection.onInitialize(async (parameters) => {
-  return server.initialize(
+connection.onInitialize(async (parameters) =>
+  server.initialize(
     parameters,
     createSimpleProject([createMdxLanguagePlugin(defaultPlugins)]),
     [
@@ -41,7 +41,7 @@ connection.onInitialize(async (parameters) => {
       createTypeScriptSyntacticServicePlugin(typescript)
     ]
   )
-})
+)
 
 connection.onInitialized(server.initialized)
 

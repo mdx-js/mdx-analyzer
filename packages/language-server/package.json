@@ -27,7 +27,7 @@
     "unified"
   ],
   "scripts": {
-    "test-api": "node --test",
+    "test-api": "node --test 'test/*.test.js'",
     "test": "npm run test-api"
   },
   "dependencies": {
@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "@typescript/server-harness": "^0.3.5",
     "@volar/test-utils": "~2.4.0",
     "unified": "^11.0.0",
     "vscode-uri": "^3.0.0"

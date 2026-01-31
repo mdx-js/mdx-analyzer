@@ -267,9 +267,10 @@ connection.onInitialize(async (parameters) => {
 
 connection.onInitialized(() => {
   server.initialized()
+  server.fileWatcher.watchFiles(['**/*.mdx'])
 
   // Clear caches when tsconfig changes
-  server.fileWatcher?.onDidChangeWatchedFiles(({changes}) => {
+  server.fileWatcher.onDidChangeWatchedFiles(({changes}) => {
     for (const change of changes) {
       if (change.uri.endsWith('tsconfig.json')) {
         for (const service of tsconfigProjects.values()) {

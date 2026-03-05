@@ -122,7 +122,7 @@ export async function getTsServer() {
  * @returns {string} The absolute path.
  */
 export function fixturePath(relativePath) {
-  return path.join(fixturesPath, relativePath)
+  return path.join(fixturesPath, relativePath).replaceAll('\\', '/')
 }
 
 /**

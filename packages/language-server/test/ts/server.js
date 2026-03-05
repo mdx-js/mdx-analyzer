@@ -10,7 +10,6 @@
 import {createRequire} from 'node:module'
 import path from 'node:path'
 import {launchServer} from '@typescript/server-harness'
-import {URI} from 'vscode-uri'
 
 const require = createRequire(import.meta.url)
 
@@ -113,24 +112,4 @@ export async function getTsServer() {
       }
     }
   }
-}
-
-/**
- * Get the absolute path for a fixture file.
- *
- * @param {string} relativePath - The relative path from the fixtures directory.
- * @returns {string} The absolute path.
- */
-export function fixturePath(relativePath) {
-  return path.join(fixturesPath, relativePath)
-}
-
-/**
- * Get the file URI for a fixture file.
- *
- * @param {string} relativePath - The relative path from the fixtures directory.
- * @returns {string} The file URI.
- */
-export function fixtureUri(relativePath) {
-  return URI.file(fixturePath(relativePath)).toString()
 }

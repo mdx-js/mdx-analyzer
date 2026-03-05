@@ -18,17 +18,21 @@ export function createServer() {
 }
 
 /**
- * @param {string} fileName The name of the fixture to get a fully resolved URI for.
- * @returns {string} The uri that matches the fixture file name.
+ * Get the absolute path for a fixture file.
+ *
+ * @param {string} relativePath - The relative path from the fixtures directory.
+ * @returns {string} The absolute path.
  */
-export function fixtureUri(fileName) {
-  return fixturesURI + '/' + fileName
+export function fixturePath(relativePath) {
+  return Utils.joinPath(fixturesURI, relativePath).fsPath
 }
 
 /**
- * @param {string} fileName
- * @returns {string}
+ * Get the file URI for a fixture file.
+ *
+ * @param {string} relativePath - The relative path from the fixtures directory.
+ * @returns {string} The file URI.
  */
-export function fixturePath(fileName) {
-  return URI.parse(fixtureUri(fileName)).fsPath.replaceAll('\\', '/')
+export function fixtureUri(relativePath) {
+  return Utils.joinPath(fixturesURI, relativePath).toString()
 }

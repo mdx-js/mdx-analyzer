@@ -6,7 +6,8 @@
  */
 import assert from 'node:assert/strict'
 import {after, before, test} from 'node:test'
-import {fixturePath, getTsServer} from './server.js'
+import {fixturePath} from '../utils.js'
+import {getTsServer} from './server.js'
 
 /** @type {Awaited<ReturnType<typeof getTsServer>>} */
 let server

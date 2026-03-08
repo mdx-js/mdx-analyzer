@@ -27,19 +27,26 @@
     "unified"
   ],
   "scripts": {
-    "test-api": "node --test",
-    "test": "npm run test-api"
+    "test-api": "node --test 'test/*.test.js'",
+    "test-ts": "node --test 'test/ts/*.test.js'",
+    "test": "npm run test-api && npm run test-ts"
   },
   "dependencies": {
     "@mdx-js/language-service": "0.7.3",
+    "@volar/language-core": "~2.4.0",
     "@volar/language-server": "~2.4.0",
+    "@volar/language-service": "~2.4.0",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.0",
     "volar-service-markdown": "0.0.65",
     "volar-service-typescript": "0.0.65"
   },
+  "peerDependencies": {
+    "typescript": "*"
+  },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "@typescript/server-harness": "^0.3.5",
     "@volar/test-utils": "~2.4.0",
     "unified": "^11.0.0",
     "vscode-uri": "^3.0.0"

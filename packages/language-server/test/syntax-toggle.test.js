@@ -5,16 +5,14 @@
 
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {createServer, fixtureUri, tsdk} from './utils.js'
+import {createServer, fixtureUri} from './utils.js'
 
 /** @type {LanguageServerHandle} */
 let serverHandle
 
 beforeEach(async () => {
   serverHandle = createServer()
-  await serverHandle.initialize(fixtureUri('node16'), {
-    typescript: {enabled: false, tsdk}
-  })
+  await serverHandle.initialize(fixtureUri('node16'), {})
 })
 
 afterEach(() => {

@@ -7,10 +7,10 @@ import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {
   activateAutoInsertion,
   activateDocumentDropEdit,
-  createLabsInfo,
-  getTsdk
+  createLabsInfo
 } from '@volar/vscode'
 import {
+  commands,
   extensions,
   window,
   workspace,
@@ -40,9 +40,10 @@ let disposable
  *   extension.
  */
 export async function activate(context) {
-  extensions.getExtension('vscode.typescript-language-features')?.activate()
-
-  const {tsdk} = (await getTsdk(context)) ?? {tsdk: ''}
+  const tsExtension = extensions.getExtension(
+    'vscode.typescript-language-features'
+  )
+  await tsExtension?.activate()
 
   client = new LanguageClient(
     'MDX',
@@ -52,9 +53,6 @@ export async function activate(context) {
     },
     {
       documentSelector: [{language: 'mdx'}],
-      initializationOptions: {
-        typescript: {tsdk}
-      },
       markdown: {
         isTrusted: true,
         supportHtml: true
@@ -116,11 +114,43 @@ async function startServer() {
 
         disposable = Disposable.from(
           activateAutoInsertion('mdx', client),
-          activateDocumentDropEdit('mdx', client)
+          activateDocumentDropEdit('mdx', client),
+          activateTsServerBridge()
         )
       }
     )
   }
+}
+
+/**
+ * Activate the TypeScript server bridge for language server communication.
+ *
+ * @returns {Disposable}
+ *   A disposable to clean up the bridge.
+ */
+function activateTsServerBridge() {
+  // Forward tsserver requests from language server to TypeScript extension
+  const requestDisposable = client.onNotification(
+    'tsserver/request',
+    /**
+     * @param {[number, string, unknown]} params
+     */
+    async ([id, command, args]) => {
+      try {
+        /** @type {{body?: unknown} | undefined} */
+        const response = await commands.executeCommand(
+          'typescript.tsserverRequest',
+          command,
+          args
+        )
+        client.sendNotification('tsserver/response', [id, response?.body])
+      } catch {
+        client.sendNotification('tsserver/response', [id, null])
+      }
+    }
+  )
+
+  return Disposable.from(requestDisposable)
 }
 
 /**

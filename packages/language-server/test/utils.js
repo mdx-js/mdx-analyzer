@@ -1,10 +1,8 @@
 import {createRequire} from 'node:module'
-import path from 'node:path'
 import {URI, Utils} from 'vscode-uri'
 import {startLanguageServer} from '@volar/test-utils'
 import pkg from '../package.json' with {type: 'json'}
 
-const require = createRequire(import.meta.url)
 const pkgPath = new URL('../package.json', import.meta.url)
 const pkgRequire = createRequire(pkgPath)
 
@@ -15,27 +13,26 @@ const fixturesURI = Utils.joinPath(
   '../../../../fixtures'
 )
 
-/**
- * The path to the TypeScript SDK.
- */
-export const tsdk = path.dirname(require.resolve('typescript'))
-
 export function createServer() {
   return startLanguageServer(bin, new URL('..', import.meta.url))
 }
 
 /**
- * @param {string} fileName The name of the fixture to get a fully resolved URI for.
- * @returns {string} The uri that matches the fixture file name.
+ * Get the absolute path for a fixture file.
+ *
+ * @param {string} relativePath - The relative path from the fixtures directory.
+ * @returns {string} The absolute path.
  */
-export function fixtureUri(fileName) {
-  return fixturesURI + '/' + fileName
+export function fixturePath(relativePath) {
+  return Utils.joinPath(fixturesURI, relativePath).fsPath
 }
 
 /**
- * @param {string} fileName
- * @returns {string}
+ * Get the file URI for a fixture file.
+ *
+ * @param {string} relativePath - The relative path from the fixtures directory.
+ * @returns {string} The file URI.
  */
-export function fixturePath(fileName) {
-  return URI.parse(fixtureUri(fileName)).fsPath.replaceAll('\\', '/')
+export function fixtureUri(relativePath) {
+  return Utils.joinPath(fixturesURI, relativePath).toString()
 }

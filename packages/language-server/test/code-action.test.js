@@ -1,36 +1,36 @@
 /**
+ * @fileoverview Language server code action tests
+ *
+ * Note: TypeScript-specific code action tests (like organize imports) have been
+ * moved to TypeScript plugin testing. This file only tests language server
+ * specific functionality that doesn't depend on full TypeScript support.
+ *
  * @import {LanguageServerHandle} from '@volar/test-utils'
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {CodeAction, CodeActionTriggerKind} from '@volar/language-server'
-import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
+import {CodeActionTriggerKind} from '@volar/language-server'
+import {createServer, fixtureUri} from './utils.js'
 
 /** @type {LanguageServerHandle} */
 let serverHandle
 
 beforeEach(async () => {
   serverHandle = createServer()
-  await serverHandle.initialize(fixtureUri('node16'), {
-    typescript: {enabled: true, tsdk}
-  })
+  await serverHandle.initialize(fixtureUri('node16'), {})
 })
 
 afterEach(() => {
   serverHandle.connection.dispose()
 })
 
-test('organize imports', async () => {
-  const {uri} = await serverHandle.openTextDocument(
-    fixturePath('node16/organize-imports.mdx'),
-    'mdx'
-  )
-
+test('return empty code actions for non-existent file', async () => {
+  const uri = fixtureUri('node16/non-existent.mdx')
   const codeActions = await serverHandle.sendCodeActionsRequest(
     uri,
     {
-      start: {line: 6, character: 0},
-      end: {line: 6, character: 0}
+      start: {line: 0, character: 0},
+      end: {line: 0, character: 0}
     },
     {
       diagnostics: [],
@@ -38,60 +38,5 @@ test('organize imports', async () => {
       triggerKind: CodeActionTriggerKind.Invoked
     }
   )
-
-  assert.ok(codeActions)
-  const codeAction = codeActions
-    .filter((c) => CodeAction.is(c))
-    .find((c) => c.kind === 'source.organizeImports')
-  delete codeAction?.data
-
-  assert.deepEqual(codeAction, {
-    diagnostics: [],
-    edit: {
-      documentChanges: [
-        {
-          edits: [
-            {
-              newText:
-                "import { compile } from '@mdx-js/mdx';\n" +
-                "import { useState } from 'react';\n" +
-                "import { createRoot } from 'react-dom/client';\n" +
-                "import { unified } from 'unified';\n",
-              range: {
-                end: {character: 0, line: 5},
-                start: {character: 0, line: 4}
-              }
-            },
-            {
-              newText: '',
-              range: {
-                end: {character: 0, line: 6},
-                start: {character: 0, line: 5}
-              }
-            },
-            {
-              newText: '',
-              range: {
-                end: {character: 0, line: 7},
-                start: {character: 0, line: 6}
-              }
-            },
-            {
-              newText: '',
-              range: {
-                end: {character: 0, line: 8},
-                start: {character: 0, line: 7}
-              }
-            }
-          ],
-          textDocument: {
-            uri: fixtureUri('node16/organize-imports.mdx'),
-            version: null
-          }
-        }
-      ]
-    },
-    kind: 'source.organizeImports',
-    title: 'Organize Imports'
-  })
+  assert.deepEqual(codeActions, [])
 })

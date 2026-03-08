@@ -1,9 +1,16 @@
 /**
+ * @fileoverview Language server initialization tests
+ *
+ * Note: The capabilities returned by the language server depend on the
+ * service plugins configured. Since TypeScript support has been moved to
+ * the TypeScript plugin, some capabilities are no longer provided by the
+ * language server directly.
+ *
  * @import {LanguageServerHandle} from '@volar/test-utils'
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
-import {createServer, fixtureUri, tsdk} from './utils.js'
+import {createServer, fixtureUri} from './utils.js'
 
 /** @type {LanguageServerHandle} */
 let serverHandle
@@ -19,29 +26,20 @@ afterEach(() => {
 test('initialize', async () => {
   const {serverInfo, ...initializeResponse} = await serverHandle.initialize(
     fixtureUri('node16'),
-    {typescript: {enabled: true, tsdk}}
+    {}
   )
   assert.deepEqual(initializeResponse, {
     capabilities: {
-      callHierarchyProvider: true,
       codeActionProvider: {
         codeActionKinds: [
           'source.organizeLinkDefinitions',
           'quickfix',
-          'refactor',
-          '',
-          'refactor.extract',
-          'refactor.inline',
-          'refactor.rewrite',
-          'source',
-          'source.fixAll',
-          'source.organizeImports'
+          'refactor'
         ],
         resolveProvider: true
       },
       completionProvider: {
-        resolveProvider: true,
-        triggerCharacters: ['.', '/', '#', '"', "'", '`', '<', '@', ' ', '*']
+        triggerCharacters: ['.', '/', '#']
       },
       definitionProvider: true,
       documentFormattingProvider: true,
@@ -76,47 +74,12 @@ test('initialize', async () => {
       },
       foldingRangeProvider: true,
       hoverProvider: true,
-      implementationProvider: true,
-      inlayHintProvider: {},
       referencesProvider: true,
       renameProvider: {
         prepareProvider: true
       },
       selectionRangeProvider: true,
-      semanticTokensProvider: {
-        full: true,
-        legend: {
-          tokenModifiers: [
-            'declaration',
-            'readonly',
-            'static',
-            'async',
-            'defaultLibrary',
-            'local'
-          ],
-          tokenTypes: [
-            'namespace',
-            'class',
-            'enum',
-            'interface',
-            'typeParameter',
-            'type',
-            'parameter',
-            'variable',
-            'property',
-            'enumMember',
-            'function',
-            'method'
-          ]
-        },
-        range: true
-      },
-      signatureHelpProvider: {
-        retriggerCharacters: [')'],
-        triggerCharacters: ['(', ',', '<']
-      },
       textDocumentSync: 2,
-      typeDefinitionProvider: true,
       workspace: {
         workspaceFolders: {
           changeNotifications: true,

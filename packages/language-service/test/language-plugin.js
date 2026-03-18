@@ -5286,6 +5286,63 @@ test('rehype-mdx-title matching rank', () => {
   ])
 })
 
+test('create virtual code w/ invalid ESM recovery', () => {
+  const plugin = createMdxLanguagePlugin()
+
+  const snapshot = snapshotFromLines('export const x =', '', 'Hello {true}', '')
+
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
+    getAssociatedScript: () => undefined
+  })
+
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.ifError(code.error)
+  // The key assertion: embedded code has non-empty mappings despite broken ESM.
+  // Before acorn-loose recovery, this would have empty mappings ([]).
+  assert.ok(code.embeddedCodes[0].mappings.length > 0)
+})
+
+test('create virtual code w/ incomplete import recovery', () => {
+  const plugin = createMdxLanguagePlugin()
+
+  const snapshot = snapshotFromLines('import { } from', '', '# Hello', '')
+
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
+    getAssociatedScript: () => undefined
+  })
+
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.ifError(code.error)
+  assert.ok(code.embeddedCodes[0].mappings.length > 0)
+})
+
+test('create virtual code w/ valid ESM after recovery support', () => {
+  const plugin = createMdxLanguagePlugin()
+
+  const snapshot = snapshotFromLines(
+    'import {Planet} from "./Planet.js"',
+    'export const greeting = "hello"',
+    '',
+    'Hello {greeting}',
+    ''
+  )
+
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
+    getAssociatedScript: () => undefined
+  })
+
+  assert.ok(code instanceof VirtualMdxCode)
+  assert.ifError(code.error)
+  assert.ok(code.embeddedCodes[0].mappings.length > 0)
+  // Verify the generated JS contains both the import and export
+  const jsText = code.embeddedCodes[0].snapshot.getText(
+    0,
+    code.embeddedCodes[0].snapshot.getLength()
+  )
+  assert.ok(jsText.includes('import {Planet} from "./Planet.js"'))
+  assert.ok(jsText.includes('export const greeting = "hello"'))
+})
+
 /**
  * @param {string[]} lines
  * @returns {typescript.IScriptSnapshot}

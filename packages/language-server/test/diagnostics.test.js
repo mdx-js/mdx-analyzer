@@ -31,9 +31,9 @@ test('parse errors', async () => {
     kind: 'full',
     items: [
       {
-        code: 'micromark-extension-mdxjs-esm:acorn',
+        code: 'micromark-extension-mdxjs-esm:non-esm',
         codeDescription: {
-          href: 'https://github.com/micromark/micromark-extension-mdxjs-esm#could-not-parse-importexports-with-acorn'
+          href: 'https://github.com/micromark/micromark-extension-mdxjs-esm#unexpected-type-in-code-only-importexports-are-supported'
         },
         data: {
           documentUri: String(
@@ -50,10 +50,11 @@ test('parse errors', async () => {
           uri: fixtureUri('node16/syntax-error.mdx'),
           version: 0
         },
-        message: 'Could not parse import/exports with acorn',
+        message:
+          'Unexpected `ExpressionStatement` in code: only import/exports are supported',
         range: {
           end: {
-            character: 7,
+            character: 10,
             line: 0
           },
           start: {

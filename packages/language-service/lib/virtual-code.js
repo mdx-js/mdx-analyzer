@@ -6,12 +6,13 @@
  * @import {MdxjsEsm} from 'mdast-util-mdxjs-esm'
  * @import {IScriptSnapshot} from 'typescript'
  * @import {Processor} from 'unified'
- * @import {VFileMessage} from 'vfile-message'
  * @import {VirtualCodePlugin} from './plugins/plugin.js'
  */
 
+import {isDummy} from 'acorn-loose'
 import {createVisitors} from 'estree-util-scope'
 import {walk} from 'estree-walker'
+import {VFileMessage} from 'vfile-message'
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {ScriptSnapshot} from './script-snapshot.js'
 import {isInjectableComponent, isInjectableEstree} from './jsx-utils.js'
@@ -117,6 +118,128 @@ function visit(node, onEnter, onExit) {
   }
 
   onExit(node)
+}
+
+/**
+ * @param {Node} node
+ * @returns {boolean}
+ */
+function isAcornLooseDummy(node) {
+  return (
+    isDummy(node) ||
+    ('raw' in node && node.raw === '✖') ||
+    ('value' in node && node.value === '✖')
+  )
+}
+
+/**
+ * @param {Node} node
+ * @returns {VFileMessage}
+ */
+function createAcornLooseMessage(node) {
+  const place =
+    node.loc && node.start !== undefined && node.end !== undefined
+      ? {
+          start: {
+            line: node.loc.start.line,
+            column: node.loc.start.column + 1,
+            offset: node.start
+          },
+          end: {
+            line: node.loc.end.line,
+            column: node.loc.end.column + 1,
+            offset: node.end
+          }
+        }
+      : undefined
+
+  return new VFileMessage('Could not parse import/exports with acorn-loose', {
+    place,
+    ruleId: 'parse-error',
+    source: 'acorn-loose'
+  })
+}
+
+/**
+ * @param {Program | undefined} estree
+ * @returns {VFileMessage | undefined}
+ */
+function findAcornLooseEstreeError(estree) {
+  /** @type {VFileMessage | undefined} */
+  let message
+
+  if (!estree) {
+    return
+  }
+
+  walk(estree, {
+    enter(node) {
+      if (message) {
+        this.skip()
+      } else if (isAcornLooseDummy(node)) {
+        message = createAcornLooseMessage(node)
+        this.skip()
+      }
+    }
+  })
+
+  return message
+}
+
+/**
+ * @param {Nodes} node
+ * @returns {Array<Program | undefined>}
+ */
+function getMdxEstrees(node) {
+  /** @type {Array<Program | undefined>} */
+  const estrees = []
+
+  if (
+    node.type === 'mdxjsEsm' ||
+    node.type === 'mdxFlowExpression' ||
+    node.type === 'mdxTextExpression'
+  ) {
+    estrees.push(node.data?.estree || undefined)
+  }
+
+  if (node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement') {
+    for (const attribute of node.attributes) {
+      if (typeof attribute.value === 'object') {
+        estrees.push(attribute.value?.data?.estree || undefined)
+      }
+    }
+  }
+
+  return estrees
+}
+
+/**
+ * @param {Root} ast
+ * @returns {VFileMessage | undefined}
+ */
+function findAcornLooseError(ast) {
+  /** @type {VFileMessage | undefined} */
+  let message
+
+  visit(
+    ast,
+    (node) => {
+      if (message) {
+        return
+      }
+
+      for (const estree of getMdxEstrees(node)) {
+        message = findAcornLooseEstreeError(estree)
+
+        if (message) {
+          return
+        }
+      }
+    },
+    () => {}
+  )
+
+  return message
 }
 
 /**
@@ -1007,7 +1130,7 @@ export class VirtualMdxCode {
         this.#jsxImportSource
       )
       this.ast = ast
-      this.error = undefined
+      this.error = findAcornLooseError(ast)
     } catch (error) {
       this.error = /** @type {VFileMessage} */ (error)
       this.ast = undefined

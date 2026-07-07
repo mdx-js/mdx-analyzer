@@ -5,6 +5,7 @@ import typescript from 'typescript'
 import {VFileMessage} from 'vfile-message'
 import {ScriptSnapshot} from '../lib/script-snapshot.js'
 import {VirtualMdxCode} from '../lib/virtual-code.js'
+import {buildFrontmatterValidation} from '../lib/plugins/frontmatter-schema.js'
 import {recmaExportFilepath} from '../lib/plugins/recma-export-filepath.js'
 import {rehypeMdxTitle} from '../lib/plugins/rehype-mdx-title.js'
 import {remarkMdxFrontmatter} from '../lib/plugins/remark-mdx-frontmatter.js'
@@ -5104,6 +5105,97 @@ test('remark-mdx-frontmatter type w/ yaml', () => {
       ''
     )
   })
+})
+
+test('remark-mdx-frontmatter type w/ non-map yaml', () => {
+  const plugin = createMdxLanguagePlugin(
+    [remarkFrontmatter],
+    [remarkMdxFrontmatter({type: "import('./frontmatter.js').Frontmatter"})],
+    false
+  )
+
+  const snapshot = snapshotFromLines('---', '- one', '- two', '---', '')
+
+  const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
+    getAssociatedScript: () => undefined
+  })
+
+  assert.ok(code instanceof VirtualMdxCode)
+  const embedded = code.embeddedCodes?.[0]
+  assert.ok(embedded)
+  const text = embedded.snapshot.getText(0, embedded.snapshot.getLength())
+
+  // The export is still typed, but a non-map document has no values to check.
+  assert.ok(
+    text.includes(
+      "export const frontmatter = /** @type {import('./frontmatter.js').Frontmatter} */ (undefined)"
+    )
+  )
+  assert.ok(!text.includes('__mdxFrontmatterValue'))
+})
+
+test('buildFrontmatterValidation renders each YAML value type', () => {
+  const result = buildFrontmatterValidation(
+    [
+      'text: hello',
+      'int: 42',
+      'float: 1.5',
+      'flag: false',
+      'nothing:',
+      'list:',
+      '  - one',
+      '  - two',
+      'nested:',
+      '  child: true'
+    ].join('\n'),
+    0,
+    "import('./frontmatter.js').Frontmatter"
+  )
+
+  assert.ok(result)
+  assert.ok(
+    result.text.includes(
+      'const __mdxFrontmatterValue = ({"text": "hello", "int": 42, "float": 1.5, "flag": false, "nothing": null, "list": ["one", "two"], "nested": {"child": true}})'
+    )
+  )
+})
+
+test('buildFrontmatterValidation ignores non-scalar keys', () => {
+  const result = buildFrontmatterValidation(
+    '[a, b]: value\ntitle: hello',
+    0,
+    "import('./frontmatter.js').Frontmatter"
+  )
+
+  assert.ok(result)
+  assert.ok(
+    result.text.includes('const __mdxFrontmatterValue = ({"title": "hello"})')
+  )
+  assert.ok(
+    result.text.includes('const __mdxFrontmatterKeys = ({"title": 0, })')
+  )
+})
+
+test('buildFrontmatterValidation renders alias values as undefined', () => {
+  const result = buildFrontmatterValidation(
+    'a: &x 1\nb: *x',
+    0,
+    "import('./frontmatter.js').Frontmatter"
+  )
+
+  assert.ok(result)
+  assert.ok(
+    result.text.includes(
+      'const __mdxFrontmatterValue = ({"a": 1, "b": undefined})'
+    )
+  )
+})
+
+test('buildFrontmatterValidation returns undefined for uncheckable yaml', () => {
+  const type = "import('./frontmatter.js').Frontmatter"
+  assert.equal(buildFrontmatterValidation('just a string', 0, type), undefined)
+  assert.equal(buildFrontmatterValidation('- one\n- two', 0, type), undefined)
+  assert.equal(buildFrontmatterValidation('', 0, type), undefined)
 })
 
 test('rehype-mdx-title', () => {

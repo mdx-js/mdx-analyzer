@@ -15,6 +15,7 @@
     {"path": "debug"},
     {"path": "demo"},
     {"path": "directive"},
+    {"path": "frontmatter"},
     {"path": "no-tsconfig"},
     {"path": "node16"},
     {"path": "provide"}

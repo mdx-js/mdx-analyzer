@@ -1,0 +1,16 @@
+---
+title: 123
+date: 2020-01-01
+unknown: true
+---
+
+The frontmatter above has two problems, each reported on its own line:
+
+- `title` is a number, but the schema wants a string.
+- `unknown` is not a property of the schema.
+
+Remove the `date` line and a third error appears: `date` is required.
+
+Body usage is checked too:
+
+{frontmatter.nope}

@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["dom", "es2020"],
+    "module": "node16",
+    "strict": true
+  },
+  "mdx": {
+    "checkMdx": true,
+    "plugins": [
+      ["remark-frontmatter", ["toml", "yaml"]],
+      [
+        "remark-mdx-frontmatter",
+        {"type": "import('./frontmatter.js').Frontmatter"}
+      ]
+    ]
+  }
+}

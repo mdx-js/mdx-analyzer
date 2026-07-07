@@ -71,14 +71,12 @@ export function remarkMdxFrontmatter(options) {
         const padding = header.length + 1
         return {
           value,
-          mappings: [
-            {
-              ...validation.mapping,
-              generatedOffsets: validation.mapping.generatedOffsets.map(
-                (offset) => offset + padding
-              )
-            }
-          ]
+          mappings: validation.mappings.map((mapping) => ({
+            ...mapping,
+            generatedOffsets: mapping.generatedOffsets.map(
+              (offset) => offset + padding
+            )
+          }))
         }
       }
     }

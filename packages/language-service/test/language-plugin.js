@@ -5048,6 +5048,20 @@ test('remark-mdx-frontmatter type w/ yaml', () => {
         generatedLengths: [53, 7],
         lengths: [3, 5],
         sourceOffsets: [4, 4]
+      },
+      {
+        data: {
+          completion: true,
+          format: false,
+          navigation: true,
+          semantic: true,
+          structure: false,
+          verification: false
+        },
+        generatedOffsets: [758],
+        generatedLengths: [5],
+        lengths: [5],
+        sourceOffsets: [4]
       }
     ],
     snapshot: snapshotFromLines(
@@ -5064,6 +5078,9 @@ test('remark-mdx-frontmatter type w/ yaml', () => {
       "/** @type {{ [K in keyof import('./frontmatter.js').Frontmatter]?: unknown }} */",
       'const __mdxFrontmatterKeys = ({"title": 0, })',
       'void __mdxFrontmatterKeys',
+      "/** @type {import('./frontmatter.js').Frontmatter} */",
+      'const __mdxFrontmatterFields = /** @type {any} */ (undefined)',
+      'void __mdxFrontmatterFields.title',
       '',
       '',
       '/**',
@@ -5191,11 +5208,69 @@ test('buildFrontmatterValidation renders alias values as undefined', () => {
   )
 })
 
-test('buildFrontmatterValidation returns undefined for uncheckable yaml', () => {
+test('buildFrontmatterValidation returns undefined when there’s nothing to do', () => {
   const type = "import('./frontmatter.js').Frontmatter"
-  assert.equal(buildFrontmatterValidation('just a string', 0, type), undefined)
+  // A sequence has no keys to check and no blank lines to complete on.
   assert.equal(buildFrontmatterValidation('- one\n- two', 0, type), undefined)
-  assert.equal(buildFrontmatterValidation('', 0, type), undefined)
+})
+
+test('buildFrontmatterValidation maps each key for navigation and completion', () => {
+  const result = buildFrontmatterValidation(
+    'title: hello\ndate: today',
+    0,
+    "import('./frontmatter.js').Frontmatter"
+  )
+
+  assert.ok(result)
+  // A schema-typed binding resolves each key to its field for hover, go to
+  // definition, and completion.
+  assert.ok(
+    result.text.includes(
+      "/** @type {import('./frontmatter.js').Frontmatter} */\nconst __mdxFrontmatterFields = /** @type {any} */ (undefined)"
+    )
+  )
+  assert.ok(result.text.includes('void __mdxFrontmatterFields.title'))
+  assert.ok(result.text.includes('void __mdxFrontmatterFields.date'))
+
+  const navigation = result.mappings.find((mapping) => mapping.data.navigation)
+  assert.ok(navigation)
+  assert.equal(navigation.data.completion, true)
+  assert.equal(navigation.data.verification, false)
+  // The `title` key (offset 0, length 5) maps to the `.title` member access.
+  assert.ok(navigation.sourceOffsets.includes(0))
+})
+
+test('buildFrontmatterValidation recovers keys while typing', () => {
+  // A lone identifier (a key being typed, before its colon) still yields a
+  // completion anchor, even though the block doesn’t parse as a map.
+  const result = buildFrontmatterValidation(
+    'titl',
+    0,
+    "import('./frontmatter.js').Frontmatter"
+  )
+
+  assert.ok(result)
+  assert.ok(result.text.includes('void __mdxFrontmatterFields.titl'))
+  // Half-typed content produces no diagnostics.
+  assert.ok(!result.text.includes('__mdxFrontmatterChecked'))
+  assert.ok(!result.mappings.some((mapping) => mapping.data.verification))
+})
+
+test('buildFrontmatterValidation offers completion on blank lines', () => {
+  // A trailing blank line inside the block is a candidate spot for a new key.
+  const result = buildFrontmatterValidation(
+    'title: hello\n',
+    0,
+    "import('./frontmatter.js').Frontmatter"
+  )
+
+  assert.ok(result)
+  // A bare member access with a zero-length anchor so completion offers every
+  // schema field with an empty prefix.
+  assert.ok(result.text.includes('void __mdxFrontmatterFields.$_'))
+  const navigation = result.mappings.find((mapping) => mapping.data.navigation)
+  assert.ok(navigation)
+  assert.ok(navigation.generatedLengths?.includes(0))
 })
 
 test('rehype-mdx-title', () => {

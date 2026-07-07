@@ -195,6 +195,8 @@ When `mdx.checkMdx` is enabled, the YAML frontmatter values are checked against
 the type as well.
 Missing properties, wrong value types, and unknown keys are reported on the
 offending line within the frontmatter block.
+Each key also gets hover, go to definition, and completion from the schema, so
+you can complete field names as you type them.
 
 ### Plugins
 

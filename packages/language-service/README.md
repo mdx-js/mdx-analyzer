@@ -158,6 +158,11 @@ The supported transformer plugins are:
 * [`rehype-mdx-title`](https://github.com/remcohaszing/rehype-mdx-title)
 * [`remark-mdx-frontmatter`](https://github.com/remcohaszing/remark-mdx-frontmatter)
 
+`remark-mdx-frontmatter` accepts a `type` option (a TypeScript type expression,
+such as `import('./frontmatter.js').Frontmatter`).
+When given, the `frontmatter` export is typed as that type instead of `any`, and
+its YAML values are checked against it when `checkMdx` is enabled.
+
 ## Compatibility
 
 This project is compatible Node.js 20.19+.

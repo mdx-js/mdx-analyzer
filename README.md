@@ -142,14 +142,72 @@ Now you can write the following MDX with full type safety anywhere:
 <Planet name="Earth" />
 ```
 
+#### Frontmatter
+
+MDX files often start with a [frontmatter][] block.
+The built-in [`remark-mdx-frontmatter`][remark-mdx-frontmatter] plugin exposes
+it as a `frontmatter` export.
+By default this export is typed as `any`.
+Pass a `type` option to describe its shape.
+The value is a TypeScript type expression, so it may reference a type from
+another module:
+
+```jsonc
+{
+  "compilerOptions": {
+    // …
+  },
+  "mdx": {
+    // Report type errors in frontmatter, including its values.
+    "checkMdx": true,
+    "plugins": [
+      ["remark-frontmatter", ["toml", "yaml"]],
+      [
+        "remark-mdx-frontmatter",
+        {"type": "import('./frontmatter.js').Frontmatter"}
+      ]
+    ]
+  }
+}
+```
+
+Given the following type:
+
+```typescript
+// frontmatter.ts
+export interface Frontmatter {
+  title: string
+}
+```
+
+The `frontmatter` export is typed as `Frontmatter` in every MDX file, so usage
+in the body is checked:
+
+```mdx
+---
+title: Hello
+---
+
+# {frontmatter.title}
+```
+
+When `mdx.checkMdx` is enabled, the YAML frontmatter values are checked against
+the type as well.
+Missing properties, wrong value types, and unknown keys are reported on the
+offending line within the frontmatter block.
+
 ### Plugins
 
 This extension supports remark parser plugins.
 Plugins can be defined in an array of strings or string / options tuples.
 These plugins can be defined in `tsconfig.json` and will be resolved relative to
 that file.
-Transformers such as [`remark-mdx-frontmatter`][remark-mdx-frontmatter] are not
-supported yet.
+A few transformer plugins are recognized to type the exports they generate:
+[`remark-mdx-frontmatter`][remark-mdx-frontmatter] (see
+[§ Frontmatter](#frontmatter)),
+[`rehype-mdx-title`](https://github.com/remcohaszing/rehype-mdx-title), and
+[`recma-export-filepath`](https://github.com/remcohaszing/recma-export-filepath).
+Other transformers aren’t run yet.
 Support is tracked in
 [#297](https://github.com/mdx-js/mdx-analyzer/issues/297).
 

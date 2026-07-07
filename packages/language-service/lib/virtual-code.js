@@ -851,8 +851,34 @@ function getEmbeddedCodes(
     }
   )
 
+  /**
+   * Mappings contributed by virtual code plugins. Their generated offsets are
+   * relative to the embedded JavaScript file; they’re padded and pushed onto
+   * `jsMappings` alongside `esmMapping` below.
+   *
+   * @type {CodeMapping[]}
+   */
+  const pluginMappings = []
+
   for (const plugin of plugins) {
-    esm += '\n' + plugin.finalize() + '\n'
+    const result = plugin.finalize(mdx)
+    esm += '\n'
+
+    if (typeof result === 'string') {
+      esm += result + '\n'
+    } else {
+      const base = esm.length
+      for (const mapping of result.mappings) {
+        pluginMappings.push({
+          ...mapping,
+          generatedOffsets: mapping.generatedOffsets.map(
+            (offset) => offset + base
+          )
+        })
+      }
+
+      esm += result.value + '\n'
+    }
   }
 
   let prefix = ''
@@ -866,6 +892,10 @@ function getEmbeddedCodes(
 
   if (prefix) {
     padOffsets(esmMapping, prefix.length)
+    for (const mapping of pluginMappings) {
+      padOffsets(mapping, prefix.length)
+    }
+
     esm = prefix + esm
   }
 
@@ -894,6 +924,10 @@ function getEmbeddedCodes(
 
   if (jsxVariablesMapping.sourceOffsets.length > 0) {
     jsMappings.push(jsxVariablesMapping)
+  }
+
+  for (const mapping of pluginMappings) {
+    jsMappings.push(mapping)
   }
 
   virtualCodes.unshift(

@@ -7,10 +7,20 @@
  * @import {VirtualCodePlugin} from './plugins/plugin.js'
  */
 
+import {Parser} from 'acorn'
+import acornJsx from 'acorn-jsx'
+import {LooseParser} from 'acorn-loose'
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import {unified} from 'unified'
 import {VirtualMdxCode} from './virtual-code.js'
+
+const StrictParser = Parser.extend(acornJsx())
+
+const hybridAcorn = {
+  parse: LooseParser.parse.bind(LooseParser),
+  parseExpressionAt: StrictParser.parseExpressionAt.bind(StrictParser)
+}
 
 /**
  * Create a [Volar](https://volarjs.dev) language plugin to support MDX.
@@ -32,7 +42,9 @@ export function createMdxLanguagePlugin(
   checkMdx = false,
   jsxImportSource = 'react'
 ) {
-  const processor = unified().use(remarkParse).use(remarkMdx)
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkMdx, {acorn: hybridAcorn})
   if (remarkPlugins) {
     processor.use(remarkPlugins)
   }

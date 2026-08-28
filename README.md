@@ -313,8 +313,6 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 
 [support]: https://mdxjs.com/community/support/
 
-[typescript plugin]: https://www.typescriptlang.org/tsconfig#plugins
-
 [visual studio code]: https://code.visualstudio.com/
 
 [volar]: https://volarjs.dev

@@ -3,6 +3,7 @@
   "references": [{"path": "../language-service/tsconfig.build.json"}],
   "compilerOptions": {
     "noEmit": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   }
 }

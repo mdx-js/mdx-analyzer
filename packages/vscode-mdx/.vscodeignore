@@ -8,7 +8,6 @@
 *.ts
 *.tsbuildinfo
 node_modules/**
-!node_modules/@mdx-js/typescript-plugin.js
 fixtures/
 packages/
 script/

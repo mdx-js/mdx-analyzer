@@ -322,16 +322,6 @@
           "meta.embedded.block.mdx": "mdx"
         }
       }
-    ],
-    "typescriptServerPlugins": [
-      {
-        "name": "@mdx-js/typescript-plugin",
-        "enableForWorkspaceTypeScriptVersions": true,
-        "configNamespace": "typescript",
-        "languages": [
-          "mdx"
-        ]
-      }
     ]
   }
 }

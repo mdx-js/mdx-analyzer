@@ -1,5 +1,11 @@
 # @mdx-js/language-service
 
+## 0.7.4
+
+### Patch Changes
+
+- [#528](https://github.com/mdx-js/mdx-analyzer/pull/528) [`d0759c1`](https://github.com/mdx-js/mdx-analyzer/commit/d0759c104f51c732a15a4a06a7441aaa8763dda3) Thanks [@jp-knj](https://github.com/jp-knj)! - Recover from incomplete ESM syntax when creating virtual code.
+
 ## 0.7.3
 
 ### Patch Changes

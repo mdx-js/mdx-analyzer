@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.18
+
+### Patch Changes
+
+- [`660067a`](https://github.com/mdx-js/mdx-analyzer/commit/660067aae48fb28cf0e8ef15e3e94a538a1558aa) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Add metadata for server trace configuration
+
 ## 1.8.17
 
 ### Patch Changes

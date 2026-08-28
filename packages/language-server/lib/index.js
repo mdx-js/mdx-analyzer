@@ -52,9 +52,17 @@ connection.onInitialize(async (parameters) => {
     createTypeScriptProject(
       typescript,
       diagnosticMessages,
-      ({configFileName}) => ({
-        languagePlugins: getLanguagePlugins(configFileName)
-      })
+      ({configFileName}) => {
+        // Workaround for https://github.com/volarjs/volar.js/issues/283
+        configFileName &&= typescript.findConfigFile(
+          configFileName,
+          typescript.sys.fileExists
+        )
+
+        return {
+          languagePlugins: getLanguagePlugins(configFileName)
+        }
+      }
     ),
     getLanguageServicePlugins()
   )

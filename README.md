@@ -26,8 +26,6 @@ This repository contains the following workspaces:
   [Volar][].
 * [`@mdx-js/language-server`][] provides an MDX language server using the
   [Language Server Protocol][].
-* [`@mdx-js/typescript-plugin`][] provides a [TypeScript plugin][] to integrate
-  MDX in TypeScript editors.
 * [`vscode-mdx`][] integrates the MDX language server into
   [Visual Studio Code][], but also provides some Visual Studio Code specific
   features such as syntax highlighting.
@@ -262,8 +260,6 @@ See [§ Sponsor][sponsor] on our site for how to help financially.
 [`@mdx-js/language-server`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/language-server
 
 [`@mdx-js/language-service`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/language-service
-
-[`@mdx-js/typescript-plugin`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/typescript-plugin
 
 [`vscode-mdx`]: https://github.com/mdx-js/mdx-analyzer/tree/main/packages/vscode-mdx
 

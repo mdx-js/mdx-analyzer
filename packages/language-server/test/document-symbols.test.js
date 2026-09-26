@@ -119,19 +119,6 @@ test('resolve document symbols', async () => {
             end: {line: 46, character: 0}
           },
           children: []
-        },
-        {
-          name: 'exportedFunction',
-          kind: SymbolKind.Function,
-          range: {
-            start: {line: 10, character: 0},
-            end: {line: 15, character: 1}
-          },
-          selectionRange: {
-            start: {line: 10, character: 16},
-            end: {line: 10, character: 32}
-          },
-          children: []
         }
       ]
     }

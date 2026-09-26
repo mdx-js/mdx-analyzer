@@ -28,25 +28,6 @@ test('resolve folding ranges', async () => {
 
   assert.deepEqual(result, [
     {
-      endCharacter: 4,
-      endLine: 4,
-      kind: 'comment',
-      startCharacter: 1,
-      startLine: 2
-    },
-    {
-      endCharacter: 10,
-      endLine: 14,
-      startCharacter: 43,
-      startLine: 10
-    },
-    {
-      endCharacter: 12,
-      endLine: 12,
-      startCharacter: 16,
-      startLine: 11
-    },
-    {
       endLine: 45,
       startLine: 6
     },

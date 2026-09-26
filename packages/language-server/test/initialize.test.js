@@ -35,16 +35,10 @@ test('initialize', async () => {
         triggerCharacters: ['.', '/', '#']
       },
       definitionProvider: true,
-      documentFormattingProvider: true,
       documentHighlightProvider: true,
       documentLinkProvider: {
         resolveProvider: true
       },
-      documentOnTypeFormattingProvider: {
-        firstTriggerCharacter: ';',
-        moreTriggerCharacter: ['}', '\n']
-      },
-      documentRangeFormattingProvider: true,
       documentSymbolProvider: true,
       executeCommandProvider: {
         commands: [
@@ -55,12 +49,6 @@ test('initialize', async () => {
         ]
       },
       experimental: {
-        autoInsertionProvider: {
-          configurationSections: [
-            ['javascript.autoClosingTags', 'typescript.autoClosingTags']
-          ],
-          triggerCharacters: ['>']
-        },
         documentDropEditsProvider: true,
         fileReferencesProvider: true,
         fileRenameEditsProvider: true

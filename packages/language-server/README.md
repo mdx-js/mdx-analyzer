@@ -16,10 +16,7 @@ A [language server][lsp] for [MDX][].
 * [Install](#install)
 * [Use](#use)
   * [Language server features](#language-server-features)
-  * [Initialize Options](#initialize-options)
   * [Configuration](#configuration)
-  * [TypeScript](#typescript)
-  * [Plugins](#plugins)
 * [Editors](#editors)
   * [Emacs](#emacs)
   * [Neovim](#neovim)
@@ -35,7 +32,6 @@ A [language server][lsp] for [MDX][].
 
 This package provides a [language server][lsp] for [MDX][].
 The language server provides editor support based on [Volar][].
-This includes support for [TypeScript][] as well as some MDX specific features.
 
 ## When should I use this?
 
@@ -63,8 +59,7 @@ same transports are supported.
 ### Language server features
 
 This language server supports all features supported by
-[`volar-service-markdown`][volar-service-markdown] and
-[`volar-service-typescript`][volar-service-typescript], plus some additional
+[`volar-service-markdown`][volar-service-markdown], plus some additional
 features specific to MDX.
 
 #### Commands
@@ -127,15 +122,6 @@ It uses the `workspace/applyEdit` command to apply edits.
 
 `null`
 
-### Initialize Options
-
-MDX language server supports the following LSP initialization options:
-
-* `typescript.tsdk` (`string`, required) —
-  The path from which to load TypeScript.
-* `locale` (`string`, optional) —
-  The locale to use for TypeScript error messages.
-
 ### Configuration
 
 MDX language server supports the following LSP configuration options:
@@ -169,20 +155,6 @@ MDX language server supports the following LSP configuration options:
   Diagnostic level for duplicate link definitions.
 * `mdx.validate.ignoreLinks` (`Array<string>`, optional) —
   Glob of links that should not be validated.
-
-### TypeScript
-
-This extension offers type safety for MDX files based on TypeScript’s
-[types in JSDoc][jsdoc].
-For MDX specific details, see the
-[TypeScript section](https://github.com/mdx-js/mdx-analyzer#typescript) of the
-repository readme.
-
-### Plugins
-
-For information on plugin support, see the
-[Plugins section](https://github.com/mdx-js/mdx-analyzer#plugins) of the
-repository readme.
 
 ## Editors
 
@@ -341,8 +313,6 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [downloads-badge]: https://img.shields.io/npm/dm/@mdx-js/language-server.svg
 
-[jsdoc]: https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html
-
 [lsp]: https://microsoft.github.io/language-server-protocol
 
 [lsp commands]: https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#command
@@ -365,13 +335,9 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [support]: https://mdxjs.com/community/support/
 
-[typescript]: https://typescriptlang.org
-
 [volar]: https://volarjs.dev
 
 [volar-service-markdown]: https://github.com/volarjs/services/tree/master/packages/markdown
-
-[volar-service-typescript]: https://github.com/volarjs/services/tree/master/packages/typescript
 
 [vscode]: https://code.visualstudio.com
 

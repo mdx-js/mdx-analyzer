@@ -23,7 +23,6 @@ import {
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 import {create as createMarkdownServicePlugin} from 'volar-service-markdown'
-import {create as createTypeScriptServicePlugin} from 'volar-service-typescript'
 import {create as createTypeScriptSyntacticServicePlugin} from 'volar-service-typescript/lib/plugins/syntactic.js'
 
 process.title = 'mdx-language-server'
@@ -32,11 +31,9 @@ process.title = 'mdx-language-server'
 const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
 const connection = createConnection()
 const server = createServer(connection)
-let tsEnabled = false
 
 connection.onInitialize(async (parameters) => {
   const tsdk = parameters.initializationOptions?.typescript?.tsdk
-  tsEnabled = Boolean(parameters.initializationOptions?.typescript?.enabled)
   assert.ok(
     typeof tsdk === 'string',
     'Missing initialization option typescript.tsdk'
@@ -56,27 +53,16 @@ connection.onInitialize(async (parameters) => {
         languagePlugins: getLanguagePlugins(configFileName)
       })
     ),
-    getLanguageServicePlugins()
-  )
-
-  function getLanguageServicePlugins() {
-    const plugins = [
+    [
       createMarkdownServicePlugin({
         getDiagnosticOptions(document, context) {
           return context.env.getConfiguration?.('mdx.validate')
         }
       }),
-      createMdxServicePlugin(connection.workspace)
+      createMdxServicePlugin(connection.workspace),
+      createTypeScriptSyntacticServicePlugin(typescript)
     ]
-
-    if (tsEnabled) {
-      plugins.push(...createTypeScriptServicePlugin(typescript, {}))
-    } else {
-      plugins.push(createTypeScriptSyntacticServicePlugin(typescript))
-    }
-
-    return plugins
-  }
+  )
 
   /**
    * @param {string | undefined} tsconfig
@@ -126,19 +112,6 @@ connection.onInitialize(async (parameters) => {
 
 connection.onInitialized(() => {
   const extensions = ['mdx']
-  if (tsEnabled) {
-    extensions.push(
-      'cjs',
-      'cts',
-      'js',
-      'jsx',
-      'json',
-      'mjs',
-      'mts',
-      'ts',
-      'tsx'
-    )
-  }
 
   server.initialized()
   server.fileWatcher.watchFiles([`**/*.{${extensions.join(',')}}`])

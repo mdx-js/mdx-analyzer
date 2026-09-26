@@ -19,29 +19,20 @@ afterEach(() => {
 test('initialize', async () => {
   const {serverInfo, ...initializeResponse} = await serverHandle.initialize(
     fixtureUri('node16'),
-    {typescript: {enabled: true, tsdk}}
+    {typescript: {tsdk}}
   )
   assert.deepEqual(initializeResponse, {
     capabilities: {
-      callHierarchyProvider: true,
       codeActionProvider: {
         codeActionKinds: [
           'source.organizeLinkDefinitions',
           'quickfix',
-          'refactor',
-          '',
-          'refactor.extract',
-          'refactor.inline',
-          'refactor.rewrite',
-          'source',
-          'source.fixAll',
-          'source.organizeImports'
+          'refactor'
         ],
         resolveProvider: true
       },
       completionProvider: {
-        resolveProvider: true,
-        triggerCharacters: ['.', '/', '#', '"', "'", '`', '<', '@', ' ', '*']
+        triggerCharacters: ['.', '/', '#']
       },
       definitionProvider: true,
       documentFormattingProvider: true,
@@ -76,47 +67,12 @@ test('initialize', async () => {
       },
       foldingRangeProvider: true,
       hoverProvider: true,
-      implementationProvider: true,
-      inlayHintProvider: {},
       referencesProvider: true,
       renameProvider: {
         prepareProvider: true
       },
       selectionRangeProvider: true,
-      semanticTokensProvider: {
-        full: true,
-        legend: {
-          tokenModifiers: [
-            'declaration',
-            'readonly',
-            'static',
-            'async',
-            'defaultLibrary',
-            'local'
-          ],
-          tokenTypes: [
-            'namespace',
-            'class',
-            'enum',
-            'interface',
-            'typeParameter',
-            'type',
-            'parameter',
-            'variable',
-            'property',
-            'enumMember',
-            'function',
-            'method'
-          ]
-        },
-        range: true
-      },
-      signatureHelpProvider: {
-        retriggerCharacters: [')'],
-        triggerCharacters: ['(', ',', '<']
-      },
       textDocumentSync: 2,
-      typeDefinitionProvider: true,
       workspace: {
         workspaceFolders: {
           changeNotifications: true,

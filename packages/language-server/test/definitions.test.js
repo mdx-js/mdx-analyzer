@@ -13,7 +13,7 @@ beforeEach(async () => {
   await serverHandle.initialize(
     fixtureUri('node16'),
     {
-      typescript: {enabled: true, tsdk}
+      typescript: {tsdk}
     },
     {
       textDocument: {
@@ -27,94 +27,6 @@ beforeEach(async () => {
 
 afterEach(() => {
   serverHandle.connection.dispose()
-})
-
-test('resolve file-local definitions in ESM', async () => {
-  const {uri} = await serverHandle.openTextDocument(
-    fixturePath('node16/a.mdx'),
-    'mdx'
-  )
-  const result = await serverHandle.sendDefinitionRequest(uri, {
-    line: 4,
-    character: 3
-  })
-
-  assert.deepEqual(result, [
-    {
-      originSelectionRange: {
-        start: {line: 4, character: 2},
-        end: {line: 4, character: 3}
-      },
-      targetRange: {
-        start: {line: 1, character: 0},
-        end: {line: 1, character: 22}
-      },
-      targetSelectionRange: {
-        start: {line: 1, character: 16},
-        end: {line: 1, character: 17}
-      },
-      targetUri: fixtureUri('node16/a.mdx')
-    }
-  ])
-})
-
-test('resolve cross-file definitions in ESM if the other file was previously opened', async () => {
-  await serverHandle.openTextDocument(fixturePath('node16/a.mdx'), 'mdx')
-  const {uri} = await serverHandle.openTextDocument(
-    fixturePath('node16/b.mdx'),
-    'mdx'
-  )
-  const result = await serverHandle.sendDefinitionRequest(uri, {
-    line: 0,
-    character: 10
-  })
-
-  assert.deepEqual(result, [
-    {
-      originSelectionRange: {
-        start: {line: 0, character: 9},
-        end: {line: 0, character: 10}
-      },
-      targetRange: {
-        start: {line: 1, character: 0},
-        end: {line: 1, character: 22}
-      },
-      targetSelectionRange: {
-        start: {line: 1, character: 16},
-        end: {line: 1, character: 17}
-      },
-      targetUri: fixtureUri('node16/a.mdx')
-    }
-  ])
-})
-
-test('resolve cross-file definitions in ESM if the other file is unopened', async () => {
-  const {uri} = await serverHandle.openTextDocument(
-    fixturePath('node16/b.mdx'),
-    'mdx'
-  )
-  const result = await serverHandle.sendDefinitionRequest(uri, {
-    line: 0,
-    character: 10
-  })
-
-  assert.deepEqual(result, [
-    {
-      originSelectionRange: {
-        start: {line: 0, character: 9},
-        end: {line: 0, character: 10}
-      },
-      targetRange: {
-        start: {line: 1, character: 0},
-        end: {line: 1, character: 22}
-      },
-      targetSelectionRange: {
-        start: {line: 1, character: 16},
-        end: {line: 1, character: 17}
-      },
-      targetUri: fixtureUri('node16/a.mdx')
-    }
-  ])
 })
 
 test('does not resolve shadow content', async () => {

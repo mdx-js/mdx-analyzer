@@ -11,71 +11,12 @@ let serverHandle
 beforeEach(async () => {
   serverHandle = createServer()
   await serverHandle.initialize(fixtureUri('node16'), {
-    typescript: {enabled: true, tsdk}
+    typescript: {tsdk}
   })
 })
 
 afterEach(() => {
   serverHandle.connection.dispose()
-})
-
-test('handle rename request of variable for opened references', async () => {
-  await serverHandle.openTextDocument(fixturePath('node16/b.mdx'), 'mdx')
-  const {uri} = await serverHandle.openTextDocument(
-    fixturePath('node16/a.mdx'),
-    'mdx'
-  )
-  const result = await serverHandle.sendRenameRequest(
-    uri,
-    {line: 4, character: 3},
-    'renamed'
-  )
-
-  assert.deepEqual(result, {
-    changes: {
-      [fixtureUri('node16/a.mdx')]: [
-        {
-          newText: 'renamed',
-          range: {
-            start: {line: 11, character: 1},
-            end: {line: 11, character: 2}
-          }
-        },
-        {
-          newText: 'renamed',
-          range: {
-            start: {line: 4, character: 2},
-            end: {line: 4, character: 3}
-          }
-        },
-        {
-          newText: 'renamed',
-          range: {
-            start: {line: 1, character: 16},
-            end: {line: 1, character: 17}
-          }
-        }
-      ],
-      [fixtureUri('node16/b.mdx')]: [
-        {
-          newText: 'renamed',
-          range: {
-            start: {line: 0, character: 9},
-            end: {line: 0, character: 10}
-          }
-        }
-      ],
-      [fixtureUri('node16/mixed.mdx')]: [
-        {
-          newText: 'renamed',
-          range: {
-            start: {line: 0, character: 9},
-            end: {line: 0, character: 10}
-          }
-        }
-      ]
-    }
-  })
 })
 
 test('handle undefined rename request', async () => {

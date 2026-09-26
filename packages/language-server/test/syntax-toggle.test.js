@@ -13,7 +13,7 @@ let serverHandle
 beforeEach(async () => {
   serverHandle = createServer()
   await serverHandle.initialize(fixtureUri('node16'), {
-    typescript: {enabled: false, tsdk}
+    typescript: {tsdk}
   })
 })
 

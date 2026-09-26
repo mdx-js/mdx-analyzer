@@ -11,7 +11,7 @@ let serverHandle
 beforeEach(async () => {
   serverHandle = createServer()
   await serverHandle.initialize(fixtureUri('no-tsconfig'), {
-    typescript: {enabled: true, tsdk}
+    typescript: {tsdk}
   })
 })
 

@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/language-server",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "type": "module",
   "description": "A language server for MDX",
   "repository": {

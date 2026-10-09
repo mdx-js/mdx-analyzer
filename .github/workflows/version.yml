@@ -9,6 +9,9 @@ jobs:
   version:
     name: Version
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -19,11 +22,10 @@ jobs:
           node-version: 26
           registry-url: https://registry.npmjs.org
       - run: npm install
-      - uses: changesets/action@v1
+      - uses: changesets/action@v2
         with:
-          publish: ./release.sh
+          publish-script: ./release.sh
+          github-token: ${{secrets.GITHUB_TOKEN}}
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           OVSX_PAT: ${{secrets.OPEN_VSX_TOKEN}}
           VSCE_PAT: ${{secrets.VSCE_TOKEN}}

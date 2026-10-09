@@ -8,13 +8,13 @@ jobs:
   test:
     runs-on: ${{matrix.os}}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{matrix.node}}
       - run: npm install
       - run: npm test
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v7
         if: ${{matrix.os == 'ubuntu-latest' && matrix.node == 22}}
     strategy:
       matrix:

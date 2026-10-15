@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+set -euo pipefail
+
 npm pack --pack-destination "$PWD" --workspace @mdx-js/language-service
 npm pack --pack-destination "$PWD" --workspace @mdx-js/language-server
 npx --workspace vscode-mdx vsce package --out "$PWD"

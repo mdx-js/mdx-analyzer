@@ -25,7 +25,6 @@ jobs:
       - uses: changesets/action@v2
         with:
           publish-script: ./release.sh
-          github-token: ${{secrets.GITHUB_TOKEN}}
         env:
           OVSX_PAT: ${{secrets.OPEN_VSX_TOKEN}}
           VSCE_PAT: ${{secrets.VSCE_TOKEN}}

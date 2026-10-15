@@ -5,26 +5,132 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: false
+
+permissions: {}
+
 jobs:
-  version:
-    name: Version
+  select-mode:
+    name: Select mode
     runs-on: ubuntu-latest
+    outputs:
+      mode: ${{steps.select-mode.outputs.mode}}
+      publish-plan-artifact-id: ${{steps.select-mode.outputs.publish-plan-artifact-id}}
     permissions:
       contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+      - run: npm install
+      - name: Select release mode
+        id: select-mode
+        uses: changesets/action/select-mode@ae32849d5ba541f9ae29e40e22a623bc13562f51
+
+  version:
+    name: Version
+    needs: select-mode
+    if: needs.select-mode.outputs.mode == 'version'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+      - run: npm install
+      - name: Create or update release pull request
+        uses: changesets/action/version@ae32849d5ba541f9ae29e40e22a623bc13562f51
+
+  pack:
+    name: Pack
+    needs: select-mode
+    if: needs.select-mode.outputs.mode == 'publish'
+    runs-on: ubuntu-latest
+    outputs:
+      extension: ${{steps.extension.outputs.publish}}
+      pack-dir-artifact-id: ${{steps.pack.outputs.pack-dir-artifact-id}}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+      - run: npm install
+      - name: Build packages
+        run: npm run test-types
+      - name: Pack npm packages
+        id: pack
+        uses: changesets/action/pack@ae32849d5ba541f9ae29e40e22a623bc13562f51
+        with:
+          publish-plan-artifact-id: ${{needs.select-mode.outputs.publish-plan-artifact-id}}
+      - name: Check for an extension release
+        id: extension
+        run: |
+          version=$(node --print "require('./packages/vscode-mdx/package.json').version")
+          if git rev-parse --verify --quiet "refs/tags/vscode-mdx@$version"
+          then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Pack extension
+        if: steps.extension.outputs.publish == 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/vscode-extension"
+          npx --workspace vscode-mdx vsce package --out "$RUNNER_TEMP/vscode-extension"
+      - name: Upload extension
+        if: steps.extension.outputs.publish == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: vscode-extension
+          path: ${{runner.temp}}/vscode-extension/*.vsix
+
+  publish:
+    name: Publish
+    needs: pack
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
       id-token: write
     steps:
       - uses: actions/checkout@v7
         with:
-          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
           node-version: 26
           registry-url: https://registry.npmjs.org
       - run: npm install
-      - uses: changesets/action@v2
+      - name: Download extension
+        if: needs.pack.outputs.extension == 'true'
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
         with:
-          publish-script: ./release.sh
+          name: vscode-extension
+          path: vscode-extension
+      - name: Publish extension to Open VSX
+        if: needs.pack.outputs.extension == 'true'
+        run: npx ovsx publish --packagePath vscode-extension/*.vsix --skip-duplicate
         env:
           OVSX_PAT: ${{secrets.OPEN_VSX_TOKEN}}
+      - name: Publish extension to Visual Studio Marketplace
+        if: needs.pack.outputs.extension == 'true'
+        run: npx vsce publish --packagePath vscode-extension/*.vsix --skip-duplicate
+        env:
           VSCE_PAT: ${{secrets.VSCE_TOKEN}}
+      - name: Publish npm packages and GitHub releases
+        uses: changesets/action/publish@ae32849d5ba541f9ae29e40e22a623bc13562f51
+        with:
+          pack-dir-artifact-id: ${{needs.pack.outputs.pack-dir-artifact-id}}

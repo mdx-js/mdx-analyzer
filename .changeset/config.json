@@ -7,8 +7,5 @@
     }
   ],
   "access": "public",
-  "privatePackages": {
-    "tag": true,
-    "version": true
-  }
+  "privatePackages": true
 }

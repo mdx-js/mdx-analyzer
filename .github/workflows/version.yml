@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 26
-      - run: npm install
+      - run: npm install --package-lock=true # generate lock so Changesets can recognize this as npm-based monorepo
       - name: Select release mode
         id: select-mode
         uses: changesets/action/select-mode@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 26
-      - run: npm install
+      - run: npm install --package-lock=true # generate lock so Changesets can recognize this as npm-based monorepo
       - name: Create or update release pull request
         uses: changesets/action/version@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
 
@@ -63,7 +63,7 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 26
-      - run: npm install
+      - run: npm install --package-lock=true # generate lock so Changesets can recognize this as npm-based monorepo
       - name: Build packages
         run: npm run test-types
       - name: Pack npm packages
@@ -108,7 +108,7 @@ jobs:
         with:
           node-version: 26
           registry-url: https://registry.npmjs.org
-      - run: npm install
+      - run: npm install --package-lock=true # generate lock so Changesets can recognize this as npm-based monorepo
       - name: Download extension
         if: needs.pack.outputs.extension == 'true'
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2

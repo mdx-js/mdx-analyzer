@@ -7,5 +7,6 @@
     }
   ],
   "access": "public",
+  "ignore": ["./package.json"],
   "privatePackages": true
 }

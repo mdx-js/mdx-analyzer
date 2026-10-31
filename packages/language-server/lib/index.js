@@ -25,8 +25,8 @@ const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
 const connection = createConnection()
 const server = createServer(connection)
 
-connection.onInitialize(async (parameters) => {
-  return server.initialize(
+connection.onInitialize(async (parameters) =>
+  server.initialize(
     parameters,
     createSimpleProject([
       createMdxLanguagePlugin(defaultPlugins, [], false, 'react')
@@ -40,7 +40,7 @@ connection.onInitialize(async (parameters) => {
       createMdxServicePlugin(connection.workspace)
     ]
   )
-})
+)
 
 connection.onInitialized(() => {
   const extensions = ['mdx']

@@ -11,6 +11,12 @@
     "test-api": "c8 node --test",
     "test": "npm run test-types && npm run format && npm run test-api"
   },
+  "allowScripts": {
+    "@vscode/vsce-sign": false,
+    "esbuild": false,
+    "keytar": false,
+    "unrs-resolver": false
+  },
   "devDependencies": {
     "@changesets/changelog-github": "^1.0.0",
     "@changesets/cli": "^3.0.0",

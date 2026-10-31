@@ -43,9 +43,12 @@
     "@types/vscode": "^1.82.0",
     "@volar/language-server": "~2.4.0",
     "@volar/vscode": "~2.4.0",
-    "@vscode/vsce": "~3.6.0",
+    "@vscode/vsce": "^4.0.0",
     "esbuild": "^0.25.0",
-    "ovsx": "^0.10.0"
+    "ovsx": "^1.0.0"
+  },
+  "vsce": {
+    "dependencies": false
   },
   "galleryBanner": {
     "color": "#fcb32c",

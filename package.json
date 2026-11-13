@@ -30,7 +30,7 @@
     "remark-directive": "^4.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-preset-wooorm": "^11.0.0",
-    "typescript": "^5.0.0",
+    "typescript": "^6.0.0",
     "xo": "^1.0.0"
   },
   "prettier": {

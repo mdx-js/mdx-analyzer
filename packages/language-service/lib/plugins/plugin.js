@@ -16,4 +16,5 @@
  *   An internal plugin for MDX analyzer that represents an MDX plugin.
  */
 
+// eslint-disable-next-line unicorn/require-module-specifiers
 export {}

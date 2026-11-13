@@ -4,40 +4,48 @@
 
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
+
 import {resolvePlugins} from '@mdx-js/language-service'
 
+/**
+ * Do nothing
+ */
+function noop() {
+  // Do nothing
+}
+
 test('ignore null', () => {
-  const result = resolvePlugins(null, () => () => {})
+  const result = resolvePlugins(null, () => noop)
 
   assert.deepEqual(result, [])
 })
 
 test('ignore non-objects', () => {
-  const result = resolvePlugins('string', () => () => {})
+  const result = resolvePlugins('string', () => noop)
 
   assert.deepEqual(result, [])
 })
 
 test('ignore objects without `plugins` key', () => {
-  const result = resolvePlugins({}, () => () => {})
+  const result = resolvePlugins({}, () => noop)
 
   assert.deepEqual(result, [])
 })
 
 test('ignore null plugins', () => {
-  const result = resolvePlugins({plugins: null}, () => () => {})
+  const result = resolvePlugins({plugins: null}, () => noop)
 
   assert.deepEqual(result, [])
 })
 
 test('ignore non-object plugins', () => {
-  const result = resolvePlugins({plugins: 'string'}, () => () => {})
+  const result = resolvePlugins({plugins: 'string'}, () => noop)
 
   assert.deepEqual(result, [])
 })
 
 test('ignore empty plugins', () => {
-  const result = resolvePlugins({plugins: []}, () => () => {})
+  const result = resolvePlugins({plugins: []}, () => noop)
 
   assert.deepEqual(result, [])
 })
@@ -45,8 +53,8 @@ test('ignore empty plugins', () => {
 test('load array of plugin tuples', () => {
   /** @type {Record<string, Plugin>} */
   const plugins = {
-    a() {},
-    b() {}
+    a: noop,
+    b: noop
   }
 
   const result = resolvePlugins(
@@ -60,8 +68,8 @@ test('load array of plugin tuples', () => {
 test('load object plugin mappings', () => {
   /** @type {Record<string, Plugin>} */
   const plugins = {
-    a() {},
-    b() {}
+    a: noop,
+    b: noop
   }
 
   const result = resolvePlugins(

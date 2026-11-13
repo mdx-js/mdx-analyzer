@@ -1,8 +1,9 @@
 /**
- * @import {ExecuteCommandSignature, LabsInfo, TextEdit} from '@volar/vscode'
+ * @import {ExecuteCommandSignature, LabsInfo} from '@volar/vscode'
  * @import {ExtensionContext} from 'vscode'
  */
 
+// eslint-disable-next-line import-x/no-extraneous-dependencies
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {
   activateAutoInsertion,
@@ -10,14 +11,15 @@ import {
   createLabsInfo,
   getTsdk
 } from '@volar/vscode'
-import {
-  extensions,
-  window,
-  workspace,
-  Disposable,
-  ProgressLocation
-} from 'vscode'
+// eslint-disable-next-line import-x/no-extraneous-dependencies
 import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
+import {
+  Disposable,
+  extensions,
+  ProgressLocation,
+  window,
+  workspace
+} from 'vscode'
 
 /**
  * @type {LanguageClient}
@@ -78,6 +80,9 @@ export async function activate(context) {
 
   return volarLabs.extensionExports
 
+  /**
+   * Stop the language server. Then restart it if the config enables it.
+   */
   async function tryRestartServer() {
     await stopServer()
     if (workspace.getConfiguration('mdx').get('server.enable')) {
@@ -93,6 +98,9 @@ export async function deactivate() {
   await stopServer()
 }
 
+/**
+ * Stop the server if necessary and dispose the global disposable.
+ */
 async function stopServer() {
   if (client?.needsStop()) {
     disposable.dispose()
@@ -123,6 +131,7 @@ async function startServer() {
   }
 }
 
+// eslint-disable-next-line jsdoc/require-returns-check
 /**
  * Execute a command with correct arguments.
  *
@@ -132,10 +141,10 @@ async function startServer() {
  *   The original arguments passed to the command.
  * @param {ExecuteCommandSignature} next
  *   The next middleware to execute.
- * @returns {Promise<unknown>}
+ * @returns {unknown}
  *   The command result.
  */
-async function executeCommand(command, args, next) {
+function executeCommand(command, args, next) {
   switch (command) {
     case 'mdx.toggleDelete':
     case 'mdx.toggleEmphasis':
@@ -152,8 +161,7 @@ async function executeCommand(command, args, next) {
       ])
     }
 
-    default: {
+    default:
       return next(command, args)
-    }
   }
 }

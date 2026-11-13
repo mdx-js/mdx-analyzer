@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import assert from 'node:assert/strict'
-import fs from 'node:fs/promises'
+import {writeFile} from 'node:fs/promises'
 
 const repo = 'wooorm/markdown-tm-language'
 const branch = 'main'
@@ -15,7 +15,7 @@ const branches =
     await branchesResponse.json()
   )
 const main = branches.find((d) => d.name === branch)
-assert.ok(main, 'expected `' + branch + '` branch')
+assert.ok(main, `expected \`${branch}\` branch`)
 
 const {sha} = main.commit
 
@@ -41,9 +41,10 @@ blob = blob.replace(/<dict>/, ($0) => {
 
 assert.ok(injected, 'expected to find a dict')
 
-await fs.writeFile(
+await writeFile(
   new URL('../syntaxes/source.mdx.tmLanguage', import.meta.url),
   blob
 )
 
-console.log('Wrote `source.mdx.tmLanguage` at `' + sha + '`')
+// eslint-disable-next-line no-console
+console.log(`Wrote \`source.mdx.tmLanguage\` at \`${sha}\``)

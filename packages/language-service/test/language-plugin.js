@@ -1,14 +1,26 @@
 import assert from 'node:assert/strict'
 import {test} from 'node:test'
+
+import {createMdxLanguagePlugin} from '@mdx-js/language-service'
 import remarkFrontmatter from 'remark-frontmatter'
 import typescript from 'typescript'
 import {VFileMessage} from 'vfile-message'
-import {ScriptSnapshot} from '../lib/script-snapshot.js'
-import {VirtualMdxCode} from '../lib/virtual-code.js'
+
 import {recmaExportFilepath} from '../lib/plugins/recma-export-filepath.js'
 import {rehypeMdxTitle} from '../lib/plugins/rehype-mdx-title.js'
 import {remarkMdxFrontmatter} from '../lib/plugins/remark-mdx-frontmatter.js'
-import {createMdxLanguagePlugin} from '@mdx-js/language-service'
+import {ScriptSnapshot} from '../lib/script-snapshot.js'
+import {VirtualMdxCode} from '../lib/virtual-code.js'
+
+/**
+ * Do nothing
+ *
+ * @returns {undefined}
+ *   Nothing
+ */
+function noop() {
+  // Do nothing
+}
 
 test('create virtual code w/ mdxjsEsm', () => {
   const plugin = createMdxLanguagePlugin()
@@ -16,7 +28,7 @@ test('create virtual code w/ mdxjsEsm', () => {
   const snapshot = snapshotFromLines('import {Planet} from "./Planet.js"', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -134,7 +146,7 @@ test('create virtual code w/ mdxjsEsm and CRLF', () => {
   const snapshot = snapshotFromLines('import {Planet} from "./Planet.js"\r', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -252,7 +264,7 @@ test('create virtual code w/o MDX layout in case of named re-export', () => {
   const snapshot = snapshotFromLines('export {named} from "./Layout.js"', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -369,7 +381,7 @@ test('create virtual code w/ MDX layout in case of default re-export', () => {
   const snapshot = snapshotFromLines('export {default} from "./Layout.js"', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -490,7 +502,7 @@ test('create virtual code w/ MDX layout in case of named and default re-export',
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -611,7 +623,7 @@ test('create virtual code w/ MDX layout in case of default and named re-export',
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -729,7 +741,7 @@ test('create virtual code w/ MDX layout in case of a default exported arrow func
   const snapshot = snapshotFromLines('export default () => {}', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -863,7 +875,7 @@ test('create virtual code w/ MDX layout in case of a default exported function d
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -996,7 +1008,7 @@ test('create virtual code w/ MDX layout in case of a default exported constant',
   const snapshot = snapshotFromLines('export default "main"', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -1117,7 +1129,7 @@ test('create virtual code w/ MDX layout and matching argument name', () => {
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -1254,7 +1266,7 @@ test('create virtual code w/ MDX layout in case of a default export followed by 
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -1394,7 +1406,7 @@ test('create virtual code w/ MDX layout in case of a default export preceded by 
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -1530,7 +1542,7 @@ test('create virtual code w/ mdxFlowExpression', () => {
   const snapshot = snapshotFromLines('{Math.PI}', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -1659,7 +1671,7 @@ test('create virtual code w/ empty mdxFlowExpression', () => {
   const snapshot = snapshotFromLines('{}', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -1802,7 +1814,7 @@ test('create virtual code w/ prefixed JSX expressions for mdxFlowExpression', ()
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -1999,7 +2011,7 @@ test('create virtual code w/ prefixed JSX expressions in attributes', () => {
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -2181,7 +2193,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ children', () => {
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -2362,7 +2374,7 @@ test('create virtual code w/ mdxJsxFlowElement w/ blockquote child', () => {
   const snapshot = snapshotFromLines('<div>', '>', '</div>', '<div>></div>', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -2506,7 +2518,7 @@ test('create virtual code w/ mdxJsxFlowElement w/o children', () => {
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -2663,7 +2675,7 @@ test('create virtual code w/ mdxJsxTextElement', () => {
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -2825,7 +2837,7 @@ test('create virtual code w/ mdxTextExpression', () => {
   const snapshot = snapshotFromLines('3 < {Math.PI} < 4', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -2961,7 +2973,7 @@ test('create virtual code w/ async mdxTextExpression', () => {
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -3111,7 +3123,7 @@ test('ignore async functions in props or expressions', () => {
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -3273,7 +3285,7 @@ test('support locally scoped components', () => {
   const snapshot = snapshotFromLines('{(Component) => <Component />}', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -3408,7 +3420,7 @@ test('create virtual code w/ dedented markdown content', () => {
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -3532,7 +3544,7 @@ test('create virtual code w/ syntax error', () => {
   const snapshot = snapshotFromLines('<', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -3618,7 +3630,7 @@ test('create virtual code w/ yaml frontmatter', () => {
   const snapshot = snapshotFromLines('---', 'hello: frontmatter', '---', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -3754,14 +3766,14 @@ test('update virtual code', () => {
     '/test.mdx',
     'mdx',
     snapshotFromLines('Tihs lne haz tyops', ''),
-    {getAssociatedScript: () => undefined}
+    {getAssociatedScript: noop}
   )
 
   assert.ok(code instanceof VirtualMdxCode)
 
   const snapshot = snapshotFromLines('This line is fixed', '')
   code = plugin.createVirtualCode?.('/text.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -3920,7 +3932,7 @@ test('support checkMdx', () => {
   const snapshot = snapshotFromLines('')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -4036,7 +4048,7 @@ test('support custom jsxImportSource', () => {
   const snapshot = snapshotFromLines('')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -4155,7 +4167,7 @@ test('recma-export-filepath', () => {
   const snapshot = snapshotFromLines('')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -4277,7 +4289,7 @@ test('recma-export-filepath custom name', () => {
   const snapshot = snapshotFromLines('')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -4399,7 +4411,7 @@ test('remark-mdx-frontmatter', () => {
   const snapshot = snapshotFromLines('')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -4521,7 +4533,7 @@ test('remark-mdx-frontmatter custom name', () => {
   const snapshot = snapshotFromLines('')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -4643,7 +4655,7 @@ test('remark-mdx-frontmatter yaml', () => {
   const snapshot = snapshotFromLines('---', '---')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -4785,7 +4797,7 @@ test('remark-mdx-frontmatter toml', () => {
   const snapshot = snapshotFromLines('+++', '+++')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -4927,7 +4939,7 @@ test('rehype-mdx-title', () => {
   const snapshot = snapshotFromLines('')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -5049,7 +5061,7 @@ test('rehype-mdx-title custom name', () => {
   const snapshot = snapshotFromLines('')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -5171,7 +5183,7 @@ test('rehype-mdx-title matching rank', () => {
   const snapshot = snapshotFromLines('# Hello')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -5292,7 +5304,7 @@ test('create virtual code w/ invalid ESM recovery', () => {
   const snapshot = snapshotFromLines('export const x =', '', 'Hello {true}', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -5428,7 +5440,7 @@ test('create virtual code w/ incomplete import recovery', () => {
   const snapshot = snapshotFromLines('import { } from', '', '# Hello', '')
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -5553,7 +5565,7 @@ test('create virtual code w/ valid ESM after recovery support', () => {
   )
 
   const code = plugin.createVirtualCode?.('/test.mdx', 'mdx', snapshot, {
-    getAssociatedScript: () => undefined
+    getAssociatedScript: noop
   })
 
   assert.ok(code instanceof VirtualMdxCode)
@@ -5686,8 +5698,12 @@ test('create virtual code w/ valid ESM after recovery support', () => {
 })
 
 /**
+ * Create a TypeScript snapshot from joined lines.
+ *
  * @param {string[]} lines
+ *   The lines that represent the content.
  * @returns {typescript.IScriptSnapshot}
+ *   The TypeScript snapshot.
  */
 function snapshotFromLines(...lines) {
   return new ScriptSnapshot(lines.join('\n'))

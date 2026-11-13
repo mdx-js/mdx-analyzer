@@ -6,6 +6,7 @@
 
 import {visitParents} from 'unist-util-visit-parents'
 import {URI} from 'vscode-uri'
+
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {VirtualMdxCode} from './virtual-code.js'
 
@@ -42,13 +43,13 @@ export async function toggleSyntax(
     return
   }
 
-  const {ast} = root
+  const {ast, languageId, snapshot} = root
 
   if (!ast) {
     return
   }
 
-  const doc = context.documents.get(parsedUri, root.languageId, root.snapshot)
+  const doc = context.documents.get(parsedUri, languageId, snapshot)
   const selectionStart = doc.offsetAt(range.start)
   const selectionEnd = doc.offsetAt(range.end)
 

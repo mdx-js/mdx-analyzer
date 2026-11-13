@@ -1,4 +1,6 @@
-export type AvatarProps = {
+import type {ReactNode} from 'react'
+
+export interface AvatarProps {
   /**
    * The avatar of the user to display.
    */
@@ -13,7 +15,7 @@ export type AvatarProps = {
 /**
  * Render a user avatar.
  */
-export function Avatar({avatar, name}: AvatarProps) {
+export function Avatar({avatar, name}: AvatarProps): ReactNode {
   return (
     <figure className="avatar">
       <img alt={name} src={avatar} />

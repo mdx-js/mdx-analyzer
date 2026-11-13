@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import {createRequire} from 'node:module'
-import process from 'node:process'
 import {fileURLToPath} from 'node:url'
+
+// eslint-disable-next-line import-x/no-extraneous-dependencies
 import {build} from 'esbuild'
 
 const require = createRequire(import.meta.url)

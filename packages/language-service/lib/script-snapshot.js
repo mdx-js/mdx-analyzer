@@ -4,8 +4,6 @@
 
 /**
  * A TypeScript compatible script snapshot that wraps a string of text.
- *
- * @implements {IScriptSnapshot}
  */
 export class ScriptSnapshot {
   /**
@@ -21,10 +19,14 @@ export class ScriptSnapshot {
    *
    * @returns {undefined}
    */
-  getChangeRange() {}
+  // eslint-disable-next-line class-methods-use-this
+  getChangeRange() {
+    // Not implemented
+  }
 
   /**
    * @returns {number}
+   *   The snapshot text length.
    */
   getLength() {
     return this.text.length
@@ -32,8 +34,11 @@ export class ScriptSnapshot {
 
   /**
    * @param {number} start
+   *   The start offset of the range to get.
    * @param {number} end
+   *   The end offset of the range to get.
    * @returns {string}
+   *   The slice of the string that matches the start and end offset.
    */
   getText(start, end) {
     return this.text.slice(start, end)

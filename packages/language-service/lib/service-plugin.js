@@ -3,9 +3,11 @@
  */
 
 import path from 'node:path/posix'
+
 import {toMarkdown} from 'mdast-util-to-markdown'
 import {fromPlace} from 'unist-util-lsp'
 import {URI, Utils} from 'vscode-uri'
+
 import {toggleSyntax} from './commands.js'
 import {VirtualMdxCode} from './virtual-code.js'
 
@@ -47,7 +49,7 @@ const imageExtensions = new Set([
  * - Reporting diagnostics for parsing errors.
  * - Document drop support for images.
  * - Custom commands for toggling `delete`, `emphasis`, `inlineCode`, and
- *   `strong` text.
+ * `strong` text.
  *
  * @param {createMdxServicePlugin.Options} options
  *   Options to configure the MDX language service.
@@ -78,7 +80,7 @@ export function createMdxServicePlugin(options) {
       return {
         executeCommand(command, args) {
           switch (command) {
-            case 'mdx.toggleDelete': {
+            case 'mdx.toggleDelete':
               return toggleSyntax(
                 context,
                 options,
@@ -87,9 +89,8 @@ export function createMdxServicePlugin(options) {
                 args[0],
                 args[1]
               )
-            }
 
-            case 'mdx.toggleEmphasis': {
+            case 'mdx.toggleEmphasis':
               return toggleSyntax(
                 context,
                 options,
@@ -98,9 +99,8 @@ export function createMdxServicePlugin(options) {
                 args[0],
                 args[1]
               )
-            }
 
-            case 'mdx.toggleInlineCode': {
+            case 'mdx.toggleInlineCode':
               return toggleSyntax(
                 context,
                 options,
@@ -109,9 +109,8 @@ export function createMdxServicePlugin(options) {
                 args[0],
                 args[1]
               )
-            }
 
-            case 'mdx.toggleStrong': {
+            case 'mdx.toggleStrong':
               return toggleSyntax(
                 context,
                 options,
@@ -120,11 +119,9 @@ export function createMdxServicePlugin(options) {
                 args[0],
                 args[1]
               )
-            }
 
-            default: {
-              throw new Error('Unknown command: ' + command)
-            }
+            default:
+              throw new Error(`Unknown command: ${command}`)
           }
         },
 
@@ -176,13 +173,14 @@ export function createMdxServicePlugin(options) {
           if (uriListItem) {
             const value = await uriListItem.asString()
             const uris = value.split(/\r?\n/)
+
             /** @type {string[]} */
             const content = []
 
             for (const line of uris) {
               try {
                 const uri = URI.parse(line, true)
-                const value =
+                const val =
                   uri.scheme === documentUri.scheme
                     ? path.relative(path.dirname(documentUri.path), uri.path)
                     : line
@@ -190,8 +188,8 @@ export function createMdxServicePlugin(options) {
                 content.push(
                   toMarkdown(
                     imageExtensions.has(path.extname(uri.path))
-                      ? {type: 'image', url: value}
-                      : {type: 'text', value}
+                      ? {type: 'image', url: val}
+                      : {type: 'text', value: val}
                   ).trim()
                 )
               } catch {
@@ -234,7 +232,7 @@ export function createMdxServicePlugin(options) {
               {
                 message: error.message,
                 code: error.source
-                  ? error.source + ':' + error.ruleId
+                  ? `${error.source}:${error.ruleId}`
                   : error.ruleId,
                 codeDescription: {
                   href:

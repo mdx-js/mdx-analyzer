@@ -3,7 +3,9 @@
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
+
 import {URI} from 'vscode-uri'
+
 import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
 /** @type {LanguageServerHandle} */
@@ -40,8 +42,7 @@ test('parse errors', async () => {
             URI.from({
               scheme: 'volar-embedded-content',
               authority: 'mdx',
-              path:
-                '/' + encodeURIComponent(fixtureUri('node16/syntax-error.mdx'))
+              path: `/${encodeURIComponent(fixtureUri('node16/syntax-error.mdx'))}`
             })
           ),
           isFormat: false,

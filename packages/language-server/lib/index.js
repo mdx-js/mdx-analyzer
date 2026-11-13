@@ -4,7 +4,6 @@
  * @import {PluggableList} from 'unified'
  */
 
-import process from 'node:process'
 import {
   createMdxLanguagePlugin,
   createMdxServicePlugin
@@ -25,7 +24,7 @@ const defaultPlugins = [[remarkFrontmatter, ['toml', 'yaml']], remarkGfm]
 const connection = createConnection()
 const server = createServer(connection)
 
-connection.onInitialize(async (parameters) =>
+connection.onInitialize((parameters) =>
   server.initialize(
     parameters,
     createSimpleProject([

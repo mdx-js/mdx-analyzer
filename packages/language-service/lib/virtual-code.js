@@ -1,6 +1,12 @@
 /**
  * @import {CodeMapping, VirtualCode} from '@volar/language-service'
- * @import {ExportDefaultDeclaration, JSXClosingElement, JSXOpeningElement, Node, Program} from 'estree-jsx'
+ * @import {
+ *   ExportDefaultDeclaration,
+ *   JSXClosingElement,
+ *   JSXOpeningElement,
+ *   Node,
+ *   Program
+ * } from 'estree-jsx'
  * @import {Scope} from 'estree-util-scope'
  * @import {Nodes, Root} from 'mdast'
  * @import {MdxjsEsm} from 'mdast-util-mdxjs-esm'
@@ -13,9 +19,10 @@ import {isDummy} from 'acorn-loose'
 import {createVisitors} from 'estree-util-scope'
 import {walk} from 'estree-walker'
 import {VFileMessage} from 'vfile-message'
+
+import {isInjectableComponent, isInjectableEstree} from './jsx-utils.js'
 import {getNodeEndOffset, getNodeStartOffset} from './mdast-utils.js'
 import {ScriptSnapshot} from './script-snapshot.js'
-import {isInjectableComponent, isInjectableEstree} from './jsx-utils.js'
 
 /**
  * Render the content that should be prefixed to the embedded JavaScript file.
@@ -70,7 +77,7 @@ ${isAsync ? 'async ' : ''}function _createMdxContent(props) {
     /** The [props](https://mdxjs.com/docs/using-mdx/#props) that have been passed to the MDX component. */
     props${
       scope?.defined
-        .map((name) => ',\n    /** {@link ' + name + '} */\n    ' + name)
+        .map((name) => `,\n    /** {@link ${name}} */\n    ${name}`)
         .join('') ?? ''
     }
   }
@@ -256,8 +263,8 @@ function findAcornLooseError(ast) {
  * @param {number} endOffset
  *   The end offset in the original source code.
  * @param {boolean} [includeNewline]
- *  If true, and the source range is followed directly by a newline, extend the
- *  end offset to include that newline.
+ *   If true, and the source range is followed directly by a newline, extend the
+ *   end offset to include that newline.
  * @returns {string}
  *   The updated generated content.
  */
@@ -276,13 +283,11 @@ function addOffset(
   if (includeNewline) {
     const LF = 10
     const CR = 13
-    // eslint-disable-next-line unicorn/prefer-code-point
+
     const charCode = source.charCodeAt(endOffset)
     if (charCode === LF) {
       endOffset += 1
-    }
-    // eslint-disable-next-line unicorn/prefer-code-point
-    else if (charCode === CR && source.charCodeAt(endOffset + 1) === LF) {
+    } else if (charCode === CR && source.charCodeAt(endOffset + 1) === LF) {
       endOffset += 2
     }
   }
@@ -343,7 +348,7 @@ function getPropsName(node) {
  * @returns {undefined}
  */
 function padOffsets(mapping, padding) {
-  for (let i = 0; i < mapping.generatedOffsets.length; i++) {
+  for (let i = 0; i < mapping.generatedOffsets.length; i += 1) {
     mapping.generatedOffsets[i] += padding
   }
 }
@@ -368,8 +373,10 @@ const mdastElementNodeNameMap = {
   tableRow: 'tr',
   thematicBreak: 'hr'
 }
+
 /**
  * Get the JSX node names for a given AST node.
+ *
  * @param {Nodes} node
  * @returns {string[]}
  */
@@ -379,7 +386,7 @@ function getJsxNodeNameForMdast(node) {
   }
 
   if (node.type === 'heading') {
-    return ['h' + node.depth]
+    return [`h${node.depth}`]
   }
 
   if (node.type === 'list') {
@@ -418,6 +425,7 @@ function getEmbeddedCodes(
   let nextMarkdownSourceStart = 0
 
   const plugins = virtualCodePlugins.map((plugin) => plugin())
+
   /** @type {CodeMapping[]} */
   const jsMappings = []
 
@@ -609,7 +617,7 @@ function getEmbeddedCodes(
         esm = addOffset(
           esmMapping,
           mdx,
-          esm + '\nconst MDXLayout = ',
+          `${esm}\nconst MDXLayout = `,
           child.declaration.start,
           child.end,
           true
@@ -631,14 +639,18 @@ function getEmbeddedCodes(
               index === specifiers.length - 1
                 ? specifier.end
                 : mdx.indexOf(',', specifier.end) + 1
-            esm =
-              addOffset(esmMapping, mdx, esm, nextPosition, end, true) +
-              '\nimport {' +
-              (specifier.exported.type === 'Identifier'
+            esm = `${addOffset(
+              esmMapping,
+              mdx,
+              esm,
+              nextPosition,
+              end,
+              true
+            )}\nimport {${
+              specifier.exported.type === 'Identifier'
                 ? specifier.exported.name
-                : JSON.stringify(specifier.exported.value)) +
-              ' as MDXLayout} from ' +
-              JSON.stringify(child.source.value)
+                : JSON.stringify(specifier.exported.value)
+            } as MDXLayout} from ${JSON.stringify(child.source.value)}`
             continue bodyLoop
           }
         }
@@ -662,6 +674,7 @@ function getEmbeddedCodes(
   function processJsxExpression(program, lastIndex) {
     /** @type {Map<Node, Scope | undefined>} */
     const localScopes = new Map()
+
     /** @type {Map<Node, Node | null>} */
     const parents = new Map()
     let newIndex = lastIndex
@@ -682,17 +695,15 @@ function getEmbeddedCodes(
         return
       }
 
-      jsx =
-        addOffset(jsxMapping, mdx, jsx, newIndex, name.start) + '_components.'
+      jsx = `${addOffset(jsxMapping, mdx, jsx, newIndex, name.start)}_components.`
       if (node.name && node.type === 'JSXOpeningElement') {
-        jsxVariables =
-          addOffset(
-            jsxVariablesMapping,
-            mdx,
-            jsxVariables + '// @ts-ignore\n',
-            name.start,
-            name.end
-          ) + '\n'
+        jsxVariables = `${addOffset(
+          jsxVariablesMapping,
+          mdx,
+          `${jsxVariables}// @ts-ignore\n`,
+          name.start,
+          name.end
+        )}\n`
       }
 
       newIndex = name.start
@@ -720,33 +731,29 @@ function getEmbeddedCodes(
     walk(program, {
       enter(node) {
         switch (node.type) {
-          case 'JSXElement': {
+          case 'JSXElement':
             processJsxTag(node.openingElement)
             break
-          }
 
           case 'ArrowFunctionExpression':
           case 'FunctionDeclaration':
-          case 'FunctionExpression': {
+          case 'FunctionExpression':
             functionNesting++
             break
-          }
 
-          case 'AwaitExpression': {
+          case 'AwaitExpression':
             if (!functionNesting) {
               hasAwait = true
             }
 
             break
-          }
 
-          case 'ForOfStatement': {
+          case 'ForOfStatement':
             if (!functionNesting) {
               hasAwait ||= node.await
             }
 
             break
-          }
 
           default:
         }
@@ -756,10 +763,9 @@ function getEmbeddedCodes(
         switch (node.type) {
           case 'ArrowFunctionExpression':
           case 'FunctionDeclaration':
-          case 'FunctionExpression': {
+          case 'FunctionExpression':
             functionNesting--
             break
-          }
 
           case 'JSXElement': {
             const {closingElement} = node
@@ -822,11 +828,10 @@ function getEmbeddedCodes(
           break
         }
 
-        case 'mdxjsEsm': {
+        case 'mdxjsEsm':
           updateMarkdownFromNode(node)
           processExports(node)
           break
-        }
 
         case 'mdxJsxFlowElement':
         case 'mdxJsxTextElement': {
@@ -842,14 +847,13 @@ function getEmbeddedCodes(
           if (isInjectableComponent(node.name, programScope)) {
             jsx += '_components.'
             if (node.name) {
-              jsxVariables =
-                addOffset(
-                  jsxVariablesMapping,
-                  mdx,
-                  jsxVariables + '// @ts-ignore\n',
-                  lastIndex,
-                  lastIndex + node.name.length
-                ) + '\n'
+              jsxVariables = `${addOffset(
+                jsxVariablesMapping,
+                mdx,
+                `${jsxVariables}// @ts-ignore\n`,
+                lastIndex,
+                lastIndex + node.name.length
+              )}\n`
             }
           }
 
@@ -892,29 +896,26 @@ function getEmbeddedCodes(
           } else {
             jsx = addOffset(jsxMapping, mdx, jsx, start, start + 1)
             jsx = addOffset(jsxMapping, mdx, jsx, end - 1, end)
-            esm = addOffset(esmMapping, mdx, esm, start + 1, end - 1) + '\n'
+            esm = `${addOffset(esmMapping, mdx, esm, start + 1, end - 1)}\n`
           }
 
           break
         }
 
-        case 'root': {
+        case 'root':
           break
-        }
 
-        case 'text': {
-          jsx += jsxIndent + "{''}"
+        case 'text':
+          jsx += `${jsxIndent}{''}`
           break
-        }
 
-        default: {
+        default:
           jsx +=
             jsxIndent +
             getJsxNodeNameForMdast(node)
               .map((name) => `<${name}>`)
               .join('')
           break
-        }
       }
     },
     (node) => {
@@ -933,13 +934,13 @@ function getEmbeddedCodes(
               jsx = addOffset(
                 jsxMapping,
                 mdx,
-                addOffset(
+                `${addOffset(
                   jsxMapping,
                   mdx,
                   jsx + jsxIndent,
                   start,
                   closingStart
-                ) + '_components.',
+                )}_components.`,
                 closingStart,
                 end
               )
@@ -957,11 +958,10 @@ function getEmbeddedCodes(
         case 'root':
         case 'text':
         case 'toml':
-        case 'yaml': {
+        case 'yaml':
           break
-        }
 
-        default: {
+        default:
           jsx +=
             jsxIndent +
             getJsxNodeNameForMdast(node)
@@ -969,13 +969,12 @@ function getEmbeddedCodes(
               .map((name) => `</${name}>`)
               .join('')
           break
-        }
       }
     }
   )
 
   for (const plugin of plugins) {
-    esm += '\n' + plugin.finalize() + '\n'
+    esm += `\n${plugin.finalize()}\n`
   }
 
   let prefix = ''
@@ -1041,45 +1040,53 @@ function getEmbeddedCodes(
  * A Volar virtual code that contains some additional metadata for MDX files.
  */
 export class VirtualMdxCode {
-  #processor
-  #checkMdx
-  #jsxImportSource
   /**
    * The mdast of the document, but only if it’s valid.
    *
    * @type {Root | undefined}
    */
   ast
+
   /**
    * The virtual files embedded in the MDX file.
    *
    * @type {VirtualCode[]}
    */
   embeddedCodes = []
+
   /**
    * The error that was throw while parsing.
    *
    * @type {VFileMessage | undefined}
    */
   error
+
   /**
    * The file ID.
    *
    * @type {'mdx'}
    */
   id = 'mdx'
+
   /**
    * The language ID.
    *
    * @type {'mdx'}
    */
   languageId = 'mdx'
+
   /**
    * The code mappings of the MDX file. There is always only one mapping.
    *
    * @type {CodeMapping[]}
    */
   mappings = []
+
+  #processor
+
+  #checkMdx
+
+  #jsxImportSource
 
   /**
    * @param {IScriptSnapshot} snapshot

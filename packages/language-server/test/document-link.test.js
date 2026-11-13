@@ -3,7 +3,9 @@
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
+
 import {URI} from 'vscode-uri'
+
 import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
 /** @type {LanguageServerHandle} */
@@ -51,9 +53,9 @@ test('resolve markdown link references', async () => {
               resource: {
                 $mid: 1,
                 authority: 'md',
-                path:
-                  '/' +
-                  encodeURIComponent(fixtureUri('node16/link-reference.mdx')),
+                path: `/${encodeURIComponent(
+                  fixtureUri('node16/link-reference.mdx')
+                )}`,
                 scheme: 'volar-embedded-content'
               },
               range: {

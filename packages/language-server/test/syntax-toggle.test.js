@@ -5,6 +5,7 @@
 
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
+
 import {createServer, fixtureUri, tsdk} from './utils.js'
 
 /** @type {LanguageServerHandle} */
@@ -30,6 +31,7 @@ test('delete', async () => {
     'mdx.toggleDelete',
     [
       'memory://1',
+
       /** @satisfies {Range} */
       ({end: {character: 3, line: 0}, start: {character: 3, line: 0}})
     ]
@@ -69,6 +71,7 @@ test('emphasis', async () => {
     'mdx.toggleEmphasis',
     [
       'memory://1',
+
       /** @satisfies {Range} */
       ({end: {character: 3, line: 0}, start: {character: 3, line: 0}})
     ]
@@ -108,6 +111,7 @@ test('inlineCode', async () => {
     'mdx.toggleInlineCode',
     [
       'memory://1',
+
       /** @satisfies {Range} */
       ({end: {character: 3, line: 0}, start: {character: 3, line: 0}})
     ]
@@ -147,6 +151,7 @@ test('strong', async () => {
     'mdx.toggleStrong',
     [
       'memory://1',
+
       /** @satisfies {Range} */
       ({end: {character: 3, line: 0}, start: {character: 3, line: 0}})
     ]

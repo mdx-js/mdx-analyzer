@@ -43,6 +43,7 @@ export function resolvePlugins(mdxConfig, resolvePlugin) {
 
   /** @type {Pluggable[]} */
   const remarkPlugins = []
+
   /** @type {VirtualCodePlugin[]} */
   const virtualCodePlugins = []
 
@@ -56,24 +57,20 @@ export function resolvePlugins(mdxConfig, resolvePlugin) {
     }
 
     switch (name) {
-      case 'recma-export-filepath': {
+      case 'recma-export-filepath':
         virtualCodePlugins.push(recmaExportFilepath(options[0]))
         break
-      }
 
-      case 'rehype-mdx-title': {
+      case 'rehype-mdx-title':
         virtualCodePlugins.push(rehypeMdxTitle(options[0]))
         break
-      }
 
-      case 'remark-mdx-frontmatter': {
+      case 'remark-mdx-frontmatter':
         virtualCodePlugins.push(remarkMdxFrontmatter(options[0]))
         break
-      }
 
-      default: {
+      default:
         remarkPlugins.push([resolvePlugin(name), ...options])
-      }
     }
   }
 

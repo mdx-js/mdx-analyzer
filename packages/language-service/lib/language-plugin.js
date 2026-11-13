@@ -13,6 +13,7 @@ import {LooseParser} from 'acorn-loose'
 import remarkMdx from 'remark-mdx'
 import remarkParse from 'remark-parse'
 import {unified} from 'unified'
+
 import {VirtualMdxCode} from './virtual-code.js'
 
 const StrictParser = Parser.extend(acornJsx())
@@ -29,6 +30,7 @@ const hybridAcorn = {
  *   A list of remark syntax plugins. Only syntax plugins are supported.
  *   Transformers are unused.
  * @param {VirtualCodePlugin[]} [virtualCodePlugins]
+ *   An array of virtual code plugins to apply to the virtual code instances.
  * @param {boolean} checkMdx
  *   If true, check MDX files strictly.
  * @param {string} jsxImportSource

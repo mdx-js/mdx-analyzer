@@ -1,10 +1,19 @@
-import {type ReactNode} from 'react'
+import type {ReactNode} from 'react'
 
-export type PlanetProps = {
+export interface PlanetProps {
+  /**
+   * The distance of the planet from its star.
+   */
   distanceFromStar: number
 
+  /**
+   * The name of the planet.
+   */
   name: string
 
+  /**
+   * The radius of the planet.
+   */
   radius: number
 }
 

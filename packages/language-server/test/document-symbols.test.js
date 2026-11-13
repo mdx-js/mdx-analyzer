@@ -3,7 +3,9 @@
  */
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
+
 import {SymbolKind} from '@volar/language-server'
+
 import {createServer, fixturePath, fixtureUri, tsdk} from './utils.js'
 
 /** @type {LanguageServerHandle} */

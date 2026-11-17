@@ -1,5 +1,11 @@
 # @mdx-js/language-service
 
+## 0.8.0
+
+### Minor Changes
+
+- [`2d2f607`](https://github.com/mdx-js/mdx-analyzer/commit/2d2f607f2e74df37db5f3af2c4f4114263e8d6c4) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Remove support for Node.js 20.
+
 ## 0.7.4
 
 ### Patch Changes

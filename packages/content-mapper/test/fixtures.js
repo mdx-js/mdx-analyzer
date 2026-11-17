@@ -5,6 +5,7 @@ import {test} from 'node:test'
 import {transformResultToMarkdown} from 'content-mapper-test-utils'
 import {includeKeys} from 'filter-obj'
 import {assertEqual, testFixturesDirectory} from 'snapshot-fixtures'
+// eslint-disable-next-line import-x/no-extraneous-dependencies
 import typescript from 'typescript'
 
 import {closeProject} from '../lib/requests/close-project.js'

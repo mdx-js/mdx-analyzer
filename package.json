@@ -24,6 +24,7 @@
     "@remcohaszing/eslint": "^14.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@typescript/native": "npm:typescript@next",
     "c8": "^10.0.0",
     "prettier": "^3.0.0",
     "react": "^19.0.0",
@@ -32,7 +33,7 @@
     "remark-directive": "^4.0.0",
     "remark-frontmatter": "^5.0.0",
     "remark-preset-wooorm": "^11.0.0",
-    "typescript": "^6.0.0"
+    "typescript": "npm:@typescript/typescript6@^6.0.0"
   },
   "prettier": {
     "tabWidth": 2,

@@ -1,0 +1,83 @@
+{
+  "name": "@mdx-js/content-mapper",
+  "version": "0.0.4",
+  "type": "module",
+  "description": "A TypeScript content mapper for MDX content",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdx-js/mdx-analyzer.git",
+    "directory": "packages/content-mapper"
+  },
+  "homepage": "https://mdxjs.com",
+  "bugs": "https://github.com/remcohaszing/@mdx-js/content-mapper/issues",
+  "author": "Remco Haszing <remcohaszing@gmail.com>",
+  "funding": "https://opencollective.com/unified",
+  "license": "MIT",
+  "keywords": [
+    "IntelliSense",
+    "mdx",
+    "typescript",
+    "unified"
+  ],
+  "files": [
+    "lib"
+  ],
+  "typescript": {
+    "contentMapper": {
+      "exec": [
+        "node",
+        "lib/server.js"
+      ],
+      "compilerOptions": [
+        "allowJs",
+        "jsxImportSource"
+      ],
+      "dynamicConfig": false
+    }
+  },
+  "scripts": {
+    "test-api": "node --test",
+    "test": "npm run test-api"
+  },
+  "dependencies": {
+    "acorn": "^8.0.0",
+    "acorn-jsx": "^5.0.0",
+    "estree-util-scope": "^1.0.0",
+    "estree-walker": "^3.0.0",
+    "import-meta-resolve": "^4.0.0",
+    "markdown-extensions": "^2.0.0",
+    "micromark": "^4.0.0",
+    "micromark-extension-mdx-expression": "^3.0.0",
+    "micromark-extension-mdx-jsx": "^3.0.0",
+    "micromark-extension-mdx-md": "^2.0.0",
+    "micromark-extension-mdxjs-esm": "^3.0.0",
+    "micromark-extension-frontmatter": "^2.0.0",
+    "micromark-extension-gfm-autolink-literal": "^2.0.0",
+    "micromark-extension-gfm-footnote": "^2.0.0",
+    "micromark-extension-gfm-strikethrough": "^2.0.0",
+    "micromark-extension-gfm-table": "^2.0.0",
+    "micromark-extension-gfm-task-list-item": "^2.0.0",
+    "smol-toml": "^1.0.0",
+    "unified": "^11.0.0",
+    "vfile-message": "^4.0.0",
+    "vscode-jsonrpc": "^10.0.0",
+    "yaml": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/estree-jsx": "^1.0.0",
+    "@types/node": "^26.0.0",
+    "@types/react": "^19.0.0",
+    "@types/vscode": "^1.0.0",
+    "content-mapper-test-utils": "^0.0.2",
+    "filter-obj": "^6.0.0",
+    "micromark-extension-gfm": "^3.0.0",
+    "micromark-util-types": "^2.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.0",
+    "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-preset-remcohaszing": "^3.0.0",
+    "snapshot-fixtures": "^1.0.0",
+    "typescript": "^6.0.0"
+  }
+}

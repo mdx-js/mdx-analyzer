@@ -1,0 +1,7 @@
+export function Local() {}
+
+<div local={<Local />} injected={<Injected />} string="string" boolean />
+
+<div local={<Local>{null}</Local>} injected={<Injected>{null}</Injected>} string="string" boolean>
+  paragraph
+</div>

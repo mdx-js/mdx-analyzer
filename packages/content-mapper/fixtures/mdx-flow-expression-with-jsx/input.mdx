@@ -1,0 +1,12 @@
+export function Local() {}
+
+{<div />}
+{<div>{''}</div>}
+{<Injected />}
+{<Injected>{''}</Injected>}
+{<Injected><Injected>{''}</Injected></Injected>}
+{<Local />}
+{<Local>{''}</Local>}
+{<Local><Local>{''}</Local></Local>}
+{<Local><Injected>{''}</Injected></Local>}
+{<Injected><Local>{''}</Local></Injected>}

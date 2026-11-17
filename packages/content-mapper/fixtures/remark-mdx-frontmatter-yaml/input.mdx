@@ -1,0 +1,30 @@
+---
+string: this is a string
+singleQuote: 'This is also a string'
+doubleQuote: "This is also a string"
+multiline: |
+  This
+  is
+  also
+  a
+  string
+number: 42
+object: &on=e
+  key: value
+  nested:
+    key: value
+alsoObject: { key: value }
+array: &two
+  - 1
+  - true
+  - false
+  - yes
+  - no
+  -
+alsoArray: [1, 0xbeef, '3']
+first: *on=e
+second: *two
+: null
+---
+
+{frontmatter}

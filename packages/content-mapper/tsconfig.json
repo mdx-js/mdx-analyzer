@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "exclude": ["fixtures"],
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node", "micromark-extension-math", "remark-parse"]
+  }
+}

@@ -1,0 +1,15 @@
+export const arrow = async () => {
+  await Promise.resolve(42)
+}
+
+export const expression = async function() {
+  await Promise.resolve(42)
+}
+
+export async function named() {
+  await Promise.resolve(42)
+}
+
+{async () => { await Promise.resolve(42) }}
+{async function() { await Promise.resolve(42) }}
+{async function local() { await Promise.resolve(42) }}

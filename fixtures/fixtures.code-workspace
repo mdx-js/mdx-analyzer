@@ -1,22 +1,21 @@
 {
   "settings": {
+    "chat.disableAIFeatures": true,
     "editor.suggest.showWords": false,
     "editor.wordBasedSuggestions": "off",
     "git.openRepositoryInParentFolders": "never",
+    "js/ts.experimental.useTsgo": true,
+    "js/ts.tsdk.path": "../node_modules/@typescript/native/lib",
+    "js/ts.tsserver.tracing.enabled": true,
     "mdx.server.enable": true,
-    "mdx.trace.server.verbosity": "compact",
     "mdx.trace.server.format": "text",
-    "typescript.tsdk": "../../node_modules/typescript/lib"
+    "mdx.trace.server.verbosity": "compact"
   },
   "extensions": {
-    "recommendations": ["johnsoncodehk.volarjs-labs"]
+    "recommendations": [
+      "johnsoncodehk.volarjs-labs",
+      "typescriptteam.native-preview"
+    ]
   },
-  "folders": [
-    {"path": "debug"},
-    {"path": "demo"},
-    {"path": "directive"},
-    {"path": "no-tsconfig"},
-    {"path": "node16"},
-    {"path": "provide"}
-  ]
+  "folders": [{"path": "."}, {"path": "../packages/content-mapper/fixtures"}]
 }

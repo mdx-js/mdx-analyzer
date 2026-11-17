@@ -1,8 +1,11 @@
 /**
  * @import {ExecuteCommandSignature, LabsInfo} from '@volar/vscode'
+ * @import {ExtensionAPI} from '@typescript/native/vscode'
  * @import {ExtensionContext} from 'vscode'
  */
 
+// eslint-disable-next-line import-x/no-extraneous-dependencies, n/no-extraneous-import
+import pkg from '@mdx-js/content-mapper/package.json' with {type: 'json'}
 // eslint-disable-next-line import-x/no-extraneous-dependencies
 import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {
@@ -31,6 +34,71 @@ let client
 let disposable
 
 /**
+ * @param {ExtensionContext} context
+ *   The extension context as given by VSCode.
+ * @returns {Promise<undefined>}
+ */
+async function registerContentMapper(context) {
+  /** @type {Disposable | undefined} */
+  let contentMapper
+
+  const unregister = () => {
+    contentMapper?.dispose()
+  }
+
+  const register = async () => {
+    const extension = extensions.getExtension('typescriptteam.native-preview')
+
+    if (!extension) {
+      unregister()
+      return
+    }
+
+    if (contentMapper) {
+      return
+    }
+
+    /** @type {ExtensionAPI | undefined} */
+    const api = await extension.activate()
+
+    if (!api) {
+      return
+    }
+
+    const {name, typescript, version} = pkg
+    const {compilerOptions, dynamicConfig} = typescript.contentMapper
+
+    const {packageJSON} = context.extension
+
+    contentMapper = api.registerContentMappers(
+      `${packageJSON.publisher}.${packageJSON.name}`,
+      [
+        {
+          extensions: ['.mdx'],
+          inferredProjectContribution: {
+            manifest: {
+              name,
+              version,
+              exec: [
+                process.execPath,
+                context.asAbsolutePath('dist/mdx-content-mapper.js')
+              ],
+              cwd: extension.extensionUri,
+              compilerOptions,
+              dynamicConfig
+            }
+          }
+        }
+      ]
+    )
+  }
+
+  context.subscriptions.push({dispose: unregister})
+  extensions.onDidChange(register)
+  await register()
+}
+
+/**
  * Activate the extension.
  *
  * @param {ExtensionContext} context
@@ -41,9 +109,7 @@ let disposable
  *   extension.
  */
 export async function activate(context) {
-  const api = await extensions
-    .getExtension('vscode.typescript-language-features')
-    ?.activate()
+  await registerContentMapper(context)
 
   client = new LanguageClient(
     'MDX',

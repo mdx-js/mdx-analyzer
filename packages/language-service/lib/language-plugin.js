@@ -1,6 +1,7 @@
 /// <reference types="@volar/typescript" />
 
 /**
+ * @import {Options, Program} from 'acorn'
  * @import {LanguagePlugin} from '@volar/language-service'
  * @import {PluggableList} from 'unified'
  * @import {URI} from 'vscode-uri'
@@ -19,7 +20,28 @@ import {VirtualMdxCode} from './virtual-code.js'
 const StrictParser = Parser.extend(acornJsx())
 
 const hybridAcorn = {
-  parse: LooseParser.parse.bind(LooseParser),
+  /**
+   * Parse ESM strictly, so JSX is supported, and only fall back to
+   * `acorn-loose`, which doesn’t support JSX, to recover from invalid code.
+   *
+   * @param {string} input
+   * @param {Options} options
+   * @returns {Program}
+   */
+  parse(input, options) {
+    const {onComment, onToken} = options
+    const commentCount = Array.isArray(onComment) ? onComment.length : 0
+    const tokenCount = Array.isArray(onToken) ? onToken.length : 0
+
+    try {
+      return StrictParser.parse(input, options)
+    } catch {
+      // Drop comments and tokens collected by the failed strict parse.
+      if (Array.isArray(onComment)) onComment.length = commentCount
+      if (Array.isArray(onToken)) onToken.length = tokenCount
+      return LooseParser.parse(input, options)
+    }
+  },
   parseExpressionAt: StrictParser.parseExpressionAt.bind(StrictParser)
 }
 

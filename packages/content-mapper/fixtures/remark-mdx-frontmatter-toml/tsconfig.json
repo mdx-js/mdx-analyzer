@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "contentMappers": [
+    {
+      "package": "@mdx-js/content-mapper",
+      "extensions": [".mdx"],
+      "options": {
+        "remarkPlugins": [["remark-frontmatter", ["toml", "yaml"]], "remark-mdx-frontmatter"]
+      }
+    }
+  ]
+}

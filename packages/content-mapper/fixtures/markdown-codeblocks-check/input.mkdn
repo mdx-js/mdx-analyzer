@@ -1,0 +1,53 @@
+```js
+console.log('Hello JavaScript!')
+```
+
+```javascript
+/**
+ * @returns {number}
+ */
+export function getNumber() {
+  return 'This is not a number'
+}
+```
+
+```jsx
+export function Component() {
+  return <div />
+}
+```
+
+```cjs
+module.exports = 'commonjs'
+```
+
+```mjs
+export default 'ES module'
+```
+
+```ts
+console.log('Hello TypeScript!')
+```
+
+```typescript
+export function getNumber(): number {
+  return 'This is not a number'
+}
+```
+
+```tsx
+import type { ReactNode } from 'react'
+
+export function Component(): ReactNode {
+  return <div />
+}
+```
+
+```cts
+declare const variable = 'commonjs'
+export = variable
+```
+
+```mts
+export default 'ES module'
+```

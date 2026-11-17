@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
+    {"path": "./content-mapper"},
     {"path": "./language-server"},
     {"path": "./language-service"},
     {"path": "./vscode-mdx"}

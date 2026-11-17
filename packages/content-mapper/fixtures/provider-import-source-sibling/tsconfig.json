@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "checkJs": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  },
+  "contentMappers": [
+    {
+      "package": "@mdx-js/content-mapper",
+      "extensions": [".mdx"],
+      "options": {
+        "providerImportSource": "./mdx-components.tsx"
+      }
+    }
+  ]
+}

@@ -1,3 +1,4 @@
 out/
+packages/content-mapper/fixtures
 *.md
 *.mdx

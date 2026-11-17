@@ -3,6 +3,7 @@ import {test} from 'node:test'
 
 import {createMdxLanguagePlugin} from '@mdx-js/language-service'
 import remarkFrontmatter from 'remark-frontmatter'
+// eslint-disable-next-line import-x/no-extraneous-dependencies
 import typescript from 'typescript'
 import {VFileMessage} from 'vfile-message'
 

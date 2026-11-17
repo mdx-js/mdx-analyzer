@@ -35,6 +35,7 @@ testFixturesDirectory({
         undefined,
         tsconfigFileName
       )
+      // eslint-disable-next-line jsdoc/reject-any-type
       const mdxContentMapper = /** @type {any[]} */ (raw.contentMappers).find(
         (contentMapper) => contentMapper.package === pkg.name
       )

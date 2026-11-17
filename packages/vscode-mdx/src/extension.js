@@ -8,8 +8,7 @@ import * as languageServerProtocol from '@volar/language-server/protocol.js'
 import {
   activateAutoInsertion,
   activateDocumentDropEdit,
-  createLabsInfo,
-  getTsdk
+  createLabsInfo
 } from '@volar/vscode'
 // eslint-disable-next-line import-x/no-extraneous-dependencies
 import {LanguageClient, TransportKind} from '@volar/vscode/node.js'
@@ -44,8 +43,6 @@ let disposable
 export async function activate(context) {
   extensions.getExtension('vscode.typescript-language-features')?.activate()
 
-  const {tsdk} = (await getTsdk(context)) ?? {tsdk: ''}
-
   client = new LanguageClient(
     'MDX',
     {
@@ -54,9 +51,6 @@ export async function activate(context) {
     },
     {
       documentSelector: [{language: 'mdx'}],
-      initializationOptions: {
-        typescript: {tsdk}
-      },
       markdown: {
         isTrusted: true,
         supportHtml: true

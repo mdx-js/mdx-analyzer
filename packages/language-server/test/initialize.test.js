@@ -4,7 +4,7 @@
 import assert from 'node:assert/strict'
 import {afterEach, beforeEach, test} from 'node:test'
 
-import {createServer, fixtureUri, tsdk} from './utils.js'
+import {createServer, fixtureUri} from './utils.js'
 
 /** @type {LanguageServerHandle} */
 let serverHandle
@@ -20,7 +20,7 @@ afterEach(() => {
 test('initialize', async () => {
   const {serverInfo, ...initializeResponse} = await serverHandle.initialize(
     fixtureUri('node16'),
-    {typescript: {tsdk}}
+    {}
   )
   assert.deepEqual(initializeResponse, {
     capabilities: {

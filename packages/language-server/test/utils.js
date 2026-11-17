@@ -1,12 +1,10 @@
 import {createRequire} from 'node:module'
-import {dirname} from 'node:path'
 
 import {startLanguageServer} from '@volar/test-utils'
 import {URI, Utils} from 'vscode-uri'
 
 import pkg from '../package.json' with {type: 'json'}
 
-const require = createRequire(import.meta.url)
 const pkgPath = new URL('../package.json', import.meta.url)
 const pkgRequire = createRequire(pkgPath)
 
@@ -16,11 +14,6 @@ const fixturesURI = Utils.joinPath(
   URI.parse(import.meta.url),
   '../../../../fixtures'
 )
-
-/**
- * The path to the TypeScript SDK.
- */
-export const tsdk = dirname(require.resolve('typescript'))
 
 export function createServer() {
   return startLanguageServer(bin, new URL('..', import.meta.url))

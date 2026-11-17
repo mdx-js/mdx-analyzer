@@ -3,8 +3,15 @@
   "tasks": [
     {
       "type": "shell",
-      "command": "node",
-      "args": ["packages/vscode-mdx/script/build.mjs", "debug"],
+      "command": "npm",
+      "args": [
+        "--workspace",
+        "vscode-mdx",
+        "run",
+        "vscode:prepublish",
+        "--",
+        "--sourcemap"
+      ],
       "label": "build",
       "presentation": {
         "clear": true,

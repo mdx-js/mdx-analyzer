@@ -1,6 +1,7 @@
 {
   "name": "vscode-mdx",
   "version": "1.8.18",
+  "type": "module",
   "displayName": "MDX",
   "description": "Language support for MDX",
   "categories": [
@@ -22,7 +23,7 @@
   "engines": {
     "vscode": "^1.146.0"
   },
-  "main": "out/extension.js",
+  "main": "dist/extension.js",
   "keywords": [
     "mdx",
     "markdown"
@@ -35,8 +36,8 @@
     "onLanguage:typescriptreact"
   ],
   "scripts": {
-    "generate": "node --conditions development ./script/generate.mjs",
-    "vscode:prepublish": "node ./script/build.mjs"
+    "generate": "node --conditions development ./script/generate.js",
+    "vscode:prepublish": "rolldown --config"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -44,7 +45,7 @@
     "@volar/language-server": "~2.4.0",
     "@volar/vscode": "~2.4.0",
     "@vscode/vsce": "^4.0.0",
-    "esbuild": "^0.25.0",
+    "rolldown": "^1.0.0",
     "ovsx": "^1.0.0"
   },
   "vsce": {

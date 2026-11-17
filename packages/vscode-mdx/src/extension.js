@@ -49,7 +49,7 @@ export async function activate(context) {
   client = new LanguageClient(
     'MDX',
     {
-      module: context.asAbsolutePath('out/language-server.js'),
+      module: context.asAbsolutePath('dist/mdx-language-server.js'),
       transport: TransportKind.ipc
     },
     {

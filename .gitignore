@@ -10,5 +10,4 @@
 coverage/
 dist/
 node_modules/
-out/
 types/

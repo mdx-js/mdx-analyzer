@@ -32,7 +32,7 @@ blob = blob.replace(/<dict>/, ($0) => {
     This file is maintained at <https://github.com/${repo}/blob/${branch}/${filename}>.
     To improve it, please create a pull request to the original repository.
     Once accepted there, it can be pulled into this project (\`vscode-mdx\`) with
-    \`script/generate.mjs\`, and released.
+    \`script/generate.js\`, and released.
 
     Version from SHA: ${sha}.
   -->

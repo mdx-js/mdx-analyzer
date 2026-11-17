@@ -1,5 +1,22 @@
 # @mdx-js/language-server
 
+## 0.7.0
+
+### Minor Changes
+
+- [#538](https://github.com/mdx-js/mdx-analyzer/pull/538) [`2af6456`](https://github.com/mdx-js/mdx-analyzer/commit/2af6456677b101be865882af1ad87ab9f97f27df) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Completely remove TypeScript support.
+  Use the content mapper instead.
+
+- [`2d2f607`](https://github.com/mdx-js/mdx-analyzer/commit/2d2f607f2e74df37db5f3af2c4f4114263e8d6c4) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Remove support for Node.js 20.
+
+- [#535](https://github.com/mdx-js/mdx-analyzer/pull/535) [`c92c62d`](https://github.com/mdx-js/mdx-analyzer/commit/c92c62d0e4d09f61b6422116e8af64b39d4c87cc) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Remove type checking support.
+  Use the content mapper instead.
+
+### Patch Changes
+
+- Updated dependencies [[`2d2f607`](https://github.com/mdx-js/mdx-analyzer/commit/2d2f607f2e74df37db5f3af2c4f4114263e8d6c4)]:
+  - @mdx-js/language-service@0.8.0
+
 ## 0.6.4
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@mdx-js/content-mapper",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "type": "module",
   "description": "A TypeScript content mapper for MDX content",
   "repository": {

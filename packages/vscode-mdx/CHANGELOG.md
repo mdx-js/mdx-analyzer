@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.0
+
+### Major Changes
+
+- [`56f37e0`](https://github.com/mdx-js/mdx-analyzer/commit/56f37e05208f9a00e3b7a14eed8d0acdc87ab6d1) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Remove support for VSCode 1.145 and below.
+
+- [#548](https://github.com/mdx-js/mdx-analyzer/pull/548) [`9ff58ad`](https://github.com/mdx-js/mdx-analyzer/commit/9ff58ad465060ff8e6d7cf4f70578d4d32ab8780) Thanks [@remcohaszing](https://github.com/remcohaszing)! - Integrate `@mdx-js/content-mapper`.
+
 ## 1.8.18
 
 ### Patch Changes

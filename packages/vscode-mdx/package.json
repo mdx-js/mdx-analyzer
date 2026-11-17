@@ -1,6 +1,6 @@
 {
   "name": "vscode-mdx",
-  "version": "1.8.18",
+  "version": "2.0.0",
   "type": "module",
   "displayName": "MDX",
   "description": "Language support for MDX",

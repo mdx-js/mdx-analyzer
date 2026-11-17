@@ -2,8 +2,6 @@
 
 [![Build][build-badge]][build]
 [![Coverage][coverage-badge]][coverage]
-[![Visual Studio Marketplace Downloads][marketplace-badge]][marketplace]
-[![Open VSX Downloads][openvsx-badge]][openvsx]
 [![Sponsors][sponsors-badge]][collective]
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
@@ -27,8 +25,9 @@
 
 ## Install
 
-[Get it on the VS Code Marketplace][marketplace] or install it by using Quick
-Open (<kbd>Ctrl</kbd> + <kbd>P</kbd>) and running the following:
+[Get it on the VS Code Marketplace][marketplace] or the
+[Open VSX registry][openvsx] or install it by using Quick Open
+(<kbd>Ctrl</kbd> + <kbd>P</kbd>) and running the following:
 
 ```text
 ext install unifiedjs.vscode-mdx
@@ -297,8 +296,6 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 
 [marketplace]: https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx
 
-[marketplace-badge]: https://img.shields.io/visual-studio-marketplace/d/unifiedjs.vscode-mdx
-
 [mdx]: https://mdxjs.com
 
 [mdx language server configurations]: https://github.com/mdx-js/mdx-analyzer/blob/main/packages/language-server#configuration
@@ -306,8 +303,6 @@ Detailed changes for each release are documented in [CHANGELOG.md](./CHANGELOG.m
 [mit]: http://opensource.org/licenses/MIT
 
 [openvsx]: https://open-vsx.org/extension/unifiedjs/vscode-mdx
-
-[openvsx-badge]: https://img.shields.io/open-vsx/dt/unifiedjs/vscode-mdx
 
 [prettier]: https://prettier.io
 

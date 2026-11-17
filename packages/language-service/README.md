@@ -160,7 +160,7 @@ The supported transformer plugins are:
 
 ## Compatibility
 
-This project is compatible Node.js 20.19+.
+This project is compatible Node.js 22+.
 
 ## Types
 

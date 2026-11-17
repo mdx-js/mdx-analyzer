@@ -187,7 +187,7 @@ Use [`unifiedjs.vscode-mdx`][vscode-mdx] to use the MDX language server with
 
 ## Compatibility
 
-This project is compatible Node.js 20.19+.
+This project is compatible Node.js 22+.
 
 This project uses [`vscode-languageserver`][vscode-languageserver] 9, which
 implements language server protocol 3.17.4.

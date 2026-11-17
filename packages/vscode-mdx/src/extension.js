@@ -41,7 +41,9 @@ let disposable
  *   extension.
  */
 export async function activate(context) {
-  extensions.getExtension('vscode.typescript-language-features')?.activate()
+  const api = await extensions
+    .getExtension('vscode.typescript-language-features')
+    ?.activate()
 
   client = new LanguageClient(
     'MDX',
